@@ -26,6 +26,7 @@ var multiparty = require('multiparty');
 var config = require('../../config/config');
 var auth = require('../services/auth');
 var helper = require('../helpers/model_helper.js');
+var userScore = require('../services/user_score.js');
 
 
 exports.getPhotoAlbum = function (req, res, next) {
@@ -920,6 +921,14 @@ exports.createSinglePhoto = function(req, res, next) {
                       uri: new_photo.uri,
                       width: new_photo.width,
                       height: new_photo.height
+                    });
+
+                    userScore.addScore(req.user, {
+                      uploadPhotoToOfficialTeam: 1
+                    }, function (err) {
+                      if (err) {
+                        console.log('上传照片时更新用户积分错误:', err);
+                      }
                     });
 
                     return res.send({

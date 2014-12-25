@@ -38,6 +38,7 @@ var encrypt = require('../middlewares/encrypt'),
   model_helper = require('../helpers/model_helper'),
   photo_album_controller = require('./photoAlbum'),
   auth = require('../services/auth'),
+  userScore = require('../services/user_score.js'),
   logController =require('../controllers/log');
 
 
@@ -1113,38 +1114,51 @@ exports.joinGroup = function (req, res){
                 return res.send({result: 0, msg:'保存小队出错'});
               }
               else{
-                //保存用户
-                user.save(function (err){
-                  if(err){
-                    console.log(err);
-                    return res.send({result: 0, msg:'保存用户出错'});
-                  }else{
-                    // GroupMessage.findOne({'message_type':8,'user.user_id':uid,'team.teamid':tid},function(err,groupMessage){
-                    //   if(!err&&groupMessage){
-                    //     groupMessage.create_time = new Date();
-                    //     groupMessage.save();
-                    //   }
-                    //   else{
-                    //     var groupMessage = new GroupMessage();
-                    //     groupMessage.message_type = 8;
-                    //     groupMessage.team = {
-                    //       teamid : companyGroup._id,
-                    //       name : companyGroup.name,
-                    //       logo : companyGroup.logo
-                    //     };
-                    //     groupMessage.user ={
-                    //       user_id : user._id,
-                    //       name : user.nickname,
-                    //       logo : user.photo
-                    //     };
-                    //     groupMessage.save();
-
-                    //   }
-                    // });
-                    // console.log('保存用户成功');
-                    return res.send({result: 1, msg:'保存用户成功'});
+                // 添加积分
+                userScore.addScore(user, {
+                  joinOfficialTeam: 1
+                }, {
+                  save: false
+                }, function (err, user) {
+                  if (err) {
+                    log(err);
+                    return;
                   }
+
+                  user.save(function (err){
+                    if(err){
+                      console.log(err);
+                      return res.send({result: 0, msg:'保存用户出错'});
+                    }else{
+                      // GroupMessage.findOne({'message_type':8,'user.user_id':uid,'team.teamid':tid},function(err,groupMessage){
+                      //   if(!err&&groupMessage){
+                      //     groupMessage.create_time = new Date();
+                      //     groupMessage.save();
+                      //   }
+                      //   else{
+                      //     var groupMessage = new GroupMessage();
+                      //     groupMessage.message_type = 8;
+                      //     groupMessage.team = {
+                      //       teamid : companyGroup._id,
+                      //       name : companyGroup.name,
+                      //       logo : companyGroup.logo
+                      //     };
+                      //     groupMessage.user ={
+                      //       user_id : user._id,
+                      //       name : user.nickname,
+                      //       logo : user.photo
+                      //     };
+                      //     groupMessage.save();
+
+                      //   }
+                      // });
+                      // console.log('保存用户成功');
+                      return res.send({result: 1, msg:'保存用户成功'});
+                    }
+                  });
+
                 });
+
               }
             });
           }
@@ -1240,14 +1254,34 @@ exports.quitGroup = function (req, res){
                     user.role = 'EMPLOYEE'; //如果不是其它队队长则贬为平民！
                   //----user.role
 
-                  user.save(function (err) {
-                    if(err){
-                      return res.send(err);
+                  userScore.addScore(user, {
+                    quitOfficialTeam: 1
+                  }, {
+                    save: false
+                  }, function (err, user) {
+                    if (err) {
+                      log(err);
+                      return;
                     }
-                    else {
-                      return res.send({result:1, msg: '退出小队成功！'});
-                    }
+
+                    user.save(function (err){
+                      if(err){
+                        console.log(err);
+                        return res.send({result: 0, msg:'保存用户出错'});
+                      }else{
+                        user.save(function (err) {
+                          if(err){
+                            return res.send(err);
+                          }
+                          else {
+                            return res.send({result:1, msg: '退出小队成功！'});
+                          }
+                        });
+                      }
+                    });
+
                   });
+
                 }
                 else
                   return res.send({result: 0, msg:'查无此人'});
