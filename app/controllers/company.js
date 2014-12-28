@@ -924,8 +924,7 @@ exports.getAccount = function(req, res, next) {
       };
       if (req.role === 'HR') {
         if(!_company.invite_key){
-          var salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
-          _company.invite_key = crypto.pbkdf2Sync(Date.now().toString(), salt, 10000, 6).toString('base64');
+          _company.invite_key = tools.randomAlphaNumeric(8);
           _company.save(function(err){
             if(err){
               console.log(err);
@@ -936,6 +935,7 @@ exports.getAccount = function(req, res, next) {
         }
         var invite_key = encodeURIComponent(_company.invite_key).replace(/'/g,"%27").replace(/"/g,"%22");
         _account.inviteUrl = 'http://' + req.headers.host + '/users/invite?key=' + invite_key + '&cid=' + companyId;
+        _account.inviteCode = _company.invite_key;
       }
       return res.send({
         'result': 1,
