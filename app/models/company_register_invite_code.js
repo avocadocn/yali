@@ -7,7 +7,7 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var crypto = require('crypto');
-
+var tools = require('../helpers/tools.js');
 
 var CompanyRegisterInviteCode = new Schema({
 
@@ -36,8 +36,7 @@ var CompanyRegisterInviteCode = new Schema({
 
 CompanyRegisterInviteCode.pre('save', function(next) {
     if (!this.code) {
-        var salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
-        this.code = crypto.pbkdf2Sync(Date.now().toString(), salt, 10000, 6).toString('base64');
+        this.code = tools.randomAlphaNumeric(8);
     }
     next();
 });
