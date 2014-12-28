@@ -139,6 +139,9 @@ var finishCampaign = function(){
 var team_time_out = 30;
 //统计所有小组的活动数、人员参与数、评论数、照片从而得出分数
 var teamPoint = function(){
+  var now = new Date();
+  var timeLimit = new Date();
+  timeLimit.setDate(now.getDate()-30);
   CompanyGroup.find({'active':true}).populate('photo_album_list').exec(function(err,teams){
     if(err){
       console.log(err);
@@ -155,27 +158,55 @@ var teamPoint = function(){
         for(var i = 0; i < value.photo_album_list.length; i ++){
           photoNum += value.photo_album_list[i].photo_count;
         }
-        Campaign.find({'active':true,'tid':value._id,'end_time':{'$lte':new Date()}}).populate('photo_album').exec(function(err,campaigns){
+        //使用聚合无法直接算出member，所以暂时放弃
+          // Campaign
+          //   .aggregate()
+          //   .match({'active':true,'tid':value._id,'end_time':{'$lte':now}})
+          //   .project()
+          //   .group({
+          //     _id: {
+          //       active: '$active'
+          //     },
+          //     campaignNum: {'$sum':1},
+          //     participatorNum: {'$sum':{"$size":"$members"}},
+          //     commentNum: {'$sum': "$comment_sum"}
+          //   })
+          //   .exec()
+          //   .then(function (results) {
+          //     value.score = {
+          //       'campaign' : results[0].campaignNum,
+          //       'album' : photoNum,
+          //       'comment' : results[0].commentNum,
+          //       'participator' : results[0].participatorNum,
+          //       'member' : memberNum,
+          //       'total' : results[0].campaignNum * 10 + parseInt(photoNum/5) + parseInt(results[0].commentNum / 20) + results[0].participatorNum + memberNum * 10
+          //     }
+          //     console.log(results)
+          //     console.log(value.score)
+          //     value.save(function(err){
+          //       if(err){
+          //         console.log('TEAM_POINT_FAILED!',err);
+          //       }
+          //     });
+          //   })
+          //   .then(null, function (err) {
+          //     console.log(err);
+          //   });
+
+        //TODO:将所有的已经结束的该小队活动进行统计，效率较低
+        Campaign.find({'active':true,'tid':value._id,'end_time':{'$lte':now}}).exec(function(err,campaigns){
           campaigns.forEach(function(campaign){
             campaignNum++;
             participatorNum+=campaign.members.length;
             commentNum += campaign.comment_sum;
-            photoNum += campaign.photo_album.photo_count; //属于小队的活动的相片总数
           });
-          var provoke;
-          if(value.score.provoke != undefined || value.score.provoke != null){
-            provoke = value.score.provoke;
-          }else{
-            provoke = 0;
-          }
           value.score = {
-            'campaign' : campaignNum * 10,
-            'album' : parseInt(photoNum/5),
-            'comment' : parseInt(commentNum / 20),
+            'campaign' : campaignNum,
+            'album' : photoNum,
+            'comment' : commentNum,
             'participator' : participatorNum,
-            'member' : memberNum * 10,
-            'provoke' : provoke,
-            'total' : campaignNum * 10 + parseInt(photoNum/5) + parseInt(commentNum / 20) + participatorNum + memberNum * 10 + provoke
+            'member' : memberNum,
+            'total' : campaignNum * 10 + parseInt(photoNum/5) + parseInt(commentNum / 20) + participatorNum + memberNum * 10
           }
           value.save(function(err){
             if(err){
@@ -275,7 +306,8 @@ var lastMonthCampaignCount =  function(){
 exports.init = function(){
   //自动统计小队分数
   var teamPointRule = new schedule.RecurrenceRule();
-  teamPointRule.minute = team_time_out;
+  teamPointRule.hour = 0;
+  teamPointRule.minute = 0;
   var teamPointSchedule = schedule.scheduleJob(teamPointRule, function(){
       teamPoint();
   });
