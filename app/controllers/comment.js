@@ -185,9 +185,12 @@ exports.getComment = function (req, res) {
       comments: comments
     }, function (err) {
       if (err) console.log(err);
+      if(req.user.provider=='user') {
+        userReadComment(req.user, req.params.hostId);
+      }
       // 即使错误依然会做基本的权限设置（公司可删自己员工的，自己可以删自己的），所以依旧返回数据
       res.send({'comments': comments, nextStartDate: nextStartDate, 'user': {'_id': req.user._id}});
-      userReadComment(req.user, req.params.hostId);
+      
     });
   });
 }
