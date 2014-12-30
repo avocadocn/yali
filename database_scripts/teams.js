@@ -1,1 +1,1 @@
-db.companygroups.update({poster:{'$exists':false},{$set:{poster:{role:'HR'}}},{multi:true}})
+db.companygroups.update({poster:{'$exists':false}},{$set:{poster:{role:'HR'}}},{multi:true})

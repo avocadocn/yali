@@ -33,4 +33,4 @@ photoAlbums.forEach(function (photoAlbum) {
 });
 
 //将官方小队增加poster属性
-db.companygroups.update({poster:{'$exists':false},{$set:{poster:{role:'HR'}}},{multi:true}})
+db.companygroups.update({poster:{'$exists':false}},{$set:{poster:{role:'HR'}}},{multi:true})
