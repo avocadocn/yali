@@ -29,6 +29,7 @@ var mongoose = require('mongoose'),
   auth = require('../services/auth'),
   photo_album_controller = require('./photoAlbum'),
   model_helper = require('../helpers/model_helper'),
+  tools = require('../helpers/tools'),
   cache = require('../services/cache/Cache'),
   campaign_controller =require('../controllers/campaign'),
   logController =require('../controllers/log');
@@ -658,11 +659,11 @@ exports.create = function(req, res) {
       company.info.lindline.number = req.body.number;
       company.info.lindline.extension = req.body.extension;
       company.info.phone = req.body.phone;
+      company.info.email = req.body.email;
       company.provider = 'company';
       company.login_email = req.body.email;
       //生成随机邀请码
-      var salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
-      company.invite_key = crypto.pbkdf2Sync(Date.now().toString(), salt, 10000, 6).toString('base64');
+      company.invite_key = tools.randomAlphaNumeric(8);
       var _email = req.body.email.split('@');
       if (_email[1])
         company.email.domain.push(_email[1]);
@@ -923,8 +924,7 @@ exports.getAccount = function(req, res, next) {
       };
       if (req.role === 'HR') {
         if(!_company.invite_key){
-          var salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
-          _company.invite_key = crypto.pbkdf2Sync(Date.now().toString(), salt, 10000, 6).toString('base64');
+          _company.invite_key = tools.randomAlphaNumeric(8);
           _company.save(function(err){
             if(err){
               console.log(err);
@@ -935,6 +935,7 @@ exports.getAccount = function(req, res, next) {
         }
         var invite_key = encodeURIComponent(_company.invite_key).replace(/'/g,"%27").replace(/"/g,"%22");
         _account.inviteUrl = 'http://' + req.headers.host + '/users/invite?key=' + invite_key + '&cid=' + companyId;
+        _account.inviteCode = _company.invite_key;
       }
       return res.send({
         'result': 1,

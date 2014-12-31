@@ -67,9 +67,13 @@ var CompanyGroup = new Schema({
         type: String,
         ref: 'Group'
     },
-    //0：个人小队
-    //1：官方小队
-    group_level: Number,
+    poster:{
+        role: {
+            type: String,
+            enum: ['HR', 'Personal']
+        },
+        _id: Schema.Types.ObjectId //只有个人小队的时候才有个人id
+    },
     // 如果是部门的小队，则为部门id，否则为false。
     // 如果为null或undefined，则需要查询部门，来确定是否是部门的小队。
     department: Schema.Types.Mixed,
@@ -159,11 +163,27 @@ var CompanyGroup = new Schema({
             default: 0
         }
     },
-    family: [familyPhoto]
+    family: [familyPhoto],
+    last_campaign: {
+        _id: Schema.Types.Object,
+        theme: String,
+        start_time: Date
+    }
 });
 
 CompanyGroup.plugin(mongoosePaginate);
+/**
+ * Virtuals
+ */
+CompanyGroup.virtual('groupType').set(function(groupType) {
+    this.group_type = groupType;
+}).get(function(){
+    return this.group_type;
+});
 
+/**
+ * methods:
+ */
 CompanyGroup.methods = {
     /**
      * 用户是否是这个队的成员

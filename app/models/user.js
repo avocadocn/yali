@@ -146,7 +146,38 @@ var UserSchema = new Schema({
     },
     last_comment_time: Date,
     commentCampaigns: [latestCommentCampaign],//参加了的讨论列表
-    unjoinedCommentCampaigns: [latestCommentCampaign] //未参加的讨论列表
+    unjoinedCommentCampaigns: [latestCommentCampaign], //未参加的讨论列表
+    score: {
+        // 积分总数
+        total: {
+            type: Number,
+            default: 0
+        },
+
+        // 参加的官方小队活动成功结束
+        officialCampaignSucceded: {
+            type: Number,
+            default: 0
+        },
+
+        // 参加官方小队
+        joinOfficialTeam: {
+            type: Number,
+            default: 0
+        },
+
+        // 退出官方小队
+        quitOfficialTeam: {
+            type: Number,
+            default: 0
+        },
+
+        // 上传照片到官方小队相册
+        uploadPhotoToOfficialTeam: {
+            type: Number,
+            default: 0
+        }
+    }
 });
 
 /**

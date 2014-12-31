@@ -4339,7 +4339,8 @@ input:focus:-ms-input-placeholder {
   float: left;
   padding-right: 20px;
 }
-.info_detail .invite-link {
+.info_detail .invite_link {
+  margin-top: 10px;
   height: 72px;
 }
 .info_detail_2 {
@@ -4664,6 +4665,9 @@ input.ng-invalid.ng-dirty {
 .dl_company_info .group_table td,
 .dl_company_info .group_table th {
   width: 50px;
+}
+.dl_company_info .invite_code {
+  text-align: left;
 }
 .popover {
   border-radius: 0;
