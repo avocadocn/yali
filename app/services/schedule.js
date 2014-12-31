@@ -200,12 +200,13 @@ var teamPoint = function(){
             participatorNum+=campaign.members.length;
             commentNum += campaign.comment_sum;
           });
+          value.count.total_campaign = campaignNum;
           value.score = {
-            'campaign' : campaignNum,
-            'album' : photoNum,
-            'comment' : commentNum,
+            'campaign' : campaignNum *10,
+            'album' : parseInt(photoNum/5),
+            'comment' : parseInt(commentNum / 20),
             'participator' : participatorNum,
-            'member' : memberNum,
+            'member' : memberNum * 10,
             'total' : campaignNum * 10 + parseInt(photoNum/5) + parseInt(commentNum / 20) + participatorNum + memberNum * 10
           }
           value.save(function(err){
@@ -311,6 +312,7 @@ exports.init = function(){
   var teamPointSchedule = schedule.scheduleJob(teamPointRule, function(){
       teamPoint();
   });
+  teamPoint();
   //自动完成已经结束的活动
   var finishCampaignRule = new schedule.RecurrenceRule();
   finishCampaignRule.minute = 0;
