@@ -2186,6 +2186,7 @@ exports.dealProvoke = function(req,res,next) {
           target: {
             tid: campaign.tid
           },
+          campaignId: campaign._id,
           msg: {
             title: '您的小队有新活动',
             body: '您有新活动: ' + campaign.theme,
@@ -2422,6 +2423,7 @@ exports.newCampaign = function(basicInfo, providerInfo, photoInfo, callback){
                       target: {
                         cid: campaign.cid
                       },
+                      campaignId: campaign._id,
                       msg: {
                         body: '您有新活动: ' + campaign.theme,
                         description: '您有新活动: ' + campaign.theme,
@@ -2436,6 +2438,7 @@ exports.newCampaign = function(basicInfo, providerInfo, photoInfo, callback){
                         target: {
                           tid: campaign.tid
                         },
+                        campaignId: campaign._id,
                         msg: {
                           title: '您的小队有新活动',
                           body: '您有新活动: ' + campaign.theme,
