@@ -48,7 +48,8 @@
     "view-helpers": "~0.1.4",
     "xss":"~0.1.12",
     "socket.io-client": "~1.2.1",
-    "jsonwebtoken": "~1.2.0"
+    "jsonwebtoken": "~1.2.0",
+    "request": "~2.51.0"
   },
   "devDependencies": {
     "gulp": "~3.8.10",

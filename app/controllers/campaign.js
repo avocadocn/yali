@@ -15,6 +15,7 @@ var mongoose = require('mongoose'),
   async = require('async'),
   photo_album_controller = require('./photoAlbum'),
   auth = require('../services/auth'),
+  pushService = require('../services/push.js'),
   push = require('../controllers/push'),
   message = require('../controllers/message'),
   cache = require('../services/cache/Cache'),
@@ -2180,7 +2181,24 @@ exports.dealProvoke = function(req,res,next) {
       });
       //若接受,则发动态、加积分
       if(status ===1){
-        push.campaign(campaignId);
+        pushService.push({
+          name: 'teamCampaign',
+          target: {
+            tid: campaign.tid
+          },
+          msg: {
+            title: '您的小队有新活动',
+            body: '您有新活动: ' + campaign.theme,
+            description: '您有新活动: ' + campaign.theme
+          }
+        }, function (err) {
+          if (err) {
+            console.log(err);
+            if (err.stack) {
+              console.log(err.stack);
+            }
+          }
+        });
         GroupMessage.findOne({campaign:campaign._id}).exec(function(err,groupMessage){
           groupMessage.message_type = 5;
           groupMessage.create_time = new Date();
@@ -2395,6 +2413,48 @@ exports.newCampaign = function(basicInfo, providerInfo, photoInfo, callback){
 
                   // 保存成功后更新缓存
                   updateTeamPageDateRecord(campaign);
+
+                  // push
+                  var pushData;
+                  if (campaign.campaign_type === 1) {
+                    pushData = {
+                      name: 'companyCampaign',
+                      target: {
+                        cid: campaign.cid
+                      },
+                      msg: {
+                        body: '您有新活动: ' + campaign.theme,
+                        description: '您有新活动: ' + campaign.theme,
+                        title: '您的公司有新活动'
+                      }
+                    };
+                  } else {
+                    // 不是公司活动且不是挑战
+                    if (campaign.confirm_status === true) {
+                      pushData = {
+                        name: 'teamCampaign',
+                        target: {
+                          tid: campaign.tid
+                        },
+                        msg: {
+                          title: '您的小队有新活动',
+                          body: '您有新活动: ' + campaign.theme,
+                          description: '您有新活动: ' + campaign.theme
+                        }
+                      }
+                    }
+                  }
+
+                  if (pushData) {
+                    pushService.push(pushData, function (err) {
+                      if (err) {
+                        console.log(err);
+                        if (err.stack) {
+                          console.log(err.stack);
+                        }
+                      }
+                    });
+                  }
 
                 }
 

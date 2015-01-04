@@ -21,7 +21,6 @@ var mongoose = require('mongoose'),
   meanConfig = require('../../config/config'),
   gm = require('gm'),
   fs = require('fs'),
-  push = require('../controllers/push'),
   async = require('async'),
   moment = require('moment'),
   message = require('../controllers/message'),
@@ -1647,7 +1646,6 @@ exports.sponsor = function(req, res, next) {
       return res.send({'result':0,'msg':data});
     }
     else{
-      push.campaign(data.campaign_id);
       res.send({
         'result': 1,
         'campaign_id': data.campaign_id

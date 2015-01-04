@@ -18,7 +18,6 @@ var mongoose = require('mongoose'),
   GroupMessage = mongoose.model('GroupMessage'),
   meanConfig = require('../../config/config'),
   path = require('path'),
-  push = require('../controllers/push'),
   auth = require('../services/auth'),
   photo_album_controller = require('./photoAlbum'),
   _ = require('lodash'),
@@ -230,7 +229,6 @@ exports.multiCampaignSponsor = function(req, res) {
       return res.send({'result':0,'msg':data});
     }
     else{
-      push.campaign(data.campaign_id);
       var groupMessage = new GroupMessage();
       groupMessage.message_type = 10;
       groupMessage.team = teams;
@@ -436,7 +434,6 @@ exports.sponsor = function(req, res, next) {
         return res.send({'result':0,'msg':data});
       }
       else{
-        push.campaign(data.campaign_id);
         req.department.team.photo_album_list.push(data.photo_album_id);
         req.department.team.save(function(err) {
           if (err) {

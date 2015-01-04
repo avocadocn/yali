@@ -27,7 +27,6 @@ var mongoose = require('mongoose'),
     model_helper = require('../helpers/model_helper'),
     schedule = require('../services/schedule'),
     message = require('../controllers/message'),
-    push = require('../controllers/push'),
     photo_album_controller = require('./photoAlbum'),
     campaign_controller = require('./campaign');
 
@@ -885,8 +884,6 @@ exports.sponsor = function (req, res, next) {
       return res.send({'result':0,'msg':err});
     }
     else {
-      //触发推送服务
-      push.campaign(result.campaign_id);
       if (!multi) {
         req.companyGroup.photo_album_list.push(result.photo_album_id);
         req.companyGroup.save(function (err) {
