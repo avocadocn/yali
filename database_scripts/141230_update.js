@@ -1,3 +1,4 @@
+
 // 2014-12-29 更新评论中的照片数据，添加上传信息
 
 var comments = db.comments.find();
@@ -20,9 +21,10 @@ comments.forEach(function (comment) {
 var photoAlbums = db.photoalbums.find();
 photoAlbums.forEach(function (photoAlbum) {
   photoAlbum.photos.forEach(function (photo) {
-    if (photo._id) {
-      var oriPhoto = db.photos.findOne({ _id: photo._id });
+    if (photo.uri) {
+      var oriPhoto = db.photos.findOne({ uri: photo.uri });
       if (oriPhoto) {
+        photo._id = photo._id;
         photo.width = oriPhoto.width;
         photo.height = oriPhoto.height;
         photo.upload_user = oriPhoto.upload_user;
@@ -31,6 +33,7 @@ photoAlbums.forEach(function (photoAlbum) {
   });
   db.photoalbums.save(photoAlbum);
 });
+
 
 //将官方小队增加poster属性
 db.companygroups.update({poster:{'$exists':false}},{$set:{poster:{role:'HR'}}},{multi:true})

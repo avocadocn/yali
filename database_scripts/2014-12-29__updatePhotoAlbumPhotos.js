@@ -3,9 +3,10 @@
 var photoAlbums = db.photoalbums.find();
 photoAlbums.forEach(function (photoAlbum) {
   photoAlbum.photos.forEach(function (photo) {
-    if (photo._id) {
-      var oriPhoto = db.photos.findOne({ _id: photo._id });
+    if (photo.uri) {
+      var oriPhoto = db.photos.findOne({ uri: photo.uri });
       if (oriPhoto) {
+        photo._id = photo._id;
         photo.width = oriPhoto.width;
         photo.height = oriPhoto.height;
         photo.upload_user = oriPhoto.upload_user;
