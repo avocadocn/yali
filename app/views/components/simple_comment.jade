@@ -26,7 +26,7 @@
           .pull-right.operator
             report-button.text.dl_mouse_hover(ng-if="comment.status=='active' && !comment.delete_permission" host-id="{{comment._id}}" host-type="comment" host-content="comment")
             //- a.text.dl_mouse_hover( ng-click="getReport(comment)") 举报
-            a.delete.text.dl_mouse_hover(ng-if="comment.delete_permission" ng-click="deleteComment(comment)") 删除
+            a.delete.text.dl_mouse_hover(ng-if="comment.delete_permission" ng-click="deleteComment($index)") 删除
         //-     a.reply.text(ng-click="toggleComment(comment)")
         //-       span.pull-right {{comment.reply_count || 0}}条回复
         //-       span.dl_icons.icon_reply_blue

@@ -409,7 +409,9 @@ tabViewUser.controller('SponsorController',['$http','$scope','$rootScope','Campa
     var markerOption = {
       map: $scope.locationmap,
       position: nowPoint,
-      draggable: true
+      draggable: true,
+      cursor:'move',  //鼠标悬停点标记时的鼠标样式
+      raiseOnDrag:true
     };
     var mar = new AMap.Marker(markerOption);
     var changePoint = function (e) {
