@@ -34,6 +34,7 @@ var mongoose = require('mongoose'),
   logController =require('../controllers/log');
 
 var mail = require('../services/mail');
+var sendcloud = require('../services/sendcloud');
 var webpower = require('../services/webpower');
 var encrypt = require('../middlewares/encrypt');
 /**
@@ -76,6 +77,12 @@ exports.forgetPwd = function(req, res) {
           });
         } else if (config.smtp === '163') {
           mail.sendCompanyResetPwdMail(req.body.email, company._id.toString(), req.headers.host);
+          res.render('company/forgetPwd', {
+            title: '忘记密码',
+            success: '1'
+          });
+        } else if (config.smtp === 'sendcloud') {
+          sendcloud.sendCompanyResetPwdMail(req.body.email, company._id.toString(), req.headers.host);
           res.render('company/forgetPwd', {
             title: '忘记密码',
             success: '1'

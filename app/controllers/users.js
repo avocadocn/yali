@@ -29,6 +29,7 @@ var validator = require('validator'),
 var encrypt = require('../middlewares/encrypt'),
   department = require('../controllers/department'),
   mail = require('../services/mail'),
+  sendcloud = require('../services/sendcloud'),
   webpower = require('../services/webpower'),
   schedule = require('../services/schedule'),
   moment = require('moment'),
@@ -114,6 +115,12 @@ exports.forgetPwd = function(req, res){
           sendByWebpower();
         } else if (config.smtp === '163') {
           mail.sendStaffResetPwdMail(user.email, user._id.toString(), req.headers.host);
+          res.render('users/forgetPwd', {
+            title: '忘记密码',
+            success:'1'
+          });
+        } else if (config.smtp === 'sendcloud') {
+          sendcloud.sendStaffResetPwdMail(user.email, user._id.toString(), req.headers.host);
           res.render('users/forgetPwd', {
             title: '忘记密码',
             success:'1'
@@ -410,6 +417,11 @@ function userOperate(cid, key, res, req, index) {
                           mail.sendNewStaffActiveMail(email, user._id.toString(), company._id.toString(), req.headers.host);
                         else
                           mail.sendStaffActiveMail(email, user._id.toString(), company._id.toString(), req.headers.host);
+                      } else if (config.smtp === 'sendcloud') {
+                        if(!key)
+                          sendcloud.sendNewStaffActiveMail(email, user._id.toString(), company._id.toString(), req.headers.host);
+                        else
+                          sendcloud.sendStaffActiveMail(email, user._id.toString(), company._id.toString(), req.headers.host);
                       }
                     });
 
@@ -491,6 +503,11 @@ function userOperate(cid, key, res, req, index) {
                     mail.sendNewStaffActiveMail(email, user._id.toString(), company._id.toString(), req.headers.host);
                   else
                     mail.sendStaffActiveMail(email, user._id.toString(), company._id.toString(), req.headers.host);
+                } else if (config.smtp === 'sendcloud') {
+                  if(!key)
+                    sendcloud.sendNewStaffActiveMail(email, user._id.toString(), company._id.toString(), req.headers.host);
+                  else
+                    sendcloud.sendStaffActiveMail(email, user._id.toString(), company._id.toString(), req.headers.host);
                 }
               });
               delete req.session.key;
