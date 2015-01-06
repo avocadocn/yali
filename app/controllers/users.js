@@ -644,6 +644,7 @@ exports.lastStepActive = function(req, res){
   User.findOne({_id: uid}).populate('cid').exec(function(err, user) {
     if(err) {
       console.log(err);
+      console.log(err.stack);
       res.render('users/message', message.dbError);
     }
     else if(user) {
@@ -651,10 +652,11 @@ exports.lastStepActive = function(req, res){
         user.invite_active = true;
         //员工激活后,要把他的具体信息加入部门
         //此处可以做个api
-        if(user.department != null && user.department != undefined){
+        if(user.department != null && user.department != undefined && user.department.length > 1){
           var callback = function(err, data) {
             if (err) {
               console.log(err);
+              console.log(err.stack);
             }
           }
           var member = {
@@ -668,19 +670,21 @@ exports.lastStepActive = function(req, res){
         user.save(function(err){
           if(err){
             console.log(err);
+            console.log(err.stack);
             return res.send(500,{'msg':'user save err.'});
           }
           else{
             //公司人员增加
             Company.update({'_id':user.cid._id},{'$inc':{'info.membernumber':1}},function(err,company){
-              if(err || !company){
+              if(err){
                 console.log(err);
+                console.log(err.stack);
               }
             });
+            res.render('signup/setProfile', {
+              title: '激活成功',
+            });
           }
-        });
-        res.render('signup/setProfile', {
-          title: '激活成功',
         });
       }
       else{
