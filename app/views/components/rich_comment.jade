@@ -24,7 +24,7 @@
       .comment_content_panel
         .comment_content
           a.user_name(href="/users/home/{{comment.poster._id}}" ng-cloak) {{comment.poster.nickname}}
-          p.text(ng-cloak) {{comment.content}}
+          p.text(ng-cloak ng-bind-html="comment.content | emoji | unsafe")
           image-box(images="comment.photos")
         .comment_footer.clearfix.dl_mouse_hover_block
           span.text {{comment.create_date | date:'yyyy-MM-dd HH:mm' | dateView}}
