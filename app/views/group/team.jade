@@ -74,7 +74,7 @@ block contentExt
                 span.dl_icons.info_edit_blue.edit(ng-if="allow.editTeam" src="/img/pencil_diagonal_outline_symbol_on_a_line.png" data-toggle="modal" data-target="#homeCourtModal" ng-cloak title="修改主场")
               .home_court(ng-repeat="homeCourt in team.homeCourts" ng-if="courtIndex===$index")
                 p(ng-cloak ng-if="homeCourt.name&&homeCourt.loc.coordinates.length!==2") {{homeCourt.name}}
-                a(ng-cloak ng-if="homeCourt.loc.coordinates.length===2" ng-href="http://mo.amap.com/?q={{homeCourt.loc.coordinates[1]}},{{homeCourt.loc.coordinates[0]}}&name={{homeCourt.name}}" target="_blank")
+                a(ng-cloak ng-if="homeCourt.loc.coordinates.length===2" ng-href="http://m.amap.com/navi/?dest={{homeCourt.loc.coordinates[0]}},{{homeCourt.loc.coordinates[1]}}&destName={{homeCourt.name}}&hideRouteIcon=1&key=077eff0a89079f77e2893d6735c2f044" target="_blank")
                   img.map_size(ng-src="http://restapi.amap.com/v3/staticmap?location={{homeCourt.loc.coordinates[0]}},{{homeCourt.loc.coordinates[1]}}&zoom=15&size=420*230&markers=mid,,A:{{homeCourt.loc.coordinates[0]}},{{homeCourt.loc.coordinates[1]}}&labels={{homeCourt.name}},2,0,12,0xffffff,0x3498db:{{homeCourt.loc.coordinates[0]}},{{homeCourt.loc.coordinates[1]}}&key=077eff0a89079f77e2893d6735c2f044")
                 img.map_size(ng-if="homeCourt.defaultImg" ng-src="{{homeCourt.defaultImg}}/420/230")
 
