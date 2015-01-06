@@ -6,7 +6,7 @@
         label.img_selector(for="photos{{$id}}")
           i.upload_img.fa.fa-picture-o
           input.hidden(id="photos{{$id}}" accept="image/*" type="file" nv-file-select="" uploader="uploader" multiple)
-        button.publish(ng-click="publish(new_comment.text)" ng-disabled="comment_form{{$id}}.$invalid") 评论
+        button.publish(ng-click="publish(new_comment.text,comment_form{{$id}})" ng-disabled="comment_form{{$id}}.$invalid") 评论
       span.remind(ng-if="uploader.queue.length > 0") 已选择的图片:&nbsp;
       .preview_box.clearfix(ng-show="uploader.isHTML5")
         .preview_img_wrap(ng-repeat="item in uploader.queue")
@@ -19,7 +19,7 @@
       .comment_content_panel
         .comment_content
           p.user_name {{comment.poster.nickname}}
-          p.text(ng-cloak) {{comment.content}}
+          p.text(ng-cloak ng-bind-html="comment.content | emoji | unsafe")
           image-box(images="comment.photos")
         .comment_footer.clearfix
           span.text {{comment.create_date | date:'yyyy-MM-dd HH:mm' | dateView}}
