@@ -2,11 +2,17 @@
   .component_body
     form.rich_comment_form(name="comment_form{{$id}}" ng-if="allowPublish" novalidate)
       .comment_control
-        input.content(name="content" ng-model="new_comment.text" placeholder="{{currentPlaceholder.comment}}" ng-focus="currentPlaceholder.comment=''" ng-blur="currentPlaceholder.comment=originPlaceholder" maxlength=140 required)
-        label.img_selector(for="photos{{$id}}")
+        button.emotion_button.emoji.emoji_yum(ng-click="showEmotions()")
+        input.content(name="content" ng-model="new_comment.text" placeholder="{{currentPlaceholder.comment}}" ng-focus="hideEmotions();currentPlaceholder.comment=''" ng-blur="currentPlaceholder.comment=originPlaceholder" maxlength=140 required)
+        label.img_selector(for="photos{{$id}}" ng-click="hideEmotions()")
           i.upload_img.fa.fa-picture-o
           input.hidden(id="photos{{$id}}" accept="image/*" type="file" nv-file-select="" uploader="uploader" multiple)
-        button.publish(ng-click="publish(new_comment.text,comment_form{{$id}})" ng-disabled="comment_form{{$id}}.$invalid") 评论
+        button.publish(ng-click="hideEmotions();publish(new_comment.text,comment_form{{$id}})" ng-disabled="comment_form{{$id}}.$invalid") 评论
+      .emotion_box(ng-if="isShowEmotions")
+        .box
+          .triangle_up
+          .emoji_box(ng-repeat="emotion in emoji" ng-click="addEmotion(emotion)")
+            i(class="emoji {{'emoji_'+emotion}}")
       span.remind(ng-if="uploader.queue.length > 0") 已选择的图片:&nbsp;
       .preview_box.clearfix(ng-show="uploader.isHTML5")
         .preview_img_wrap(ng-repeat="item in uploader.queue")

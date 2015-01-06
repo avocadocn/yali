@@ -7,11 +7,17 @@
       .comment_control
         .user_photo
           img(ng-if="gotComponentData" ng-src="{{userPhoto}}/30/30")
-        input.content(name="content" ng-model="new_comment.text" placeholder="{{currentPlaceholder.comment}}" ng-focus="currentPlaceholder.comment=''" ng-blur="currentPlaceholder.comment=originPlaceholder"  maxlength=140 required)
-        label.img_selector(for="photos")
+        button.emotion_button.emoji.emoji_yum(ng-click="showEmotions()")
+        input.content(name="content" ng-model="new_comment.text" placeholder="{{currentPlaceholder.comment}}" ng-focus="currentPlaceholder.comment='';hideEmotions()" ng-blur="currentPlaceholder.comment=originPlaceholder"  maxlength=140 required)
+        label.img_selector(for="photos" ng-click="hideEmotions()")
           i.upload_img.fa.fa-picture-o
           input.hidden#photos(accept="image/*" type="file" nv-file-select="" uploader="uploader" multiple)
-        button.publish(ng-click="publish(new_comment.text,comment_form)" ng-disabled="comment_form.$invalid") 发言
+        button.publish(ng-click="hideEmotions();publish(new_comment.text,comment_form)" ng-disabled="comment_form.$invalid") 发言
+      .emotion_box(ng-if="isShowEmotions")
+        .box
+          .triangle_up
+          .emoji_box(ng-repeat="emotion in emoji" ng-click="addEmotion(emotion)")
+            i(class="emoji {{'emoji_'+emotion}}")
       p.remind(ng-if="uploader.queue.length > 0") 已选择的图片:&nbsp;
       .preview_box.clearfix(ng-show="uploader.isHTML5")
         .preview_img_wrap(ng-repeat="item in uploader.queue")

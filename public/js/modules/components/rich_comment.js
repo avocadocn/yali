@@ -360,40 +360,40 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
         }
       };
 
-      $scope.setReplyTo = function (comment, to, nickname) {
-        if ($scope.last_reply_comment != comment) {
-          $scope.last_reply_comment.replying = false;
-          $scope.last_reply_comment = comment;
-        }
-        if (!comment.replying) {
-          comment.replying = true;
-        }
-        $scope.now_reply_to = {
-          _id: to,
-          nickname: nickname
-        };
-      };
-      $scope.reply = function (comment, form) {
-        if (!comment.new_reply || comment.new_reply === '') return;
-        Comment.reply(comment._id, $scope.now_reply_to._id, comment.new_reply, function (err, reply) {
-          if (err) {
-            // TO DO
-          } else {
-            if (!comment.replies) {
-              comment.replies = [];
-            }
-            comment.replies.push(reply);
-            comment.reply_count++;
-            comment.new_reply = "";
-            form.$setPristine();
-            if($scope.afterRender){
-              $timeout(function () {
-                $scope.afterRender();
-              });
-            }
-          }
-        });
-      };
+      // $scope.setReplyTo = function (comment, to, nickname) {
+      //   if ($scope.last_reply_comment != comment) {
+      //     $scope.last_reply_comment.replying = false;
+      //     $scope.last_reply_comment = comment;
+      //   }
+      //   if (!comment.replying) {
+      //     comment.replying = true;
+      //   }
+      //   $scope.now_reply_to = {
+      //     _id: to,
+      //     nickname: nickname
+      //   };
+      // };
+      // $scope.reply = function (comment, form) {
+      //   if (!comment.new_reply || comment.new_reply === '') return;
+      //   Comment.reply(comment._id, $scope.now_reply_to._id, comment.new_reply, function (err, reply) {
+      //     if (err) {
+      //       // TO DO
+      //     } else {
+      //       if (!comment.replies) {
+      //         comment.replies = [];
+      //       }
+      //       comment.replies.push(reply);
+      //       comment.reply_count++;
+      //       comment.new_reply = "";
+      //       form.$setPristine();
+      //       if($scope.afterRender){
+      //         $timeout(function () {
+      //           $scope.afterRender();
+      //         });
+      //       }
+      //     }
+      //   });
+      // };
 
 
       $scope.deleteComment = function (index) {
@@ -420,26 +420,26 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
         });
       };
 
-      $scope.removeReply = function (comment, index) {
-        alertify.confirm('确认要删除该回复吗？', function (e) {
-          if (e) {
-            var reply = comment.replies[index];
-            Comment.remove(reply._id, function (err) {
-              if (err) {
-                alertify.alert('删除失败，请重试。');
-              } else {
-                comment.replies.splice(index, 1);
-                comment.reply_count--;
-                if($scope.afterRender){
-                  $timeout(function () {
-                    $scope.afterRender();
-                  });
-                }
-              }
-            });
-          }
-        });
-      };
+      // $scope.removeReply = function (comment, index) {
+      //   alertify.confirm('确认要删除该回复吗？', function (e) {
+      //     if (e) {
+      //       var reply = comment.replies[index];
+      //       Comment.remove(reply._id, function (err) {
+      //         if (err) {
+      //           alertify.alert('删除失败，请重试。');
+      //         } else {
+      //           comment.replies.splice(index, 1);
+      //           comment.reply_count--;
+      //           if($scope.afterRender){
+      //             $timeout(function () {
+      //               $scope.afterRender();
+      //             });
+      //           }
+      //         }
+      //       });
+      //     }
+      //   });
+      // };
 
       $scope.nextPage = function () {
         Comment.get('campaign', cbox.host_id, function (err, comments, nextStartDate) {
@@ -494,6 +494,67 @@ angular.module('donler.components.richComment', ['angularFileUpload'])
       $scope.currentPlaceholder = {
         comment: $scope.originPlaceholder,
         reply: $scope.originPlaceholder
+      };
+
+      //-emotions
+
+      $scope.isShowEmotions = false;
+      $scope.showEmotions = function() {
+        $scope.isShowEmotions = true;
+      };
+      $scope.hideEmotions = function() {
+        $scope.isShowEmotions = false;
+      };
+
+      $scope.emoji = ["bowtie", "smile", "laughing", "blush", "smiley", "relaxed",
+        "smirk", "heart_eyes", "kissing_heart", "kissing_closed_eyes", "flushed",
+        "relieved", "satisfied", "grin", "wink", "stuck_out_tongue_winking_eye",
+        "stuck_out_tongue_closed_eyes", "grinning", "kissing",
+        "stuck_out_tongue", "sleeping", "worried",
+        "frowning", "anguished", "open_mouth", "grimacing", "confused", "hushed",
+        "expressionless", "unamused", "sweat_smile", "sweat",
+        "disappointed_relieved", "weary", "pensive", "disappointed", "confounded",
+        "fearful", "cold_sweat", "persevere", "cry", "sob", "joy", "astonished",
+        "scream", "neckbeard", "tired_face", "angry", "rage", "triumph", "sleepy",
+        "yum", "mask", "sunglasses", "dizzy_face", "smiling_imp",
+        "neutral_face", "no_mouth", "innocent", "alien", "heart", "broken_heart",
+        "heartbeat", "heartpulse", "two_hearts", "revolving_hearts", "cupid",
+        "sparkling_heart", "sparkles", "star", "star2", "dizzy", "boom",
+        "collision", "anger", "exclamation", "question", "grey_exclamation",
+        "grey_question", "zzz", "dash", "sweat_drops", "notes", "musical_note",
+        "fire", "hankey", "+1", "-1", 
+        "ok_hand", "punch", "fist", "v", "wave", "hand",
+        "open_hands", "point_up", "point_down", "point_left", "point_right",
+        "raised_hands", "pray", "point_up_2", "clap", "muscle", "metal", "fu",
+        "walking", "runner", "running", "couple", "family", "two_men_holding_hands",
+        "two_women_holding_hands", "dancer", "dancers", "ok_woman", "no_good",
+        "information_desk_person", "raising_hand", "bride_with_veil",
+        "person_with_pouting_face", "person_frowning", "bow", "couplekiss",
+        "couple_with_heart", "massage", "haircut", "nail_care", "boy", "girl",
+        "woman", "man", "baby", "older_woman", "older_man",
+        "person_with_blond_hair", "man_with_gua_pi_mao", "man_with_turban",
+        "construction_worker", "cop", "angel", "princess", "smiley_cat",
+        "smile_cat", "heart_eyes_cat", "kissing_cat", "smirk_cat", "scream_cat",
+        "crying_cat_face", "joy_cat", "pouting_cat", "japanese_ogre",
+        "japanese_goblin", "see_no_evil", "hear_no_evil", "speak_no_evil",
+        "guardsman", "skull", "feet", "lips", "kiss", "droplet", "ear", "eyes",
+        "nose", "tongue", "love_letter", "bust_in_silhouette",
+        "busts_in_silhouette", "speech_balloon", "thought_balloon", "feelsgood",
+        "finnadie", "goberserk", "godmode", "hurtrealbad", "rage1", "rage2",
+        "rage3", "rage4", "suspect", "trollface", "sunny", "umbrella", "cloud",
+        "snowflake", "snowman", "zap", "cyclone", "foggy", "ocean", "cat", "dog",
+        "mouse", "hamster", "rabbit", "wolf", "frog", "tiger", "koala", "bear",
+        "pig", "pig_nose", "cow", "boar", "monkey_face", "monkey", "horse",
+        "racehorse", "camel", "sheep", "elephant", "panda_face", "snake", "bird",
+        "baby_chick", "hatched_chick", "hatching_chick", "chicken", "penguin",
+        "turtle", "bug", "honeybee", "ant", "beetle", "snail", "octopus",
+        "tropical_fish", "fish", "whale", "whale2", "dolphin", "cow2", "ram", "rat",
+        "water_buffalo", "tiger2", "rabbit2", "dragon", "goat"
+      ];
+
+      $scope.addEmotion = function(emotion) {
+        // console.log(emotion);
+        $scope.new_comment.text += ':'+ emotion +':';
       };
 
     }])

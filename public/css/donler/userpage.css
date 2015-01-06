@@ -619,8 +619,6 @@
   width: 100%;
   text-align: right;
   float: right;
-}
-.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .comments a.comment_num:hover {
   background-color: #eceded;
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .comments a.comment_num .icon_reply {

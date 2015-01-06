@@ -1349,11 +1349,10 @@
   border-width: 1px;
   border-style: solid;
   border-color: #d6d6d6 #eee #fbfbfb #eee;
-  margin-left: 10px;
   flex: 1;
 }
 .rich_comment .component_body .rich_comment_form .comment_control .img_selector {
-  margin-left: 10px;
+  margin-left: 5px;
   width: 30px;
   height: 30px;
   cursor: pointer;
@@ -1378,6 +1377,35 @@
 }
 .rich_comment .component_body .rich_comment_form .comment_control .publish[disabled] {
   opacity: 0.65;
+}
+.rich_comment .component_body .rich_comment_form .comment_control .emotion_button {
+  margin: 4px;
+}
+.rich_comment .component_body .rich_comment_form .emotion_box {
+  position: relative;
+}
+.rich_comment .component_body .rich_comment_form .emotion_box .box {
+  width: 540px;
+  margin-left: 27px;
+  height: 200px;
+  overflow-y: scroll;
+  box-shadow: 0 0 2px #ccc;
+  margin-top: 7px;
+}
+.rich_comment .component_body .rich_comment_form .emotion_box .box .triangle_up {
+  position: absolute;
+  height: 0px;
+  width: 0px;
+  top: -20px;
+  left: 33px;
+  border-width: 10px;
+  border-style: solid;
+  border-color: transparent transparent #eee transparent;
+}
+.rich_comment .component_body .rich_comment_form .emotion_box .box .emoji_box {
+  padding: 6px;
+  float: left;
+  border: 1px solid #eee;
 }
 .rich_comment .component_body .rich_comment_form .remind {
   margin: 0;
@@ -1524,11 +1552,11 @@
 .rich_comment .component_body .pager li>a {
   border-radius: 0;
 }
-.simple_comment .component_body .comment_more a {
+.rich_comment.simple_comment .component_body .comment_more a {
   color: #3498db;
   text-align: center;
 }
-.simple_comment .component_body .rich_comment_form {
+.rich_comment.simple_comment .component_body .rich_comment_form {
   float: left;
   width: 100%;
   padding-top: 10px;
@@ -1536,63 +1564,70 @@
   border-bottom: none;
   border-top: 1px solid #eee;
 }
-.simple_comment .component_body .rich_comment_form .comment_control .content {
+.rich_comment.simple_comment .component_body .rich_comment_form .comment_control .content {
   margin: 0;
   background-color: #fff;
 }
-.simple_comment .component_body .rich_comment_form .comment_control .img_selector {
+.rich_comment.simple_comment .component_body .rich_comment_form .comment_control .img_selector {
   margin: 0 7px;
 }
-.simple_comment .component_body .rich_comment_form .comment_control .publish {
+.rich_comment.simple_comment .component_body .rich_comment_form .comment_control .publish {
   margin: 0;
   background-color: #3ca2e0;
   width: 50px;
 }
-.simple_comment .component_body .rich_comment_form .remind {
+.rich_comment.simple_comment .component_body .rich_comment_form .remind {
   margin-left: 0;
 }
-.simple_comment .component_body .rich_comment_form .preview_box {
+.rich_comment.simple_comment .component_body .rich_comment_form .preview_box {
   padding-left: 0;
 }
-.simple_comment .component_body .comment {
+.rich_comment.simple_comment .component_body .rich_comment_form .emotion_box .box {
+  margin-left: 0;
+  width: 365px;
+}
+.rich_comment.simple_comment .component_body .rich_comment_form .emotion_box .box .triangle_up {
+  left: 4px;
+}
+.rich_comment.simple_comment .component_body .comment {
   padding: 10px 20px;
   clear: both;
   border-bottom: none;
   border-top: 1px solid #eee;
 }
-.simple_comment .component_body .comment .comment_user_info {
+.rich_comment.simple_comment .component_body .comment .comment_user_info {
   margin-right: 10px;
   width: 30px;
 }
-.simple_comment .component_body .comment .comment_content_panel p {
+.rich_comment.simple_comment .component_body .comment .comment_content_panel p {
   margin: 0;
 }
-.simple_comment .component_body .comment .comment_content_panel .comment_content .user_name {
+.rich_comment.simple_comment .component_body .comment .comment_content_panel .comment_content .user_name {
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   text-align: left;
 }
-.simple_comment .component_body .comment .comment_content_panel .comment_content .image_box .thumb {
+.rich_comment.simple_comment .component_body .comment .comment_content_panel .comment_content .image_box .thumb {
   width: 200px;
 }
-.simple_comment .component_body .comment .comment_content_panel .comment_content .image_box .thumb .multi {
+.rich_comment.simple_comment .component_body .comment .comment_content_panel .comment_content .image_box .thumb .multi {
   width: 60px;
   height: 60px;
 }
-.simple_comment .component_body .comment .comment_content_panel .replies {
+.rich_comment.simple_comment .component_body .comment .comment_content_panel .replies {
   background-color: #f2f2f2;
   margin-top: 0;
   padding: 5px;
 }
-.simple_comment .component_body .comment .comment_content_panel .replies .reply_form {
+.rich_comment.simple_comment .component_body .comment .comment_content_panel .replies .reply_form {
   margin-bottom: 0;
 }
-.simple_comment .component_body .comment .comment_content_panel .replies .reply_form .dl_reply {
+.rich_comment.simple_comment .component_body .comment .comment_content_panel .replies .reply_form .dl_reply {
   width: 43px;
 }
-.simple_comment .component_body .comment .comment_content_panel .replies .reply {
+.rich_comment.simple_comment .component_body .comment .comment_content_panel .replies .reply {
   border-top: 1px solid #fbfbfb;
   line-height: 20px;
   margin: 10px 0;
@@ -2370,11 +2405,10 @@
   border-width: 1px;
   border-style: solid;
   border-color: #d6d6d6 #eee #fbfbfb #eee;
-  margin-left: 10px;
   flex: 1;
 }
 .rich_comment .component_body .rich_comment_form .comment_control .img_selector {
-  margin-left: 10px;
+  margin-left: 5px;
   width: 30px;
   height: 30px;
   cursor: pointer;
@@ -2399,6 +2433,35 @@
 }
 .rich_comment .component_body .rich_comment_form .comment_control .publish[disabled] {
   opacity: 0.65;
+}
+.rich_comment .component_body .rich_comment_form .comment_control .emotion_button {
+  margin: 4px;
+}
+.rich_comment .component_body .rich_comment_form .emotion_box {
+  position: relative;
+}
+.rich_comment .component_body .rich_comment_form .emotion_box .box {
+  width: 540px;
+  margin-left: 27px;
+  height: 200px;
+  overflow-y: scroll;
+  box-shadow: 0 0 2px #ccc;
+  margin-top: 7px;
+}
+.rich_comment .component_body .rich_comment_form .emotion_box .box .triangle_up {
+  position: absolute;
+  height: 0px;
+  width: 0px;
+  top: -20px;
+  left: 33px;
+  border-width: 10px;
+  border-style: solid;
+  border-color: transparent transparent #eee transparent;
+}
+.rich_comment .component_body .rich_comment_form .emotion_box .box .emoji_box {
+  padding: 6px;
+  float: left;
+  border: 1px solid #eee;
 }
 .rich_comment .component_body .rich_comment_form .remind {
   margin: 0;
@@ -9528,8 +9591,6 @@ Timeline UI Base
   width: 100%;
   text-align: right;
   float: right;
-}
-.user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .comments a.comment_num:hover {
   background-color: #eceded;
 }
 .user_page .dl_container .main .campaigns_container .user_campaigns_container .campaign .comments a.comment_num .icon_reply {

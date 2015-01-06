@@ -38,10 +38,9 @@ input()
           height 30px
         .content
           input()
-          margin-left 10px
           flex 1
         .img_selector
-          margin-left 10px
+          margin-left 5px
           width 30px
           height 30px
           cursor pointer
@@ -63,7 +62,30 @@ input()
           line-height 30px
           &[disabled]
             opacity .65
-
+        .emotion_button
+          margin 4px
+      .emotion_box
+        position relative
+        .box
+          width 540px
+          margin-left 27px
+          height 200px
+          overflow-y scroll
+          box-shadow 0 0 2px #ccc
+          margin-top 7px
+          .triangle_up
+            position absolute
+            height 0px
+            width 0px
+            top -20px
+            left 33px
+            border-width 10px
+            border-style solid
+            border-color transparent transparent #eee transparent
+          .emoji_box
+            padding 6px
+            float left
+            border 1px solid #eee
       .remind
         margin 0
         margin-left 40px
@@ -171,7 +193,7 @@ input()
         border-radius 0
 
 
-.simple_comment
+.rich_comment.simple_comment
   .component_body
     .comment_more
       a
@@ -198,6 +220,12 @@ input()
         margin-left 0
       .preview_box
         padding-left 0
+      .emotion_box
+        .box
+          margin-left 0
+          width 365px
+          .triangle_up
+            left 4px
 
     .comment
       padding 10px 20px
