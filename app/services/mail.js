@@ -34,154 +34,170 @@ exports.sendCompanyActiveMail = function (who, name, id, host) {
   var from = '动梨<service@donler.com>';
   var to = who;
   var subject = name + ' 动梨账号激活';
-  var content = '<p>我们收到您在动梨的申请信息，请点击下面的链接来激活帐户：</p>' +
-    '<a style="text-decoration: none; word-break: break-all;" href="http://' + host + '/company/validate?key=' + encrypt.encrypt(id,config.SECRET) + '&id=' + id + '">激活账号</a>';
+  var description = '我们收到您在动梨的申请信息，请点击下面的链接来激活帐户：';
+  var link = 'http://' + host + '/company/validate?key=' + encrypt.encrypt(id,config.SECRET) + '&id=' + id;
 
-    fs.readFile(rootConfig.root+'/app/views/partials/mailTemplate.jade', 'utf8', function (err, data) {
-        if (err) throw err;
-        var fn = jade.compile(data);
-        var html = fn({'title':'注册激活','host':siteProtocol+host,'who':who,'content':content});
-        sendMail({
-          from: from,
-          to: to,
-          subject: subject,
-          html: html
-        });
+  fs.readFile(rootConfig.root+'/app/views/partials/mailTemplate.jade', 'utf8', function (err, data) {
+    if (err) {
+      console.log(err);
+      console.log(err.stack);
+      return;
+    }
+    var fn = jade.compile(data);
+    var html = fn({
+      'title': '注册激活',
+      'host': siteProtocol + host,
+      'who': who,
+      'description': description,
+      'link': link
     });
+    sendMail({
+      from: from,
+      to: to,
+      subject: subject,
+      html: html
+    });
+  });
 };
 
 exports.sendStaffActiveMail = function(who, uid, cid, host) {
   var from = '动梨<service@donler.com>';
   var to = who;
   var subject = '动梨账号激活';
-  var content = '<p>我们收到您在动梨的申请信息，请点击下面的链接来激活帐户：</p>' +
-    '<a style="text-decoration: none; word-break: break-all;" href="http://' + host + '/users/setProfile?key=' + encrypt.encrypt(uid, config.SECRET) +
-    '&uid=' + uid + '&cid=' + cid + '">激活账号</a>';
+  var description = '我们收到您在动梨的申请信息，请点击下面的链接来激活帐户：';
+  var link = 'http://' + host + '/users/setProfile?key=' + encrypt.encrypt(uid, config.SECRET) + '&uid=' + uid + '&cid=' + cid;
 
-    fs.readFile(rootConfig.root+'/app/views/partials/mailTemplate.jade', 'utf8', function (err, data) {
-        if (err) throw err;
-        var fn = jade.compile(data);
-        var html = fn({'title':'注册激活','host':siteProtocol+host,'who':who,'content':content});
-        sendMail({
-          from: from,
-          to: to,
-          subject: subject,
-          html: html
-        },{
-          type:'user',
-          _id:uid,
-          name:null,
-          email:who
-        },'USER_CREATE_EMAIL_SEND_ERROR');
+  fs.readFile(rootConfig.root+'/app/views/partials/mailTemplate.jade', 'utf8', function (err, data) {
+    if (err) {
+      console.log(err);
+      console.log(err.stack);
+      return;
+    }
+    var fn = jade.compile(data);
+    var html = fn({
+      'title':'注册激活',
+      'host':siteProtocol + host,
+      'who':who,
+      'description': description,
+      'link': link
     });
+    sendMail({
+      from: from,
+      to: to,
+      subject: subject,
+      html: html
+    },{
+      type:'user',
+      _id:uid,
+      name:null,
+      email:who
+    },'USER_CREATE_EMAIL_SEND_ERROR');
+  });
 };
 
 exports.sendNewStaffActiveMail = function(user_email, uid , cid ,host){
   var from = '动梨<service@donler.com>';
   var to = user_email;
   var subject = '动梨账号激活';
-  var content = '<p>我们收到您在动梨的申请信息，请点击下面的链接来激活帐户：</p>' +
-    '<a style="text-decoration: none; word-break: break-all;" href="http://' + host + '/users/mailActive?key=' + encrypt.encrypt(uid, config.SECRET) +
-    '&uid=' + uid + '&cid=' + cid + '">激活账号</a>';
+  var description = '我们收到您在动梨的申请信息，请点击下面的链接来激活帐户：';
+  var link = 'http://' + host + '/users/mailActive?key=' + encrypt.encrypt(uid, config.SECRET) + '&uid=' + uid + '&cid=' + cid;
 
-    fs.readFile(rootConfig.root+'/app/views/partials/mailTemplate.jade', 'utf8', function (err, data) {
-        if (err) throw err;
-        var fn = jade.compile(data);
-        var html = fn({'title':'注册激活','host':siteProtocol+host,'who':user_email,'content':content});
-        sendMail({
-          from: from,
-          to: to,
-          subject: subject,
-          html: html
-        },{
-          type:'user',
-          _id:uid,
-          name:null,
-          email:user_email
-        },'USER_CREATE_EMAIL_SEND_ERROR');
+  fs.readFile(rootConfig.root+'/app/views/partials/mailTemplate.jade', 'utf8', function (err, data) {
+    if (err) {
+      console.log(err);
+      console.log(err.stack);
+      return;
+    }
+    var fn = jade.compile(data);
+    var html = fn({
+      'title': '注册激活',
+      'host': siteProtocol + host,
+      'who': user_email,
+      'description': description,
+      'link': link
     });
+    sendMail({
+      from: from,
+      to: to,
+      subject: subject,
+      html: html
+    },{
+      type:'user',
+      _id:uid,
+      name:null,
+      email:user_email
+    },'USER_CREATE_EMAIL_SEND_ERROR');
+  });
 };
 
 exports.sendStaffResetPwdMail = function(who, uid, host) {
   var from = '动梨<service@donler.com>';
   var to = who;
   var subject = '动梨密码重置';
-  var content = '<p>我们收到您在动梨的密码重置申请信息，请点击下面的链接来重置密码（30分钟内有效）：</p>' +
-    '<a style="text-decoration: none; word-break: break-all;" href="http://' + host + '/users/resetPwd?key=' + encrypt.encrypt(uid, config.SECRET) +
-    '&uid=' + uid +'&time='+encrypt.encrypt(new Date().toString(), config.SECRET)+
-    '">重置密码</a>';
+  var description = '我们收到您在动梨的密码重置申请信息，请点击下面的链接来重置密码（30分钟内有效）：';
+  var link = 'http://' + host + '/users/resetPwd?key=' + encrypt.encrypt(uid, config.SECRET) + '&uid=' + uid +'&time='+encrypt.encrypt(new Date().toString(), config.SECRET);
 
-    fs.readFile(rootConfig.root+'/app/views/partials/mailTemplate.jade', 'utf8', function (err, data) {
-        if (err) throw err;
-        var fn = jade.compile(data);
-        var html = fn({'title':'重置密码','host':siteProtocol+host,'who':who,'content':content});
-        sendMail({
-          from: from,
-          to: to,
-          subject: subject,
-          html: html
-        },{
-          type:'user',
-          _id:uid,
-          name:null,
-          email:who
-        },'USER_PWD_RESET_EMAIL_SEND_ERROR');
+  fs.readFile(rootConfig.root+'/app/views/partials/mailTemplate.jade', 'utf8', function (err, data) {
+    if (err) {
+      console.log(err);
+      console.log(err.stack);
+      return;
+    }
+    var fn = jade.compile(data);
+    var html = fn({
+      'title': '重置密码',
+      'host': siteProtocol + host,
+      'who': who,
+      'description': description,
+      'link': link
     });
+    sendMail({
+      from: from,
+      to: to,
+      subject: subject,
+      html: html
+    },{
+      type:'user',
+      _id:uid,
+      name:null,
+      email:who
+    },'USER_PWD_RESET_EMAIL_SEND_ERROR');
+  });
 };
+
 exports.sendCompanyResetPwdMail = function(who, uid, host) {
   var from = '动梨<service@donler.com>';
   var to = who;
   var subject = '动梨密码重置';
-  var content = '<p>我们收到您在动梨的密码重置申请信息，请点击下面的链接来重置密码（30分钟内有效）：</p>' +
-    '<a style="text-decoration: none; word-break: break-all;" href="http://' + host + '/company/resetPwd?key=' + encrypt.encrypt(uid, config.SECRET) +
-    '&uid=' + uid +'&time='+encrypt.encrypt(new Date().toString(), config.SECRET)+
-    '">重置密码</a>';
-    fs.readFile(rootConfig.root+'/app/views/partials/mailTemplate.jade', 'utf8', function (err, data) {
-        if (err) throw err;
-        var fn = jade.compile(data);
-        var html = fn({'title':'重置密码','host':siteProtocol+host,'who':who,'content':content});
-        sendMail({
-          from: from,
-          to: to,
-          subject: subject,
-          html: html
-        },{
-          type:'company',
-          _id:uid,
-          name:null,
-          email:who
-        },'COMPANY_PWD_RESET_EMAIL_SEND_ERROR');
+  var description = '我们收到您在动梨的密码重置申请信息，请点击下面的链接来重置密码（30分钟内有效）：';
+  var link = 'http://' + host + '/company/resetPwd?key=' + encrypt.encrypt(uid, config.SECRET) + '&uid=' + uid +'&time='+encrypt.encrypt(new Date().toString(), config.SECRET);
+  fs.readFile(rootConfig.root+'/app/views/partials/mailTemplate.jade', 'utf8', function (err, data) {
+    if (err) {
+      console.log(err);
+      console.log(err.stack);
+      return;
+    }
+    var fn = jade.compile(data);
+    var html = fn({
+      'title': '重置密码',
+      'host': siteProtocol + host,
+      'who': who,
+      'description': description,
+      'link': link
     });
+    sendMail({
+      from: from,
+      to: to,
+      subject: subject,
+      html: html
+    },{
+      type:'company',
+      _id:uid,
+      name:null,
+      email:who
+    },'COMPANY_PWD_RESET_EMAIL_SEND_ERROR');
+  });
 };
-
-
-// var senderId = [0,1,2];
-// var campaignId;
-
-// var templateGenerator = function(url,body,encode,host,who,mailId){
-//   fs.readFile(url, encode, function (err, data) {
-//       if (err) throw err;
-//       var fn = jade.compile(data);
-//       var html = fn({'title':body.title,'host':siteProtocol+host,'who':who.mail,'content':body.content});
-//       var error = {
-//         type:who.provider,
-//         _id:uid,
-//         name:who.name,
-//         email:who.mail,
-//         msg:'COMPANY_PWD_RESET_EMAIL_SEND_ERROR'
-//       }
-//       sendByWebPower(mailId,html,who,error,body);
-//   });
-// }
-// var sendByWebPower = function(mailId,html,who,error,body){
-//   var data = [];
-//   data.push({
-//     'email':who.mail,
-//     'name':who.name,
-//     'template':html,
-//     'subject':body.subject
-//   });
-// }
 
 exports.sendFeedBackMail = function(email, content) {
   var from = '动梨<service@donler.com>';
