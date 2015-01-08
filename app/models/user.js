@@ -146,8 +146,8 @@ var UserSchema = new Schema({
         ref: 'Campaign'
     },
     last_comment_time: Date,
-    commentCampaigns: [latestCommentCampaign],//参加了的讨论列表
-    unjoinedCommentCampaigns: [latestCommentCampaign], //未参加的讨论列表
+    commentCampaigns: [latestCommentCampaign], //参加小队的讨论列表
+    unjoinedCommentCampaigns: [latestCommentCampaign], //未参加小队但讨论过的讨论列表
     score: {
         // 积分总数
         total: {

@@ -227,8 +227,17 @@ exports.canPublishComment = function (req, res, next) {
 //for push comment
 //自己评论就把这个活动拎上来，unread数不增加
 var updateUserCommentList = function(campaign, user, reqUserId, callback){
-  var arrayMaxLength = 20;
-  if(campaign.whichUnit(user._id)) {//已参加
+  var arrayMaxLength = 30;
+  // if(campaign.whichUnit(user._id)) {//已参加->在小队
+  var isInTeams = false;
+  var teamLength = campaign.tid.length;
+  for(var i=0; i<teamLength; i++){
+    if(model_helper.arrayObjectIndexOf(user.team,campaign.tid[i],'_id')>-1) {
+      isInTeams = true;
+      break;
+    }
+  }
+  if(isInTeams){//在campaign所在小队
     var campaignIndex = model_helper.arrayObjectIndexOf(user.commentCampaigns, campaign._id, '_id');
     if(campaignIndex === -1){//如果user中没有
       //放到最前,数组长度到max值时去掉最后面的campaign
@@ -357,41 +366,67 @@ exports.setComment = function (req, res) {
           if(model_helper.arrayObjectIndexOf(campaign.commentMembers, req.user._id, '_id') === -1){
             campaign.commentMembers.push(poster);
           }
-
-          //socket与users更新
-          //参加的人
-          var joinedUids = [];
-          for(var i = 0; i<campaign.members.length; i++) {
-            joinedUids.push(campaign.members[i]._id.toString());
-          }
-          //未参加
-          var unjoinedUids = [];
-          for(var i = 0; i<campaign.commentMembers.length;i++) {
-            if(joinedUids.indexOf(campaign.commentMembers[i]._id.toString()) === -1){
-              unjoinedUids.push(campaign.commentMembers[i]._id.toString());
-            }
-          }
-          //---socket
-          socketPush(campaign, comment, joinedUids, unjoinedUids);
-
           campaign.save(function(err){
             if(err){
               console.log('campaign save error:',err);
             }
           });
 
-          //users操作
-          var revalentUids = joinedUids.concat(unjoinedUids);
-          User.find({'_id':{'$in':revalentUids}},{'commentCampaigns':1,'unjoinedCommentCampaigns':1},function(err,users){
+          //socket与users更新
+          //参加的人->在此小队的人
+          // var joinedUids = [];
+          // for(var i = 0; i<campaign.members.length; i++) {
+          //   joinedUids.push(campaign.members[i]._id.toString());
+          // }
+          //获取在此小队的人
+          var getUidsInTeams = function (tids, callback) {
+            CompanyGroup.find({'_id':{'$in':tids}},function(err, teams){
+              if(err){
+                console.log(err);
+                callback(null,err);
+              }else {
+                var teamUids = [];
+                var teamLength = teams.length;
+                for(var i=0; i<teamLength; i++) {
+                  var memberLength = teams[i].member.length;
+                  for(var j=0;j<memberLength;j++) {
+                    teamUids.push(teams[i].member[j]._id);
+                  }
+                }
+                callback(teamUids);
+              }
+            })
+          };
+
+          getUidsInTeams(campaign.tid,function(teamUids,err){
             if(err){
-              console.log(err);
+
             }else{
-              async.map(users,function(user,callback){
-                updateUserCommentList(campaign, user, req.user._id, function(){
-                  callback();
-                });
-              },function(err, results) {
-                return;
+              var joinedUids = teamUids ;
+              //未参加->不在此小队的评论过的人
+              var unjoinedUids = [];
+              for(var i = 0; i<campaign.commentMembers.length;i++) {
+                if(joinedUids.indexOf(campaign.commentMembers[i]._id.toString()) === -1){
+                  unjoinedUids.push(campaign.commentMembers[i]._id.toString());
+                }
+              }
+              //---socket
+              socketPush(campaign, comment, joinedUids, unjoinedUids);
+
+              //users操作
+              var revalentUids = joinedUids.concat(unjoinedUids);
+              User.find({'_id':{'$in':revalentUids}},{'commentCampaigns':1,'unjoinedCommentCampaigns':1,'team':1},function(err,users){
+                if(err){
+                  console.log(err);
+                }else{
+                  async.map(users,function(user,callback){
+                    updateUserCommentList(campaign, user, req.user._id, function(){
+                      callback();
+                    });
+                  },function(err, results) {
+                    return;
+                  });
+                }
               });
             }
           });
