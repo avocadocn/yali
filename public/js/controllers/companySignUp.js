@@ -11,51 +11,70 @@ companySignUpApp.controller('signupController',['$http','$scope','$rootScope',fu
 
   var selector = new LinkageSelector(document.getElementById('cities'));
 
-  $scope.mailRegCheck = function() {
-    $scope.reg = (pattern.test($scope.email));
-    $scope.check = false;
-    $("#submit").attr("disabled",true);
-    if(!$scope.reg){
-      $scope.mail_ok = false;
-      $("#email").tooltip({
-        "trigger":"hover",
-        "title":'请输入正确的邮箱地址!',
-        "placement" : "right"
-      });
-    } else {
-      $("#email").tooltip('destroy');
-    }
-  }
+  // $scope.mailRegCheck = function() {
+  //   $scope.reg = (pattern.test($scope.email));
+  //   $scope.check = false;
+  //   $("#submit").attr("disabled",true);
+  //   if(!$scope.reg){
+  //     $scope.mail_ok = false;
+  //     $("#email").tooltip({
+  //       "trigger":"hover",
+  //       "title":'请输入正确的邮箱地址!',
+  //       "placement" : "right"
+  //     });
+  //   } else {
+  //     $("#email").tooltip('destroy');
+  //   }
+  // }
   $scope.mailCheck = function() {
-    if($scope.reg&&$scope.email){
-      $scope.mail_ok = true;
-      try{
-        $http({
-            method: 'post',
-            url: '/company/mailCheck',
-            data:{
-                login_email: $scope.email,
-                cid:$rootScope.cid//???
-            }
-        }).success(function(data, status) {
-            if(data === "false") {
-              $scope.check_value = "";
-              $scope.check = true;
-            } else {
-              $scope.check = false;
-              $scope.check_value = "该邮箱已经注册!";
-            }
-
-        }).error(function(data, status) {
-            //TODO:更改对话框
-            alertify.alert('DATA ERROR');
-        });
-      }
-      catch(e){
-          console.log(e);
-      }
+    if($scope.email){
+      $scope.mail_checked = true;
+      $http({
+        method: 'post',
+        url: '/company/mailCheck',
+        data:{
+            login_email: $scope.email,
+        }
+      }).success(function(data, status) {
+        if(data === "false") {
+          $scope.mail_check_value = "";
+          $scope.mail_check = true;
+        } else {
+          $scope.mail_check = false;
+          $scope.mail_check_value = "该邮箱已经注册!";
+        }
+      }).error(function(data, status) {
+        // alertify.alert('DATA ERROR');
+      });
     }
-  }
+  };
+
+  $scope.companyNameCheck = function(){
+    if($scope.name) {
+      $scope.nameChecked = true;
+      $http({
+        method: 'post',
+        url: '/company/officialNameCheck',
+        data:{
+            name: $scope.name,
+        }
+      }).success(function(data, status) {
+        console.log(data);
+        if(data === "false") {
+          $scope.nameCheckValue = "";
+          $scope.nameCheck = true;
+        } else {
+          console.log('???');
+          //未通过验证
+          $scope.nameCheck = false;
+          $scope.nameCheckValue = "该公司名已经注册!";
+        }
+      }).error(function(data, status) {
+        // alertify.alert('DATA ERROR');
+      });
+    }
+  };
+
 
   $scope.codeCheck = function() {
     $scope.code_ok = true;
@@ -75,8 +94,7 @@ companySignUpApp.controller('signupController',['$http','$scope','$rootScope',fu
             $scope.code_value = "";
           }
       }).error(function(data, status) {
-          //TODO:更改对话框
-          alertify.alert('DATA ERROR');
+          // alertify.alert('DATA ERROR');
       });
     }
     catch(e){
@@ -85,24 +103,52 @@ companySignUpApp.controller('signupController',['$http','$scope','$rootScope',fu
   }
 }]);
 
-companySignUpApp.controller('userSignupController',['$http','$scope','$rootScope',function ($http,$scope,$rootScope) {
+companySignUpApp.controller('userSignupController',['$http','$scope','$rootScope','$timeout',function ($http,$scope,$rootScope) {
+  //-验证个人邮箱
+  var mailCheck = function(callback) {
+    if($scope.email){
+      $scope.loading = true;
+      $http.post('/users/mailCheck',{login_email:$scope.email})
+      .success(function (data, status){
+        $scope.active=data.active;
+        callback($scope.active);
+      }).error(function (data, status) {
+        callback(false);
+      });
+    }else{
+      callback(false);
+    }
+  };
+  //-若验证邮箱无问题，搜索公司
   $scope.search=function(keyEvent){
     if(keyEvent&&keyEvent.which===13||!keyEvent){
-      $http.post('/search/company',{regx:$scope.company_name}).success(function(data,status){
-        $scope.companies=data;
-        $rootScope.step=2;
+      mailCheck(function(active){
+        if(active===1){
+          $http.post('/search/company',{email:$scope.email}).success(function (data,status){
+            $scope.companies=data;
+            $rootScope.step=2;
+          });
+        }
       });
     }
   };
+  //-若邮箱有问题,可能需要的重发邮件
+  // $scope.resendEmail = function() {
+  //   $scope.sending = true;
+  //   $http.post('/users/dealActive?notinvited=true',{email:$scope.email}).success(function (data,status) {
+  //     $scope.resent = true;
+  //     $scope.sending =false;
+  //   });
+  // }
   var departments;
   $scope.select=function(index){
     $scope.cid=$scope.companies[index]._id;
     $rootScope.cid = $scope.companies[index]._id;
     $scope.cname = $scope.companies[index].name;
     $rootScope.step = 3;
-    $scope.active =0;
+    // $scope.active =0;
     //-把部门搞进来...
-    $http.get('/departmentTree/'+$scope.cid).success(function(data, status) {
+    $http.get('/departmentTree/'+$scope.cid).success(function (data, status) {
       departments = data.department;
       $scope.main_departments = [];
       $scope.child_departments = [];
@@ -156,22 +202,20 @@ companySignUpApp.controller('userSignupController',['$http','$scope','$rootScope
   $scope.mailCheck = function() {
     if($scope.email){
       $scope.loading = true;
-      try{
-        $http({
-          method: 'post',
-          url: '/users/mailCheck',
-          data:{
-              login_email: $scope.email,
-              cid:$scope.cid
-          }
-        }).success(function(data, status) {
-          $scope.loading = false;
-          $scope.active=data.active;
-        });
-      }
-      catch(e){
-        console.log(e);
-      }
+      $http.post('/users/mailCheck',{login_email: $scope.email,cid:$scope.cid})
+      .success(function(data, status) {
+        $scope.loading = false;
+        $scope.active=data.active;
+      });
+    }
+  };
+
+  $scope.checkInviteKey = function() {
+    if($scope.inviteKey&&$scope.inviteKey.length===8) {
+      $http.post('/users/inviteKeyCheck',{cid:$scope.cid, inviteKey: $scope.inviteKey})
+      .success(function(data, status) {
+        $scope.inviteKeyCorrect = data.invitekeyCheck;
+      })
     }
   };
 

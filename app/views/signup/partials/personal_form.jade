@@ -1,29 +1,29 @@
-div(ng-if="active==0 || active==1 || active ==4")
+div(ng-if="!active || active==1 || active ==4")
   //-未注册过、未激活需重填资料时显示
   .form-group.dl_sm_group(ng-class="{'has-error':active_form.nickname.$invalid && active_form.nickname.$dirty}")
     .dl_row
       .label_left
         label.control-label(for="nickname") ＊#{__("NICKNAME")}
       .input_right
-        input.dl-form-control(type="text" name="nickname" ng-model="nickname" ng-minlength=1 tooltip-placement="right" tooltip="{{active_form.nickname.$invalid && active_form.nickname.$dirty ? '请填写昵称':''}}" required)
+        input.dl-form-control(type="text" name="nickname" ng-model="nickname" tooltip-placement="right" tooltip="{{active_form.nickname.$invalid && active_form.nickname.$dirty ? '请填写昵称':''}}" required)
   .form-group.dl_sm_group(ng-class="{'has-error':active_form.password.$invalid && active_form.password.$dirty}")
     .dl_row
       .label_left
         label.control-label(for="password") ＊密码:
       .input_right
-        input.dl-form-control(type="password" name="password" ng-model="$parent.password" ng-minlength=1 tooltip-placement="right" tooltip="{{active_form.password.$invalid && active_form.password.$dirty ? '请输入密码':''}}" required)
+        input.dl-form-control(type="password" name="password" ng-model="$parent.password" ng-minlength=6 tooltip-placement="right" tooltip="{{active_form.password.$invalid && active_form.password.$dirty ? '请输入密码':''}}" required)
   .form-group.dl_sm_group(ng-class="{'has-error':active_form.passconf.$invalid && active_form.passconf.$dirty}")
     .dl_row
       .label_left
         label.control-label(for="passconf") ＊密码确认:
       .input_right
-        input.dl-form-control(type="password" name="passconf" ng-model="$parent.passconf" ng-minlength=1 tooltip-placement="right" match="$parent.password" tooltip="{{active_form.passconf.$invalid && active_form.passconf.$dirty ? '请输入确认密码':''}}" required)
+        input.dl-form-control(type="password" name="passconf" ng-model="$parent.passconf" ng-minlength=6 tooltip-placement="right" match="$parent.password" tooltip="{{active_form.passconf.$invalid && active_form.passconf.$dirty ? '请输入确认密码':''}}" required)
   .form-group.dl_sm_group(ng-class="{'has-error':active_form.realname.$invalid && active_form.realName.$dirty}")
     .dl_row
       .label_left
         label.control-label(for="realname") ＊#{__("REALNAME")}
       .input_right
-        input.dl-form-control(type="text" placeholder="仅公司成员可见" name="realname" ng-model="realname" ng-minlength=1 tooltip-placement="right" tooltip="{{active_form.realName.$invalid && active_form.realName.$dirty ? '请输入真实姓名':''}}" required)
+        input.dl-form-control(type="text" placeholder="仅公司成员可见" name="realname" ng-model="realname" tooltip-placement="right" tooltip="{{active_form.realName.$invalid && active_form.realName.$dirty ? '请输入真实姓名':''}}" required)
   .form-group.dl_sm_group
     .dl_row
       .label_left
@@ -52,9 +52,7 @@ div(ng-if="active==0 || active==1 || active ==4")
     .dl_row
       .label_left
       .input_right
-        label.dl_checkbox
-          input(type="checkbox" ng-model="checkbox" required)
-          | 我已阅读并同意<a href="/about#law">服务条款</a>
+        span 点击注册即同意<a href="/about#law">服务条款</a>
 .form-group.dl_sm_group(ng-show="active!==3 && active!==2")
   .dl_row
     .label_left

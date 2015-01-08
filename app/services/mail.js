@@ -95,40 +95,40 @@ exports.sendStaffActiveMail = function(who, uid, cid, host) {
   });
 };
 
-exports.sendNewStaffActiveMail = function(user_email, uid , cid ,host){
-  var from = '动梨<service@donler.com>';
-  var to = user_email;
-  var subject = '动梨账号激活';
-  var description = '我们收到您在动梨的申请信息，请点击下面的链接来激活帐户：';
-  var link = 'http://' + host + '/users/mailActive?key=' + encrypt.encrypt(uid, config.SECRET) + '&uid=' + uid + '&cid=' + cid;
+// exports.sendNewStaffActiveMail = function(user_email, uid , cid ,host){
+//   var from = '动梨<service@donler.com>';
+//   var to = user_email;
+//   var subject = '动梨账号激活';
+//   var description = '我们收到您在动梨的申请信息，请点击下面的链接来激活帐户：';
+//   var link = 'http://' + host + '/users/mailActive?key=' + encrypt.encrypt(uid, config.SECRET) + '&uid=' + uid + '&cid=' + cid;
 
-  fs.readFile(rootConfig.root+'/app/views/partials/mailTemplate.jade', 'utf8', function (err, data) {
-    if (err) {
-      console.log(err);
-      console.log(err.stack);
-      return;
-    }
-    var fn = jade.compile(data);
-    var html = fn({
-      'title': '注册激活',
-      'host': siteProtocol + host,
-      'who': user_email,
-      'description': description,
-      'link': link
-    });
-    sendMail({
-      from: from,
-      to: to,
-      subject: subject,
-      html: html
-    },{
-      type:'user',
-      _id:uid,
-      name:null,
-      email:user_email
-    },'USER_CREATE_EMAIL_SEND_ERROR');
-  });
-};
+//   fs.readFile(rootConfig.root+'/app/views/partials/mailTemplate.jade', 'utf8', function (err, data) {
+//     if (err) {
+//       console.log(err);
+//       console.log(err.stack);
+//       return;
+//     }
+//     var fn = jade.compile(data);
+//     var html = fn({
+//       'title': '注册激活',
+//       'host': siteProtocol + host,
+//       'who': user_email,
+//       'description': description,
+//       'link': link
+//     });
+//     sendMail({
+//       from: from,
+//       to: to,
+//       subject: subject,
+//       html: html
+//     },{
+//       type:'user',
+//       _id:uid,
+//       name:null,
+//       email:user_email
+//     },'USER_CREATE_EMAIL_SEND_ERROR');
+//   });
+// };
 
 exports.sendStaffResetPwdMail = function(who, uid, host) {
   var from = '动梨<service@donler.com>';

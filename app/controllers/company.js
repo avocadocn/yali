@@ -563,9 +563,9 @@ exports.mailCheck = function(req, res) {
 }
 //企业官方名验证
 exports.officialNameCheck = function(req, res) {
-  var official_name = req.body.official_name;
+  var name = req.body.name;
   Company.findOne({
-    'info.official_name': official_name
+    'info.name': name
   }, function(err, company) {
     if (err || company) {
       res.send(true);
@@ -593,186 +593,180 @@ exports.usernameCheck = function(req, res) {
  */
 exports.create = function(req, res) {
   var invite_switch = false;
-  Config
-    .findOne({
-      name: config.CONFIG_NAME
-    })
-    .exec()
-    .then(function(config) {
-      if (config && config.company_register_need_invite === true) {
-        invite_switch = true;
-        return CompanyRegisterInviteCode
-          .findOne({
-            code: req.body.invite_code,
-            status: 'active'
-          })
-          .populate('company')
-          .exec()
-          .then(function(code) {
-            if (code) {
-              if (code.status === 'active') {
-                // 如果邀请码属于公司，则在公司邀请码列表中将其移除
-                if (code.company) {
-                  var company = code.company;
-                  var removeIndex = company.register_invite_code.indexOf(code.code);
-                  company.register_invite_code.splice(removeIndex, 1);
-                  company.save(console.log);
-                }
-                code.status = 'used';
-                code.save(function(err) {
-                  if (err) {
-                    console.log(err);
-                    console.log('remove出错');
-                    throw err;
-                  }
-                });
-                return Company.create({
-                  username: UUID.id(),
-                  password: UUID.id(),
-                  info: {
-                    name: req.body.name
-                  }
-                });
-              } else {
+  Config.findOne({name: config.CONFIG_NAME})
+  .exec()
+  .then(function(config) {
+    if (config && config.company_register_need_invite === true) {
+      invite_switch = true;
+      return CompanyRegisterInviteCode.findOne({
+        code: req.body.invite_code,
+        status: 'active'
+      })
+      .populate('company')
+      .exec()
+      .then(function(code) {
+        if (code) {
+          if (code.status === 'active') {
+            // 如果邀请码属于公司，则在公司邀请码列表中将其移除
+            if (code.company) {
+              var company = code.company;
+              var removeIndex = company.register_invite_code.indexOf(code.code);
+              company.register_invite_code.splice(removeIndex, 1);
+              company.save(console.log);
+            }
+            code.status = 'used';
+            code.save(function(err) {
+              if (err) {
+                console.log(err);
+                console.log('remove出错');
+                throw err;
+              }
+            });
+            return Company.create({
+              username: UUID.id(),
+              password: UUID.id(),
+              info: {
+                name: req.body.name
+              }
+            });
+          } else {
+            return res.status(400).send({
+              'result': 0,
+              'msg': '该邀请码已经被使用!'
+            });
+          }
+        } else {
+          throw new Error('邀请码不正确');
+        }
+      });
+    } else {
+      return Company.create({
+        username: UUID.id(),
+        password: UUID.id(),
+        info: {
+          name: req.body.name
+        }
+      });
+    }
+  })
+  .then(function(company) {
+    company.info.name = req.body.name;
+    company.info.city.province = req.body.province;
+    company.info.city.city = req.body.city;
+    company.info.city.district = req.body.district;
+    company.info.address = req.body.address;
+    company.info.linkman = req.body.contacts;
+    company.info.lindline.areacode = req.body.areacode;
+    company.info.lindline.number = req.body.number;
+    company.info.lindline.extension = req.body.extension;
+    company.info.phone = req.body.phone;
+    company.info.email = req.body.email;
+    company.provider = 'company';
+    company.login_email = req.body.email;
+    //生成随机邀请码
+    company.invite_key = tools.randomAlphaNumeric(8);
+    var _email = req.body.email.split('@');
+    if (_email[1])
+      company.email.domain.push(_email[1]);
+    else
+      return res.status(400).send({
+        'result': 0,
+        'msg': '您输入的邮箱不正确'
+      });
+
+    // 为该公司添加3个注册邀请码
+    company.register_invite_code = [];
+    var code_count = 0;
+
+    async.whilst(
+      function() {
+        return code_count < 3;
+      },
+
+      function(callback) {
+        var invite_code = new CompanyRegisterInviteCode({
+          company: company._id
+        });
+        invite_code.save(function(err) {
+          if (err) {
+            callback(err);
+          } else {
+            company.register_invite_code.push(invite_code.code);
+            code_count++;
+            callback();
+          }
+        });
+      },
+
+      function(err) {
+
+        if (err) {
+          return console.log(err);
+        }
+        //注意,日期保存和发邮件是同步的,也要放到后台管理里去,这里只是测试需要
+        //company.status.date = new Date().getTime();
+
+        company.save(function(err) {
+          if (err) {
+            console.log(err);
+            //检查信息是否重复
+            switch (err.code) {
+              case 11000:
                 return res.status(400).send({
                   'result': 0,
-                  'msg': '该邀请码已经被使用!'
+                  'msg': '该公司已经存在!'
                 });
-              }
-            } else {
-              throw new Error('邀请码不正确');
+                break;
+              case 11001:
+                return res.status(400).send({
+                  'result': 0,
+                  'msg': '该邮箱已经存在!'
+                });
+                break;
+              default:
+                break;
             }
-
-          });
-      } else {
-        return Company.create({
-          username: UUID.id(),
-          password: UUID.id(),
-          info: {
-            name: req.body.name
+            return res.render('signup/company_signup', {
+              company: company
+            });
           }
-        });
-      }
-    })
-    .then(function(company) {
-      company.info.name = req.body.name;
-      company.info.city.province = req.body.province;
-      company.info.city.city = req.body.city;
-      company.info.city.district = req.body.district;
-      company.info.address = req.body.address;
-      company.info.linkman = req.body.contacts;
-      company.info.lindline.areacode = req.body.areacode;
-      company.info.lindline.number = req.body.number;
-      company.info.lindline.extension = req.body.extension;
-      company.info.phone = req.body.phone;
-      company.info.email = req.body.email;
-      company.provider = 'company';
-      company.login_email = req.body.email;
-      //生成随机邀请码
-      company.invite_key = tools.randomAlphaNumeric(8);
-      var _email = req.body.email.split('@');
-      if (_email[1])
-        company.email.domain.push(_email[1]);
-      else
-        return res.status(400).send({
-          'result': 0,
-          'msg': '您输入的邮箱不正确'
-        });
-
-      // 为该公司添加3个注册邀请码
-      company.register_invite_code = [];
-      var code_count = 0;
-
-      async.whilst(
-        function() {
-          return code_count < 3;
-        },
-
-        function(callback) {
-          var invite_code = new CompanyRegisterInviteCode({
-            company: company._id
-          });
-          invite_code.save(function(err) {
-            if (err) {
-              callback(err);
-            } else {
-              company.register_invite_code.push(invite_code.code);
-              code_count++;
-              callback();
-            }
-          });
-        },
-
-        function(err) {
-
-          if (err) {
-            return console.log(err);
+          //如果开了邀请码,必须在对应的邀请码里记录使用该邀请码的公司的信息
+          if (invite_switch) {
+            CompanyRegisterInviteCode.update({
+              'code': req.body.invite_code
+            }, {
+              '$set': {
+                'use_by_company': {
+                  '_id': company._id,
+                  'name': company.info.name,
+                  'email': company.login_email
+                }
+              }
+            }, function(err, code) {
+              if (!code || err) {
+                return res.status(400).send({
+                  'result': 0,
+                  'msg': '邀请码修改异常!'
+                });
+              } else {
+                res.redirect('/company/wait');
+              }
+            })
+          } else {
+            res.redirect('/company/wait');
           }
           //注意,日期保存和发邮件是同步的,也要放到后台管理里去,这里只是测试需要
-          //company.status.date = new Date().getTime();
-
-          company.save(function(err) {
-            if (err) {
-              console.log(err);
-              //检查信息是否重复
-              switch (err.code) {
-                case 11000:
-                  return res.status(400).send({
-                    'result': 0,
-                    'msg': '该公司已经存在!'
-                  });
-                  break;
-                case 11001:
-                  return res.status(400).send({
-                    'result': 0,
-                    'msg': '该邮箱已经存在!'
-                  });
-                  break;
-                default:
-                  break;
-              }
-              return res.render('signup/company_signup', {
-                company: company
-              });
-            }
-            //如果开了邀请码,必须在对应的邀请码里记录使用该邀请码的公司的信息
-            if (invite_switch) {
-              CompanyRegisterInviteCode.update({
-                'code': req.body.invite_code
-              }, {
-                '$set': {
-                  'use_by_company': {
-                    '_id': company._id,
-                    'name': company.info.name,
-                    'email': company.login_email
-                  }
-                }
-              }, function(err, code) {
-                if (!code || err) {
-                  return res.status(400).send({
-                    'result': 0,
-                    'msg': '邀请码修改异常!'
-                  });
-                } else {
-                  res.redirect('/company/wait');
-                }
-              })
-            } else {
-              res.redirect('/company/wait');
-            }
-            //注意,日期保存和发邮件是同步的,也要放到后台管理里去,这里只是测试需要
-            //mail.sendCompanyActiveMail(company.login_email,company.info.name,company._id.toString(),req.headers.host);
-          });
-        }
-      );
-    })
-    .then(null, function(err) {
-      console.log(err);
-      res.render('signup/company_signup', {
-        invite_code_err: '邀请码不正确'
-      });
+          //mail.sendCompanyActiveMail(company.login_email,company.info.name,company._id.toString(),req.headers.host);
+        });
+      }
+    );
+  })
+  .then(null, function(err) {
+    console.log(err);
+    res.render('signup/company_signup', {
+      invite_code_err: '邀请码不正确'
     });
-
+  });
 };
 
 /**

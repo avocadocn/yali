@@ -11,7 +11,7 @@ block contentExt
           p 确保每个用户的身份都真实可靠
       .block.personal_signup.signup_block(ng-controller='ActiveController' ng-init="currentDomain='#{domains[0]}';")
         form.form-inline.form-horizontal(role="form" name='active_form' action='/users/dealActive' method='post')
-          .form-group.dl_sm_group(ng-class="{'has-error':active_form.nickname.$invalid && active_form.nickname.$dirty}")
+          .form-group.dl_sm_group(ng-class="{'has-error':active&&active!==1}")
             .dl_row
               .label_left
                 label.control-label(for="email") ＊企业邮箱

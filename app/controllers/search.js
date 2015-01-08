@@ -13,9 +13,21 @@ var mongoose = require('mongoose'),
 //TODO
 //根据公司名搜索公司
 exports.getCompany = function (req, res) {
-  var regx = new RegExp(req.body.regx);
+  var options = {};
   var companies_rst = [];
-  Company.find({'info.name':regx,'status.active':true,'status.mail_active':true}, function (err, companies) {
+  if(req.body.regx){
+    var regx = new RegExp(req.body.regx);
+    options = {'info.name': regx, 'status.active': true};
+  }
+  else if(req.body.email) {
+    var email = req.body.email;
+    var domain = email.split('@')[1];
+    options = {'email.domain': domain, 'status.active':true}
+  }
+  else{
+    return res.send([]);
+  }
+  Company.find(options, function (err, companies) {
     if(err) {
       return res.send([]);
     } else {
@@ -24,8 +36,8 @@ exports.getCompany = function (req, res) {
           companies_rst.push({
             '_id' : companies[i]._id,
             'name' : companies[i].info.name,
-            'team' : companies[i].team,
-            'logo' : companies[i].info.logo
+            'logo' : companies[i].info.logo,
+            'mail_active': companies[i].status.mail_active
           });
         }
         return res.send(companies_rst);

@@ -4,7 +4,7 @@
     span.tip_number 3
     span 步：填写您的信息
   form.form-inline.form-horizontal(role="form" name='active_form' action='/users/dealActive?notinvited=true' method='post')
-    .form-group.dl_sm_group(ng-class="{'has-error':active_form.nickname.$invalid && active_form.nickname.$dirty}")
+    .form-group.dl_sm_group
       .dl_row(ng-show="cname" ng-cloak)
         .label_left
           label.control-label ＊企业名称:
@@ -14,25 +14,75 @@
         .label_left
           label.control-label(for="email") ＊企业邮箱:
         .input_right.email_check
-          input.dl-form-control(type="text" name="email" ng-model="email" ng-blur="mailCheck()" ng-class="{'pass':active===1,'error':active&&active!==1}")
+          input.dl-form-control(type="email" readonly name="email" ng-model="email")
         .email_tips
-          img(ng-show='loading' src='/img/loading.gif')
-          i.fa.fa-exclamation-triangle.inactive(ng-show="active&&active!==1")
-          i.fa.fa-check.active(ng-show="active===1")
+          i.fa.fa-check.active
         input(type="text" name="index" ng-model="active" ng-show='false')
         input(type="text" name="cid" ng-model="cid" ng-show='false')
-      .dl_row.email_tip(ng-show="active&&active!==4&&active!==1" ng-cloak)
-        div(ng-show='active==2' ng-cloak)
-          p 您的邮箱已注册过,请查收邮件,若未收到请点击重发按钮再次发送。
-          p 
-            span 若之前不是本人操作请
-            a.subtitle(ng-click="active=4") 再次填写信息
-            span 并查看邮箱激活。
-        div(ng-show='active==3' ng-cloak)
-          span 您的邮箱已注册,请
-          a(href='/users/signin') 登录
-          span 。若是您忘记了密码,
-          a(href='/users/forgetPwd') 请点此跳转
-        div(ng-show='active==5' ng-cloak)
-          span 邮箱后缀错误,请使用公司邮箱地址进行注册
-    include personal_form
+    .form-group.dl_sm_group(ng-class="{'has-error':active_form.inviteKey.$invalid && active_form.inviteKey.$dirty || inviteKeyCorrect===2}")
+      .dl_row
+        .label_left
+          label.control-label(for="inviteKey") ＊邀请码:
+        .input_right.email_check
+          input.dl-form-control(type="text" placeholder="请向您的公司管理员或同事索要8位邀请码。" name="inviteKey" ng-model="$parent.inviteKey" ng-change="checkInviteKey()" ng-minlength=8 ng-maxlength=8 tooltip-placement="right" tooltip="{{active_form.inviteKey.$invalid && active_form.inviteKey.$dirty ? '请输入8位邀请码':''}}" required)
+        .email_tips
+          i.fa.fa-check.active(ng-if="inviteKeyCorrect===1")
+          i.fa.fa-close.inactive(ng-if="inviteKeyCorrect===2")
+    .form-group.dl_sm_group(ng-class="{'has-error':active_form.nickname.$invalid && active_form.nickname.$dirty}")
+      .dl_row
+        .label_left
+          label.control-label(for="nickname") ＊#{__("NICKNAME")}
+        .input_right
+          input.dl-form-control(type="text" name="nickname" ng-model="$parent.nickname" tooltip-placement="right" tooltip="{{active_form.nickname.$invalid && active_form.nickname.$dirty ? '请填写昵称':''}}" required)
+    .form-group.dl_sm_group(ng-class="{'has-error':active_form.password.$invalid && active_form.password.$dirty}")
+      .dl_row
+        .label_left
+          label.control-label(for="password") ＊密码:
+        .input_right
+          input.dl-form-control(type="password" name="password" ng-model="$parent.password" ng-minlength=6 tooltip-placement="right" tooltip="{{active_form.password.$invalid && active_form.password.$dirty ? '请输入密码':''}}" required)
+    .form-group.dl_sm_group(ng-class="{'has-error':active_form.passconf.$invalid && active_form.passconf.$dirty}")
+      .dl_row
+        .label_left
+          label.control-label(for="passconf") ＊密码确认:
+        .input_right
+          input.dl-form-control(type="password" name="passconf" ng-model="$parent.passconf" ng-minlength=6 tooltip-placement="right" match="$parent.password" tooltip="{{active_form.passconf.$invalid && active_form.passconf.$dirty ? '请输入确认密码':''}}" required)
+    .form-group.dl_sm_group(ng-class="{'has-error':active_form.realname.$invalid && active_form.realName.$dirty}")
+      .dl_row
+        .label_left
+          label.control-label(for="realname") ＊#{__("REALNAME")}
+        .input_right
+          input.dl-form-control(type="text" placeholder="仅公司成员可见" name="realname" ng-model="realname" tooltip-placement="right" tooltip="{{active_form.realName.$invalid && active_form.realName.$dirty ? '请输入真实姓名':''}}" required)
+    .form-group.dl_sm_group
+      .dl_row
+        .label_left
+          label.control-label(for="department") ＊#{__("DEPARTMENT")}
+        .input_right.select_right
+          .select_box(ng-if="department_exist")
+            select.dl-form-control(data-placeholder="选择主部门" tabindex="2" ng-model="main_department" ng-options="d.name for d in main_departments" ng-change="selectMainDepartment(main_department)" ng-disabled="main_departments.length == 0")
+            input(type="text" name="main_department_id" ng-model="main_department_id" ng-show="false")
+            input(type="text" name="main_department_name" ng-model="main_department_name" ng-show="false")
+          .select_box(ng-if="department_exist")
+            select.dl-form-control(data-placeholder="选择二级部门" tabindex="2" ng-model="child_department" ng-options="d.name for d in child_departments" ng-change="selectChildDepartment(child_department)" ng-disabled="child_departments.length == 0")
+            input(type="text" name="child_department_id" ng-model="child_department_id" ng-show="false")
+            input(type="text" name="child_department_name" ng-model="child_department_name" ng-show="false")
+          .select_box(ng-if="department_exist" last_child)
+            select.dl-form-control(data-placeholder="选择三级部门" tabindex="2" ng-model="grandchild_department" ng-options="d.name for d in grandchild_departments" ng-change="selectGrandChildDepartment(grandchild_department)" ng-disabled="grandchild_departments.length == 0")
+            input(type="text" name="grandchild_department_id" ng-model="grandchild_department_id" ng-show="false")
+            input(type="text" name="grandchild_department_name" ng-model="grandchild_department_name" ng-show="false")
+          span.dl_vertical(ng-if="!department_exist") 贵公司还未创建部门,请等待部门创建后再选择!
+    .form-group.dl_sm_group
+      .dl_row
+        .label_left
+          label.control-label(for="phone") #{__("PHONE")}
+        .input_right
+          input.dl-form-control(type="text" name="phone" ng-model="phone")
+    .form-group.dl_sm_group
+      .dl_row
+        .label_left
+        .input_right
+          span 点击注册即代表同意<a href="/about#law">服务条款</a>
+    .form-group.dl_sm_group
+      .dl_row
+        .label_left
+        .input_right
+          button.dl_btn.btn_submit(type="submit" ng-disabled="active_form.$invalid") 免费注册个人账号

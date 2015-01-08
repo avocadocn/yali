@@ -346,11 +346,9 @@ function userOperate(cid, key, res, req, index) {
     if (!company) {
       throw 'Not found company';
     }
-    if(!key||company.invite_key===key){
-      if(!key)
-        var email=req.body.email;
-      else
-        var email = req.body.host.toLowerCase() + '@' + req.body.domain;
+    //只有在不重填信息的重发时不需要验证key 其它都要
+    if(index===2 || company.invite_key===key) {
+      var email = req.query.notinvited=='true'? email=req.body.email : req.body.host.toLowerCase() + '@' + req.body.domain;
       User.findOne({ username: email})
       .exec()
       .then(function(user) {
@@ -362,6 +360,7 @@ function userOperate(cid, key, res, req, index) {
               message: '该邮箱已被注册'
             });
           }
+
           if (company.email.domain.indexOf(req.body.domain)>-1||company.email.domain.indexOf(email.split("@")[1])>-1) {
             var user = new User({
               email: email,
@@ -374,9 +373,6 @@ function userOperate(cid, key, res, req, index) {
               phone: req.body.phone,
               role: 'EMPLOYEE'
             });
-            if(!key){
-              user.invite_active=false;
-            }
             //员工尚未激活时,他的部门信息里只能填入部门的id
             if(req.body.main_department_id != ''){
               if(req.body.child_department_id != ''){
@@ -398,33 +394,18 @@ function userOperate(cid, key, res, req, index) {
                   if(err) {
                     console.log(err);
                   } else {
-                    //系统再给员工发一封激活邮件
+                    //系统给员工发一封激活邮件
                     mongoose.model('Config').findOne({ name: config.CONFIG_NAME }, function (err, config) {
                       if (err || !config || !config.smtp || config.smtp === 'webpower') {
-                        if(!key){
-                          webpower.sendNewStaffActiveMail(email, user._id.toString(), company._id.toString(), req.headers.host, function (err) {
-                            if (err) { console.log(err); }
-                          });
-                        }
-                        else{
-                          webpower.sendStaffActiveMail(email, user._id.toString(), company._id.toString(), req.headers.host, function (err) {
-                            if (err) { console.log(err); }
-                          });
-                        }
-                        
+                        webpower.sendStaffActiveMail(email, user._id.toString(), company._id.toString(), req.headers.host, function (err) {
+                          if (err) { console.log(err); }
+                        });
                       } else if (config.smtp === '163') {
-                        if(!key)
-                          mail.sendNewStaffActiveMail(email, user._id.toString(), company._id.toString(), req.headers.host);
-                        else
-                          mail.sendStaffActiveMail(email, user._id.toString(), company._id.toString(), req.headers.host);
+                        mail.sendStaffActiveMail(email, user._id.toString(), company._id.toString(), req.headers.host);
                       } else if (config.smtp === 'sendcloud') {
-                        if(!key)
-                          sendcloud.sendNewStaffActiveMail(email, user._id.toString(), company._id.toString(), req.headers.host);
-                        else
-                          sendcloud.sendStaffActiveMail(email, user._id.toString(), company._id.toString(), req.headers.host);
+                        sendcloud.sendStaffActiveMail(email, user._id.toString(), company._id.toString(), req.headers.host);
                       }
                     });
-
                     delete req.session.key;
                     delete req.session.key_id;
                     delete req.session.cid;
@@ -437,91 +418,58 @@ function userOperate(cid, key, res, req, index) {
             res.render('signup/invite', {
               title: '验证失败',
               domains: company.email.domain,
-              message: '请使用企业邮箱'
+              message: '信息填写错误'
             });
           }
         }
         else{//已注册过，重发邮件
           if (user) {
-            if (company.email.domain.indexOf(req.body.domain) > -1 || company.email.domain.indexOf(email.split("@")[1]>-1)) {
-              //覆盖用户信息并保存
-              if(index===4){
-                user.nickname = req.body.nickname;
-                user.password = req.body.password;
-                user.realname = req.body.realname;
-                user.phone = req.body.phone;
-                user.save(function(err){
-                  if(err){
-                    console.log(err);
-                    return res.send(500,{'msg':'user save err.'});
-                  }
-                  else{
-                    //将员工加入部门
-                    var member = {
-                      '_id':user._id,
-                      'nickname':user.nickname,
-                      'photo':user.photo,
-                      'apply_status':'wait'
-                    };
-                    if(req.body.main_department_id != 'null'){
-                      var callback = function(err, data) {
-                        if (err) {
-                          console.log(err);
-                        }
-                      }
-                      //员工尚未激活时,他的部门信息里只能填入部门的id
-                      if(req.body.main_department_id != ''){
-                        if(req.body.child_department_id != ''){
-                          if(req.body.grandchild_department_id != ''){
-                            user.department = {'_id':req.body.grandchild_department_id};
-                          }else{
-                            user.department = {'_id':req.body.child_department_id};
-                          }
+            //覆盖用户信息并保存
+            if(index===4){
+              user.nickname = req.body.nickname;
+              user.password = req.body.password;
+              user.realname = req.body.realname;
+              user.phone = req.body.phone;
+              user.save(function(err){
+                if(err){
+                  console.log(err);
+                  return res.send(500,{'msg':'user save err.'});
+                }
+                else{
+                  if(req.body.main_department_id != 'null'){
+                    //员工尚未激活时,他的部门信息里只能填入部门的id
+                    if(req.body.main_department_id != ''){
+                      if(req.body.child_department_id != ''){
+                        if(req.body.grandchild_department_id != ''){
+                          user.department = {'_id':req.body.grandchild_department_id};
                         }else{
-                          user.department = {'_id':req.body.main_department_id};
+                          user.department = {'_id':req.body.child_department_id};
                         }
+                      }else{
+                        user.department = {'_id':req.body.main_department_id};
                       }
                     }
                   }
-                });
-              }
-              //重发邮件
-              mongoose.model('Config').findOne({ name: config.CONFIG_NAME }, function (err, config) {
-                if (err || !config || !config.smtp || config.smtp === 'webpower') {
-                  if(!key){
-                    webpower.sendNewStaffActiveMail(email, user._id.toString(), company._id.toString(), req.headers.host, function (err) {
-                      if (err) { console.log(err); }
-                    });
-                  }
-                  else{
-                    webpower.sendStaffActiveMail(email, user._id.toString(), company._id.toString(), req.headers.host, function (err) {
-                      if (err) { console.log(err); }
-                    });
-                  }
-                } else if (config.smtp === '163') {
-                  if(!key)
-                    mail.sendNewStaffActiveMail(email, user._id.toString(), company._id.toString(), req.headers.host);
-                  else
-                    mail.sendStaffActiveMail(email, user._id.toString(), company._id.toString(), req.headers.host);
-                } else if (config.smtp === 'sendcloud') {
-                  if(!key)
-                    sendcloud.sendNewStaffActiveMail(email, user._id.toString(), company._id.toString(), req.headers.host);
-                  else
-                    sendcloud.sendStaffActiveMail(email, user._id.toString(), company._id.toString(), req.headers.host);
                 }
               });
-              delete req.session.key;
-              delete req.session.key_id;
-              delete req.session.cid;
-              return res.render('users/message', message.wait);
             }
-            else {
-              return res.render('signup/invite', {
-                title: 'validate',
-                domains: company.email.domain,
-                message: '请使用企业邮箱'
-              });
-            }
+            //-index ==2/4 的时候
+            //重发邮件
+            mongoose.model('Config').findOne({ name: config.CONFIG_NAME }, function (err, config) {
+              if (err || !config || !config.smtp || config.smtp === 'webpower') {
+                webpower.sendStaffActiveMail(email, user._id.toString(), company._id.toString(), req.headers.host, function (err) {
+                  if (err) { console.log(err); }
+                });
+              } else if (config.smtp === '163') {
+                mail.sendStaffActiveMail(email, user._id.toString(), company._id.toString(), req.headers.host);
+              } else if (config.smtp === 'sendcloud') {
+                sendcloud.sendStaffActiveMail(email, user._id.toString(), company._id.toString(), req.headers.host);
+              }
+            });
+            delete req.session.key;
+            delete req.session.key_id;
+            delete req.session.cid;
+            return res.render('users/message', message.wait);
           }
           else {
             console.log(email);
@@ -532,6 +480,11 @@ function userOperate(cid, key, res, req, index) {
       .then(null, function(err) {
         console.log(err);
         return res.render('users/message', message.invalid);
+      });
+    }else{
+      return res.render('users/message', {
+        title: '验证错误',
+        message: '激活码填写错误'
       });
     }
   })
@@ -545,11 +498,21 @@ function userOperate(cid, key, res, req, index) {
  * 处理激活验证
  */
 exports.dealActive = function(req, res) {
-  if(req.query.notinvited=='true'){
-    var index = req.body.index;
-    userOperate(req.body.cid, null, res, req, index);
+  if(req.query.notinvited=='true'){//非邀请步骤
+    if(req.body.cid)
+      userOperate(req.body.cid, req.body.inviteKey, res, req, 1);//step3 填写
+    else{
+      User.findOne({username:req.body.email}, function(err, user){
+        if(err||!user){
+          console.log(err);
+          return res.render('users/message', message.invalid);
+        }else{
+          userOperate(user.cid, null, res, req, 2);//在step1重发邮件
+        }
+      })
+    }
   }
-  else{
+  else{//邀请链接来的
     var key = req.session.key;
     var cid = req.session.key_id;
     var index = req.body.index;
@@ -595,104 +558,132 @@ exports.mailCheck = function(req, res) {
 };
 
 /**
+ * 邀请码
+ */
+exports.inviteKeyCheck = function(req, res) {
+  var cid = req.body.cid;
+  var inviteKey = req.body.inviteKey;
+  if(!cid||!inviteKey){
+    return res.status(400).send({'msg':'输入错误'});
+  }
+  Company.findOne({_id:cid}).exec().then(function(company){
+    if(company){
+      if(inviteKey===company.invite_key){
+        return res.status(200).send({'invitekeyCheck':1});
+      }else{
+        return res.status(200).send({'invitekeyCheck':2});
+      }
+    }else{
+      return res.status(400).send({'msg':'未查找到公司'});
+    }
+  })
+  .then(null,function(err){
+    log(err);
+    return res.status(500).send({'msg':'数据库错误'});
+  });
+}
+
+/**
  * 通过激活链接进入，无激活码的邮箱激活
  */
-exports.mailActive = function(req, res){
-  if (req.user) {
-    req.logout();
-    res.locals.global_user = null;
-  }
-  var key = req.query.key;
-  var uid = req.query.uid;
-  User.findOne({_id: uid}).exec(function(err, user) {
-    if(err) {
-      console.log(err);
-      res.render('users/message', message.dbError);
-    } else if(user) {
-      if(user.invite_active === true) {
-        res.render('users/message', message.actived);
-      } else {
-        if(encrypt.encrypt(uid, config.SECRET) === key) {
-          user.active= true;
-          user.mail_active = true;
-          user.save(function(err){
-            if(err){
-              console.log(err);
-              return res.send(500,{'msg':'user save err.'});
-            }
-          });
-          res.render('signup/personal_step_four', {
-            title: '激活成功',
-            uid: uid
-          });
-        } else {
-          res.render('users/message', message.invalid);
-        }
-      }
-    } else {
-      res.render('users/message', message.unregister);
-    }
-  });
-};
+// exports.mailActive = function(req, res){
+//   if (req.user) {
+//     req.logout();
+//     res.locals.global_user = null;
+//   }
+//   var key = req.query.key;
+//   var uid = req.query.uid;
+//   User.findOne({_id: uid}).exec(function(err, user) {
+//     if(err) {
+//       console.log(err);
+//       res.render('users/message', message.dbError);
+//     } else if(user) {
+//       //todo -M
+//       if(user.invite_active === true) {
+//         res.render('users/message', message.actived);
+//       } else {
+//         if(encrypt.encrypt(uid, config.SECRET) === key) {
+//           user.active= true;
+//           user.mail_active = true;
+//           user.save(function(err){
+//             if(err){
+//               console.log(err);
+//               return res.send(500,{'msg':'user save err.'});
+//             }
+//           });
+//           res.render('signup/personal_step_four', {
+//             title: '激活成功',
+//             uid: uid
+//           });
+//         } else {
+//           res.render('users/message', message.invalid);
+//         }
+//       }
+//     } else {
+//       res.render('users/message', message.unregister);
+//     }
+//   });
+// };
 
 /**
  * 输入公司邀请码后最终的激活
  */
-exports.lastStepActive = function(req, res){
-  var key = req.body.key;
-  var uid = req.body.uid;
-  User.findOne({_id: uid}).populate('cid').exec(function(err, user) {
-    if(err) {
-      console.log(err);
-      console.log(err.stack);
-      res.render('users/message', message.dbError);
-    }
-    else if(user) {
-      if(key===user.cid.invite_key){
-        user.invite_active = true;
-        //员工激活后,要把他的具体信息加入部门
-        //此处可以做个api
-        if(user.department != null && user.department != undefined && user.department.length > 1){
-          var callback = function(err, data) {
-            if (err) {
-              console.log(err);
-              console.log(err.stack);
-            }
-          }
-          var member = {
-            '_id':user._id,
-            'nickname':user.nickname,
-            'photo':user.photo,
-            'apply_status':'pass'
-          };
-          department.memberOperateByHand('join',member,user.department._id,callback);
-        }
-        user.save(function(err){
-          if(err){
-            console.log(err);
-            console.log(err.stack);
-            return res.send(500,{'msg':'user save err.'});
-          }
-          else{
-            //公司人员增加
-            Company.update({'_id':user.cid._id},{'$inc':{'info.membernumber':1}},function(err,company){
-              if(err){
-                console.log(err);
-                console.log(err.stack);
-              }
-            });
-            res.render('signup/setProfile', {
-              title: '激活成功',
-            });
-          }
-        });
-      }
-      else{
-        res.render('users/message', message.invalid);
-      }
-    }
-  });
-};
+// exports.lastStepActive = function(req, res){
+//   var key = req.body.key;
+//   var uid = req.body.uid;
+//   User.findOne({_id: uid}).populate('cid').exec(function(err, user) {
+//     if(err) {
+//       console.log(err);
+//       console.log(err.stack);
+//       res.render('users/message', message.dbError);
+//     }
+//     else if(user) {
+//       //-todo -M
+//       if(key===user.cid.invite_key){
+//         user.invite_active = true;
+//         //员工激活后,要把他的具体信息加入部门
+//         //此处可以做个api
+//         if(user.department != null && user.department != undefined && user.department.length > 1){
+//           var callback = function(err, data) {
+//             if (err) {
+//               console.log(err);
+//               console.log(err.stack);
+//             }
+//           }
+//           var member = {
+//             '_id':user._id,
+//             'nickname':user.nickname,
+//             'photo':user.photo,
+//             'apply_status':'pass'
+//           };
+//           department.memberOperateByHand('join',member,user.department._id,callback);
+//         }
+//         user.save(function(err){
+//           if(err){
+//             console.log(err);
+//             console.log(err.stack);
+//             return res.send(500,{'msg':'user save err.'});
+//           }
+//           else{
+//             //公司人员增加
+//             Company.update({'_id':user.cid._id},{'$inc':{'info.membernumber':1}},function(err,company){
+//               if(err){
+//                 console.log(err);
+//                 console.log(err.stack);
+//               }
+//             });
+//             res.render('signup/setProfile', {
+//               title: '激活成功',
+//             });
+//           }
+//         });
+//       }
+//       else{
+//         res.render('users/message', message.invalid);
+//       }
+//     }
+//   });
+// };
 
 
 /**

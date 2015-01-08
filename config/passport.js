@@ -93,7 +93,7 @@ module.exports = function(passport) {
                         message: '密码错误,请重新输入'
                     });
                 }
-                else if(!user.mail_active||!user.invite_active){
+                else if(!user.mail_active){
                     return done(null, false, {
                         message: '账号未激活,请至邮箱点击链接激活'
                     });
