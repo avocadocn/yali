@@ -59,12 +59,10 @@ companySignUpApp.controller('signupController',['$http','$scope','$rootScope',fu
             name: $scope.name,
         }
       }).success(function(data, status) {
-        console.log(data);
         if(data === "false") {
           $scope.nameCheckValue = "";
           $scope.nameCheck = true;
         } else {
-          console.log('???');
           //未通过验证
           $scope.nameCheck = false;
           $scope.nameCheckValue = "该公司名已经注册!";
