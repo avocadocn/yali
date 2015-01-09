@@ -390,7 +390,7 @@ exports.setComment = function (req, res) {
                 for(var i=0; i<teamLength; i++) {
                   var memberLength = teams[i].member.length;
                   for(var j=0;j<memberLength;j++) {
-                    teamUids.push(teams[i].member[j]._id);
+                    teamUids.push(teams[i].member[j]._id.toString());
                   }
                 }
                 callback(teamUids);
