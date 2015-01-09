@@ -391,12 +391,13 @@ exports.saveInfo =function(req,res,next) {
         companyGroup.brief = req.body.brief;
       }
       if(req.body.homecourt){
-        var homecourts = req.body.homecourt;
-        homecourts.forEach(function (homecourt) {
-          if (!homecourt.loc || !homecourt.loc.coordinates || homecourt.loc.coordinates.length === 0) {
-            delete homecourt.loc;
+        var homecourts = req.body.homecourt || [];
+        for(var i=homecourts.length-1; i>=0; i--) {
+          var homecourt = homecourts[i];
+          if (!homecourt.name || !homecourt.loc || !homecourt.loc.coordinates || homecourt.loc.coordinates.length === 0) {
+            homecourts.splice(i,1);
           }
-        });
+        }
         companyGroup.home_court = homecourts;
       }
       companyGroup.save(function (s_err){
