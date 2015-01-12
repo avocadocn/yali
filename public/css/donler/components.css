@@ -92,6 +92,7 @@
   padding: 6px;
   float: left;
   border: 1px solid #eee;
+  cursor: pointer;
 }
 .rich_comment .component_body .rich_comment_form .remind {
   margin: 0;

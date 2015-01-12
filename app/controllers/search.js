@@ -168,6 +168,7 @@ exports.getUser = function(req, res) {
           'department':users[i].department,
           'team':users[i].team
         });
+        //-此处department、team 可不需要 todo -M 配合前台、以及指定队长的后台逻辑修改
       }
       //只获取公司员工
       if(req.body.tid == 'null'){

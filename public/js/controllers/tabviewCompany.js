@@ -752,7 +752,7 @@ tabViewCompany
                         }
                     }
                 }
-
+                // 不需要在前台判断是否要强行拉入...修改todo -M
                 // 找出所有公司员工,成为小队队长的候选人(如果他不是该小队成员则将其强行拉入)
                 for(var i = 0 ; i < $scope.company_users.length; i ++){
                     //没有任何小队
