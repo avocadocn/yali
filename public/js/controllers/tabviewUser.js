@@ -435,9 +435,6 @@ tabViewUser.controller('SponsorController',['$http','$scope','$rootScope','Campa
       });
       //实例化城市查询类
       var citysearch = new AMap.CitySearch();
-      //自动获取用户IP，返回当前城市
-      citysearch.getLocalCity();
-      //citysearch.getCityByIp("123.125.114.*");
       AMap.event.addListener(citysearch, "complete", function(result){
         if(result && result.city && result.bounds) {
           var citybounds = result.bounds;
@@ -447,7 +444,7 @@ tabViewUser.controller('SponsorController',['$http','$scope','$rootScope','Campa
             $scope.MSearch = new AMap.PlaceSearch({ //构造地点查询类
               pageSize:1,
               pageIndex:1,
-              // city: result.city
+              city: result.city
 
             });
             AMap.event.addListener($scope.MSearch, "complete", placeSearchCallBack);//返回地点查询结果
@@ -455,6 +452,8 @@ tabViewUser.controller('SponsorController',['$http','$scope','$rootScope','Campa
         }
       });
       AMap.event.addListener(citysearch, "error", function(result){alert(result.info);});
+      //自动获取用户IP，返回当前城市
+      citysearch.getLocalCity();
     });
     window.map_ready =true;
   };
