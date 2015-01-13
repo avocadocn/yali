@@ -23,3 +23,5 @@ companies.forEach(function (company) {
   }
   db.companies.save(company);
 });
+//清除用户登录信息--2015/1/12
+db.users.update({token_device:{'$exists':true}},{$set:{device:[]},$unset:{token_device:1,app_token:1}},{multi:true})
