@@ -16,9 +16,19 @@ companies.forEach(function (company) {
     var rgcode = db.companyregisterinvitecodes.findOne({
       code: code
     });
-    rgcode.code = randomAlphaNumeric(8);
-    company.register_invite_code[i] = rgcode.code;
-    db.companyregisterinvitecodes.save(rgcode);
+    if (rgcode) {
+      rgcode.code = randomAlphaNumeric(8);
+      db.companyregisterinvitecodes.save(rgcode);
+      company.register_invite_code[i] = rgcode.code;
+    } else {
+      rgcode = {
+        code: randomAlphaNumeric(8),
+        company: company._id,
+        status: 'active'
+      };
+      db.companyregisterinvitecodes.insert(rgcode);
+      company.register_invite_code[i] = rgcode.code;
+    }
   }
   db.companies.save(company);
 });
