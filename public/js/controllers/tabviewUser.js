@@ -1236,6 +1236,9 @@ tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope'
         }
       }
     };
+    $('#user_modal').on('hide.bs.modal', function (e) {
+      window.location.hash = '';
+    });
 
     var formatData = function(data) {
       $scope.node = {
