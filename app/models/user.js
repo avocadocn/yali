@@ -10,10 +10,7 @@ var mongoose = require('mongoose'),
     config = require('../../config/config');
 
 var _device = new Schema({
-    platform:{
-        type:String,
-        enum:['Android','iOS','WindowsPhone','BlackBerry']
-    },
+    platform:String,
     version:String,
     device_id:String,
     device_type:String,            //同一platform设备的类型(比如ios系统有iPhone和iPad)
