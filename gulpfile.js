@@ -104,7 +104,8 @@ gulp.task('js:library', function () {
     './public/js/jquery.Jcrop.min.js',
     './public/lib/jquery-form/jquery.form.js',
     './public/lib/linkage-selector/linkage-selector.js',
-    './public/lib/cropit/dist/jquery.cropit.min.js'
+    './public/lib/cropit/dist/jquery.cropit.min.js',
+    './public/lib/angular-emoji-filter-hd-thin/dist/emoji.min.js'
   ])
     .pipe(concat('library.js'))
     .pipe(gulp.dest('./public/js'))

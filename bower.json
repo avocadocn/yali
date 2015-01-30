@@ -23,6 +23,6 @@
     "smalot-bootstrap-datetimepicker": "latest",
     "pen": "https://github.com/afeidonler/pen.git#master",
     "lazysizes": "~0.3.1",
-    "angular-emoji-filter": "latest"
+    "angular-emoji-filter-hd-thin": "https://github.com/maggie03230/angular-emoji-filter-hd-thin.git"
   }
 }

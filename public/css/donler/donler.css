@@ -71,10 +71,9 @@
   position: relative;
 }
 .rich_comment .component_body .rich_comment_form .emotion_box .box {
-  width: 540px;
+  width: 408px;
   margin-left: 27px;
-  height: 200px;
-  overflow-y: scroll;
+  height: 156px;
   box-shadow: 0 0 2px #ccc;
   margin-top: 7px;
 }
@@ -93,6 +92,9 @@
   float: left;
   border: 1px solid #eee;
   cursor: pointer;
+}
+.rich_comment .component_body .rich_comment_form .emotion_box .box .emoji_box .emoji {
+  margin-right: 0;
 }
 .rich_comment .component_body .rich_comment_form .remind {
   margin: 0;
@@ -271,7 +273,6 @@
 }
 .rich_comment.simple_comment .component_body .rich_comment_form .emotion_box .box {
   margin-left: 0;
-  width: 365px;
 }
 .rich_comment.simple_comment .component_body .rich_comment_form .emotion_box .box .triangle_up {
   left: 4px;

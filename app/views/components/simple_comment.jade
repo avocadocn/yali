@@ -2,7 +2,7 @@
   .component_body
     form.rich_comment_form(name="comment_form{{$id}}" ng-if="allowPublish" novalidate)
       .comment_control
-        button.emotion_button.emoji.emoji_yum(ng-click="showEmotions()")
+        button.emotion_button.emoji.emoji_tongue(ng-click="showEmotions()")
         input.content(name="content" ng-model="new_comment.text" placeholder="{{currentPlaceholder.comment}}" ng-focus="hideEmotions();currentPlaceholder.comment=''" ng-blur="currentPlaceholder.comment=originPlaceholder" maxlength=140 required)
         label.img_selector(for="photos{{$id}}" ng-click="hideEmotions()")
           i.upload_img.fa.fa-picture-o
