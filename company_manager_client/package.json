@@ -1,0 +1,11 @@
+{
+  "name": "company-manager-client",
+  "description": "company-manager-client",
+  "version": "0.0.1",
+  "private": true,
+  "devDependencies": {
+    "grunt-contrib-requirejs": "~0.4.4",
+    "grunt-contrib-jade": "~0.14.0",
+    "grunt-contrib-watch": "~0.6.1"
+  }
+}

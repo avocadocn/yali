@@ -142,6 +142,15 @@ module.exports = function(app, passport, db) {
         // Setting the fav icon and static folder
         app.use(express.favicon());
         app.use(express.static(config.root + '/public'));
+        app.use(
+          '/company/manager/templates',
+          function (req, res, next) {
+              // todo for temp test
+              next();
+          },
+          express.static(config.root + '/company_manager_client/templates')
+        );
+        app.use('/company/manager', express.static(config.root + '/company_manager_client'));
 
         app.use(errorHandle);
 

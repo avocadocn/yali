@@ -30,3 +30,7 @@ public/mobile/platforms/ios/Donler/Plugins/org.apache.cordova.file/CDVLocalFiles
 
 test/nightwatch/lib/
 test/nightwatch/reports/
+
+company_manager_client/.bower-*/
+company_manager_client/bower-lib/
+company_manager_client/node_modules/
