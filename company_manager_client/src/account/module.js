@@ -1,0 +1,1 @@
+define(['./account_controller', './account_service'], function () {});

@@ -1,10 +1,11 @@
 define([
   'angular',
   'uiRouter',
-  'account/account'
+  './account/module'
 ], function(angular) {
   return angular.module('app', [
-    'ui.router'
+    'ui.router',
+    'account'
   ]).run([
     '$rootScope',
     '$state',
