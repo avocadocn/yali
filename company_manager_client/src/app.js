@@ -5,7 +5,13 @@ define([
 ], function(angular) {
   return angular.module('app', [
     'ui.router'
-  ]).run([function() {
-    
-  }]);
+  ]).run([
+    '$rootScope',
+    '$state',
+    '$stateParams',
+    function($rootScope, $state, $stateParams) {
+      $rootScope.$state = $state;
+      $rootScope.$stateParams = $stateParams;
+    }
+  ]);
 });

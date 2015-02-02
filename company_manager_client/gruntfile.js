@@ -7,6 +7,10 @@ module.exports = function(grunt) {
       jade: {
         files: ['src/**/*.jade'],
         tasks: ['jade']
+      },
+      js: {
+        files: ['src/**/*.js'],
+        tasks: ['requirejs']
       }
     },
     jade: {

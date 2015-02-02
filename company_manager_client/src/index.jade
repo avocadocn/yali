@@ -3,5 +3,8 @@ html
   head
     title donler company manager
   body
-    h1 hello,world
+    nav(ui-view="nav")
+    aside(ui-view="aside")
+    .content(ui-view="content")
+
     script(data-main="/company/manager/dist/donler" src="/company/manager/custom-lib/require.js")
