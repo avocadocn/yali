@@ -1,4 +1,4 @@
-define(['./app'], function (app) {
+define(['app'], function (app) {
   return app.config([
     '$httpProvider',
     '$urlRouterProvider',
@@ -15,17 +15,24 @@ define(['./app'], function (app) {
       $urlRouterProvider
         .when('', '/');
 
-      $stateProvider.state('home', {
-        url: '/',
-        views: {
-          nav: {
-            templateUrl: templateUrl('/nav/nav.html')
-          },
-          aside: {
-            templateUrl: templateUrl('/aside/aside.html')
+      $stateProvider
+        .state('home', {
+          url: '/',
+          views: {
+            nav: {
+              templateUrl: templateUrl('/nav/nav.html')
+            },
+            aside: {
+              templateUrl: templateUrl('/aside/aside.html')
+            }
           }
-        }
-      });
+        })
+        .state('login', {
+          url: '/login',
+          templateUrl: '/company/manager/login.html',
+          controller: 'account.LoginCtrl'
+        });
     }
-  ]);
+  ])
+    .constant('apiBaseUrl', 'http://localhost:3002');
 });

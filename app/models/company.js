@@ -25,6 +25,20 @@ var _department = new Schema({
     department: [_department]
 });
 
+var _device = new Schema({
+    platform:String,
+    version:String,
+    device_id:String,
+    device_type:String,            //同一platform设备的类型(比如ios系统有iPhone和iPad)
+    access_token:String,           //每次登录时生成
+    app_id: String,
+    api_key: String,
+    update_date:{
+        type: Date,
+        default: Date.now
+    }
+});
+
 /**
  * Company Schema
  */
@@ -102,7 +116,8 @@ var CompanySchema = new Schema({
     // 企业注册用的邀请码
     register_invite_code: [String],
     // 企业给用户的邀请码
-    invite_key: String
+    invite_key: String,
+    device: [_device]
 });
 
 /**

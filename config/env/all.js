@@ -1,6 +1,7 @@
 'use strict';
 
 var path = require('path');
+var moment = require('moment');
 var rootPath = path.normalize(__dirname + '/../..');
 
 module.exports = {
@@ -13,5 +14,9 @@ module.exports = {
 	// is used to compute a session hash
 	sessionSecret: 'MEAN',
 	// The name of the MongoDB collection to store sessions in
-	sessionCollection: 'sessions'
+	sessionCollection: 'sessions',
+	token: {
+		secret: 'donler',
+		expires: moment().add('days', 7).valueOf()
+	}
 };

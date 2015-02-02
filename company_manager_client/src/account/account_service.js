@@ -1,33 +1,32 @@
-define(['./account'], function (account) {
-  return account.factory('UnAuthRedirectService', ['$q', function ($q) {
-    var RedirectService = {
+define(['./account', 'app'], function (account) {
+  return account.factory('UnAuthRedirectService', [function () {
+    var UnAuthRedirectService = {
       requestError: function(config) {
         console.log(config)
       },
       response: function(res) {
-        // todo
-        if (res) {
-          var data = res.data.toString();
-          return -1 != data.search("isLogin") ? (console.log("u have lose ur session!"), location.href = "/login.html", res = {
-            data: {
-              data: ""
-            }
-          }) : -1 != data.search("needActive") ? (location.href = "/active.html", res = {
-            data: {
-              data: ""
-            }
-          }) : res
-        }
-        return res = {
-          data: {
-            data: ""
-          }
-        };
+        return res;
       },
-      responseError: function(response) {
-        console.log(response)
+      responseError: function(res) {
+        if (res.status === 401) {
+          location.href = '/company/manager/#/login';
+        }
       }
     };
-    return RedirectService;
-  }]);
+    return UnAuthRedirectService;
+  }])
+    .factory('Account', ['$http', 'apiBaseUrl', function ($http, apiBaseUrl) {
+      return {
+
+        /**
+         * 公司登录
+         * @param {{username: String, password: String}} postData
+         * @returns {HttpPromise}
+         */
+        login: function (postData) {
+          return $http.post(apiBaseUrl + '/companies/login', postData);
+        }
+
+      }
+    }]);
 });
