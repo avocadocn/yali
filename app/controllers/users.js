@@ -321,11 +321,22 @@ exports.invite = function(req, res) {
       if(key === company.invite_key){
         req.session.key = key;
         req.session.key_id = cid;
-        res.render('signup/invite', {
-          title: '个人注册',
-          domains: company.email.domain,
-          cname: company.info.official_name
-        });
+        var deviceAgent = req.headers["user-agent"].toLowerCase();
+        var agentID = deviceAgent.match(/(iphone|ipod|ipad|android)/);
+        if(agentID){
+          res.render('signup/invite_phone', {
+            title: '个人注册',
+            domains: company.email.domain,
+            cname: company.info.official_name
+          });
+        }else{
+          res.render('signup/invite', {
+            title: '个人注册',
+            domains: company.email.domain,
+            cname: company.info.official_name
+          });
+        }
+        
       }else{
         console.log('key错误');
         res.render('users/message', {title: 'error', message: 'bad request'});
@@ -409,7 +420,13 @@ function userOperate(cid, key, res, req, index) {
                     delete req.session.key;
                     delete req.session.key_id;
                     delete req.session.cid;
-                    return res.render('users/message', message.wait);
+                    var deviceAgent = req.headers["user-agent"].toLowerCase();
+                    var agentID = deviceAgent.match(/(iphone|ipod|ipad|android)/);
+                    if(agentID){
+                      return res.render('users/app_download');
+                    }else{
+                      return res.render('users/message', message.wait);
+                    }
                   }
                 });
               }
@@ -469,7 +486,13 @@ function userOperate(cid, key, res, req, index) {
             delete req.session.key;
             delete req.session.key_id;
             delete req.session.cid;
-            return res.render('users/message', message.wait);
+            var deviceAgent = req.headers["user-agent"].toLowerCase();
+            var agentID = deviceAgent.match(/(iphone|ipod|ipad|android)/);
+            if(agentID){
+              return res.render('users/app_download', message.wait);
+            }else{
+              return res.render('users/message', message.wait);
+            }
           }
           else {
             console.log(email);

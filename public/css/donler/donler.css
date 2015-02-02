@@ -2198,18 +2198,20 @@ input::-webkit-inner-spin-button {
 .dl_navbar-toggle .icon-bar + .icon-bar {
   margin-top: 4px;
 }
-@media (min-width: 768px) {
-  .dl_navbar-toggle {
-    display: none;
-  }
-}
 .wrap {
   min-height: 100%;
   height: auto;
   margin-bottom: 13px;
-  min-width: 960px;
   position: relative;
   background-color: #f4f4f4;
+}
+@media (min-width: 768px) {
+  .wrap {
+    min-width: 960px;
+  }
+  .dl_navbar-toggle {
+    display: none;
+  }
 }
 .dl_footer {
   background-color: #f0f0f0;

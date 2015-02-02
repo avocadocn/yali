@@ -76,7 +76,9 @@ exports.question = function(req, res) {
 exports.contact = function(req, res) {
   res.render('contact');
 };
-
+exports.appdownload = function(req, res) {
+  return res.render('users/app_download');
+};
 exports.feedback = function(req, res) {
   var sendByWebpower = function () {
     webpower.sendFeedBackMail(

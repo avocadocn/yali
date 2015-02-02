@@ -15,4 +15,5 @@ module.exports = function(app) {
     app.get('/finish',schedule.finishCampaign);
     app.post('/feedback',index.feedback);
     app.get('/index/header',index.header);
+    app.get('/index/appdownload',index.appdownload);
 };
