@@ -23,3 +23,52 @@
 .aside {
   background-color: #fff;
 }
+.dl_company_info .cropper {
+  margin-left: auto;
+  margin-right: auto;
+  width: 256px;
+  height: 256px;
+  padding: 30px;
+  overflow: hidden;
+}
+.dl_company_info .cropit-image-preview-container {
+  width: 256px;
+  height: 256px;
+}
+.dl_company_info .cropit-image-preview {
+  width: 256px;
+  height: 256px;
+}
+.dl_company_info .cropit-image-background {
+  opacity: 0.2;
+}
+.dl_company_info .cropit-image-input {
+  visibility: hidden;
+}
+.dl_company_info .operator {
+  position: relative;
+  text-align: center;
+}
+.dl_company_info .operator .cropit-image-zoom-input {
+  display: inline-block;
+  margin: 0 10px;
+  line-height: 26px;
+  vertical-align: middle;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  height: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  outline: none;
+}
+.dl_company_info .operator .button_sure {
+  margin-left: 10px;
+}
+.dl_company_info .operator .icon_small,
+.dl_company_info .operator .icon_large {
+  vertical-align: middle;
+}
+.dl_company_info .operator .icon_large {
+  font-size: 17px;
+}

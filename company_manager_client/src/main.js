@@ -4,7 +4,9 @@ requirejs.config({
   out: '../dist/donler.js',
   paths: {
     angular: '../bower-lib/angular/angular',
-    uiRouter: '../bower-lib/angular-ui-router/release/angular-ui-router'
+    uiRouter: '../bower-lib/angular-ui-router/release/angular-ui-router',
+    jQuery: '../bower-lib/jquery/dist/jquery',
+    cropit: '../bower-lib/cropit/dist/jquery.cropit'
   },
   shim: {
     angular: {
@@ -12,6 +14,12 @@ requirejs.config({
     },
     uiRouter: {
       deps: ['angular']
+    },
+    jQuery: {
+      exports: 'jQuery'
+    },
+    cropit: {
+      deps: ['jQuery']
     }
   },
   deps: ['./bootstrap'],

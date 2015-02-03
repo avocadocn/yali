@@ -14,3 +14,16 @@
       label 联系人
       input(type="text" name="contacts" ng-model="formData.contacts")
     button(type="submit" ng-click="edit()") 修改
+
+  hr
+  h2 修改头像
+  button.dl_btn.dl_btn_small(ng-click="selectLogo()") 选择图片
+  .cropper#image_cropper(ng-show="isUploading")
+    .cropit-image-preview-container
+      .cropit-image-preview
+    .operator
+      span.glyphicon.glyphicon-picture.icon_small
+      input.cropit-image-zoom-input(type="range")
+      span.glyphicon.glyphicon-picture.icon_large
+      button(type="button" ng-click="editLogo()") 确定
+    input.cropit-image-input#cropit_image_input(type="file")
