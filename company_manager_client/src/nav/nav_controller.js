@@ -1,4 +1,4 @@
-define(['./nav', 'uiRouter'], function (nav) {
+define(['./nav'], function (nav) {
   return nav.controller('nav.navCtrl', [
     '$rootScope',
     '$scope',

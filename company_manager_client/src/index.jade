@@ -2,10 +2,12 @@ doctype html
 html
   head
     title donler company manager
+    link(rel="stylesheet" href="/company/manager/dist/donler.css")
   body
-    nav(ui-view="nav")
-    aside(ui-view="aside")
-    .content(ui-view="content")
-    div(ui-view="")
+    nav.dl_nav(ui-view="nav")
+    .dl_main_container
+      aside.dl_aside(ui-view="aside")
+      .dl_content(ui-view="content")
+    .dl_wrap(ui-view="")
 
     script(data-main="/company/manager/dist/donler" src="/company/manager/custom-lib/require.js")

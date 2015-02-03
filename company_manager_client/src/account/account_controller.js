@@ -1,4 +1,4 @@
-define(['./account', 'uiRouter'], function (account) {
+define(['./account'], function (account) {
   return account.controller('account.loginCtrl', [
     '$rootScope',
     '$scope',

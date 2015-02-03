@@ -1,3 +1,25 @@
 
+
+// 辅助类
+.clearfix
+  &:before, &:after
+    display table
+    content " "
+  &:after
+    clear both
+
+
+// 整体布局
+.dl_main_container
+  display flex
+  display -webkit-flex
+.dl_aside
+  width 200px
+.dl_content
+  flex 1
+  -webkit-flex 1
+
+
+
 @require 'account/*'
 @require 'aside/*'
