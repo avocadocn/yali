@@ -11,6 +11,10 @@ module.exports = function(grunt) {
       js: {
         files: ['src/**/*.js'],
         tasks: ['requirejs']
+      },
+      stylus: {
+        files: ['src/**/*.styl'],
+        tasks: ['stylus']
       }
     },
     jade: {
@@ -40,14 +44,29 @@ module.exports = function(grunt) {
           out: 'dist/donler.js'
         }
       }
+    },
+    stylus: {
+      compile: {
+        options: {
+          urlfunc: 'embedurl',
+          compress: false,
+          cache: false
+        },
+        files: [{
+          'dist/donler.css': 'src/donler.styl'
+        }]
+      }
     }
   });
 
   grunt.loadNpmTasks('grunt-contrib-jade');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-requirejs');
+  grunt.loadNpmTasks('grunt-contrib-stylus');
 
-  grunt.registerTask('default', ['jade', 'requirejs', 'watch']);
+  grunt.registerTask('default', ['develop']);
+  grunt.registerTask('develop', ['watch']);
+  grunt.registerTask('product', ['jade', 'stylus', 'requirejs']);
 
 };
 
