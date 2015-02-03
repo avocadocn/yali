@@ -17,21 +17,21 @@ define(['app'], function (app) {
 
       $stateProvider
         .state('home', {
-          url: '/',
-          views: {
-            nav: {
-              templateUrl: templateUrl('/nav/nav.html'),
-              controller: 'nav.navCtrl'
-            },
-            aside: {
-              templateUrl: templateUrl('/aside/aside.html')
-            }
-          }
+          url: '/'
         })
         .state('login', {
           url: '/login',
           templateUrl: '/company/manager/login.html',
           controller: 'account.loginCtrl'
+        })
+        .state('companyInfo', {
+          url: '/company/info',
+          views: {
+            content: {
+              templateUrl: templateUrl('/company/edit_info.html'),
+              controller: 'company.editCtrl'
+            }
+          }
         });
     }
   ])

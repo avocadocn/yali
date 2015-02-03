@@ -1,0 +1,20 @@
+.dl_company_info
+  h2 公司信息
+  form(name="editInfoForm")
+    div
+      label 官方简称
+      input(type="text" name="name")
+    div
+      //- todo api 不可更改
+      label 企业全称
+      input(type="text" name="fullName")
+    div
+      label 地址
+      input(type="text" name="address")
+    div
+      label 企业电话
+      input(type="text" name="tel")
+    div
+      label 联系人
+      input(type="text" name="contacts")
+    button(type="submit" ng-click="edit()") 修改

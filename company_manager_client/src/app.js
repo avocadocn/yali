@@ -1,15 +1,17 @@
 define([
   'angular',
   'uiRouter',
+  './storage/storage',
   './account/module',
   './nav/module',
-  './storage/storage'
+  './company/module',
 ], function(angular) {
   return angular.module('app', [
     'ui.router',
-    'account',
     'storage',
-    'nav'
+    'account',
+    'nav',
+    'company'
   ]).run([
     '$rootScope',
     '$state',

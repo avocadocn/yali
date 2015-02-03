@@ -1,0 +1,1 @@
+define(['./company_controller', './company_service'], function () {});
