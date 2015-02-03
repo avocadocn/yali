@@ -1,0 +1,1 @@
+define(['./nav_controller'], function () {});

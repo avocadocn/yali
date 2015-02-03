@@ -20,7 +20,8 @@ define(['app'], function (app) {
           url: '/',
           views: {
             nav: {
-              templateUrl: templateUrl('/nav/nav.html')
+              templateUrl: templateUrl('/nav/nav.html'),
+              controller: 'nav.navCtrl'
             },
             aside: {
               templateUrl: templateUrl('/aside/aside.html')
@@ -30,7 +31,7 @@ define(['app'], function (app) {
         .state('login', {
           url: '/login',
           templateUrl: '/company/manager/login.html',
-          controller: 'account.LoginCtrl'
+          controller: 'account.loginCtrl'
         });
     }
   ])

@@ -18,12 +18,20 @@ define(['./account', 'app'], function (account) {
       return {
 
         /**
-         * 公司登录
+         * 登录
          * @param {{username: String, password: String}} postData
          * @returns {HttpPromise}
          */
         login: function (postData) {
           return $http.post(apiBaseUrl + '/companies/login', postData);
+        },
+
+        /**
+         * 注销
+         * @returns {HttpPromise}
+         */
+        logout: function () {
+          return $http.post(apiBaseUrl + '/companies/logout');
         },
 
         /**
