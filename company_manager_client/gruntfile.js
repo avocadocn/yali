@@ -39,9 +39,7 @@ module.exports = function(grunt) {
     requirejs: {
       compile: {
         options: {
-          name: 'main',
-          mainConfigFile: 'src/main.js',
-          out: 'dist/donler.js'
+          mainConfigFile: 'src/main.js'
         }
       }
     },
@@ -64,7 +62,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-stylus');
 
-  grunt.registerTask('default', ['develop']);
+  grunt.registerTask('default', ['product', 'develop']);
   grunt.registerTask('develop', ['watch']);
   grunt.registerTask('product', ['jade', 'stylus', 'requirejs']);
 

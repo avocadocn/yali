@@ -3,23 +3,27 @@ define(['./account', 'uiRouter'], function (account) {
     '$scope',
     '$http',
     '$state',
-    'Account',
-    function ($scope, $http, $state, Account) {
+    'accountService',
+    'storageService',
+    function ($scope, $http, $state, accountService, storageService) {
       $scope.loginData = {
         username: '',
         password: ''
       };
       $scope.login = function () {
-        Account.login($scope.loginData)
+        accountService.login($scope.loginData)
           .success(function (data, status) {
             $http.defaults.headers.common['x-access-token'] = data.token;
-            alert('登录成功');
+            storageService.session.set('x-access-token', data.token);
+            storageService.session.set('cid', data.id);
             $state.go('home');
           })
           .error(function (data, status) {
-            alert(data);
+            alert(data.msg);
           });
       };
+
+
     }
   ]);
 });

@@ -1,6 +1,6 @@
 define(['./account', 'app'], function (account) {
-  return account.factory('UnAuthRedirectService', [function () {
-    var UnAuthRedirectService = {
+  return account.factory('unAuthRedirectService', [function () {
+    return {
       requestError: function(config) {
         console.log(config)
       },
@@ -13,9 +13,8 @@ define(['./account', 'app'], function (account) {
         }
       }
     };
-    return UnAuthRedirectService;
   }])
-    .factory('Account', ['$http', 'apiBaseUrl', function ($http, apiBaseUrl) {
+    .factory('accountService', ['$http', 'apiBaseUrl', function ($http, apiBaseUrl) {
       return {
 
         /**
@@ -25,6 +24,15 @@ define(['./account', 'app'], function (account) {
          */
         login: function (postData) {
           return $http.post(apiBaseUrl + '/companies/login', postData);
+        },
+
+        /**
+         * 获取公司账号资料
+         * @param {String} id 公司id
+         * @returns {HttpPromise}
+         */
+        get: function (id) {
+          return $http.get(apiBaseUrl + '/companies/' + id);
         }
 
       }

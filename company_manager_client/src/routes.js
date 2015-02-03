@@ -5,7 +5,7 @@ define(['app'], function (app) {
     '$stateProvider',
     function ($httpProvider, $urlRouterProvider, $stateProvider) {
 
-      $httpProvider.interceptors.push('UnAuthRedirectService');
+      $httpProvider.interceptors.push('unAuthRedirectService');
 
       var templateUrl = function (url) {
         var baseUrl = '/company/manager/templates';
