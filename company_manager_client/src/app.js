@@ -4,7 +4,7 @@ define([
   './storage/storage',
   './account/module',
   './nav/module',
-  './company/module',
+  './company/module'
 ], function(angular) {
   return angular.module('app', [
     'ui.router',

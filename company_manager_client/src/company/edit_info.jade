@@ -3,18 +3,14 @@
   form(name="editInfoForm")
     div
       label 官方简称
-      input(type="text" name="name")
-    div
-      //- todo api 不可更改
-      label 企业全称
-      input(type="text" name="fullName")
+      input(type="text" name="name" ng-model="formData.name")
     div
       label 地址
-      input(type="text" name="address")
+      input(type="text" name="address" ng-model="formData.address")
     div
       label 企业电话
-      input(type="text" name="tel")
+      input(type="text" name="tel" ng-model="formData.tel")
     div
       label 联系人
-      input(type="text" name="contacts")
+      input(type="text" name="contacts" ng-model="formData.contacts")
     button(type="submit" ng-click="edit()") 修改
