@@ -3,7 +3,8 @@ define(['./company', 'jQuery', 'cropit'], function (company, $) {
     '$rootScope',
     '$scope',
     'companyService',
-    function ($rootScope, $scope, companyService) {
+    'imageService',
+    function ($rootScope, $scope, companyService, imageService) {
       var company = $rootScope.company;
       $scope.formData = {
         name: company.shortName,
@@ -13,8 +14,12 @@ define(['./company', 'jQuery', 'cropit'], function (company, $) {
       };
 
       $scope.edit = function () {
+        // 阻止提交，在这里不需要做提示，应该在页上使按钮不可用并作出错误提示。
+        if ($scope.editInfoForm.$invalid) {
+          return;
+        }
         companyService.editInfo(company._id, $scope.formData)
-          .success(function (data) {
+          .success(function () {
             company.shortName = $scope.formData.name;
             company.address = $scope.formData.address;
             company.number = $scope.formData.tel;
@@ -26,7 +31,7 @@ define(['./company', 'jQuery', 'cropit'], function (company, $) {
           });
       };
 
-      // todo 以下为临时代码，先实现功能再考虑改进代码结构
+
       var cropper = $('#image_cropper').cropit({
         onFileChange: function () {
           $scope.isUploading = true;
@@ -41,35 +46,16 @@ define(['./company', 'jQuery', 'cropit'], function (company, $) {
         cropitImageInput.click();
       };
 
-      var dataURItoBlob = function(dataURI) {
-        // convert base64/URLEncoded data component to raw binary data held in a string
-        var byteString;
-        if (dataURI.split(',')[0].indexOf('base64') >= 0)
-          byteString = atob(dataURI.split(',')[1]);
-        else
-          byteString = unescape(dataURI.split(',')[1]);
-
-        // separate out the mime component
-        var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
-
-        // write the bytes of the string to a typed array
-        var ia = new Uint8Array(byteString.length);
-        for (var i = 0; i < byteString.length; i++) {
-          ia[i] = byteString.charCodeAt(i);
-        }
-
-        return new Blob([ia], {
-          type: mimeString
-        });
-      };
-
       $scope.editLogo = function () {
         var dataURI = cropper.cropit('export', {
           type: 'image/jpeg',
           quality: 1
         });
+        if (!dataURI || dataURI === '') {
+          return;
+        }
         var fd = new FormData();
-        var blob = dataURItoBlob(dataURI);
+        var blob = imageService.dataURItoBlob(dataURI);
         fd.append('logo', blob);
         companyService.editLogo(company._id, fd, function (err) {
           if (err) {

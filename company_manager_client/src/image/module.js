@@ -1,0 +1,1 @@
+define(['./image_service'], function () {});
