@@ -45,7 +45,12 @@ define(['./account', 'app'], function (account) {
           return $http.get(apiBaseUrl + '/companies/' + id);
         },
 
-
+        /**
+         * 更新公司信息
+         * @param  {String} id         公司id
+         * @param  {Object} updateData 需要更新的公司数据
+         * @return {HttpPromise}            
+         */
         update: function (id, updateData) {
           return $http.put(apiBaseUrl + '/companies/' +id, updateData);
         }

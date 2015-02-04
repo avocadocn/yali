@@ -41,6 +41,33 @@ define(['app'], function (app) {
               controller: 'account.settingCtrl'
             }
           }
+        })
+        .state('teamList', {
+          url: '/team/list',
+          views: {
+            content: {
+              templateUrl: templateUrl('/team/team_list.html'),
+              controller: 'team.listCtrl'
+            }
+          }
+        })
+        .state('createTeam', {
+          url: '/team/create',
+          views: {
+            content: {
+              templateUrl: templateUrl('/team/team_create.html'),
+              controller: 'team.createCtrl'
+            }
+          }
+        })
+        .state('pointTeamLeader', {
+          url: '/team/pointLeader/:teamId',
+          views: {
+            content: {
+              templateUrl: templateUrl('/team/point_leader.html'),
+              controller: 'team.pointLeaderCtrl'
+            }
+          }
         });
     }
   ])

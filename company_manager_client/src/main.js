@@ -6,7 +6,8 @@ requirejs.config({
     angular: '../bower-lib/angular/angular',
     uiRouter: '../bower-lib/angular-ui-router/release/angular-ui-router',
     jQuery: '../bower-lib/jquery/dist/jquery',
-    cropit: '../bower-lib/cropit/dist/jquery.cropit'
+    cropit: '../bower-lib/cropit/dist/jquery.cropit',
+    angularBootstrap:'../bower-lib/angular-bootstrap/ui-bootstrap-tpls',
   },
   shim: {
     angular: {
@@ -20,6 +21,9 @@ requirejs.config({
     },
     cropit: {
       deps: ['jQuery']
+    },
+    angularBootstrap :{
+      deps: ['angular']
     }
   },
   deps: ['./bootstrap'],

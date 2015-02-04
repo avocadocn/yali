@@ -1,0 +1,56 @@
+
+h1 小队管理
+a(ui-sref="createTeam") 新建小队
+h2 无队长的小队
+table.team_table
+  thead
+    tr
+      th 名称
+      th 队长
+      th 人数
+      th 上月活动数
+      th 总活动数
+      th 积分
+      th 操作
+  tbody
+    tr(ng-repeat="team in noLeaderTeams | filter:noLeader")
+      td {{team.name}}
+      td {{team.leaders[0].nickname}}
+      td {{team.memberCount}}
+      td{{team.count.last_month_campaign}}
+      td {{team.count.total_campaign}}
+      td {{team.score.total}}
+      td
+        button(ng-click="editTeam($index)") 编辑信息
+        a(ui-sref="pointTeamLeader({teamId:team._id})") 任命队长
+hr
+table.team_table
+  thead
+    tr
+      th 名称
+      th 队长
+      th 人数
+      th 上月活动数
+      th 总活动数
+      th 积分
+      th 操作
+  tbody
+    tr(ng-repeat="team in teams | filter:haveLeader")
+      td {{team.name}}
+      td {{team.leaders[0].nickname}}
+      td {{team.memberCount}}
+      td{{team.count.last_month_campaign}}
+      td {{team.count.total_campaign}}
+      td {{team.score.total}}
+      td
+        button(ng-click="editTeam($index)") 编辑信息
+        a(ui-sref="pointTeamLeader({teamId:team._id})") 任命队长
+script(type="text/ng-template" id="editTeamModal.html")
+  modal-header
+    h3.modal-title 编辑小队信息
+  modal-body
+    .team_edit
+      input(type="text" ng-model="team.name")
+  modal-footer
+    button.btn.btn-primary(ng-click="save()") 确定
+    button.btn.btn-warning(ng-click="cancel()") 取消

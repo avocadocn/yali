@@ -1,0 +1,1 @@
+define(['./team_controller', './team_service'], function () {});
