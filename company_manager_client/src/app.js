@@ -2,6 +2,7 @@ define([
   'angular',
   'uiRouter',
   './storage/storage',
+  './utils/utils',
   './account/module',
   './nav/module',
   './company/module'
@@ -9,6 +10,7 @@ define([
   return angular.module('app', [
     'ui.router',
     'storage',
+    'utils',
     'account',
     'nav',
     'company'

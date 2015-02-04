@@ -32,6 +32,15 @@ define(['app'], function (app) {
               controller: 'company.editCtrl'
             }
           }
+        })
+        .state('accountSetting', {
+          url: '/account',
+          views: {
+            content: {
+              templateUrl: templateUrl('/account/account_settings.html'),
+              controller: 'account.settingCtrl'
+            }
+          }
         });
     }
   ])

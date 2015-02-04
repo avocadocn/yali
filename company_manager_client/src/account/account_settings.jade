@@ -1,1 +1,26 @@
-h1 hello, account.
+.account_setting
+  h1 账号
+  h2 修改密码
+  form(name="changePasswordForm")
+    div
+      label 旧密码:
+      input(type="password" name="oldPassword" ng-model="oldPassword" ng-minlength=6 required)
+    div
+      label 新密码：
+      input(type="password" name="password" ng-model="password" ng-minlength=6 required)
+    div
+      label 新密码确认:
+      input(type="password" name="confirmPassword" ng-model="confirmPassword" match="password" ng-minlength=6 required)
+    div
+      button(type="submit" ng-disabled="changePasswordForm.$invalid" ng-click="changePassword()") 确认修改
+  label 注册邮箱：
+  label(ng-bind="company.login_email")
+  h2 公司邮箱管理
+    form(name="updateDomainForm")
+      div(ng-repeat="domain in domains")
+        input(type="text" name="domain" ng-model="domains[$index]" required)
+        button(ng-if="$index!=0" ng-click="removeDomain($index)") 去掉
+      .add_domain_div(ng-if="domains.length<3")
+        input(type="text" name="newDomain" ng-model="newDomain.domain" required)
+        button(ng-click="addDomain()") 添加
+      button(type="submit" ng-disabled="updateDomainForm.$invalid" ng-click="updateDomain()") 确定

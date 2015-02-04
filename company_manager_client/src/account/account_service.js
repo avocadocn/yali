@@ -1,5 +1,5 @@
 define(['./account', 'app'], function (account) {
-  return account.factory('unAuthRedirectService', [function () {
+  return account.factory('unAuthRedirectService', ['$q', function ($q) {
     return {
       requestError: function(config) {
         console.log(config)
@@ -10,6 +10,8 @@ define(['./account', 'app'], function (account) {
       responseError: function(res) {
         if (res.status === 401) {
           location.href = '/company/manager/#/login';
+        } else {
+          return $q.reject(res);
         }
       }
     };
@@ -41,8 +43,12 @@ define(['./account', 'app'], function (account) {
          */
         get: function (id) {
           return $http.get(apiBaseUrl + '/companies/' + id);
-        }
+        },
 
+
+        update: function (id, updateData) {
+          return $http.put(apiBaseUrl + '/companies/' +id, updateData);
+        }
       }
     }]);
 });
