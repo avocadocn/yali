@@ -32,6 +32,7 @@ define([
       var token = storageService.session.get('x-access-token');
       if (!token) {
         $state.go('login');
+        return;
       } else {
         $http.defaults.headers.common['x-access-token'] = token;
         var cid = storageService.session.get('cid');

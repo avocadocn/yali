@@ -38,8 +38,7 @@ define(['./account'], function (account) {
     '$http',
     '$state',
     'accountService',
-    'storageService',
-    function ($rootScope, $scope, $http, $state, accountService, storageService) {
+    function ($rootScope, $scope, $http, $state, accountService) {
       $scope.domains = $rootScope.company.domains;
       $scope.newDomain ={};
       $scope.addDomain = function () {
@@ -63,7 +62,7 @@ define(['./account'], function (account) {
         var passwordData = {
           oldPassword: $scope.oldPassword,
           password: $scope.password
-        }
+        };
         accountService.update($rootScope.company._id,passwordData).success(function (data) {
           alert('修改密码成功')
         })

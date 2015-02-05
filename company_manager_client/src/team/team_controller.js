@@ -3,9 +3,8 @@ define(['./team'], function (team) {
     '$rootScope',
     '$scope',
     'teamService',
-    'storageService',
     '$modal',
-    function ($rootScope, $scope, teamService, storageService, $modal) {
+    function ($rootScope, $scope, teamService, $modal) {
       teamService.getList($rootScope.company._id).success(function (data) {
         $scope.teams = data;
       })
@@ -31,7 +30,7 @@ define(['./team'], function (team) {
         $scope.team = $scope.teams[index];
         var modalInstance = $modal.open({
           templateUrl: 'editTeamModal.html',
-          scope: $scope,
+          scope: $scope
         });
         $scope.save = function () {
           modalInstance.dismiss('ok');
@@ -53,8 +52,7 @@ define(['./team'], function (team) {
     '$rootScope',
     '$scope',
     'teamService',
-    'storageService',
-    function ($rootScope, $scope, teamService, storageService) {
+    function ($rootScope, $scope, teamService) {
       teamService.getList($rootScope.company._id).success(function (data) {
         $scope.teams = data;
       })
@@ -68,8 +66,7 @@ define(['./team'], function (team) {
     '$rootScope',
     '$scope',
     'teamService',
-    'storageService',
-    function ($rootScope, $scope, teamService, storageService) {
+    function ($rootScope, $scope, teamService) {
       teamService.getList($rootScope.company._id).success(function (data) {
         $scope.teams = data;
       })
