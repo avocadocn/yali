@@ -1,1 +1,1 @@
-define(['./team_controller', './team_service'], function () {});
+define(['./team_service'], function () {});

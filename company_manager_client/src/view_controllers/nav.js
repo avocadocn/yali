@@ -1,5 +1,5 @@
-define(['./nav'], function (nav) {
-  return nav.controller('nav.navCtrl', [
+define(['./controller'], function (controllers) {
+  return controllers.controller('nav.navCtrl', [
     '$rootScope',
     '$scope',
     '$http',

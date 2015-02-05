@@ -6,9 +6,9 @@ html
     link(rel="stylesheet" href="/company/manager/dist/donler.css")
   body
     div(ng-if="company" ng-cloak)
-      nav.dl_nav(ng-include="'/company/manager/templates/nav/nav.html'")
+      nav.dl_nav(ng-include="'/company/manager/templates/views/nav.html'")
       .dl_main_container
-        aside.dl_aside(ng-include="'/company/manager/templates/aside/aside.html'")
+        aside.dl_aside(ng-include="'/company/manager/templates/views/aside.html'")
         .dl_content(ui-view="content")
     .dl_wrap(ui-view="" ng-if="!company" ng-cloak)
 

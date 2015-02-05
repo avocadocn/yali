@@ -1,5 +1,5 @@
-define(['./company', 'jQuery', 'cropit'], function (company, $) {
-  return company.controller('company.editCtrl', [
+define(['./controller', 'jQuery', 'cropit'], function (controllers, $) {
+  return controllers.controller('company.editCtrl', [
     '$rootScope',
     '$scope',
     'companyService',

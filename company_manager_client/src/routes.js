@@ -35,7 +35,7 @@ define(['app'], function (app) {
           url: '/company/info',
           views: {
             content: {
-              templateUrl: templateUrl('/company/edit_info.html'),
+              templateUrl: templateUrl('/views/edit_info.html'),
               controller: 'company.editCtrl'
             }
           }
@@ -44,7 +44,7 @@ define(['app'], function (app) {
           url: '/account',
           views: {
             content: {
-              templateUrl: templateUrl('/account/account_settings.html'),
+              templateUrl: templateUrl('/views/account_settings.html'),
               controller: 'account.settingCtrl'
             }
           }
@@ -53,7 +53,7 @@ define(['app'], function (app) {
           url: '/team/list',
           views: {
             content: {
-              templateUrl: templateUrl('/team/team_list.html'),
+              templateUrl: templateUrl('/views/team_list.html'),
               controller: 'team.listCtrl'
             }
           }
@@ -62,7 +62,7 @@ define(['app'], function (app) {
           url: '/team/create',
           views: {
             content: {
-              templateUrl: templateUrl('/team/team_create.html'),
+              templateUrl: templateUrl('/views/team_create.html'),
               controller: 'team.createCtrl'
             }
           }
@@ -71,7 +71,7 @@ define(['app'], function (app) {
           url: '/team/pointLeader/:teamId',
           views: {
             content: {
-              templateUrl: templateUrl('/team/point_leader.html'),
+              templateUrl: templateUrl('/views/point_leader.html'),
               controller: 'team.pointLeaderCtrl'
             }
           }

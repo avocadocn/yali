@@ -27,12 +27,12 @@ module.exports = function(grunt) {
         files: [{
           expand: true,
           cwd: 'src',
-          src: ['**/*.jade', '!index.jade', '!account/login.jade'],
+          src: ['**/*.jade', '!index.jade', '!views/login.jade'],
           dest: 'templates/',
           ext: '.html'
         }, {
           'index.html': 'src/index.jade',
-          'login.html': 'src/account/login.jade'
+          'login.html': 'src/views/login.jade'
         }]
       }
     },

@@ -2,10 +2,10 @@ define([
   'angular',
   'uiRouter',
   'angularBootstrap',
+  './view_controllers/controllers',
   './storage/storage',
   './utils/utils',
   './account/module',
-  './nav/module',
   './company/module',
   './team/module',
   './campaign/module'
@@ -13,10 +13,10 @@ define([
   return angular.module('app', [
     'ui.router',
     'ui.bootstrap',
+    'controllers',
     'storage',
     'utils',
     'account',
-    'nav',
     'company',
     'team',
     'campaign'
