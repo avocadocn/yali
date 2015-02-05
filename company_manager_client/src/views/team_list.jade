@@ -13,7 +13,7 @@ table.team_table.table.table-striped
       th 积分
       th 操作
   tbody
-    tr(ng-repeat="team in teams | filter:noLeader")
+    tr(ng-repeat="team in noLeaderTeams")
       td {{team.name}}
       td {{team.leaders[0].nickname}}
       td {{team.memberCount}}
@@ -21,7 +21,7 @@ table.team_table.table.table-striped
       td {{team.count.total_campaign}}
       td {{team.score.total}}
       td
-        button(ng-click="editTeam($index)") 编辑信息
+        button(ng-click="editTeam('noLeaderTeams', $index)") 编辑信息
         a(ui-sref="pointTeamLeader({teamId:team._id})") 任命队长
 hr
 table.team_table.table.table-striped
@@ -35,7 +35,7 @@ table.team_table.table.table-striped
       th 积分
       th 操作
   tbody
-    tr(ng-repeat="team in teams | filter:haveLeader")
+    tr(ng-repeat="team in leaderTeams")
       td {{team.name}}
       td {{team.leaders[0].nickname}}
       td {{team.memberCount}}
@@ -43,7 +43,7 @@ table.team_table.table.table-striped
       td {{team.count.total_campaign}}
       td {{team.score.total}}
       td
-        button(ng-click="editTeam($index)") 编辑信息
+        button(ng-click="editTeam('leaderTeams', $index)") 编辑信息
         a(ui-sref="pointTeamLeader({teamId:team._id})") 任命队长
 script(type="text/ng-template" id="editTeamModal.html")
   modal-header

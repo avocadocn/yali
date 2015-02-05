@@ -5,27 +5,29 @@ define(['./controller'], function (controllers) {
     'teamService',
     '$modal',
     function ($rootScope, $scope, teamService, $modal) {
-      teamService.getList($rootScope.company._id).success(function (data) {
-        $scope.teams = data;
-      })
-        .error(function (data) {
-          alert(data.msg)
-        });
-
-      $scope.noLeader = function(team) {
+      var noLeaderFilter = function(team) {
         if(!team.leaders || team.leaders.length==0) {
           return true;
         }
         return false;
       };
-      $scope.haveLeader = function(team) {
+      var haveLeaderFilter = function(team) {
         if(team.leaders.length>0) {
           return true;
         }
         return false;
       };
-      $scope.editTeam = function (index) {
-        $scope.team = $scope.teams[index];
+      teamService.getList($rootScope.company._id).success(function (data) {
+        $scope.teams = data;
+        $scope.noLeaderTeams = data.filter(noLeaderFilter);
+        $scope.leaderTeams = data.filter(haveLeaderFilter);
+      })
+      .error(function (data) {
+        alert(data.msg)
+      });
+
+      $scope.editTeam = function (type, index) {
+        $scope.team = $scope[type][index];
         var modalInstance = $modal.open({
           templateUrl: 'editTeamModal.html',
           scope: $scope
@@ -51,12 +53,12 @@ define(['./controller'], function (controllers) {
       '$scope',
       'teamService',
       function ($rootScope, $scope, teamService) {
-        teamService.getList($rootScope.company._id).success(function (data) {
-          $scope.teams = data;
+        teamService.getGroups().success(function (data) {
+          $scope.groups = data;
         })
-          .error(function (data) {
-            alert(data.msg)
-          });
+        .error(function (data) {
+          alert(data.msg)
+        });
 
       }
     ])

@@ -22,6 +22,9 @@ define(['./team'], function (team) {
           }
         });
       },
+      getGroups: function () {
+        return $http.get(apiBaseUrl + '/groups');
+      },
       /**
        * 更新小队的信息
        * @param  {String} id         小队id
@@ -29,8 +32,9 @@ define(['./team'], function (team) {
        * @return {HttpPromise}            
        */
       update: function (id, updateData) {
-          return $http.put(apiBaseUrl + '/teams/' +id, updateData);
-        }
+        return $http.put(apiBaseUrl + '/teams/' +id, updateData);
+      }
+
     }
   }]);
 });

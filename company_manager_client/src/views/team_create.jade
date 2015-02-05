@@ -1,0 +1,8 @@
+h1 请选择要增加的企业兴起小队类型
+form.add_team
+  .group(ng-repeat='group in groups' ng-class="{'active':groupModel.selected==group.type, 'inactive':groupModel.selected!=group.type}")
+    input(type='radio' name='group' id='{{group._id}}' value='{{group.type}}' ng-model='groupModel.selected' ng-change='groupModel.select()')
+    label.img_contain(class='size_80 group_'+'{{group._id}}' for='{{group._id}}') {{group.type}}
+  label 队名
+    input.dl-form-control(type='text' name='name' ng-model='groupModel.tname' ng-maxlength=20 tooltip="{{newgroup_form.name.$invalid? '队名最长字数20字':''}}" required)
+  button.btn.btn-primary(ng-click="save()") 确定
