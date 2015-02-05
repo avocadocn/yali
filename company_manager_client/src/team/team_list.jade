@@ -2,7 +2,7 @@
 h1 小队管理
 a(ui-sref="createTeam") 新建小队
 h2 无队长的小队
-table.team_table
+table.team_table.table.table-striped
   thead
     tr
       th 名称
@@ -13,7 +13,7 @@ table.team_table
       th 积分
       th 操作
   tbody
-    tr(ng-repeat="team in noLeaderTeams | filter:noLeader")
+    tr(ng-repeat="team in teams | filter:noLeader")
       td {{team.name}}
       td {{team.leaders[0].nickname}}
       td {{team.memberCount}}
@@ -24,7 +24,7 @@ table.team_table
         button(ng-click="editTeam($index)") 编辑信息
         a(ui-sref="pointTeamLeader({teamId:team._id})") 任命队长
 hr
-table.team_table
+table.team_table.table.table-striped
   thead
     tr
       th 名称

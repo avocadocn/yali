@@ -13,15 +13,13 @@ define(['./team'], function (team) {
       });
 
       $scope.noLeader = function(team) {
-        if(!team.leaders || team.leaders.length==0)
-        {
+        if(!team.leaders || team.leaders.length==0) {
           return true;
         }
         return false;
       };
       $scope.haveLeader = function(team) {
-        if(team.leaders.length>0)
-        {
+        if(team.leaders.length>0) {
           return true;
         }
         return false;
@@ -65,15 +63,39 @@ define(['./team'], function (team) {
   .controller('team.pointLeaderCtrl', [
     '$rootScope',
     '$scope',
+    '$state',
     'teamService',
-    function ($rootScope, $scope, teamService) {
-      teamService.getList($rootScope.company._id).success(function (data) {
-        $scope.teams = data;
+    'storageService',
+    function ($rootScope, $scope, $state, teamService, storageService) {
+      // $scope.toggleMemberShow ='显示公司成员';
+      teamService.get($state.params.teamId).success(function (data) {
+        $scope.team = data;
+        $scope.teamMember = data.members;
       })
       .error(function (data) {
-        alert(data.msg)
-      })
-
+        alert(data.msg);
+      });
+      // $scope.toggleMember = function () {
+      //   // body...
+      // }
+      $scope.changeLeader = function (index) {
+        $scope.newLeader = $scope.team.members[index];
+      }
+      $scope.save =function () {
+        if($scope.newLeader._id==$scope.team.leaders[0]._id){
+          return;
+        }
+        teamService.update($scope.team._id,{leader:$scope.newLeader}).success(function(data) {
+          alert('修改队长成功');
+          $state.reload();
+        })
+        .error(function (data) {
+          alert(data.msg)
+        })
+      }
+      $scope.cancel = function () {
+        $state.go('teamList');
+      }
     }
   ]);
 });
