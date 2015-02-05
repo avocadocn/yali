@@ -7,7 +7,8 @@ define([
   './account/module',
   './nav/module',
   './company/module',
-  './team/module'
+  './team/module',
+  './campaign/module'
 ], function(angular) {
   return angular.module('app', [
     'ui.router',
@@ -17,7 +18,8 @@ define([
     'account',
     'nav',
     'company',
-    'team'
+    'team',
+    'campaign'
   ]).run([
     '$rootScope',
     '$state',

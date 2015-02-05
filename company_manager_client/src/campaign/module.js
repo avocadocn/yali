@@ -1,0 +1,1 @@
+define(['./campaign_controller', './campaign_service'], function () {});
