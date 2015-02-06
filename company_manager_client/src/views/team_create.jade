@@ -1,6 +1,6 @@
 .inner
   .head 
-    h1 请选择要增加的企业兴趣小队类型
+    span.title 请选择要增加的企业兴趣小队类型
   form.add_team(name="newgroup_form")
     .groups
       .group(ng-repeat='group in groups' ng-class="{'active':newTeam._id==group._id}")
