@@ -1,5 +1,5 @@
 define(['./controller'], function (controllers) {
-  return controllers.controller('campaignCtrl', [function () {
+  return controllers.controller('campaign.campaignCtrl', [function () {
 
   }]);
 });

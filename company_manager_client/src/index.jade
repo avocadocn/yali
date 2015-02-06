@@ -4,12 +4,15 @@ html
     title donler company manager
     link(rel="stylesheet" href="/company/manager/bower-lib/bootstrap/dist/css/bootstrap.min.css")
     link(rel="stylesheet" href="/company/manager/dist/donler.css")
+    link(rel="stylesheet" href="/company/manager/custom-lib/admin-template/main.min.css")
+    link(rel="stylesheet" href="/company/manager/custom-lib/admin-template/theme.css")
   body
-    div(ng-if="company" ng-cloak)
-      nav.dl_nav(ng-include="'/company/manager/templates/views/nav.html'")
+    div#wrap(ng-if="company" ng-cloak)
+      nav.dl_nav#top(ng-include="'/company/manager/templates/views/nav.html'")
       .dl_main_container
-        aside.dl_aside(ng-include="'/company/manager/templates/views/aside.html'")
-        .dl_content(ui-view="content")
+        aside#left(ng-include="'/company/manager/templates/views/aside.html'")
+        .dl_content#content
+          .outer(ui-view="content")
     .dl_wrap(ui-view="" ng-if="!company" ng-cloak)
 
     script(data-main="/company/manager/dist/donler" src="/company/manager/custom-lib/require.js")
