@@ -11,14 +11,16 @@ define(['./campaign', 'echarts', 'echarts/chart/bar'], function (campaign, echar
       link: function (scope, ele, attrs, ctrl) {
 
         // todo 假数据，先实现前端
-        var data = {};
+        var data = {
+          campaignCounts: ['3', '5', '7', '11', '1'],
+          memberCounts: ['20', '30', '70', '200', '10']
+        };
 
         var myChart = echarts.init(ele[0].querySelector('.st_bar'));
 
         var option = {
           title: {
-            text: '公司小队活动',
-            subtext: '活动次数/人次'
+            text: '公司小队活动'
           },
           tooltip: {
             trigger: 'axis'
@@ -29,35 +31,39 @@ define(['./campaign', 'echarts', 'echarts/chart/bar'], function (campaign, echar
           toolbox: {
             show: true,
             feature: {
-              mark: {show: true},
-              dataView: {show: true, readOnly: false},
-              magicType: {show: true, type: ['line', 'bar']},
-              restore: {show: true},
               saveAsImage: {show: true}
             }
           },
-          calculable: true,
           xAxis: [
             {
+              name: '周',
               type: 'category',
-              data: ['1月', '2月', '3月', '4月', '5月']
+              data: ['1', '2', '3', '上周', '本周']
             }
           ],
           yAxis: [
             {
-              type: 'value'
+              name: '活动次数',
+              type: 'value',
+              position: 'left'
+            },
+            {
+              name: '活动人次',
+              type: 'value',
+              position: 'right'
             }
           ],
           series: [
             {
               name: '活动次数',
               type: 'bar',
-              data: [2.0, 4.9, 7.0, 23.2, 25.6]
+              data: data.campaignCounts
             },
             {
               name: '活动人次',
               type: 'bar',
-              data: [2.6, 5.9, 9.0, 26.4, 28.7]
+              yAxisIndex: 1,
+              data: data.memberCounts
             }
           ]
         };
