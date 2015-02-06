@@ -85,6 +85,42 @@ define(['app'], function (app) {
               controller: 'campaign.campaignCtrl'
             }
           }
+        })
+        .state('inviteMembers', {
+          url: '/members/invite',
+          views: {
+            content: {
+              templateUrl: templateUrl('/views/members_invite.html'),
+              controller: 'member.inviteCtrl'
+            }
+          }
+        })
+        .state('activeMembers', {
+          url: '/members/active',
+          views: {
+            content: {
+              templateUrl: templateUrl('/views/members_active.html'),
+              controller: 'member.activeCtrl'
+            }
+          }
+        })
+        .state('inactiveMembers', {
+          url: '/members/inactive',
+          views: {
+            content: {
+              templateUrl: templateUrl('/views/members_inactive.html'),
+              controller: 'member.inactiveCtrl'
+            }
+          }
+        })
+        .state('allMembers', {
+          url: '/members/all',
+          views: {
+            content: {
+              templateUrl: templateUrl('/views/members_all.html'),
+              controller: 'member.allCtrl'
+            }
+          }
         });
     }
   ])

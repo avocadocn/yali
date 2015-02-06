@@ -78,8 +78,8 @@ define(['./controller'], function (controllers) {
       '$scope',
       '$state',
       'teamService',
-      'companyService',
-      function ($rootScope, $scope, $state, teamService, companyService) {
+      'memberService',
+      function ($rootScope, $scope, $state, teamService, memberService) {
         $scope.showTeamMember = true;
         $scope.memberTitle =['显示公司成员','显示小队成员'];
         $scope.showTeamMemberTitle = $scope.memberTitle[0];
@@ -91,7 +91,7 @@ define(['./controller'], function (controllers) {
         .error(function (data) {
           alert(data.msg);
         });
-        companyService.getMembers($rootScope.company._id).success(function (data) {
+        memberService.getMembers($rootScope.company._id).success(function (data) {
           $scope.companyMembers = data;
         })
         .error(function (data) {

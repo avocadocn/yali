@@ -113,6 +113,30 @@
   height: 40px;
   width: 40px;
 }
+.point_leader .members {
+  border: 2px solid #ccc;
+  padding: 5px;
+  float: left;
+  width: 100%;
+}
+.point_leader .members .member {
+  float: left;
+  border: 1px solid #ccc;
+  width: 150px;
+  padding: 5px;
+  margin: 5px;
+}
+.point_leader .members .member.active {
+  color: #3ca2e0;
+}
+.point_leader .members .member .member_logo {
+  margin: 0 5px;
+}
+.point_leader .operator {
+  clear: both;
+  padding: 10px;
+  text-align: center;
+}
 .add_team {
   position: relative;
   padding: 10px;

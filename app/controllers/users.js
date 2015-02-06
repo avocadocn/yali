@@ -1070,7 +1070,7 @@ exports.timeLine = function(req,res){
         email:req.profile.email,
         teams:myteam,
         role :req.role,
-        register_date:req.user.register_date
+        register_date:req.profile.register_date
       };
 
       // console.log(newTimeLines);
