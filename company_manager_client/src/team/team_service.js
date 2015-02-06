@@ -33,6 +33,14 @@ define(['./team'], function (team) {
        */
       update: function (id, updateData) {
         return $http.put(apiBaseUrl + '/teams/' +id, updateData);
+      },
+      /**
+       * 创建小队
+       * @param  {Object} postData 小队信息
+       * @return {HttpPromise}          
+       */
+      create: function (postData) {
+        return $http.post(apiBaseUrl + '/teams',postData);
       }
 
     }

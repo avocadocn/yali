@@ -4,9 +4,9 @@
     img.member_logo(ng-src="{{team.leaders[0].photo}}")
     span(ng-bind="team.leaders[0].nickname")
   h2 选择队长：
-  //- button(ng-click="toggleMember()" ng-bind="toggleMemberShow") 
+  button(ng-click="toggleMember()" ng-bind="showTeamMemberTitle") 
   form.choose_leader
-    .radio(ng-repeat="member in team.members" ng-click="changeLeader($index)")
+    .radio(ng-repeat="member in members" ng-click="changeLeader($index)")
       input(type="radio" name="leader" ng-model="newLeader" ng-value="member")
       img.member_logo(ng-src="{{member.photo}}")
       span {{member.nickname}}

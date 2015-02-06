@@ -26,6 +26,14 @@ define(['./company', 'jQuery'], function (company, $) {
             callback(data.msg || 'error');
           }
         });
+      },
+      /**
+       * 获取公司成员
+       * @param  {String} 公司id
+       * @return {HttpPromise}    
+       */
+      getMembers: function (id) {
+       return $http.get(apiBaseUrl + '/companies/' + id +'/members');
       }
     }
   }]);

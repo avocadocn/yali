@@ -82,3 +82,17 @@
   height: 40px;
   width: 40px;
 }
+.add_team {
+  position: relative;
+}
+.add_team .group {
+  float: left;
+  width: 50px;
+}
+.add_team .group.active {
+  color: #3ca2e0;
+}
+.add_team .team_name {
+  clear: both;
+  text-align: center;
+}
