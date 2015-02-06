@@ -1,10 +1,13 @@
-h1 请选择要增加的企业兴起小队类型
-form.add_team(name="newgroup_form")
-  .group(ng-repeat='group in groups' ng-class="{'active':newTeam._id==group._id}")
-    .img_contain(class='group_'+'{{group._id}}' )
-    input.hidden(type='radio' name='group' id='{{group._id}}' value='{{group._id}}' ng-model='newTeam._id' required)
-    label(for='{{group._id}}') {{group.groupType}}
-  .team_name
-    label 队名
-    input.dl-form-control(type='text' name='name' ng-model='newTeam.teamName' ng-maxlength=20)
-    button.btn.btn-primary(ng-disabled="newgroup_form.$invalid" ng-click="save()") 确定
+.inner
+  .head 
+    h1 请选择要增加的企业兴趣小队类型
+  form.add_team(name="newgroup_form")
+    .groups
+      .group(ng-repeat='group in groups' ng-class="{'active':newTeam._id==group._id}")
+        .img_contain(class='group_'+'{{group._id}}' )
+        input.hidden(type='radio' name='group' id='{{group._id}}' value='{{group._id}}' ng-model='newTeam._id' required)
+        label(for='{{group._id}}') {{group.groupType}}
+    .team_name
+      label 队名
+      input.dl-form-control(type='text' name='name' ng-model='newTeam.teamName' ng-maxlength=20)
+      button.btn.btn-primary(ng-disabled="newgroup_form.$invalid" ng-click="save()") 确定

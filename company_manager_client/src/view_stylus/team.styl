@@ -4,20 +4,23 @@
     width 40px
 .add_team
   position relative
-  .group
-    float left
-    width 50px
-    // .img_contain
-    //   width 40px
-    //   height 40px
-    //   background-image url('/img/icons/groups_new.png')
-    //   background-repeat no-repeat
-    //   background-size 320px 440px
-    // for i in 0..16
-    //   .group_{i+1}
-    //     background-position i%6 * -58px floor(i/6) * -63px
-    &.active
-      color #3ca2e0
+  padding 10px
+  .groups
+    .group
+      float left
+      width 50px
+      .img_contain
+        width 40px
+        height 40px
+        background-image url('/img/icons/groups_new.png')
+        background-repeat no-repeat
+        background-size 320px 440px
+      for i in 0..16
+        .group_{i+1}
+          background-position i%6 * -58px floor(i/6) * -63px
+      &.active
+        color #3ca2e0
   .team_name
+    padding 10px
     clear both
     text-align center

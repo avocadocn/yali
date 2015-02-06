@@ -84,15 +84,75 @@
 }
 .add_team {
   position: relative;
+  padding: 10px;
 }
-.add_team .group {
+.add_team .groups .group {
   float: left;
   width: 50px;
 }
-.add_team .group.active {
+.add_team .groups .group .img_contain {
+  width: 40px;
+  height: 40px;
+  background-image: url("/img/icons/groups_new.png");
+  background-repeat: no-repeat;
+  background-size: 320px 440px;
+}
+.add_team .groups .group .group_1 {
+  background-position: 0px 0px;
+}
+.add_team .groups .group .group_2 {
+  background-position: -58px 0px;
+}
+.add_team .groups .group .group_3 {
+  background-position: -116px 0px;
+}
+.add_team .groups .group .group_4 {
+  background-position: -174px 0px;
+}
+.add_team .groups .group .group_5 {
+  background-position: -232px 0px;
+}
+.add_team .groups .group .group_6 {
+  background-position: -290px 0px;
+}
+.add_team .groups .group .group_7 {
+  background-position: 0px -63px;
+}
+.add_team .groups .group .group_8 {
+  background-position: -58px -63px;
+}
+.add_team .groups .group .group_9 {
+  background-position: -116px -63px;
+}
+.add_team .groups .group .group_10 {
+  background-position: -174px -63px;
+}
+.add_team .groups .group .group_11 {
+  background-position: -232px -63px;
+}
+.add_team .groups .group .group_12 {
+  background-position: -290px -63px;
+}
+.add_team .groups .group .group_13 {
+  background-position: 0px -126px;
+}
+.add_team .groups .group .group_14 {
+  background-position: -58px -126px;
+}
+.add_team .groups .group .group_15 {
+  background-position: -116px -126px;
+}
+.add_team .groups .group .group_16 {
+  background-position: -174px -126px;
+}
+.add_team .groups .group .group_17 {
+  background-position: -232px -126px;
+}
+.add_team .groups .group.active {
   color: #3ca2e0;
 }
 .add_team .team_name {
+  padding: 10px;
   clear: both;
   text-align: center;
 }
