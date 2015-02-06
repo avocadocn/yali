@@ -27,8 +27,9 @@ define(['app'], function (app) {
         .state('statistics', {
           url: '/statistics',
           views: {
-            templateUrl: templateUrl('/campaign/statistics.html'),
-            controller: 'campaign.statisticsCtrl'
+            content: {
+              templateUrl: templateUrl('/views/statistics.html')
+            }
           }
         })
         .state('companyInfo', {

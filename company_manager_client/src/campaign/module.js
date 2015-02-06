@@ -1,1 +1,1 @@
-define(['./campaign_service'], function () {});
+define(['./campaign_service', './campaign_directive'], function () {});

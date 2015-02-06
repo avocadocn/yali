@@ -7,10 +7,20 @@ requirejs.config({
     uiRouter: '../bower-lib/angular-ui-router/release/angular-ui-router',
     jQuery: '../bower-lib/jquery/dist/jquery',
     cropit: '../bower-lib/cropit/dist/jquery.cropit',
-    angularBootstrap:'../bower-lib/angular-bootstrap/ui-bootstrap-tpls',
-    echarts: '../bower-lib/echarts/src/echarts',
-    zrender: '../custom-lib/zrender-2.0.7/src/zrender'
+    angularBootstrap:'../bower-lib/angular-bootstrap/ui-bootstrap-tpls'
   },
+  packages: [
+    {
+      name: 'echarts',
+      location: '../bower-lib/echarts/src',
+      main: 'echarts'
+    },
+    {
+      name: 'zrender',
+      location: '../custom-lib/zrender-2.0.7/src',
+      main: 'zrender'
+    }
+  ],
   shim: {
     angular: {
       exports: 'angular'
@@ -24,15 +34,8 @@ requirejs.config({
     cropit: {
       deps: ['jQuery']
     },
-    angularBootstrap :{
+    angularBootstrap: {
       deps: ['angular']
-    },
-    echarts: {
-      exports: 'echarts',
-      deps: ['zrender']
-    },
-    zrender: {
-      exports: 'zrender'
     }
   },
   deps: ['./bootstrap'],
