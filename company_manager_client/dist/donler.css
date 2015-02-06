@@ -10,10 +10,19 @@
   display: flex;
   display: -webkit-flex;
 }
-.dl_aside {
-  width: 200px;
+.dl_main_container #left .dl_aside_inner .media-body {
+  width: auto;
 }
-.dl_content {
+.dl_main_container #left .dl_aside_inner #menu li.nav-header {
+  padding: 8px 15px !important;
+}
+.dl_main_container #content .outer {
+  padding: 5px;
+}
+.dl_main_container #content .outer .inner {
+  border-width: 5px;
+}
+.dl_main_container .dl_content {
   flex: 1;
   -webkit-flex: 1;
 }

@@ -14,11 +14,22 @@
 .dl_main_container
   display flex
   display -webkit-flex
-.dl_aside
-  width 200px
-.dl_content
-  flex 1
-  -webkit-flex 1
+  #left
+    .dl_aside_inner
+      .media-body
+        width auto
+      #menu
+        li.nav-header
+          padding 8px 15px !important
+  #content
+    .outer
+      padding 5px
+      .inner
+        border-width 5px
+  .dl_content
+    flex 1
+    -webkit-flex 1
+
 
 
 

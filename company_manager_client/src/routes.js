@@ -75,6 +75,15 @@ define(['app'], function (app) {
               controller: 'team.pointLeaderCtrl'
             }
           }
+        })
+        .state('campaigns', {
+          url: '/campaigns',
+          views: {
+            content: {
+              templateUrl: templateUrl('/views/campaigns.html'),
+              controller: 'campaign.campaignCtrl'
+            }
+          }
         });
     }
   ])
