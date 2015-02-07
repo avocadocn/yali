@@ -1,18 +1,18 @@
 define(['./account', 'app'], function (account) {
-  return account.factory('unAuthRedirectService', ['$q', function ($q) {
+  return account.factory('unAuthRedirectService', ['$q', '$location', function ($q, $location) {
     return {
       requestError: function(config) {
         console.log(config)
       },
       response: function(res) {
-        return res;
+        return res|| $q.when(res);
       },
       responseError: function(res) {
         if (res.status === 401) {
-          location.href = '/company/manager/#/login';
-        } else {
-          return $q.reject(res);
+          $location.path('/login');
+          // location.href = '/company/manager/#/login';
         }
+        return $q.reject(res);
       }
     };
   }])

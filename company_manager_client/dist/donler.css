@@ -109,6 +109,10 @@
 .dl_company_info .operator .icon_large {
   font-size: 17px;
 }
+.members .memer_logo {
+  width: 40px;
+  height: 40px;
+}
 .point_leader img.member_logo {
   height: 40px;
   width: 40px;

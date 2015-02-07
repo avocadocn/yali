@@ -1,3 +1,21 @@
-.inner
+.inner.members
   .head 
-    span.title active member
+    span.title 待激活成员
+  .table_block
+      span.table_title 
+      table.team_table.table.table-striped.dl_table
+        thead
+          tr
+            th 
+            th.center 邮箱
+            th.center 注册时间
+            th.center 操作
+        tbody
+          tr(ng-repeat="member in companyMembers")
+            td {{$index+1}}
+            td.center {{member.username}}
+            td.center {{member.register_date | date:'yyyy-MM-dd HH:mm'}}
+            td.center 
+              button 查看详情
+            td.center
+              button(ng-click="active(member._id)") 激活
