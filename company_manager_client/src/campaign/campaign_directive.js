@@ -72,6 +72,31 @@ define(['./campaign', 'echarts', 'echarts/chart/bar'], function (campaign, echar
       }
 
     };
+  }])
+  .directive('sponsorCampaign', ['campaignService', function (campaignService) {
+    return {
+      restrict: 'E',
+      scope: {
+        data: '='
+      },
+      templateUrl: '/company/manager/templates/campaign/sponsor.html',
+      link: function (scope, ele, attrs, ctrl) {
+        $('#start_time').datetimepicker({
+          autoclose: true,
+          language: 'zh-CN',
+          startDate: new Date(),
+          pickerPosition:"bottom-left"
+        });
+        $('#end_time').datetimepicker({
+          autoclose: true,
+          language: 'zh-CN',
+          startDate: new Date(),
+          pickerPosition:"bottom-left"
+        });
+        scope.sponsorCampaign = function() {
+          console.log(scope.data);
+        }
+      }
+    }
   }]);
-
 });

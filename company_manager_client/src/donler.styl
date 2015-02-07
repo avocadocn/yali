@@ -1,4 +1,6 @@
-
+//- @require '../custom-lib/admim-template/main.min.css'
+//- @require '../custom-lib/admin-template/theme.css'
+//- @require '../bower-lib/smalot-bootstrap-css/bootstrap-datetimepicker.min.css'
 
 
 // 辅助类
@@ -9,7 +11,8 @@
   &:after
     clear both
 
-
+#top > .navbar
+  padding 0 15px
 // 整体布局
 .dl_main_container
   display flex
@@ -41,6 +44,7 @@
               color black
               margin-right 10px
               padding 0 10px
+              text-decoration none
           .table_block
             margin 10px
             .table_title
@@ -58,3 +62,4 @@
 
 // view stylus 应该放在最后
 @require 'view_stylus/*'
+@require 'campaign/*'

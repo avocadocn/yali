@@ -2,6 +2,8 @@ define([
   'angular',
   'uiRouter',
   'angularBootstrap',
+  'bootstrap',
+  'datetimepicker',
   './view_controllers/controllers',
   './storage/storage',
   './utils/utils',
