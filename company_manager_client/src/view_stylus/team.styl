@@ -2,3 +2,44 @@
   img.member_logo
     height 40px
     width 40px
+  .members
+    border 2px solid #ccc
+    padding 5px
+    float left
+    width 100%
+    .member
+      float left
+      border 1px solid #ccc
+      width 150px
+      padding 5px
+      margin 5px
+      &.active
+        color #3ca2e0
+      .member_logo
+        margin 0 5px
+  .operator
+    clear both
+    padding 10px
+    text-align center
+.add_team
+  position relative
+  padding 10px
+  .groups
+    .group
+      float left
+      width 50px
+      .img_contain
+        width 40px
+        height 40px
+        background-image url('/img/icons/groups_new.png')
+        background-repeat no-repeat
+        background-size 320px 440px
+      for i in 0..16
+        .group_{i+1}
+          background-position i%6 * -58px floor(i/6) * -63px
+      &.active
+        color #3ca2e0
+  .team_name
+    padding 10px
+    clear both
+    text-align center

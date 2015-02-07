@@ -3,5 +3,6 @@ define([
   './team',
   './campaign',
   './account',
-  './nav'
+  './nav',
+  './member'
 ], function () {});

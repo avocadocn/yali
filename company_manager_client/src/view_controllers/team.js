@@ -53,13 +53,24 @@ define(['./controller'], function (controllers) {
       '$scope',
       'teamService',
       function ($rootScope, $scope, teamService) {
+        $scope.newTeam = {
+          _id: '',
+          teamName: ''
+        }
         teamService.getGroups().success(function (data) {
           $scope.groups = data;
         })
         .error(function (data) {
           alert(data.msg)
         });
-
+        $scope.save = function () {
+          teamService.create({selectedGroups:[$scope.newTeam]}).success(function (data) {
+            alert('成功创建小队');
+          })
+          .error(function (data) {
+            alert(data.msg)
+          })
+        }
       }
     ])
     .controller('team.pointLeaderCtrl', [
@@ -67,33 +78,41 @@ define(['./controller'], function (controllers) {
       '$scope',
       '$state',
       'teamService',
-      'storageService',
-      function ($rootScope, $scope, $state, teamService, storageService) {
-        // $scope.toggleMemberShow ='显示公司成员';
+      'memberService',
+      function ($rootScope, $scope, $state, teamService, memberService) {
+        $scope.showTeamMember = true;
+        $scope.memberTitle =['显示公司成员','显示小队成员'];
+        $scope.showTeamMemberTitle = $scope.memberTitle[0];
         teamService.get($state.params.teamId).success(function (data) {
           $scope.team = data;
-          $scope.teamMember = data.members;
+          $scope.teamMembers = data.members;
+          $scope.members = data.members;
         })
-          .error(function (data) {
-            alert(data.msg);
-          });
-        // $scope.toggleMember = function () {
-        //   // body...
-        // }
+        .error(function (data) {
+          alert(data.msg);
+        });
+        memberService.getMembers($rootScope.company._id).success(function (data) {
+          $scope.companyMembers = data;
+        })
+        .error(function (data) {
+          alert(data.msg);
+        });
+        $scope.toggleMember = function () {
+          $scope.showTeamMember =!$scope.showTeamMember;
+          $scope.showTeamMemberTitle = $scope.memberTitle[$scope.showTeamMember ?0:1];
+          $scope.members = $scope.showTeamMember ? $scope.teamMembers : $scope.companyMembers;
+        }
         $scope.changeLeader = function (index) {
-          $scope.newLeader = $scope.team.members[index];
+          $scope.newLeader = $scope.members[index];
         }
         $scope.save =function () {
-          if($scope.newLeader._id==$scope.team.leaders[0]._id){
-            return;
-          }
           teamService.update($scope.team._id,{leader:$scope.newLeader}).success(function(data) {
             alert('修改队长成功');
             $state.reload();
           })
-            .error(function (data) {
-              alert(data.msg)
-            })
+          .error(function (data) {
+            alert(data.msg)
+          })
         }
         $scope.cancel = function () {
           $state.go('teamList');

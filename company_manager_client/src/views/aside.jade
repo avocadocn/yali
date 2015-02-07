@@ -20,15 +20,14 @@
     li.nav-header 活动体系
     li: a(ui-sref="statistics") 统计报告
     li: a(ui-sref="teamList")  小队管理
-    li: a 成员管理
     li: a(ui-sref="campaigns") 活动管理
 
     li.nav-divider
     li.nav-header 成员管理
-    li: a 邀请
-    li: a 激活
-    li: a 屏蔽
-    li: a 所有成员
+    li: a(ui-sref="inviteMembers") 邀请
+    li: a(ui-sref="activeMembers") 激活
+    li: a(ui-sref="inactiveMembers") 屏蔽
+    li: a(ui-sref="allMembers") 所有成员
 
     li.nav-divider
     li.nav-header 公司管理
