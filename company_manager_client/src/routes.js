@@ -28,7 +28,8 @@ define(['app'], function (app) {
           url: '/statistics',
           views: {
             content: {
-              templateUrl: templateUrl('/views/statistics.html')
+              templateUrl: templateUrl('/views/statistics.html'),
+              controller: 'statistics.chartsCtrl'
             }
           }
         })

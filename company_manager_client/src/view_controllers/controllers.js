@@ -4,5 +4,6 @@ define([
   './campaign',
   './account',
   './nav',
-  './member'
+  './member',
+  './statistics'
 ], function () {});
