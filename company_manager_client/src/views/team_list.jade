@@ -53,11 +53,14 @@
             td.center
               a(ui-sref="pointTeamLeader({teamId:team._id})") 任命队长
 script(type="text/ng-template" id="editTeamModal.html")
-  modal-header
+  .modal-header
     h3.modal-title 编辑小队信息
-  modal-body
+  .modal-body
     .team_edit
+      label 名称:
       input(type="text" ng-model="team.name")
-  modal-footer
+    button(ng-if="team.active" ng-click="closeTeam(team._id)") 关闭小队
+    button(ng-if="!team.active" ng-click="openTeam(team._id)") 打开小队
+  .modal-footer
     button.btn.btn-primary(ng-click="save()") 确定
     button.btn.btn-warning(ng-click="cancel()") 取消

@@ -1,32 +1,33 @@
 .inner.members
-  .head 
-    span.title 所有成员
-    span.pull-right(ng-cloak) 共{{companyMembers.length}}人
-  .table_block
-    span.table_title 
-    table.team_table.table.table-striped.dl_table
-      thead
-        tr
-          th 
-          th 头像
-          th.center 邮箱
-          th.center 真实姓名
-          th.center 部门
-          th.center 参加小队数
-          th.center 参加活动数
-          th.center 积分
-          th.center 操作
-      tbody
-        tr(ng-repeat="member in companyMembers")
-          td {{$index+1}}
-          td: img.memer_logo(ng-src="{{member.photo}}")
-          td.center {{member.username}}
-          td.center {{member.realname}}
-          td.center {{member.department.name}}
-          td.center {{member.team.length}}
-          td.center {{member.campaignCount}}
-          td.center {{member.score.total}}
-          td.center 
-            button 查看详情
-          td.center
-            button 编辑
+  .dl_panel
+    .dl_block_head
+      span.title 所有成员
+      span.pull-right(ng-cloak) 共{{companyMembers.length}}人
+    .table_block
+      span.table_title 
+      table.team_table.table.table-striped.dl_table
+        thead
+          tr
+            th 
+            th 头像
+            th.center 邮箱
+            th.center 真实姓名
+            th.center 部门
+            th.center 参加小队数
+            th.center 参加活动数
+            th.center 积分
+            th.center 操作
+        tbody
+          tr(ng-repeat="member in companyMembers")
+            td {{$index+1}}
+            td: img.memer_logo(ng-src="{{member.photo}}")
+            td.center {{member.username}}
+            td.center {{member.realname}}
+            td.center {{member.department.name}}
+            td.center {{member.team.length}}
+            td.center {{member.campaignCount}}
+            td.center {{member.score.total}}
+            td.center 
+              button 查看详情
+            td.center
+              button 编辑

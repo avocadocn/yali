@@ -12,7 +12,7 @@ define(['./team'], function (team) {
       /**
        * 获取公司的小队列表
        * @param  {String}   id      公司的id
-       * @return {HttpPromise}            
+       * @return {HttpPromise}
        */
       getList: function (id) {
         return $http.get(apiBaseUrl + '/teams/',{
@@ -29,7 +29,7 @@ define(['./team'], function (team) {
        * 更新小队的信息
        * @param  {String} id         小队id
        * @param  {[type]} updateData 更新的数据
-       * @return {HttpPromise}            
+       * @return {HttpPromise}
        */
       update: function (id, updateData) {
         return $http.put(apiBaseUrl + '/teams/' +id, updateData);
@@ -37,11 +37,28 @@ define(['./team'], function (team) {
       /**
        * 创建小队
        * @param  {Object} postData 小队信息
-       * @return {HttpPromise}          
+       * @return {HttpPromise}
        */
       create: function (postData) {
         return $http.post(apiBaseUrl + '/teams',postData);
+      },
+      /**
+       * 关闭小队
+       * @param  {String} tid 小队id
+       * @return {HttpPromise}
+       */
+      close: function (tid) {
+        return $http.delete(apiBaseUrl + '/teams/' +tid);
+      },
+      /**
+       * 打开小队
+       * @param  {String} tid 小队id
+       * @return {HttpPromise}
+       */
+      open: function (tid) {
+        return $http.post(apiBaseUrl + '/teams/' +tid +'/actions/open');
       }
+
 
     }
   }]);
