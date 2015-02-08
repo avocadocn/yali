@@ -244,29 +244,29 @@ define(['./campaign', 'echarts', 'echarts/chart/bar', 'echarts/chart/pie'], func
 
           var dataStyle = {
             normal: {
-              label: {show:false},
-              labelLine: {show:false}
+              label: {show: false},
+              labelLine: {show: false}
             }
           };
 
           var placeHolderStyle = {
-            normal : {
+            normal: {
               color: 'rgba(0,0,0,0)',
-              label: {show:false},
-              labelLine: {show:false}
+              label: {show: false},
+              labelLine: {show: false}
             },
-            emphasis : {
+            emphasis: {
               color: 'rgba(0,0,0,0)'
             }
           };
 
           var formatData = function (data) {
-            var legendData = ['没有参加活动', '参加1次活动', '参加2次活动', '参加3次或3次以上活动'];
+            var legendData = ['人:没有参加', '人:参加1次', '人:参加2次', '人:3次或以上'];
             var seriesLabel = [
-              '没有参加活动的人数: ',
-              '参加1次活动的人数: ',
-              '参加2次活动的人数: ',
-              '参加3次或3次以上的人数: '
+              '人没有参加活动',
+              '人参加1次活动',
+              '人参加2次活动',
+              '人参加3次或3次以上的活动'
             ];
             var series = [];
 
@@ -281,9 +281,9 @@ define(['./campaign', 'echarts', 'echarts/chart/bar', 'echarts/chart/pie'], func
 
 
             for (var i = 0; i < legendData.length; i++) {
-              legendData[i] = oriDataList[i] + '人' + legendData[i];
+              legendData[i] = oriDataList[i] + legendData[i];
               series.push({
-                name: seriesLabel[i] + oriDataList[i],
+                name: oriDataList[i] + seriesLabel[i],
                 type: 'pie',
                 clockWise: false,
                 radius: [70 - 15 * i, 70 - 15 * (i + 1)],
@@ -318,22 +318,22 @@ define(['./campaign', 'echarts', 'echarts/chart/bar', 'echarts/chart/pie'], func
                   x: 'center',
                   y: 'center',
                   itemGap: 20,
-                  textStyle : {
-                    color : 'rgba(30,144,255,0.8)',
-                    fontFamily : '微软雅黑',
-                    fontSize : 18,
-                    fontWeight : 'bolder'
+                  textStyle: {
+                    color: 'rgba(30,144,255,0.8)',
+                    fontFamily: '微软雅黑',
+                    fontSize: 18,
+                    fontWeight: 'bolder'
                   }
                 },
-                tooltip : {
+                tooltip: {
                   show: true,
                   position: [10, 40],
                   formatter: "{a}"
                 },
                 legend: {
-                  orient : 'vertical',
-                  x : ele[0].querySelector('.st_pie_ring').offsetWidth / 2,
-                  y : 80,
+                  orient: 'vertical',
+                  x: ele[0].querySelector('.st_pie_ring').offsetWidth / 2,
+                  y: 80,
                   itemGap: 1,
                   data: result.legendData
                 },
