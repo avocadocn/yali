@@ -17,6 +17,14 @@ define(['./controller'], function (controller) {
           }
         });
 
+      $scope.pieLabels = [
+        '1',
+        '2',
+        '3',
+        '上周',
+        '本周'
+      ];
+
       campaignService.getChartsData($rootScope.company._id, 'pie')
         .success(function (data) {
           $scope.pieData = data.chartsData;

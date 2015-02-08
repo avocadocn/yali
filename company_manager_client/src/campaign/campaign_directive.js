@@ -232,6 +232,123 @@ define(['./campaign', 'echarts', 'echarts/chart/bar', 'echarts/chart/pie'], func
         }
       }
     })
+    .directive('campaignStPieRing', [function () {
+      return {
+        restrict: 'E',
+        scope: {
+          data: '=',
+          text: '='
+        },
+        templateUrl: '/company/manager/templates/campaign/st_pie_ring.html',
+        link: function (scope, ele, attrs, ctrl) {
+
+          var dataStyle = {
+            normal: {
+              label: {show:false},
+              labelLine: {show:false}
+            }
+          };
+
+          var placeHolderStyle = {
+            normal : {
+              color: 'rgba(0,0,0,0)',
+              label: {show:false},
+              labelLine: {show:false}
+            },
+            emphasis : {
+              color: 'rgba(0,0,0,0)'
+            }
+          };
+
+          var formatData = function (data) {
+            var legendData = ['没有参加活动', '参加1次活动', '参加2次活动', '参加3次或3次以上活动'];
+            var seriesLabel = [
+              '没有参加活动的人数: ',
+              '参加1次活动的人数: ',
+              '参加2次活动的人数: ',
+              '参加3次或3次以上的人数: '
+            ];
+            var series = [];
+
+            var oriDataList = [data.zero, data.once, data.twice, data.moreThanThreeTimes];
+            var sum = 0;
+            oriDataList.forEach(function (item) {
+              sum += item;
+            });
+            var rages = oriDataList.map(function (item) {
+              return Math.round(item / sum * 100);
+            });
+
+
+            for (var i = 0; i < legendData.length; i++) {
+              legendData[i] = oriDataList[i] + '人' + legendData[i];
+              series.push({
+                name: seriesLabel[i] + oriDataList[i],
+                type: 'pie',
+                clockWise: false,
+                radius: [70 - 15 * i, 70 - 15 * (i + 1)],
+                itemStyle: dataStyle,
+                data: [
+                  {
+                    value: rages[i],
+                    name: legendData[i]
+                  },
+                  {
+                    value: 100 - rages[i],
+                    itemStyle: placeHolderStyle
+                  }
+                ]
+              });
+            }
+
+            return {
+              legendData: legendData,
+              series: series
+            };
+          };
+
+          scope.$watch('data', function (data) {
+            if (data) {
+
+              var result = formatData(data);
+
+              var option = {
+                title: {
+                  text: scope.text,
+                  x: 'center',
+                  y: 'center',
+                  itemGap: 20,
+                  textStyle : {
+                    color : 'rgba(30,144,255,0.8)',
+                    fontFamily : '微软雅黑',
+                    fontSize : 18,
+                    fontWeight : 'bolder'
+                  }
+                },
+                tooltip : {
+                  show: true,
+                  position: [10, 40],
+                  formatter: "{a}"
+                },
+                legend: {
+                  orient : 'vertical',
+                  x : ele[0].querySelector('.st_pie_ring').offsetWidth / 2,
+                  y : 80,
+                  itemGap: 1,
+                  data: result.legendData
+                },
+                series: result.series
+              };
+
+              var myChart = echarts.init(ele[0].querySelector('.st_pie_ring'));
+              myChart.setOption(option);
+
+
+            }
+          });
+        }
+      };
+    }])
     .directive('sponsorCampaign', ['campaignService', function (campaignService) {
       return {
         restrict: 'E',

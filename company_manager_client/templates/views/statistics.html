@@ -1,1 +1,1 @@
-<div class="inner"><div class="container"><h2 class="text-center">统计报告</h2><hr/><campaign-st-bar data="barData"></campaign-st-bar><campaign-st-pie data="pieData"></campaign-st-pie></div></div>
+<div class="inner"><div class="container"><h2 class="text-center">统计报告</h2><hr/><campaign-st-bar data="barData"></campaign-st-bar><!--campaign-st-pie(data="pieData")--><div class="clearfix"><campaign-st-pie-ring ng-repeat="data in pieData" data="data" text="pieLabels[$index]" class="pull-left"></campaign-st-pie-ring></div></div></div>
