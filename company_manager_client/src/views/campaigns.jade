@@ -1,9 +1,14 @@
 .inner
-  .head
-    span.title 活动管理
-    span.pull-right 900个活动
-    button.pull-right(ng-click="sponsor()") 发活动
-  .calendar
-  .select_team
+  .dl_panel
+    .dl_block_head
+      span.title 活动管理
+      span.pull-right 900个活动
+      a.header_button.pull-right(href="" type="button" data-toggle="modal" data-target="#sponsorCampaignModel") 发活动
+    .calendar
+    .select_team
 
-  .team_list
+  .dl_panel.team_list
+    .dl_block_head
+      span.title 活动详情
+
+sponsor-campaign

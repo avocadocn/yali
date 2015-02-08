@@ -8,7 +8,11 @@ requirejs.config({
     jQuery: '../bower-lib/jquery/dist/jquery',
     cropit: '../bower-lib/cropit/dist/jquery.cropit',
     angularBootstrap:'../bower-lib/angular-bootstrap/ui-bootstrap-tpls',
-    qrcode: '../src/utils/qrcode'
+    qrcode: '../src/utils/qrcode',
+    bootstrap: '../bower-lib/bootstrap/dist/js/bootstrap',
+    datetimepicker: '../bower-lib/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker',
+    pen: '../bower-lib/pen/src/pen',
+    markdown: '../bower-lib/pen/src/markdown'
   },
   packages: [
     {
@@ -40,9 +44,21 @@ requirejs.config({
     },
     qrcode: {
       deps: ['jQuery']
-    }
+    },
+    bootstrap: {
+      deps: ['jQuery']
+    },
+    datetimepicker: {
+      deps: ['jQuery']
+    },
+    // pen: {
+    //   exports: 'pen'
+    // },
+    // markdown: {
+    //   deps: ['pen']
+    // }
   },
-  deps: ['./bootstrap'],
+  deps: ['./init'],
   urlArgs: '',
   uglify: {
     toplevel: true,

@@ -6,7 +6,9 @@
 */
 
 #top > .navbar {
-  border-top: 3px solid #428bca;
+  border-top: 3px solid #51687C;
+  background-color: #51687C;
+  color: white;
 }
 #top > .navbar .dropdown-menu > li > a:hover,
 #top > .navbar .dropdown-menu > li > a:focus {
@@ -15,5 +17,11 @@
 }
 #wrap,
 #left {
-  background-color: #333;
+  background-color: #597599;
+}
+#left {
+  border-top: 5px solid #3B506B;
+}
+.outer {
+  background-color: #3B506B;
 }

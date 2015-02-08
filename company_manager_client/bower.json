@@ -8,6 +8,8 @@
     "jquery": "~2.1.3",
     "bootstrap": "~3.3.2",
     "angular-bootstrap": "~0.12.0",
-    "echarts": "~2.2.0"
+    "echarts": "~2.2.0",
+    "smalot-bootstrap-datetimepicker": "latest",
+    "pen": "https://github.com/afeidonler/pen.git#master"
   }
 }
