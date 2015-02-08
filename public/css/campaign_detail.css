@@ -4,6 +4,9 @@
 .campaign_detail .loading {
   background: url("/img/loading.gif") center center no-repeat;
 }
+.campaign_detail .fa-chevron-circle-right {
+  color: #fff;
+}
 .campaign_detail .order-1 {
   order: 1;
   -webkit-order: 1;
@@ -212,6 +215,10 @@
 .campaign_detail .base_card .component_body .notice_container .notice {
   margin: 5px 0;
 }
+.campaign_detail .base_card .component_body .notice_container .notice_error {
+  color: #f48361;
+  text-align: right;
+}
 .campaign_detail .base_card .component_body .notice_container .main_text {
   margin: 0;
   color: #999;
@@ -405,10 +412,19 @@
 .campaign_detail .member_card .component_body {
   padding-bottom: 0;
 }
-.campaign_detail .member_card .member_list {
-  margin-top: 10px;
+.campaign_detail .member_card .leader {
+  position: absolute;
+  background-image: url("/img/sprites/dl_sprites.png");
+  width: 19px;
+  height: 13px;
+  top: -12px;
+  left: 7px;
+  background-position: -284px -42px;
+  background-repeat: no-repeat;
 }
 .campaign_detail .member_card .member {
+  position: relative;
+  float: left;
   margin-right: 9px;
   margin-bottom: 20px;
 }

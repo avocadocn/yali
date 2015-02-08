@@ -147,65 +147,67 @@
 }
 .add_team .groups .group {
   float: left;
-  width: 50px;
+  width: 70px;
+  text-align: center;
+  padding: 10px;
 }
 .add_team .groups .group .img_contain {
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   background-image: url("/img/icons/groups_new.png");
   background-repeat: no-repeat;
-  background-size: 320px 440px;
+  background-size: 600px 1500px;
 }
 .add_team .groups .group .group_1 {
   background-position: 0px 0px;
 }
 .add_team .groups .group .group_2 {
-  background-position: -58px 0px;
+  background-position: -100px 0px;
 }
 .add_team .groups .group .group_3 {
-  background-position: -116px 0px;
+  background-position: -200px 0px;
 }
 .add_team .groups .group .group_4 {
-  background-position: -174px 0px;
+  background-position: -300px 0px;
 }
 .add_team .groups .group .group_5 {
-  background-position: -232px 0px;
+  background-position: -400px 0px;
 }
 .add_team .groups .group .group_6 {
-  background-position: -290px 0px;
+  background-position: -500px 0px;
 }
 .add_team .groups .group .group_7 {
-  background-position: 0px -63px;
+  background-position: 0px -100px;
 }
 .add_team .groups .group .group_8 {
-  background-position: -58px -63px;
+  background-position: -100px -100px;
 }
 .add_team .groups .group .group_9 {
-  background-position: -116px -63px;
+  background-position: -200px -100px;
 }
 .add_team .groups .group .group_10 {
-  background-position: -174px -63px;
+  background-position: -300px -100px;
 }
 .add_team .groups .group .group_11 {
-  background-position: -232px -63px;
+  background-position: -400px -100px;
 }
 .add_team .groups .group .group_12 {
-  background-position: -290px -63px;
+  background-position: -500px -100px;
 }
 .add_team .groups .group .group_13 {
-  background-position: 0px -126px;
+  background-position: 0px -200px;
 }
 .add_team .groups .group .group_14 {
-  background-position: -58px -126px;
+  background-position: -100px -200px;
 }
 .add_team .groups .group .group_15 {
-  background-position: -116px -126px;
+  background-position: -200px -200px;
 }
 .add_team .groups .group .group_16 {
-  background-position: -174px -126px;
+  background-position: -300px -200px;
 }
 .add_team .groups .group .group_17 {
-  background-position: -232px -126px;
+  background-position: -400px -200px;
 }
 .add_team .groups .group.active {
   color: #3ca2e0;

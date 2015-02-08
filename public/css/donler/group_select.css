@@ -88,152 +88,68 @@
 .timepicker.dropdown-menu tbody button {
   padding: 6px;
 }
-.group.inactive {
+.group {
   cursor: pointer;
-}
-.group.inactive .group_1 {
-  background-image: url("/img/icons/group/badminton_off.png");
-  background-repeat: no-repeat;
-}
-.group.inactive .group_2 {
-  background-image: url("/img/icons/group/basketball_off.png");
-  background-repeat: no-repeat;
-}
-.group.inactive .group_3 {
-  background-image: url("/img/icons/group/reading_off.png");
-  background-repeat: no-repeat;
-}
-.group.inactive .group_4 {
-  background-image: url("/img/icons/group/bicycle_off.png");
-  background-repeat: no-repeat;
-}
-.group.inactive .group_5 {
-  background-image: url("/img/icons/group/afternoontea_off.png");
-  background-repeat: no-repeat;
-}
-.group.inactive .group_6 {
-  background-image: url("/img/icons/group/chess_off.png");
-  background-repeat: no-repeat;
-}
-.group.inactive .group_7 {
-  background-image: url("/img/icons/group/football_off.png");
-  background-repeat: no-repeat;
-}
-.group.inactive .group_8 {
-  background-image: url("/img/icons/group/ktv_off.png");
-  background-repeat: no-repeat;
-}
-.group.inactive .group_9 {
-  background-image: url("/img/icons/group/fitness_off.png");
-  background-repeat: no-repeat;
-}
-.group.inactive .group_10 {
-  background-image: url("/img/icons/group/food_off.png");
-  background-repeat: no-repeat;
-}
-.group.inactive .group_11 {
-  background-image: url("/img/icons/group/running_off.png");
-  background-repeat: no-repeat;
-}
-.group.inactive .group_12 {
-  background-image: url("/img/icons/group/kids_off.png");
-  background-repeat: no-repeat;
-}
-.group.inactive .group_13 {
-  background-image: url("/img/icons/group/movie_off.png");
-  background-repeat: no-repeat;
-}
-.group.inactive .group_14 {
-  background-image: url("/img/icons/group/photography_off.png");
-  background-repeat: no-repeat;
-}
-.group.inactive .group_15 {
-  background-image: url("/img/icons/group/travel_off.png");
-  background-repeat: no-repeat;
-}
-.group.inactive .group_16 {
-  background-image: url("/img/icons/group/boardgame_off.png");
-  background-repeat: no-repeat;
-}
-.group.inactive .group_17 {
-  background-image: url("/img/icons/group/other_off.png");
-  background-repeat: no-repeat;
 }
 .group.active {
-  cursor: default;
-  color: #3498db;
+  color: #3ca2e0;
 }
-.group.active .group_1 {
-  background-image: url("/img/icons/group/badminton_on.png");
+.group .img_contain {
+  width: 50px;
+  height: 50px;
+  background-image: url("/img/icons/groups_new.png");
   background-repeat: no-repeat;
+  background-size: 600px 1500px;
+  padding: 80px 0 20px;
 }
-.group.active .group_2 {
-  background-image: url("/img/icons/group/basketball_on.png");
-  background-repeat: no-repeat;
+.group .group_1 {
+  background-position: 0px 0px;
 }
-.group.active .group_3 {
-  background-image: url("/img/icons/group/reading_on.png");
-  background-repeat: no-repeat;
+.group .group_2 {
+  background-position: -100px 0px;
 }
-.group.active .group_4 {
-  background-image: url("/img/icons/group/bicycle_on.png");
-  background-repeat: no-repeat;
+.group .group_3 {
+  background-position: -200px 0px;
 }
-.group.active .group_5 {
-  background-image: url("/img/icons/group/afternoontea_on.png");
-  background-repeat: no-repeat;
+.group .group_4 {
+  background-position: -300px 0px;
 }
-.group.active .group_6 {
-  background-image: url("/img/icons/group/chess_on.png");
-  background-repeat: no-repeat;
+.group .group_5 {
+  background-position: -400px 0px;
 }
-.group.active .group_7 {
-  background-image: url("/img/icons/group/football_on.png");
-  background-repeat: no-repeat;
+.group .group_6 {
+  background-position: -500px 0px;
 }
-.group.active .group_8 {
-  background-image: url("/img/icons/group/ktv_on.png");
-  background-repeat: no-repeat;
+.group .group_7 {
+  background-position: 0px -100px;
 }
-.group.active .group_9 {
-  background-image: url("/img/icons/group/fitness_on.png");
-  background-repeat: no-repeat;
+.group .group_8 {
+  background-position: -100px -100px;
 }
-.group.active .group_10 {
-  background-image: url("/img/icons/group/food_on.png");
-  background-repeat: no-repeat;
+.group .group_9 {
+  background-position: -200px -100px;
 }
-.group.active .group_11 {
-  background-image: url("/img/icons/group/running_on.png");
-  background-repeat: no-repeat;
+.group .group_10 {
+  background-position: -300px -100px;
 }
-.group.active .group_12 {
-  background-image: url("/img/icons/group/kids_on.png");
-  background-repeat: no-repeat;
+.group .group_11 {
+  background-position: -400px -100px;
 }
-.group.active .group_13 {
-  background-image: url("/img/icons/group/movie_on.png");
-  background-repeat: no-repeat;
+.group .group_12 {
+  background-position: -500px -100px;
 }
-.group.active .group_14 {
-  background-image: url("/img/icons/group/photography_on.png");
-  background-repeat: no-repeat;
+.group .group_13 {
+  background-position: 0px -200px;
 }
-.group.active .group_15 {
-  background-image: url("/img/icons/group/travel_on.png");
-  background-repeat: no-repeat;
+.group .group_14 {
+  background-position: -100px -200px;
 }
-.group.active .group_16 {
-  background-image: url("/img/icons/group/boardgame_on.png");
-  background-repeat: no-repeat;
+.group .group_15 {
+  background-position: -200px -200px;
 }
-.group.active .group_17 {
-  background-image: url("/img/icons/group/other_on.png");
-  background-repeat: no-repeat;
+.group .group_16 {
+  background-position: -300px -200px;
 }
-.group_select .img_contain {
-  padding: 80px 0 10px;
-  background-repeat: no-repeat;
-  text-align: center;
-  cursor: pointer;
+.group .group_17 {
+  background-position: -400px -200px;
 }

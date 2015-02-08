@@ -63,6 +63,9 @@ define(['./controller'], function (controllers) {
         .error(function (data) {
           alert(data.msg)
         });
+        $scope.changeType = function (index) {
+          $scope.newTeam._id = $scope.groups[index]._id;
+        }
         $scope.save = function () {
           teamService.create({selectedGroups:[$scope.newTeam]}).success(function (data) {
             alert('成功创建小队');
