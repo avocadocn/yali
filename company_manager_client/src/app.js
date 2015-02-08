@@ -4,6 +4,8 @@ define([
   'angularBootstrap',
   'bootstrap',
   'datetimepicker',
+  'pen',
+  'markdown',
   './view_controllers/controllers',
   './storage/storage',
   './utils/utils',

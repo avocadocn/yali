@@ -1,7 +1,8 @@
 @require '../custom-lib/admin-template/main.min.css'
 @require '../custom-lib/admin-template/theme.css'
 @require '../bower-lib/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css'
-
+@require '../bower-lib/pen/src/pen.css'
+@require '../custom-lib/font-awesome/font-awesome.css'
 
 // 辅助类
 .clearfix
@@ -63,7 +64,33 @@ body
   .dl_content
     flex 1
     -webkit-flex 1
+//- 通用属性
+button
+  border none
+  outline none
+input
+  outline none
+textarea
+  outline none
+textarea
+  resize none
+::-webkit-input-placeholder /* WebKit browsers */
+  color #ccc
+:-moz-placeholder /* Mozilla Firefox 4 to 18 */
+  color #ccc
+::-moz-placeholder /* Mozilla Firefox 19+ */
+  color #ccc
+:-ms-input-placeholder /* Internet Explorer 10+ */
+  color #ccc
 
+input:focus::-webkit-input-placeholder /* WebKit browsers */
+  color transparent !important
+input:focus::-moz-placeholder /* Mozilla Firefox 4 to 18 */
+  color transparent !important
+input:focus::-moz-placeholder /* Mozilla Firefox 19+ */
+  color transparent !important
+input:focus:-ms-input-placeholder /* Internet Explorer 10+ */
+  color transparent !important
 
 // view stylus 应该放在最后
 @require 'view_stylus/*'

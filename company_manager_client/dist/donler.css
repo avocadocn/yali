@@ -1,6 +1,8 @@
 @import '../custom-lib/admin-template/main.min.css';
 @import '../custom-lib/admin-template/theme.css';
 @import '../bower-lib/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css';
+@import '../bower-lib/pen/src/pen.css';
+@import '../custom-lib/font-awesome/font-awesome.css';
 .clearfix:before,
 .clearfix:after {
   display: table;
@@ -66,6 +68,43 @@ body {
 .dl_main_container .dl_content {
   flex: 1;
   -webkit-flex: 1;
+}
+button {
+  border: none;
+  outline: none;
+}
+input {
+  outline: none;
+}
+textarea {
+  outline: none;
+}
+textarea {
+  resize: none;
+}
+::-webkit-input-placeholder {
+  color: #ccc;
+}
+:-moz-placeholder {
+  color: #ccc;
+}
+::-moz-placeholder {
+  color: #ccc;
+}
+:-ms-input-placeholder {
+  color: #ccc;
+}
+input:focus::-webkit-input-placeholder {
+  color: transparent !important;
+}
+input:focus::-moz-placeholder {
+  color: transparent !important;
+}
+input:focus::-moz-placeholder {
+  color: transparent !important;
+}
+input:focus:-ms-input-placeholder {
+  color: transparent !important;
 }
 .login_page {
   background-color: #fff;
@@ -272,6 +311,8 @@ body {
   background-color: transparent;
   color: #fff;
   padding: 0;
+  border: none;
+  box-shadow: 0 0;
 }
 .dl_campaign_modal .dl_modal_body {
   position: relative;
@@ -394,7 +435,7 @@ body {
   background-color: #ccc;
   box-shadow: 1px 1px 2px #c8cac7;
 }
-.dl_campaign_modal .dl_modal_body .dl_modal_container .dl-form-control {
+.dl_campaign_modal .dl_modal_body .dl_modal_container .dl_form_control {
   min-height: 30px;
   padding: 5px;
 }
@@ -438,7 +479,6 @@ body {
 .dl_campaign_modal .dl_modal_body .dl_modal_container .dl_modal_button .dl_map_btn {
   background-color: #999;
   color: #fff;
-  padding: 6px 0;
   text-align: center;
   cursor: pointer;
   float: right;
@@ -497,6 +537,25 @@ body {
 .dl_campaign_modal .dl_modal_body .dl_modal_map_container .map_height {
   height: 300px;
 }
+.dl_campaign_modal .dl_modal_body .pen-menu {
+  height: 20px;
+  line-height: 20px;
+  background-color: #efefef;
+  box-shadow: 0 0 0;
+}
+.dl_campaign_modal .dl_modal_body .pen-menu .pen-icon {
+  height: 20px;
+  line-height: 20px !important;
+  padding: 0 5px;
+  font-size: 14px;
+}
+.dl_campaign_modal .dl_modal_body .markdownContainer {
+  outline: none;
+  min-height: 100px;
+  padding: 5px;
+  line-height: 1;
+  border: none;
+}
 .dl_campaign_modal .dl_modal_footer {
   background-color: #fff;
   width: 100%;
@@ -507,4 +566,29 @@ body {
   width: 100%;
   height: 100%;
   font-size: 14px;
+}
+.dl_form_control {
+  display: block;
+  width: 100%;
+  min-height: 34px;
+  height: auto;
+  padding: 6px 5px;
+  font-size: 12px;
+  line-height: 1.42857143;
+  color: #fff;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 0;
+  color: #999;
+  float: left;
+}
+.dl_form_control -webkit-box-shadow inset 0 1px 1px rgba(0,
+.dl_form_control 0,
+.dl_form_control .075) {
+  box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+}
+.dl_form_control -webkit-transition border-color ease-in-out .15s,
+.dl_form_control box-shadow ease-in-out .15s {
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
 }
