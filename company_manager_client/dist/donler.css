@@ -1,3 +1,6 @@
+@import '../custom-lib/admin-template/main.min.css';
+@import '../custom-lib/admin-template/theme.css';
+@import '../bower-lib/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css';
 .clearfix:before,
 .clearfix:after {
   display: table;
@@ -5,6 +8,9 @@
 }
 .clearfix:after {
   clear: both;
+}
+body {
+  margin-bottom: 0;
 }
 #top > .navbar {
   padding: 0 15px;
