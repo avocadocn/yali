@@ -594,3 +594,24 @@ input:focus:-ms-input-placeholder {
 .dl_form_control box-shadow ease-in-out .15s {
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
 }
+.st_bar {
+  width: 800px;
+  height: 400px;
+}
+.st_pie {
+  width: 1170px;
+  height: 300px;
+}
+.st_pie_container {
+  position: relative;
+}
+.st_pie_container .st_pie_label_group {
+  position: absolute;
+  width: 1170px;
+  bottom: 50px;
+}
+.st_pie_container .st_pie_label_group .st_pie_label {
+  float: left;
+  width: 20%;
+  text-align: center;
+}
