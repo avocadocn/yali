@@ -123,9 +123,9 @@ input:focus:-ms-input-placeholder {
 .dl_company_info .cropper {
   margin-left: auto;
   margin-right: auto;
-  width: 256px;
-  height: 256px;
-  padding: 30px;
+  width: 336px;
+  height: 336px;
+  padding: 40px;
   overflow: hidden;
 }
 .dl_company_info .cropit-image-preview-container {
@@ -144,11 +144,13 @@ input:focus:-ms-input-placeholder {
 }
 .dl_company_info .operator {
   position: relative;
+  margin-top: 10px;
   text-align: center;
 }
 .dl_company_info .operator .cropit-image-zoom-input {
   display: inline-block;
   margin: 0 10px;
+  width: 100px;
   line-height: 26px;
   vertical-align: middle;
   -webkit-appearance: none;
