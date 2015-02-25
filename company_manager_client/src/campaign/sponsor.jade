@@ -8,16 +8,13 @@
           button.dl_close(type="button" data-dismiss="modal" aria-hidden="true") ×
         form(name="campaign_form" novalidate)
           .dl_modal_body.clearfix
-            .dl_modal_sponsor.unit.clearfix(ng-if="!dOtMulti&&sponsorTeam")
-              img.logo(ng-src="{{sponsorTeam.logo}}")
-              span.text 活动发起方:
-              span.tname {{sponsorTeam.name}}
-              button.button(type="button" ng-click="provoke_select(1)") 更改小队
-            .dl_modal_sponsor(ng-if="dOtMulti")
-              span.dl_modal_subtitle 参加该活动的小队
-              .groups.dl_row.groups_box
-                .group(ng-repeat='select_dOt in select_dOts')
-                  img.size_48(ng-src="{{select_dOt.logo}}" title="{{select_dOt.name}}")
+            .dl_modal_sponsor
+              .btn-group
+                button.dl_btn.select_btn(ng-click="selectType('company')" ng-class="{'selected': selectedType==='company'}") 公司活动
+                button.dl_btn.select_btn(ng-click="selectType('team')" ng-class="{'selected': selectedType==='team'}") 小队活动
+              .groups.dl_row.teamNameBox(ng-if="selectedType==='team'")
+                .group(ng-repeat='team in teams' ng-click="toggleSelectTeam(team._id, $index)" ng-class="{'selected': team.selected}")
+                  span.team_name(ng-cloak) {{team.name}}
             .dl_modal_content.clearfix
               .dl_modal_container
                 input.dl_modal_input.dl_form_control(type="text" name="theme" ng-model="theme" placeholder="输入活动主题，限定14字" maxlength=20 required)
@@ -33,20 +30,20 @@
               .dl_modal_container
                 .dl_modal_half_container
                   .input-group.date.form_datetime#start_time
-                    input.dl_form_control.dl_modal_input(type="text" ng-model="start_time" name="startTime" placeholder="选择活动开始时间" data-data-format="YYYY-MM-DD HH:mm" readonly required)
+                    input.dl_form_control.dl_modal_input(type="text" ng-model="start_time" name="startTime" placeholder="选择活动开始时间" data-date-format="YYYY-MM-DD HH:mm" readonly required)
                     span.input-group-addon.no_radius
                       span.glyphicon.glyphicon-calendar
                 .dl_modal_half_container.end_time(ng-class="{'has-error':start_time >= end_time}")
                   .input-group.date.form_datetime#end_time
-                    input.dl_form_control.dl_modal_input(type="text" ng-model="$parent.end_time" name="endTime" placeholder="选择活动结束时间" data-data-format="YYYY-MM-DD HH:mm" readonly required)
+                    input.dl_form_control.dl_modal_input(type="text" ng-model="end_time" name="endTime" placeholder="选择活动结束时间" data-date-format="YYYY-MM-DD HH:mm" readonly required)
                     span.input-group-addon.no_radius
                       span.glyphicon.glyphicon-calendar
               .dl_modal_container
                 .dl_modal_half_container
-                  input.dl_modal_input.dl_form_control(type="number" ng-model="member_max" name="memberMax" placeholder="输入人数上限")
+                  input.dl_modal_input.dl_form_control(type="text" ng-model="member_max" name="memberMax" placeholder="输入人数上限")
                 .dl_modal_half_container.end_time(ng-class="{'has-error':deadline < end_time}")
                   .input-group.date.form_datetime#deadline
-                    input.dl_form_control.dl_modal_input(type="text" ng-model="$parent.deadline" name="deadline" placeholder="选择活动截止时间" data-data-format="YYYY-MM-DD HH:mm" readonly required)
+                    input.dl_form_control.dl_modal_input(type="text" ng-model="deadline" name="deadline" placeholder="选择活动截止时间" data-date-format="YYYY-MM-DD HH:mm" readonly required)
                     span.input-group-addon.no_radius
                       span.glyphicon.glyphicon-calendar
               .dl_modal_container
@@ -60,6 +57,6 @@
               .dl_modal_container
                 .detail_editor.detail_input
                   #campaignDetailToolBar
-                  #campaignDetail.markdownContainer.dl_modal_input(name="content" ng-model="content" placeholder="活动简介" contenteditable="true" mix-maxlength=4000)
+                  #campaignDetail.markdownContainer.dl_modal_input(ng-focus="checkContent()" name="content" ng-model="content" contenteditable="true" mix-maxlength=4000)
           .dl_modal_footer
-            button.dl_btn.dl_modal_btn(type='button' ng-click='pressed=true;sponsorCampaign()' data-dismiss="modal" ng-disabled="campaign_form.$invalid||pressed") 立即发起
+            button.dl_btn.dl_modal_btn(type='button' ng-click='pressed=true;sponsorCampaign()' data-dismiss="modal" aria-hidden="true" ng-disabled="campaign_form.$invalid||pressed") 立即发起

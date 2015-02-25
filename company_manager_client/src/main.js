@@ -12,7 +12,8 @@ requirejs.config({
     bootstrap: '../bower-lib/bootstrap/dist/js/bootstrap',
     datetimepicker: '../bower-lib/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker',
     pen: '../bower-lib/pen/src/pen',
-    markdown: '../bower-lib/pen/src/markdown'
+    markdown: '../bower-lib/pen/src/markdown',
+    moment: '../bower-lib/moment/moment'
   },
   packages: [
     {

@@ -106,6 +106,26 @@ input:focus::-moz-placeholder {
 input:focus:-ms-input-placeholder {
   color: transparent !important;
 }
+.dl_btn {
+  margin: 0;
+  color: #fff;
+  background-color: buttonColor;
+  border: none;
+  line-height: 1;
+  position: relative;
+  font-size: 12px;
+  text-align: center;
+  vertical-align: middle;
+  display: inline-block;
+  cursor: pointer;
+}
+.dl_btn:hover {
+  background-color: buttonHoverColor;
+  border-color: buttonHoverColor;
+}
+.dl_btn:disabled {
+  opacity: 0.65;
+}
 .login_page {
   background-color: #fff;
 }
@@ -347,38 +367,38 @@ input:focus:-ms-input-placeholder {
 .dl_campaign_modal .dl_modal_body .dl_modal_sponsor {
   border-bottom: 1px solid #cdcdcd;
   background-color: #fbfbfb;
-  padding: 20px;
+  padding: 20px 20px 5px;
 }
-.dl_campaign_modal .dl_modal_body .dl_modal_sponsor .logo {
-  width: 30px;
+.dl_campaign_modal .dl_modal_body .dl_modal_sponsor .btn-group .select_btn {
+  margin-right: 20px;
   height: 30px;
+  width: 100px;
 }
-.dl_campaign_modal .dl_modal_body .dl_modal_sponsor .tname {
-  width: 310px;
-  float: left;
-  font-size: 14px;
-  line-height: 1;
-  margin-top: 4px;
+.dl_campaign_modal .dl_modal_body .dl_modal_sponsor .btn-group .select_btn.selected {
+  box-shadow: inset 1px 1px 2px #999;
 }
-.dl_campaign_modal .dl_modal_body .dl_modal_sponsor .button {
-  width: 70px;
-  padding: 7px;
-  background-color: #3ca2e0;
+.dl_campaign_modal .dl_modal_body .dl_modal_sponsor .teamNameBox {
+  margin-top: 10px;
+  max-height: 70px;
+  overflow-y: auto;
+  width: 420px;
 }
-.dl_campaign_modal .dl_modal_body .dl_modal_sponsor .dl_modal_subtitle {
-  height: 20px;
-  color: #999;
-  float: left;
-}
-.dl_campaign_modal .dl_modal_body .dl_modal_sponsor .groups {
-  max-height: 300px;
-  overflow: auto;
-  width: 400px;
-}
-.dl_campaign_modal .dl_modal_body .dl_modal_sponsor .groups .group {
+.dl_campaign_modal .dl_modal_body .dl_modal_sponsor .teamNameBox .group {
   float: left;
   padding-bottom: 5px;
-  width: 48px;
+  width: 130px;
+}
+.dl_campaign_modal .dl_modal_body .dl_modal_sponsor .teamNameBox .group .team_name {
+  cursor: pointer;
+  float: left;
+  max-width: 130px;
+  color: #666;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.dl_campaign_modal .dl_modal_body .dl_modal_sponsor .teamNameBox .group.selected .team_name {
+  background-color: #ddd;
 }
 .dl_campaign_modal .dl_modal_body .dl_modal_content {
   padding: 20px;
@@ -546,6 +566,7 @@ input:focus:-ms-input-placeholder {
   line-height: 20px;
   background-color: #efefef;
   box-shadow: 0 0 0;
+  z-index: auto;
 }
 .dl_campaign_modal .dl_modal_body .pen-menu .pen-icon {
   height: 20px;
@@ -556,6 +577,8 @@ input:focus:-ms-input-placeholder {
 .dl_campaign_modal .dl_modal_body .markdownContainer {
   outline: none;
   min-height: 100px;
+  max-height: 200px;
+  overflow-y: scroll;
   padding: 5px;
   line-height: 1;
   border: none;
@@ -616,4 +639,10 @@ input:focus:-ms-input-placeholder {
   float: left;
   width: 20%;
   text-align: center;
+}
+.no_radius {
+  border-radius: 0;
+}
+.ng-dirty.ng-invalid {
+  background-color: #ffd7de !important;
 }

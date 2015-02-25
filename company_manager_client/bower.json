@@ -10,6 +10,7 @@
     "angular-bootstrap": "~0.12.0",
     "echarts": "~2.2.0",
     "smalot-bootstrap-datetimepicker": "latest",
-    "pen": "https://github.com/afeidonler/pen.git#master"
+    "pen": "https://github.com/afeidonler/pen.git#master",
+    "moment": "^2.7.0"
   }
 }

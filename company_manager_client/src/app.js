@@ -6,6 +6,7 @@ define([
   'datetimepicker',
   'pen',
   'markdown',
+  'moment',
   './view_controllers/controllers',
   './storage/storage',
   './utils/utils',

@@ -335,10 +335,68 @@ define(['./campaign', 'echarts', 'echarts/chart/bar', 'echarts/chart/pie'], func
       return {
         restrict: 'E',
         scope: {
-          data: '='
+          data: '=',
         },
         templateUrl: '/company/manager/templates/campaign/sponsor.html',
         link: function (scope, ele, attrs, ctrl) {
+          
+          scope.$watch('data', function (data) {
+            if (data) {
+              scope.teams = scope.data.teams;
+            }
+          })
+          
+          //选小队相关
+          scope.selectedType = 'company';
+          scope.selectType = function(selectedType) {
+            scope.selectedType = selectedType;
+          };
+          
+          scope.tid = [];
+          scope.toggleSelectTeam = function(tid, indexOfTeams) {
+            var index = scope.tid.indexOf(tid);
+            if(index>-1) {
+              scope.tid.splice(index, 1);
+              scope.teams[indexOfTeams].selected = false;
+            } else {
+              scope.tid.push(tid);
+              scope.teams[indexOfTeams].selected = true;
+            }
+          };
+          
+          //获取mold
+          campaignService.getCampaignMolds().success(function (data) {
+            scope.molds = data;
+            scope.mold = data[0].name;
+          })
+          .error(function (data) {
+            console.log(data);
+          });
+
+          scope.selectMold = function (name) {
+            scope.mold = name;
+          };
+
+          //详情
+          scope.content = '活动简介';
+          scope.checkContent = function() {
+            if(scope.content=='活动简介') {
+              scope.content = '';
+            }
+          };
+
+          var options = {
+            editor: document.getElementById('campaignDetail'), // {DOM Element} [required]
+            class: 'dl_markdown', // {String} class of the editor,
+            textarea: '<textarea name="content" ng-model="content"></textarea>', // fallback for old browsers
+            list: ['h5', 'p', 'insertorderedlist','insertunorderedlist', 'indent', 'outdent', 'bold', 'italic', 'underline'], // editor menu list
+            stay: false,
+            toolBarId: 'campaignDetailToolBar'
+          };
+
+          var editor = new Pen(options);
+
+          //时间相关
           $('#start_time').datetimepicker({
             autoclose: true,
             language: 'zh-CN',
@@ -357,22 +415,54 @@ define(['./campaign', 'echarts', 'echarts/chart/bar', 'echarts/chart/pie'], func
             startDate: new Date(),
             pickerPosition:"bottom-left"
           });
+
+          $("#start_time").on("changeDate",function (ev) {
+              var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
+              scope.start_time = moment(dateUTC).format("YYYY-MM-DD HH:mm");
+              $('#end_time').datetimepicker('setStartDate', dateUTC); //开始时间应小于结束时间
+          });
+          $("#end_time").on("changeDate",function (ev) {
+              var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
+              scope.end_time = moment(dateUTC).format("YYYY-MM-DD HH:mm");
+              $('#start_time').datetimepicker('setEndDate', dateUTC); //开始时间应小于结束时间
+              $('#deadline').datetimepicker('setEndDate', dateUTC);   //截至时间应小于结束时间
+          });
+          $("#deadline").on("changeDate",function (ev) {
+              var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
+              scope.deadline = moment(dateUTC).format("YYYY-MM-DD HH:mm");
+              $('#end_time').datetimepicker('setStartDate', dateUTC); //截至时间应小于结束时间
+          });
+
+          //map相关
           scope.showMap = function () {
 
-          }
-          scope.sponsorCampaign = function () {
-            // console.log(scope.data);
-          };
-          var options = {
-            editor: document.getElementById('campaignDetail'), // {DOM Element} [required]
-            class: 'dl_markdown', // {String} class of the editor,
-            textarea: '<textarea name="content" ng-model="content"></textarea>', // fallback for old browsers
-            list: ['h5', 'p', 'insertorderedlist','insertunorderedlist', 'indent', 'outdent', 'bold', 'italic', 'underline'], // editor menu list
-            stay: false,
-            toolBarId: 'campaignDetailToolBar'
           };
 
-          var editor = new Pen(options);
+          //发活动
+          scope.sponsorCampaign = function () {
+            var campaign = {
+              cid: [scope.data.cid],
+              tid: scope.tid,
+              campaign_type: scope.selectedType === 'company' ? 1:2,
+              theme: scope.theme,
+              location: scope.location,
+              start_time: scope.start_time,
+              end_time: scope.end_time,
+              deadline: scope.deadline,
+              campaign_mold: scope.mold,
+              member_max: scope.member_max,
+              content: scope.content
+            };
+            // console.log(campaign);
+            campaignService.sponsor(campaign, function(msg) {
+              if(msg) {
+                alert(msg);
+              }else {
+                $('sponsorCampaignModel').modal('hide');
+                alert('活动发送成功');
+              }
+            })
+          };
         }
       }
     }]);

@@ -55,32 +55,34 @@
     .dl_modal_sponsor
       border-bottom 1px solid #cdcdcd
       background-color #fbfbfb
-      padding 20px
-      .logo
-        width 30px
-        height 30px
-      .tname
-        width 310px
-        float left
-        font-size 14px
-        line-height 1
-        margin-top 4px
-      .button
-        width 70px
-        padding 7px
-        background-color #3ca2e0
-      .dl_modal_subtitle
-        height 20px
-        color #999
-        float left
-      .groups
-        max-height 300px
-        overflow auto
-        width 400px
+      padding 20px 20px 5px
+      .btn-group
+        .select_btn
+          margin-right 20px
+          height 30px
+          width 100px
+        .select_btn.selected
+          box-shadow inset 1px 1px 2px #999
+      .teamNameBox
+        margin-top 10px
+        max-height 70px
+        overflow-y auto
+        width 420px
         .group
           float left
           padding-bottom 5px
-          width 48px
+          width 130px
+          .team_name
+            cursor pointer
+            float left
+            max-width 130px
+            color #666
+            white-space nowrap
+            overflow hidden
+            text-overflow ellipsis
+        .group.selected
+          .team_name
+            background-color #ddd
     .dl_modal_content
       padding 20px
       float left
@@ -219,6 +221,7 @@
       line-height 20px
       background-color #efefef
       box-shadow 0 0 0
+      z-index auto
       .pen-icon
         height 20px
         line-height 20px !important
@@ -227,6 +230,8 @@
     .markdownContainer
       outline none
       min-height 100px
+      max-height 200px
+      overflow-y scroll
       padding 5px
       line-height 1
       border none
@@ -278,3 +283,7 @@
       float left
       width 20%
       text-align center
+.no_radius
+  border-radius 0
+.ng-dirty.ng-invalid
+  background-color #FFD7DE !important
