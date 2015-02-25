@@ -1,6 +1,6 @@
 define(['./campaign', 'echarts', 'echarts/chart/bar', 'echarts/chart/pie'], function (campaign, echarts) {
   // St: statistics
-  return campaign.directive('campaignStBar', [function () {
+  return campaign.directive('campaignStBar', ['$filter', function ($filter) {
     return {
 
       restrict: 'E',
@@ -9,6 +9,10 @@ define(['./campaign', 'echarts', 'echarts/chart/bar', 'echarts/chart/pie'], func
       },
       templateUrl: '/company/manager/templates/campaign/st_bar.html',
       link: function (scope, ele, attrs, ctrl) {
+
+        var getDateRangeString = function (start, end) {
+          return ($filter('date')(start, 'yyyy-MM-dd') + '\n~' + $filter('date')(end, 'yyyy-MM-dd'));
+        };
 
         scope.$watch('data', function (data) {
           if (data) {
@@ -34,7 +38,16 @@ define(['./campaign', 'echarts', 'echarts/chart/bar', 'echarts/chart/pie'], func
                 {
                   name: '周',
                   type: 'category',
-                  data: ['1', '2', '3', '上周', '本周']
+                  axisLabel: {
+                    interval: 0
+                  },
+                  data: [
+                    getDateRangeString(data.splitDate[0], data.splitDate[1]),
+                    getDateRangeString(data.splitDate[1], data.splitDate[2]),
+                    getDateRangeString(data.splitDate[2], data.splitDate[3]),
+                    getDateRangeString(data.splitDate[3], data.splitDate[4]),
+                    getDateRangeString(data.splitDate[4], data.splitDate[5]) + '\n本周'
+                  ]
                 }
               ],
               yAxis: [
@@ -53,13 +66,23 @@ define(['./campaign', 'echarts', 'echarts/chart/bar', 'echarts/chart/pie'], func
                 {
                   name: '活动次数',
                   type: 'bar',
-                  data: data.campaignCounts
+                  data: data.chartsData.campaignCounts,
+                  itemStyle: {
+                    normal: {
+                      color: '#d7cdeb'
+                    }
+                  }
                 },
                 {
                   name: '活动人次',
                   type: 'bar',
                   yAxisIndex: 1,
-                  data: data.memberCounts
+                  data: data.chartsData.memberCounts,
+                  itemStyle: {
+                    normal: {
+                      color: '#a9d4f3'
+                    }
+                  }
                 }
               ]
             };
@@ -73,7 +96,7 @@ define(['./campaign', 'echarts', 'echarts/chart/bar', 'echarts/chart/pie'], func
 
     };
   }])
-    .directive('campaignStPie', [function () {
+    .directive('campaignStPie', ['$filter', function ($filter) {
       return {
         restrict: 'E',
         scope: {
@@ -82,21 +105,97 @@ define(['./campaign', 'echarts', 'echarts/chart/bar', 'echarts/chart/pie'], func
         templateUrl: '/company/manager/templates/campaign/st_pie.html',
         link: function (scope, ele, attrs, ctrl) {
 
+          scope.labels = [];
+
+          var isShowLabel = function (value) {
+            return value > 0;
+          };
+
+          var getDateRangeString = function (start, end) {
+            return ($filter('date')(start, 'yyyy-MM-dd') + '~' + $filter('date')(end, 'yyyy-MM-dd'));
+          };
+
           var formatData = function (data) {
             var resData = [];
 
-            var max = Math.min(5, data.length);
+            var max = Math.min(5, data.chartsData.length);
             for (var i = 0; i < max; i++) {
+              var name = getDateRangeString(data.splitDate[i], data.splitDate[i + 1]);
+              if (i === max - 1) {
+                name += ' 本周'
+              }
+              scope.labels.push(name);
               resData.push({
-                name: '人数统计',
+                name: name,
                 type: 'pie',
                 radius: '30%',
-                center: [(10 + 20 * i) + '%', '60%'],
+                center: [(10 + 20 * i) + '%', '50%'],
+
                 data: [
-                  {value: data[i].zero, name: '没有参加'},
-                  {value: data[i].once, name: '参加1次'},
-                  {value: data[i].twice, name: '参加2次'},
-                  {value: data[i].moreThanThreeTimes, name: '3次或以上'}
+                  {
+                    value: data.chartsData[i].zero,
+                    name: '没有参加',
+                    itemStyle: {
+                      normal: {
+                        label: {
+                          show: isShowLabel(data.chartsData[i].zero)
+                        },
+                        labelLine: {
+                          show: isShowLabel(data.chartsData[i].zero),
+                          length: 1
+                        },
+                        color: '#d7cdeb'
+                      }
+                    }
+                  },
+                  {
+                    value: data.chartsData[i].once,
+                    name: '参加1次',
+                    itemStyle: {
+                      normal: {
+                        label: {
+                          show: isShowLabel(data.chartsData[i].once)
+                        },
+                        labelLine: {
+                          show: isShowLabel(data.chartsData[i].once),
+                          length: 1
+                        },
+                        color: '#a9d4f3'
+                      }
+                    }
+                  },
+                  {
+                    value: data.chartsData[i].twice,
+                    name: '参加2次',
+                    itemStyle: {
+                      normal: {
+                        label: {
+                          show: isShowLabel(data.chartsData[i].twice)
+                        },
+                        labelLine: {
+                          show: isShowLabel(data.chartsData[i].twice),
+                          length: 1
+                        },
+                        color: '#fbd8bc'
+                      }
+                    }
+                  },
+                  {
+                    value: data.chartsData[i].moreThanThreeTimes,
+                    name: '3次或以上',
+                    itemStyle: {
+                      normal: {
+                        label: {
+                          show: isShowLabel(data.chartsData[i].moreThanThreeTimes)
+                        },
+                        labelLine: {
+                          show: isShowLabel(data.chartsData[i].moreThanThreeTimes),
+                          length: 1
+                        },
+                        color: '#f1a8ad'
+                      }
+                    }
+                  }
                 ]
               });
             }
@@ -119,7 +218,7 @@ define(['./campaign', 'echarts', 'echarts/chart/bar', 'echarts/chart/pie'], func
                 },
                 legend: {
                   x: 'center',
-                  y: '20%',
+                  y: '15%',
                   data: ['没有参加', '参加1次', '参加2次', '3次或以上']
                 },
                 toolbox: {
@@ -232,123 +331,6 @@ define(['./campaign', 'echarts', 'echarts/chart/bar', 'echarts/chart/pie'], func
         }
       }
     })
-    .directive('campaignStPieRing', [function () {
-      return {
-        restrict: 'E',
-        scope: {
-          data: '=',
-          text: '='
-        },
-        templateUrl: '/company/manager/templates/campaign/st_pie_ring.html',
-        link: function (scope, ele, attrs, ctrl) {
-
-          var dataStyle = {
-            normal: {
-              label: {show: false},
-              labelLine: {show: false}
-            }
-          };
-
-          var placeHolderStyle = {
-            normal: {
-              color: 'rgba(0,0,0,0)',
-              label: {show: false},
-              labelLine: {show: false}
-            },
-            emphasis: {
-              color: 'rgba(0,0,0,0)'
-            }
-          };
-
-          var formatData = function (data) {
-            var legendData = ['人:没有参加', '人:参加1次', '人:参加2次', '人:3次或以上'];
-            var seriesLabel = [
-              '人没有参加活动',
-              '人参加1次活动',
-              '人参加2次活动',
-              '人参加3次或3次以上的活动'
-            ];
-            var series = [];
-
-            var oriDataList = [data.zero, data.once, data.twice, data.moreThanThreeTimes];
-            var sum = 0;
-            oriDataList.forEach(function (item) {
-              sum += item;
-            });
-            var rages = oriDataList.map(function (item) {
-              return Math.round(item / sum * 100);
-            });
-
-
-            for (var i = 0; i < legendData.length; i++) {
-              legendData[i] = oriDataList[i] + legendData[i];
-              series.push({
-                name: oriDataList[i] + seriesLabel[i],
-                type: 'pie',
-                clockWise: false,
-                radius: [70 - 15 * i, 70 - 15 * (i + 1)],
-                itemStyle: dataStyle,
-                data: [
-                  {
-                    value: rages[i],
-                    name: legendData[i]
-                  },
-                  {
-                    value: 100 - rages[i],
-                    itemStyle: placeHolderStyle
-                  }
-                ]
-              });
-            }
-
-            return {
-              legendData: legendData,
-              series: series
-            };
-          };
-
-          scope.$watch('data', function (data) {
-            if (data) {
-
-              var result = formatData(data);
-
-              var option = {
-                title: {
-                  text: scope.text,
-                  x: 'center',
-                  y: 'center',
-                  itemGap: 20,
-                  textStyle: {
-                    color: 'rgba(30,144,255,0.8)',
-                    fontFamily: '微软雅黑',
-                    fontSize: 18,
-                    fontWeight: 'bolder'
-                  }
-                },
-                tooltip: {
-                  show: true,
-                  position: [10, 40],
-                  formatter: "{a}"
-                },
-                legend: {
-                  orient: 'vertical',
-                  x: ele[0].querySelector('.st_pie_ring').offsetWidth / 2,
-                  y: 80,
-                  itemGap: 1,
-                  data: result.legendData
-                },
-                series: result.series
-              };
-
-              var myChart = echarts.init(ele[0].querySelector('.st_pie_ring'));
-              myChart.setOption(option);
-
-
-            }
-          });
-        }
-      };
-    }])
     .directive('sponsorCampaign', ['campaignService', function (campaignService) {
       return {
         restrict: 'E',

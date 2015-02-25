@@ -1,1 +1,4 @@
-.st_pie.center-block(style="width: 1170px; height: 400px;")
+.st_pie_container
+  .st_pie.center-block
+  .st_pie_label_group.center-block.clearfix
+    span.st_pie_label(ng-repeat="label in labels" ng-bind="label")

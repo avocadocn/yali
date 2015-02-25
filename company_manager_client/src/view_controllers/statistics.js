@@ -7,7 +7,7 @@ define(['./controller'], function (controller) {
 
       campaignService.getChartsData($rootScope.company._id, 'bar')
         .success(function (data) {
-          $scope.barData = data.chartsData;
+          $scope.barData = data;
         })
         .error(function (data) {
           if (data && data.msg) {
@@ -17,17 +17,9 @@ define(['./controller'], function (controller) {
           }
         });
 
-      $scope.pieLabels = [
-        '1',
-        '2',
-        '3',
-        '上周',
-        '本周'
-      ];
-
       campaignService.getChartsData($rootScope.company._id, 'pie')
         .success(function (data) {
-          $scope.pieData = data.chartsData;
+          $scope.pieData = data;
         })
         .error(function (data) {
           if (data && data.msg) {
