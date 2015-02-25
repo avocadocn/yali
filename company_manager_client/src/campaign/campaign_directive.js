@@ -66,13 +66,23 @@ define(['./campaign', 'echarts', 'echarts/chart/bar', 'echarts/chart/pie'], func
                 {
                   name: '活动次数',
                   type: 'bar',
-                  data: data.chartsData.campaignCounts
+                  data: data.chartsData.campaignCounts,
+                  itemStyle: {
+                    normal: {
+                      color: '#d7cdeb'
+                    }
+                  }
                 },
                 {
                   name: '活动人次',
                   type: 'bar',
                   yAxisIndex: 1,
-                  data: data.chartsData.memberCounts
+                  data: data.chartsData.memberCounts,
+                  itemStyle: {
+                    normal: {
+                      color: '#a9d4f3'
+                    }
+                  }
                 }
               ]
             };
@@ -133,7 +143,8 @@ define(['./campaign', 'echarts', 'echarts/chart/bar', 'echarts/chart/pie'], func
                         labelLine: {
                           show: isShowLabel(data.chartsData[i].zero),
                           length: 1
-                        }
+                        },
+                        color: '#d7cdeb'
                       }
                     }
                   },
@@ -148,7 +159,8 @@ define(['./campaign', 'echarts', 'echarts/chart/bar', 'echarts/chart/pie'], func
                         labelLine: {
                           show: isShowLabel(data.chartsData[i].once),
                           length: 1
-                        }
+                        },
+                        color: '#a9d4f3'
                       }
                     }
                   },
@@ -163,7 +175,8 @@ define(['./campaign', 'echarts', 'echarts/chart/bar', 'echarts/chart/pie'], func
                         labelLine: {
                           show: isShowLabel(data.chartsData[i].twice),
                           length: 1
-                        }
+                        },
+                        color: '#fbd8bc'
                       }
                     }
                   },
@@ -178,7 +191,8 @@ define(['./campaign', 'echarts', 'echarts/chart/bar', 'echarts/chart/pie'], func
                         labelLine: {
                           show: isShowLabel(data.chartsData[i].moreThanThreeTimes),
                           length: 1
-                        }
+                        },
+                        color: '#f1a8ad'
                       }
                     }
                   }
