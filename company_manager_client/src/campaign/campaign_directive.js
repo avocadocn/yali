@@ -1,6 +1,6 @@
 define(['./campaign', 'echarts', 'echarts/chart/bar', 'echarts/chart/pie'], function (campaign, echarts) {
   // St: statistics
-  return campaign.directive('campaignStBar', [function () {
+  return campaign.directive('campaignStBar', ['$filter', function ($filter) {
     return {
 
       restrict: 'E',
@@ -9,6 +9,10 @@ define(['./campaign', 'echarts', 'echarts/chart/bar', 'echarts/chart/pie'], func
       },
       templateUrl: '/company/manager/templates/campaign/st_bar.html',
       link: function (scope, ele, attrs, ctrl) {
+
+        var getDateRangeString = function (start, end) {
+          return ($filter('date')(start, 'yyyy-MM-dd') + '\n~' + $filter('date')(end, 'yyyy-MM-dd'));
+        };
 
         scope.$watch('data', function (data) {
           if (data) {
@@ -34,7 +38,16 @@ define(['./campaign', 'echarts', 'echarts/chart/bar', 'echarts/chart/pie'], func
                 {
                   name: '周',
                   type: 'category',
-                  data: ['1', '2', '3', '上周', '本周']
+                  axisLabel: {
+                    interval: 0
+                  },
+                  data: [
+                    getDateRangeString(data.splitDate[0], data.splitDate[1]),
+                    getDateRangeString(data.splitDate[1], data.splitDate[2]),
+                    getDateRangeString(data.splitDate[2], data.splitDate[3]),
+                    getDateRangeString(data.splitDate[3], data.splitDate[4]),
+                    '本周'
+                  ]
                 }
               ],
               yAxis: [
@@ -53,13 +66,13 @@ define(['./campaign', 'echarts', 'echarts/chart/bar', 'echarts/chart/pie'], func
                 {
                   name: '活动次数',
                   type: 'bar',
-                  data: data.campaignCounts
+                  data: data.data.campaignCounts
                 },
                 {
                   name: '活动人次',
                   type: 'bar',
                   yAxisIndex: 1,
-                  data: data.memberCounts
+                  data: data.data.memberCounts
                 }
               ]
             };
@@ -82,6 +95,10 @@ define(['./campaign', 'echarts', 'echarts/chart/bar', 'echarts/chart/pie'], func
         templateUrl: '/company/manager/templates/campaign/st_pie.html',
         link: function (scope, ele, attrs, ctrl) {
 
+          var isShowLabel = function (value) {
+            return value > 0;
+          };
+
           var formatData = function (data) {
             var resData = [];
 
@@ -92,11 +109,68 @@ define(['./campaign', 'echarts', 'echarts/chart/bar', 'echarts/chart/pie'], func
                 type: 'pie',
                 radius: '30%',
                 center: [(10 + 20 * i) + '%', '60%'],
+
                 data: [
-                  {value: data[i].zero, name: '没有参加'},
-                  {value: data[i].once, name: '参加1次'},
-                  {value: data[i].twice, name: '参加2次'},
-                  {value: data[i].moreThanThreeTimes, name: '3次或以上'}
+                  {
+                    value: data[i].zero,
+                    name: '没有参加',
+                    itemStyle: {
+                      normal: {
+                        label: {
+                          show: isShowLabel(data[i].zero)
+                        },
+                        labelLine: {
+                          show: isShowLabel(data[i].zero),
+                          length: 1
+                        }
+                      }
+                    }
+                  },
+                  {
+                    value: data[i].once,
+                    name: '参加1次',
+                    itemStyle: {
+                      normal: {
+                        label: {
+                          show: isShowLabel(data[i].once)
+                        },
+                        labelLine: {
+                          show: isShowLabel(data[i].once),
+                          length: 1
+                        }
+                      }
+                    }
+                  },
+                  {
+                    value: data[i].twice,
+                    name: '参加2次',
+                    itemStyle: {
+                      normal: {
+                        label: {
+                          show: isShowLabel(data[i].twice)
+                        },
+                        labelLine: {
+                          show: isShowLabel(data[i].twice),
+                          length: 1
+                        }
+                      }
+                    }
+                  },
+                  {
+                    value: data[i].moreThanThreeTimes,
+                    name: '3次或以上',
+                    itemStyle: {
+                      normal: {
+                        label: {
+                          show: isShowLabel(data[i].moreThanThreeTimes)
+                        },
+                        labelLine: {
+                          show: isShowLabel(data[i].moreThanThreeTimes),
+                          length: 1
+                        }
+                      }
+                    }
+                  }
                 ]
               });
             }
@@ -232,123 +306,123 @@ define(['./campaign', 'echarts', 'echarts/chart/bar', 'echarts/chart/pie'], func
         }
       }
     })
-    .directive('campaignStPieRing', [function () {
-      return {
-        restrict: 'E',
-        scope: {
-          data: '=',
-          text: '='
-        },
-        templateUrl: '/company/manager/templates/campaign/st_pie_ring.html',
-        link: function (scope, ele, attrs, ctrl) {
-
-          var dataStyle = {
-            normal: {
-              label: {show: false},
-              labelLine: {show: false}
-            }
-          };
-
-          var placeHolderStyle = {
-            normal: {
-              color: 'rgba(0,0,0,0)',
-              label: {show: false},
-              labelLine: {show: false}
-            },
-            emphasis: {
-              color: 'rgba(0,0,0,0)'
-            }
-          };
-
-          var formatData = function (data) {
-            var legendData = ['人:没有参加', '人:参加1次', '人:参加2次', '人:3次或以上'];
-            var seriesLabel = [
-              '人没有参加活动',
-              '人参加1次活动',
-              '人参加2次活动',
-              '人参加3次或3次以上的活动'
-            ];
-            var series = [];
-
-            var oriDataList = [data.zero, data.once, data.twice, data.moreThanThreeTimes];
-            var sum = 0;
-            oriDataList.forEach(function (item) {
-              sum += item;
-            });
-            var rages = oriDataList.map(function (item) {
-              return Math.round(item / sum * 100);
-            });
-
-
-            for (var i = 0; i < legendData.length; i++) {
-              legendData[i] = oriDataList[i] + legendData[i];
-              series.push({
-                name: oriDataList[i] + seriesLabel[i],
-                type: 'pie',
-                clockWise: false,
-                radius: [70 - 15 * i, 70 - 15 * (i + 1)],
-                itemStyle: dataStyle,
-                data: [
-                  {
-                    value: rages[i],
-                    name: legendData[i]
-                  },
-                  {
-                    value: 100 - rages[i],
-                    itemStyle: placeHolderStyle
-                  }
-                ]
-              });
-            }
-
-            return {
-              legendData: legendData,
-              series: series
-            };
-          };
-
-          scope.$watch('data', function (data) {
-            if (data) {
-
-              var result = formatData(data);
-
-              var option = {
-                title: {
-                  text: scope.text,
-                  x: 'center',
-                  y: 'center',
-                  itemGap: 20,
-                  textStyle: {
-                    color: 'rgba(30,144,255,0.8)',
-                    fontFamily: '微软雅黑',
-                    fontSize: 18,
-                    fontWeight: 'bolder'
-                  }
-                },
-                tooltip: {
-                  show: true,
-                  position: [10, 40],
-                  formatter: "{a}"
-                },
-                legend: {
-                  orient: 'vertical',
-                  x: ele[0].querySelector('.st_pie_ring').offsetWidth / 2,
-                  y: 80,
-                  itemGap: 1,
-                  data: result.legendData
-                },
-                series: result.series
-              };
-
-              var myChart = echarts.init(ele[0].querySelector('.st_pie_ring'));
-              myChart.setOption(option);
-
-
-            }
-          });
-        }
-      };
-    }])
+    //.directive('campaignStPieRing', [function () {
+    //  return {
+    //    restrict: 'E',
+    //    scope: {
+    //      data: '=',
+    //      text: '='
+    //    },
+    //    templateUrl: '/company/manager/templates/campaign/st_pie_ring.html',
+    //    link: function (scope, ele, attrs, ctrl) {
+    //
+    //      var dataStyle = {
+    //        normal: {
+    //          label: {show: false},
+    //          labelLine: {show: false}
+    //        }
+    //      };
+    //
+    //      var placeHolderStyle = {
+    //        normal: {
+    //          color: 'rgba(0,0,0,0)',
+    //          label: {show: false},
+    //          labelLine: {show: false}
+    //        },
+    //        emphasis: {
+    //          color: 'rgba(0,0,0,0)'
+    //        }
+    //      };
+    //
+    //      var formatData = function (data) {
+    //        var legendData = ['人:没有参加', '人:参加1次', '人:参加2次', '人:3次或以上'];
+    //        var seriesLabel = [
+    //          '人没有参加活动',
+    //          '人参加1次活动',
+    //          '人参加2次活动',
+    //          '人参加3次或3次以上的活动'
+    //        ];
+    //        var series = [];
+    //
+    //        var oriDataList = [data.zero, data.once, data.twice, data.moreThanThreeTimes];
+    //        var sum = 0;
+    //        oriDataList.forEach(function (item) {
+    //          sum += item;
+    //        });
+    //        var rages = oriDataList.map(function (item) {
+    //          return Math.round(item / sum * 100);
+    //        });
+    //
+    //
+    //        for (var i = 0; i < legendData.length; i++) {
+    //          legendData[i] = oriDataList[i] + legendData[i];
+    //          series.push({
+    //            name: oriDataList[i] + seriesLabel[i],
+    //            type: 'pie',
+    //            clockWise: false,
+    //            radius: [70 - 15 * i, 70 - 15 * (i + 1)],
+    //            itemStyle: dataStyle,
+    //            data: [
+    //              {
+    //                value: rages[i],
+    //                name: legendData[i]
+    //              },
+    //              {
+    //                value: 100 - rages[i],
+    //                itemStyle: placeHolderStyle
+    //              }
+    //            ]
+    //          });
+    //        }
+    //
+    //        return {
+    //          legendData: legendData,
+    //          series: series
+    //        };
+    //      };
+    //
+    //      scope.$watch('data', function (data) {
+    //        if (data) {
+    //
+    //          var result = formatData(data);
+    //
+    //          var option = {
+    //            title: {
+    //              text: scope.text,
+    //              x: 'center',
+    //              y: 'center',
+    //              itemGap: 20,
+    //              textStyle: {
+    //                color: 'rgba(30,144,255,0.8)',
+    //                fontFamily: '微软雅黑',
+    //                fontSize: 18,
+    //                fontWeight: 'bolder'
+    //              }
+    //            },
+    //            tooltip: {
+    //              show: true,
+    //              position: [10, 40],
+    //              formatter: "{a}"
+    //            },
+    //            legend: {
+    //              orient: 'vertical',
+    //              x: ele[0].querySelector('.st_pie_ring').offsetWidth / 2,
+    //              y: 80,
+    //              itemGap: 1,
+    //              data: result.legendData
+    //            },
+    //            series: result.series
+    //          };
+    //
+    //          var myChart = echarts.init(ele[0].querySelector('.st_pie_ring'));
+    //          myChart.setOption(option);
+    //
+    //
+    //        }
+    //      });
+    //    }
+    //  };
+    //}])
     .directive('sponsorCampaign', ['campaignService', function (campaignService) {
       return {
         restrict: 'E',

@@ -3,6 +3,4 @@
     h2.text-center 统计报告
     hr
     campaign-st-bar(data="barData")
-    //campaign-st-pie(data="pieData")
-    .clearfix.center-block
-      campaign-st-pie-ring.pull-left(ng-repeat="data in pieData" data="data" text="pieLabels[$index]")
+    campaign-st-pie(data="pieData")

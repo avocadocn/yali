@@ -69,7 +69,6 @@
 }
 .campaign_detail .component {
   -moz-box-shadow: 1px 1px 3px #ccc;
-/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 .campaign_detail .component .component_head {
