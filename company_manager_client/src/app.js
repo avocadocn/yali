@@ -7,6 +7,7 @@ define([
   'pen',
   'markdown',
   'moment',
+  'calendar',
   './view_controllers/controllers',
   './storage/storage',
   './utils/utils',

@@ -1,14 +1,72 @@
 .inner
-  .dl_panel
+  .dl_panel.clearfix
     .dl_block_head
       span.title 活动管理
       span.pull-right 900个活动
       a.header_button.pull-right(href="" type="button" data-toggle="modal" data-target="#sponsorCampaignModel") 发活动
-    .calendar
-    .select_team
+    .table_block.clearfix
+      .calendar.schedule_small
+        .schedulebox_small
+          .clearfix.schedule_operator
+            p.calendar_nav#calendar_nav
+              i.fa.fa-bookmark-o.pull-right(ng-click="" title="还原成不限定日期")
+              a.pull-right(data-calendar-nav="next" href="javascript:void(0)") &gt;
+              i.fa.fa-calendar.pull-left
+              a.pull-left(data-calendar-nav="prev" href="javascript:void(0)") &lt;
+              a.calendar_title(data-calendar-nav="today" href="javascript:void(0)") 
+                span#calendar_title
+          .calendar_box.calendar_box_small
+            #calendar_view
+              #calendar
+          .calendar_tips
+            span.join_sign.length_1
+            label.campaign_label 没有活动
+            span.join_sign.length_2
+            label.campaign_label 2个及以下
+            span.join_sign.length_3
+            label.campaign_label 2个以上
+      .select_team
+        .select_head
+          span.head_text 选择查看活动单位
+          button.dl_btn.select_btn(ng-click="selectType(1)" ng-class="{'selected': selectedType===1}") 全部活动
+          button.dl_btn.select_btn(ng-click="selectType(2)" ng-class="{'selected': selectedType===2}") 小队活动
+          button.dl_btn.select_btn(ng-click="selectType(3)" ng-class="{'selected': selectedType===3}") 公司活动
+        .teams
+          .team(ng-repeat="team in data.teams" ng-class="{'right': $index%2===1, 'selected':currentTeamId===team._id, 'disabled':selectedType===3}" ng-click="selectTeam(team._id)")
+            img.logo(ng-src="{{team.logo}}/40/40")
+            span {{team.name}}
+            span {{team.groupType}}
 
-  .dl_panel.team_list
+  .dl_panel.campaign_list.clearfix
     .dl_block_head
       span.title 活动详情
+    .campaigns
+      table.table.table-striped.dl_table
+        thead
+          tr
+            th.center 序号
+            th.center Logo
+            th.center 主题
+            th.center 开始时间
+            th.center 结束时间
+            th.center 参加人数
+            th.center 状态
+            th.center 操作
+        tbody
+          tr(ng-repeat="campaign in campaigns")
+            td {{$index+1}}
+            td.center
+              img(ng-src="{{campaign.logo}}/48/48")
+            td.center {{campaign.theme}}
+            td.center {{campaign.startTime}}
+            td.center {{campaign.endTime}}
+            td.center {{campaign.memberNumber}}
+            td.center {{campaign.status}}
+            td.center 
+              span 查看详情
+              button(ng-click="closeCampaign(campaign._id)") 关闭活动
+      .pages
+        .page(ng-repeat="n in [1,2,3,4,5]")
+          span {{n}}
 
 sponsor-campaign(data="data")

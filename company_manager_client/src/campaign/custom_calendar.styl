@@ -1,0 +1,187 @@
+borderColor = #ddd
+
+//- calendar style
+.cal-day-inmonth
+  span[data-cal-date]
+    opacity 1
+
+//-每个星期第一天
+.cal-day-weekend
+  span[data-cal-date]
+    opacity 0.5
+//- 非本月
+.cal-day-outmonth
+  span[data-cal-date]
+    opacity 1
+    color #aaa
+
+//-每个cell
+.cal-cell1
+  small
+    span
+      margin-right 0
+//- 第一排每个
+.cal-context
+  .cal-row-head
+    .cal-cell1
+      font-weight normal
+
+.cal-month-box
+  border 1px solid borderColor
+.cal-year-box-small [class*="span"],
+.cal-month-box-small [class*="cal-cell"]
+  min-height 30px
+
+.cal-year-box .row-fluid,
+.cal-month-box .cal-row-fluid
+  border-bottom 1px solid borderColor
+
+.cal-year-box [class*="span"],
+.cal-month-box [class*="cal-cell"]
+  border-right 1px solid borderColor
+
+#cal-slide-content
+  .custom_calendar_li
+    margin-bottom 5px
+
+.cal-month-day
+  cursor pointer
+  .join_sign
+    margin 10px
+    width 6px
+    height 6px
+    border-radius 100%
+    background-color #3498db
+    float left
+
+
+  .day
+    margin-top 5px
+    margin-right 5px
+  .month
+    margin-top 5px
+    margin-right 5px
+
+.calendar_box
+  .cal-context
+    div
+      border none
+    .cal-row-head
+      border-bottom 1px solid #CCC
+      [class*='cal-cell1']
+        padding 1px 0
+    .joined
+      background none
+      color #fff
+    .cal-month-box
+      .cal-day-today
+        span[data-cal-date]
+          font-size 1.2em
+          background-color #F58464
+          border-radius 100%
+      .cal-day-inmonth.cal-month-day-small
+        &.length_3
+          border 1px solid #3ca2e0
+          background-color #3ca2e0
+        &.length_2
+          border 1px solid #6cb8e7
+          background-color #6cb8e7
+        &.length_1
+          border 1px solid #a6d6f4
+          background-color #a6d6f4
+      .cal-month-day-small
+        height 31px
+        border-bottom 1px solid #fff
+        &.cal-day-inmonth:hover
+          border 1px solid #525E70
+        span[data-cal-date]
+          width 21px
+          height 21px
+          text-align center
+          margin 5px
+          color #fff
+          font-size 12px
+          line-height 23px
+
+.calendar_box_small
+  .cal-row-fluid 
+    .cal-cell1
+      width 34px
+      &[data-cal-row="-day7"]
+        width 35px
+      &[data-cal-row="-day1"]
+        width 35px
+#cal-slide-content
+  .event-item
+    position relative
+    .join_sign
+      margin 9px
+      width 6px
+      height 6px
+      border-radius 100%
+      background-color #3498db
+      float left
+    .un_join_sign
+      margin 9px
+      width 6px
+      height 6px
+      float left
+
+//- 隐藏左侧第几周
+#cal-week-box
+  opacity 0
+
+.schedule_small
+  &.affix
+    top 140px
+    &.affix_leader
+      top 180px
+  .schedulebox_small
+    padding 0
+    border none
+    background-color #fff
+    .schedule_operator
+      cursor pointer
+    .calendar_tips
+      height 25px
+      font-size 12px
+      margin-top 5px
+      .join_sign
+        height 10px
+        width 10px
+        margin 5px 5px 15px 5px
+        float left
+        border-radius 100%
+        &.length_3
+          background-color #3ca2e0
+        &.length_2
+          background-color #6cb8e7
+        &.length_1
+          background-color #a6d6f4
+          margin-left 32px
+      .campaign_label
+        line-height 20px
+        float left
+        font-size 9px
+    .calendar_nav
+      background-color #525e70
+      height 30px
+      line-height 30px
+      padding 0 10px
+      margin 0
+      clear both
+      border-top-left-radius 2px
+      border-top-right-radius 2px
+      .calendar_title
+        width 145px
+        text-align center
+        font-size 14px
+        margin 0
+      a
+        color #fff
+        display inline-block
+        margin 0 5px
+      i.fa
+        color #fff
+        line-height 30px
+        margin 0 0.3em
