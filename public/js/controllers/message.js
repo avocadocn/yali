@@ -363,137 +363,137 @@ var messagePreHandle = function(teams,msg,divide){
 var sendSet = function(http,_status,rootScope,_id,type,index,multi){
   try{
     http({
-        method: 'post',
-        url: '/message/modify',
-        data:{
-            status:_status,
-            msg_id:_id,
-            multi:multi,
-            type:type
-        }
+      method: 'post',
+      url: '/message/modify',
+      data:{
+        status:_status,
+        msg_id:_id,
+        multi:multi,
+        type:type
+      }
     }).success(function(data, status) {
-        switch(type){
-          case 'send':
+      switch(type){
+        case 'send':
+          if(!multi){
+            rootScope.send_messages.splice(index,1);
+            rootScope.page_send.down --;
+            if(rootScope.page_send.down == rootScope.page_send.up - 1){
+              pageHandle(rootScope.send_messages,rootScope.page_send,'left');
+              rootScope.page_send.arrow = 'left';
+            }
+          }else{
+            rootScope.send_messages = [];
+          }
+        break;
+        case 'all':
+          if(!multi){
+            if(rootScope.o>0 && rootScope.all_messages[index].status === 'unread'){rootScope.o--}
+            rootScope.all_messages[index].status = _status;
+          }else{
+            for(var i = 0; i < rootScope.all_messages.length; i ++){
+              if(rootScope.all_messages[i].status === 'unread'){
+                rootScope.all_messages[i].status = 'read';
+                rootScope.o--;
+              }
+            }
+          }
+          if(_status === 'delete'){
             if(!multi){
-              rootScope.send_messages.splice(index,1);
-              rootScope.page_send.down --;
-              if(rootScope.page_send.down == rootScope.page_send.up - 1){
-                pageHandle(rootScope.send_messages,rootScope.page_send,'left');
-                rootScope.page_send.arrow = 'left';
+              rootScope.all_messages.splice(index,1);
+              rootScope.page_all.down --;
+              if(rootScope.page_all.down == rootScope.page_all.up - 1){
+                pageHandle(rootScope.all_messages,rootScope.page_all,'left');
+                rootScope.page_all.arrow = 'left';
               }
             }else{
-              rootScope.send_messages = [];
+              rootScope.all_messages = [];
+              rootScope.o =0;
             }
-          break;
-          case 'all':
-            if(!multi){
-              if(rootScope.o>0 && rootScope.all_messages[index].status === 'unread'){rootScope.o--}
-              rootScope.all_messages[index].status = _status;
-            }else{
-              for(var i = 0; i < rootScope.all_messages.length; i ++){
-                if(rootScope.all_messages[i].status === 'unread'){
-                  rootScope.all_messages[i].status = 'read';
-                  rootScope.o--;
-                }
+          }
+        break;
+        //这些用于站内信分类,以后会用到
+        /*
+        case 'private':
+          if(!multi){
+            if(rootScope.private_length.length>0 && rootScope.private_messages[index].status === 'unread'){rootScope.private_length--;rootScope.o--}
+            rootScope.private_messages[index].status = _status;
+          }else{
+            for(var i = 0; i < rootScope.private_messages.length; i ++){
+              if(rootScope.private_messages[i].status === 'unread'){
+                rootScope.private_messages[i].status = 'read';
+                rootScope.private_length--;
+                rootScope.o--;
               }
             }
-            if(_status === 'delete'){
-              if(!multi){
-                rootScope.all_messages.splice(index,1);
-                rootScope.page_all.down --;
-                if(rootScope.page_all.down == rootScope.page_all.up - 1){
-                  pageHandle(rootScope.all_messages,rootScope.page_all,'left');
-                  rootScope.page_all.arrow = 'left';
-                }
-              }else{
-                rootScope.all_messages = [];
-                rootScope.o =0;
-              }
-            }
-          break;
-          //这些用于站内信分类,以后会用到
-          /*
-          case 'private':
-            if(!multi){
-              if(rootScope.private_length.length>0 && rootScope.private_messages[index].status === 'unread'){rootScope.private_length--;rootScope.o--}
-              rootScope.private_messages[index].status = _status;
-            }else{
-              for(var i = 0; i < rootScope.private_messages.length; i ++){
-                if(rootScope.private_messages[i].status === 'unread'){
-                  rootScope.private_messages[i].status = 'read';
-                  rootScope.private_length--;
-                  rootScope.o--;
-                }
-              }
-            }
+          }
 
-            if(_status === 'delete'){
-              if(!multi){
-                rootScope.private_messages.splice(index,1);
-              }else{
-                rootScope.private_messages = [];
-                rootScope.o -= (rootScope.private_length + rootScope.global_length);
-                rootScope.private_length = 0;
-                rootScope.global_length = 0;
-              }
-            }
-          break;
-          case 'team':
+          if(_status === 'delete'){
             if(!multi){
-              if(rootScope.team_length>0 && rootScope.team_messages[index].status === 'unread'){rootScope.team_length--;rootScope.o--}
-              rootScope.team_messages[index].status = _status;
+              rootScope.private_messages.splice(index,1);
             }else{
-              for(var i = 0; i < rootScope.team_messages.length; i ++){
-                if(rootScope.team_messages[i].status === 'unread'){
-                  rootScope.team_messages[i].status = 'read';
-                  rootScope.team_length--;
-                  rootScope.o--;
-                }
+              rootScope.private_messages = [];
+              rootScope.o -= (rootScope.private_length + rootScope.global_length);
+              rootScope.private_length = 0;
+              rootScope.global_length = 0;
+            }
+          }
+        break;
+        case 'team':
+          if(!multi){
+            if(rootScope.team_length>0 && rootScope.team_messages[index].status === 'unread'){rootScope.team_length--;rootScope.o--}
+            rootScope.team_messages[index].status = _status;
+          }else{
+            for(var i = 0; i < rootScope.team_messages.length; i ++){
+              if(rootScope.team_messages[i].status === 'unread'){
+                rootScope.team_messages[i].status = 'read';
+                rootScope.team_length--;
+                rootScope.o--;
               }
             }
-            if(_status === 'delete'){
-              if(!multi){
-                rootScope.team_messages.splice(index,1);
-              }else{
-                rootScope.team_messages = [];
-                rootScope.o -= (rootScope.team_length);
-                rootScope.team_length = 0;
-              }
-            }
-          break;
-          case 'company':
+          }
+          if(_status === 'delete'){
             if(!multi){
-              if(rootScope.company_length>0 && rootScope.company_messages[index].status === 'unread'){rootScope.company_length--;rootScope.o--}
-              rootScope.company_messages[index].status = _status;
+              rootScope.team_messages.splice(index,1);
             }else{
-              for(var i = 0; i < rootScope.company_messages.length; i ++){
-                if(rootScope.company_messages[i].status === 'unread'){
-                  rootScope.company_messages[i].status = 'read';
-                  rootScope.companylength--;
-                  rootScope.o--;
-                }
+              rootScope.team_messages = [];
+              rootScope.o -= (rootScope.team_length);
+              rootScope.team_length = 0;
+            }
+          }
+        break;
+        case 'company':
+          if(!multi){
+            if(rootScope.company_length>0 && rootScope.company_messages[index].status === 'unread'){rootScope.company_length--;rootScope.o--}
+            rootScope.company_messages[index].status = _status;
+          }else{
+            for(var i = 0; i < rootScope.company_messages.length; i ++){
+              if(rootScope.company_messages[i].status === 'unread'){
+                rootScope.company_messages[i].status = 'read';
+                rootScope.companylength--;
+                rootScope.o--;
               }
             }
-            if(_status === 'delete'){
-              if(!multi){
-                rootScope.company_messages.splice(index,1);
-              }else{
-                rootScope.company_messages = [];
-                rootScope.o -= (rootScope.company_length);
-                rootScope.company_length = 0;
-              }
+          }
+          if(_status === 'delete'){
+            if(!multi){
+              rootScope.company_messages.splice(index,1);
+            }else{
+              rootScope.company_messages = [];
+              rootScope.o -= (rootScope.company_length);
+              rootScope.company_length = 0;
             }
-          break;
-          */
-          default:break;
-        }
+          }
+        break;
+        */
+        default:break;
+      }
     }).error(function(data, status) {
-        //TODO:更改对话框
-        alertify.alert(status);
+      //TODO:更改对话框
+      alertify.alert(status);
     });
   }
   catch(e){
-      console.log(e);
+    console.log(e);
   }
 }
 
@@ -606,43 +606,43 @@ var hrSendToMulti = function(url,value,http,scope){
     value.team = _team;
     try{
       http({
-          method: 'post',
-          url: url,
-          data:value
+        method: 'post',
+        url: url,
+        data:value
       }).success(function(data, status) {
-          if(data.msg === 'SUCCESS'){
-            if(scope.select_dOts.length > scope.dOt_send_success -1){
-              scope.dOt_send_success = scope.dOt_send_success + 1;
-              //递归发送
-              try{
-                hrSendToMulti(url,value,http,scope);
-              }catch(e){
-                if(scope.select_dOts.length == scope.dOt_send_success){
-                  scope.private_message_content.text='';
-                  scope.getSenderList();
-                  scope.message_form.$setPristine();
-                  alertify.alert('发送成功!');
-                }else{
-                  console.log(e);
-                }
+        if(data.msg === 'SUCCESS'){
+          if(scope.select_dOts.length > scope.dOt_send_success -1){
+            scope.dOt_send_success = scope.dOt_send_success + 1;
+            //递归发送
+            try{
+              hrSendToMulti(url,value,http,scope);
+            }catch(e){
+              if(scope.select_dOts.length == scope.dOt_send_success){
+                scope.private_message_content.text='';
+                scope.getSenderList();
+                scope.message_form.$setPristine();
+                alertify.alert('发送成功!');
+              }else{
+                console.log(e);
               }
-            }else{
-              scope.private_message_content.text='';
-              comment_form.$setPristine();
-              scope.getSenderList();
-              $scope.message_form.$setPristine();
-              alertify.alert('发送成功!');
             }
           }else{
-            alertify.alert('DATA ERROR');
+            scope.private_message_content.text='';
+            comment_form.$setPristine();
+            scope.getSenderList();
+            $scope.message_form.$setPristine();
+            alertify.alert('发送成功!');
           }
-      }).error(function(data, status) {
-          //TODO:更改对话框
+        }else{
           alertify.alert('DATA ERROR');
+        }
+      }).error(function(data, status) {
+        //TODO:更改对话框
+        alertify.alert('DATA ERROR');
       });
     }
     catch(e){
-        console.log(e);
+      console.log(e);
     }
   }
 }
@@ -651,24 +651,24 @@ messageApp.controller('messageSenderController',['$scope', '$http','$rootScope',
 
   $rootScope.nowTab = 'send';
   $scope.dOt_select_num = 0;
-    $scope.private_message_content = {
-      'text':''
-    }
-    $scope.private_message_caption = {
-      'text':''
-    }
+  $scope.private_message_content = {
+    'text':''
+  }
+  $scope.private_message_caption = {
+    'text':''
+  }
 
-    $scope.dOt = false;
-    // $http.get('/company/getCompanyTeamsInfo/'+cid+'/'+type+'?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
-    //     $rootScope.team_lists = data.teams;//公司的所有team
-    //     $scope.dOts = $rootScope.team_lists;
-    //     $scope.main_dOt = $scope.dOts[0];
-    // });
+  $scope.dOt = false;
+  // $http.get('/company/getCompanyTeamsInfo/'+cid+'/'+type+'?'+ (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+  //     $rootScope.team_lists = data.teams;//公司的所有team
+  //     $scope.dOts = $rootScope.team_lists;
+  //     $scope.main_dOt = $scope.dOts[0];
+  // });
 
-    // .get('/department/detail/multi/' + $rootScope.cid)
-    //         .success(function(data, status) {
-    //             $scope.dOtFormat(data.departments);
-    //         });
+  // .get('/department/detail/multi/' + $rootScope.cid)
+  //         .success(function(data, status) {
+  //             $scope.dOtFormat(data.departments);
+  //         });
 
   var url_team;
   var url_department;
@@ -683,29 +683,29 @@ messageApp.controller('messageSenderController',['$scope', '$http','$rootScope',
       $rootScope.multi_send = true;
       switch(_id){
         case 1:
-        $scope.dOt = false;
+          $scope.dOt = false;
           $http.get(url_team).success(function(data, status) {
-              $scope.dOts = data.teams;;
-              for(var i = 0 ; i < $scope.dOts.length; i ++){
-                $scope.dOts[i].selected = false;
-              }
-              $scope.main_dOt = $scope.dOts[0];
+            $scope.dOts = data.teams;;
+            for(var i = 0 ; i < $scope.dOts.length; i ++){
+              $scope.dOts[i].selected = false;
+            }
+            $scope.main_dOt = $scope.dOts[0];
           });
-        break;
+          break;
         case 2:
-        $scope.dOt = true;
+          $scope.dOt = true;
           $http.get(url_department).success(function(data, status) {
-              $scope.dOts = [];
-              for(var i = 0; i < data.departments.length; i ++){
-                $scope.dOts.push({
-                  selected:false,
-                  _id:data.departments[i]._id,
-                  name:data.departments[i].name,
-                  team:data.departments[i].team
-                });
-              }
+            $scope.dOts = [];
+            for(var i = 0; i < data.departments.length; i ++){
+              $scope.dOts.push({
+                selected:false,
+                _id:data.departments[i]._id,
+                name:data.departments[i].name,
+                team:data.departments[i].team
+              });
+            }
           });
-        break;
+          break;
         default:break;
       }
     }else{
@@ -741,9 +741,9 @@ messageApp.controller('messageSenderController',['$scope', '$http','$rootScope',
 
       try{
         $http({
-            method: 'post',
-            url: _url,
-            data:_data
+          method: 'post',
+          url: _url,
+          data:_data
         }).success(function(data, status) {
           //console.log('1:',$scope.message_form);
           if(data.msg === 'SUCCESS'){
@@ -762,7 +762,7 @@ messageApp.controller('messageSenderController',['$scope', '$http','$rootScope',
         });
       }
       catch(e){
-          console.log(e);
+        console.log(e);
       }
     }
 
@@ -782,8 +782,8 @@ messageApp.controller('messageSenderController',['$scope', '$http','$rootScope',
         hrSendToMulti(_url,_data,$http,$scope);
       }else{
         var _team = {
-        size : 1,
-        own : {
+          size : 1,
+          own : {
             _id : $scope.teamId,
             name : $scope.teamName,
             logo : $scope.teamLogo
@@ -792,23 +792,23 @@ messageApp.controller('messageSenderController',['$scope', '$http','$rootScope',
         _data.team = _team;
         try{
           $http({
-              method: 'post',
-              url: _url,
-              data:_data
+            method: 'post',
+            url: _url,
+            data:_data
           }).success(function(data, status) {
-              if(data.msg === 'SUCCESS'){
-                alertify.alert('发送成功!');
-                $scope.private_message_content.text='';
-                $scope.message_form.$setPristine();
-                $scope.getSenderList($scope.teamId);
-              }
+            if(data.msg === 'SUCCESS'){
+              alertify.alert('发送成功!');
+              $scope.private_message_content.text='';
+              $scope.message_form.$setPristine();
+              $scope.getSenderList($scope.teamId);
+            }
           }).error(function(data, status) {
-              //TODO:更改对话框
-              alertify.alert('DATA ERROR');
+            //TODO:更改对话框
+            alertify.alert('DATA ERROR');
           });
         }
         catch(e){
-            console.log(e);
+          console.log(e);
         }
       }
     }
@@ -817,22 +817,22 @@ messageApp.controller('messageSenderController',['$scope', '$http','$rootScope',
   //获取已经发送的站内信
   $scope.getSenderList = function(teamId){
     var url = ((teamId == null || teamId == 'null' || teamId == undefined) ? '/message/sendlist/private/0' : '/message/sendlist/team/'+teamId);
-     try{
+    try{
       $http({
-          method: 'get',
-          url: url
+        method: 'get',
+        url: url
       }).success(function(data, status) {
-          if(data.msg === 'SUCCESS'){
-            $rootScope.send_messages = sendMessagesPre(data.message_contents);
-            $rootScope.page_send_messages = pageHandle($rootScope.send_messages,$rootScope.page_send,'init');
-          }
+        if(data.msg === 'SUCCESS'){
+          $rootScope.send_messages = sendMessagesPre(data.message_contents);
+          $rootScope.page_send_messages = pageHandle($rootScope.send_messages,$rootScope.page_send,'init');
+        }
       }).error(function(data, status) {
-          //TODO:更改对话框
-          alertify.alert('DATA ERROR');
+        //TODO:更改对话框
+        alertify.alert('DATA ERROR');
       });
     }
     catch(e){
-        console.log(e);
+      console.log(e);
     }
   }
 

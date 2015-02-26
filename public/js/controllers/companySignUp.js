@@ -33,7 +33,7 @@ companySignUpApp.controller('signupController',['$http','$scope','$rootScope',fu
         method: 'post',
         url: '/company/mailCheck',
         data:{
-            login_email: $scope.email,
+          login_email: $scope.email,
         }
       }).success(function(data, status) {
         if(data === "false") {
@@ -56,7 +56,7 @@ companySignUpApp.controller('signupController',['$http','$scope','$rootScope',fu
         method: 'post',
         url: '/company/officialNameCheck',
         data:{
-            name: $scope.name,
+          name: $scope.name,
         }
       }).success(function(data, status) {
         if(data === "false") {
@@ -78,25 +78,25 @@ companySignUpApp.controller('signupController',['$http','$scope','$rootScope',fu
     $scope.code_ok = true;
     try{
       $http({
-          method: 'post',
-          url: '/company/codeCheck',
-          data:{
-              invite_code : $scope.invite_code
-          }
+        method: 'post',
+        url: '/company/codeCheck',
+        data:{
+          invite_code : $scope.invite_code
+        }
       }).success(function(data, status) {
-          if(data === "false") {
-            $scope.code_value = "该邀请码不存在或者已经被使用!";
-            $scope.code_check = false;
-          } else {
-            $scope.code_check = true;
-            $scope.code_value = "";
-          }
+        if(data === "false") {
+          $scope.code_value = "该邀请码不存在或者已经被使用!";
+          $scope.code_check = false;
+        } else {
+          $scope.code_check = true;
+          $scope.code_value = "";
+        }
       }).error(function(data, status) {
-          // alertify.alert('DATA ERROR');
+        // alertify.alert('DATA ERROR');
       });
     }
     catch(e){
-        console.log(e);
+      console.log(e);
     }
   }
 }]);
@@ -107,12 +107,12 @@ companySignUpApp.controller('userSignupController',['$http','$scope','$rootScope
     if($scope.email){
       $scope.loading = true;
       $http.post('/users/mailCheck',{login_email:$scope.email})
-      .success(function (data, status){
-        $scope.active=data.active;
-        callback($scope.active);
-      }).error(function (data, status) {
-        callback(false);
-      });
+        .success(function (data, status){
+          $scope.active=data.active;
+          callback($scope.active);
+        }).error(function (data, status) {
+          callback(false);
+        });
     }else{
       callback(false);
     }
@@ -201,19 +201,19 @@ companySignUpApp.controller('userSignupController',['$http','$scope','$rootScope
     if($scope.email){
       $scope.loading = true;
       $http.post('/users/mailCheck',{login_email: $scope.email,cid:$scope.cid})
-      .success(function(data, status) {
-        $scope.loading = false;
-        $scope.active=data.active;
-      });
+        .success(function(data, status) {
+          $scope.loading = false;
+          $scope.active=data.active;
+        });
     }
   };
 
   $scope.checkInviteKey = function() {
     if($scope.inviteKey&&$scope.inviteKey.length===8) {
       $http.post('/users/inviteKeyCheck',{cid:$scope.cid, inviteKey: $scope.inviteKey})
-      .success(function(data, status) {
-        $scope.inviteKeyCorrect = data.invitekeyCheck;
-      })
+        .success(function(data, status) {
+          $scope.inviteKeyCorrect = data.invitekeyCheck;
+        })
     }
   };
 

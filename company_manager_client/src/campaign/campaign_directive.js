@@ -434,10 +434,92 @@ define(['./campaign', 'echarts', 'echarts/chart/bar', 'echarts/chart/pie'], func
           });
 
           //map相关
-          scope.showMap = function () {
+          scope.mapLoadFlag = false;
+          scope.location = {name:'',coordinates:[]};
+          var placeSearchCallBack = function(data) {
+            scope.locationmap.clearMap();
+            if(data.poiList.pois.length==0){
+              alert('没有符合条件的地点，请重新输入');
+              return;
+            }
+            var lngX = data.poiList.pois[0].location.getLng();
+            var latY = data.poiList.pois[0].location.getLat();
+            scope.location.coordinates=[lngX, latY];
+            var nowPoint = new AMap.LngLat(lngX,latY);
+            var markerOption = {
+              map: scope.locationmap,
+              position: nowPoint,
+              draggable: true
+            };
+            var mar = new AMap.Marker(markerOption);
+            var changePoint = function (e) {
+              var p = mar.getPosition();
+              scope.location.coordinates=[p.getLng(), p.getLat()];
+            };
+            AMap.event.addListener(mar, "dragend", changePoint);
+            scope.locationmap.setFitView();
+          };
+          scope.initialize = function() {
+            scope.locationmap = new AMap.Map("mapDetail");            // 创建Map实例
+            scope.locationmap.plugin(["AMap.CitySearch"], function() {
+              scope.locationmap.plugin(["AMap.PlaceSearch"], function() {
+                scope.MSearch = new AMap.PlaceSearch({ //构造地点查询类
+                  pageSize:1,
+                  pageIndex:1
+                });
+                AMap.event.addListener(scope.MSearch, "complete", placeSearchCallBack);//返回地点查询结果
+              });
+              //实例化城市查询类
+              var citysearch = new AMap.CitySearch();
+              //自动获取用户IP，返回当前城市
+              citysearch.getLocalCity();
+              //citysearch.getCityByIp("123.125.114.*");
+              AMap.event.addListener(citysearch, "complete", function(result){
+                if(result && result.city && result.bounds) {
+                  var citybounds = result.bounds;
+                  //地图显示当前城市
+                  scope.locationmap.setBounds(citybounds);
+                  scope.locationmap.plugin(["AMap.PlaceSearch"], function() {
+                    scope.MSearch = new AMap.PlaceSearch({ //构造地点查询类
+                      pageSize:1,
+                      pageIndex:1,
+                      city: result.city
 
+                    });
+                    AMap.event.addListener(scope.MSearch, "complete", placeSearchCallBack);//返回地点查询结果
+                  });
+                }
+              });
+              AMap.event.addListener(citysearch, "error", function(result){alert(result.info);});
+            });
+            scope.mapLoadFlag = true;
           };
 
+          scope.showMap = function () {
+            if(scope.location.name==''){
+              alert('请输入地点');
+              return false;
+            }
+            if(scope.mapLoadFlag ==false){
+              window.initialize = scope.initialize;
+              var script = document.createElement("script");
+              script.src = "http://webapi.amap.com/maps?v=1.3&key=077eff0a89079f77e2893d6735c2f044&callback=initialize";
+              document.body.appendChild(script);
+            }
+            else{
+              scope.MSearch.search(scope.location.name); //关键字查询
+              scope.showMapFlag = true;
+            }
+          };
+          $('#sponsorCampaignModel').on('show.bs.modal', function(e) {
+            if(scope.mapLoadFlag ==false) {
+              window.initialize = scope.initialize;
+              var script = document.createElement("script");
+              script.src = "http://webapi.amap.com/maps?v=1.3&key=077eff0a89079f77e2893d6735c2f044&callback=initialize";
+              document.body.appendChild(script);
+            }
+          }); 
+          
           //发活动
           scope.sponsorCampaign = function () {
             var campaign = {
@@ -458,7 +540,7 @@ define(['./campaign', 'echarts', 'echarts/chart/bar', 'echarts/chart/pie'], func
               if(msg) {
                 alert(msg);
               }else {
-                $('sponsorCampaignModel').modal('hide');
+                $('#sponsorCampaignModel').modal('hide');
                 alert('活动发送成功');
               }
             })

@@ -8,10 +8,10 @@ messageApp.run(['$http','$rootScope', function ($http, $rootScope) {
 
 
 messageApp.controller('messageHeaderController', ['$scope', '$http','$rootScope', function ($scope, $http, $rootScope) {
-    if(location.pathname != '/message/home'){
-      $http.get('/message/header').success(function(data, status) {
-          var messages = data.msg;
-          $rootScope.o = messages.length;
-      });
-    }
+  if(location.pathname != '/message/home'){
+    $http.get('/message/header').success(function(data, status) {
+      var messages = data.msg;
+      $rootScope.o = messages.length;
+    });
+  }
 }]);

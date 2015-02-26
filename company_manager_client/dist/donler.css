@@ -557,10 +557,10 @@ input:focus:-ms-input-placeholder {
   background-repeat: no-repeat;
 }
 .dl_campaign_modal .dl_modal_body .dl_modal_map_container {
-  height: 300px;
+  height: 150px;
 }
 .dl_campaign_modal .dl_modal_body .dl_modal_map_container .map_height {
-  height: 300px;
+  height: 150px;
 }
 .dl_campaign_modal .dl_modal_body .pen-menu {
   height: 20px;

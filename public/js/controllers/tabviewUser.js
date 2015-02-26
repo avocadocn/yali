@@ -16,11 +16,11 @@ tabViewUser.directive('match', function($parse) {
   };
 });
 tabViewUser.directive('eatClick', function() {
-    return function(scope, element, attrs) {
-        $(element).click(function(event) {
-            event.preventDefault();
-        });
-    }
+  return function(scope, element, attrs) {
+    $(element).click(function(event) {
+      event.preventDefault();
+    });
+  }
 });
 tabViewUser.config(['$routeProvider',
   function ($routeProvider) {
@@ -78,15 +78,15 @@ tabViewUser.run(['$rootScope','$location','$interval','$http','$timeout','anchor
   function($rootScope,$location,$interval,$http,$timeout,anchorSmoothScroll,Report,Campaign) {
 
     // $rootScope.$watch('groupShowFlag',function(){
-      $timeout(function(){
-        angular.element('.affix_directive').affix({
-          offset: {
-            top: function(){
-              return angular.element('.groupsbox').height()+120;
-            }
+    $timeout(function(){
+      angular.element('.affix_directive').affix({
+        offset: {
+          top: function(){
+            return angular.element('.groupsbox').height()+120;
           }
-        });
+        }
       });
+    });
     // });
     $rootScope.message_for_group = false;
     var getRecentCommentTime = 10 * 60 * 1000;
@@ -142,7 +142,7 @@ tabViewUser.run(['$rootScope','$location','$interval','$http','$timeout','anchor
           else{
             $rootScope.recentJoinedCampaigns.push(_temp[0]);
           }
-          
+
           alertify.alert('参加活动成功');
         }
       });
@@ -378,7 +378,7 @@ tabViewUser.controller('SponsorController',['$http','$scope','$rootScope','Campa
       }
     }
   });
-  
+
 
   $scope.selected_index = -1;
   //决定好哪个小队了/回到上个页面
