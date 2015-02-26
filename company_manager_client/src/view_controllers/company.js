@@ -63,6 +63,7 @@ define(['./controller', 'jQuery', 'cropit'], function (controllers, $) {
           } else {
             $scope.isUploading = false;
             alert('上传成功');
+            window.location.reload();
           }
         });
 

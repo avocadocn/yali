@@ -3,14 +3,6 @@
 @import '../bower-lib/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css';
 @import '../bower-lib/pen/src/pen.css';
 @import '../custom-lib/font-awesome/font-awesome.css';
-.clearfix:before,
-.clearfix:after {
-  display: table;
-  content: " ";
-}
-.clearfix:after {
-  clear: both;
-}
 body {
   margin-bottom: 0;
 }
@@ -140,37 +132,42 @@ input:focus:-ms-input-placeholder {
 .team_list {
   height: 300px;
 }
-.dl_company_info .cropper {
+.company_info_page .company_info_form,
+.company_info_page .edit_logo_container {
+  padding: 15px;
+}
+.company_info_page .cropper {
   margin-left: auto;
   margin-right: auto;
   width: 336px;
-  height: 336px;
+  height: 416px;
   padding: 40px;
+  padding-bottom: 120px;
   overflow: hidden;
 }
-.dl_company_info .cropit-image-preview-container {
+.company_info_page .cropit-image-preview-container {
   width: 256px;
   height: 256px;
 }
-.dl_company_info .cropit-image-preview {
+.company_info_page .cropit-image-preview {
   width: 256px;
   height: 256px;
 }
-.dl_company_info .cropit-image-background {
+.company_info_page .cropit-image-background {
   opacity: 0.2;
 }
-.dl_company_info .cropit-image-input {
+.company_info_page .cropit-image-input {
   visibility: hidden;
 }
-.dl_company_info .operator {
+.company_info_page .operator_slider {
   position: relative;
   margin-top: 10px;
   text-align: center;
 }
-.dl_company_info .operator .cropit-image-zoom-input {
+.company_info_page .operator_slider .cropit-image-zoom-input {
   display: inline-block;
   margin: 0 10px;
-  width: 100px;
+  width: 120px;
   line-height: 26px;
   vertical-align: middle;
   -webkit-appearance: none;
@@ -181,15 +178,16 @@ input:focus:-ms-input-placeholder {
   border-radius: 5px;
   outline: none;
 }
-.dl_company_info .operator .button_sure {
-  margin-left: 10px;
-}
-.dl_company_info .operator .icon_small,
-.dl_company_info .operator .icon_large {
+.company_info_page .operator_slider .icon_small,
+.company_info_page .operator_slider .icon_large {
   vertical-align: middle;
 }
-.dl_company_info .operator .icon_large {
+.company_info_page .operator_slider .icon_large {
   font-size: 17px;
+}
+.company_info_page .operator_button {
+  position: relative;
+  margin-top: 20px;
 }
 .members .memer_logo {
   width: 40px;
