@@ -13,6 +13,18 @@ define(['./controller','qrcode'], function (controllers) {
       var link = document.getElementById('saveInviteKeyQrCode');
       link.href = img.src;
       link.download = "inviteCode.jpg";
+
+      $scope.email = '';
+      $scope.invite = function () {
+        memberService.invite($scope.email)
+          .success(function (data) {
+            alert(data.msg);
+          })
+          .error(function (data) {
+            alert(data.msg);
+          });
+      };
+
     }
   ])
     .controller('member.activeCtrl', [

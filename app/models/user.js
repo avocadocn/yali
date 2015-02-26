@@ -68,6 +68,7 @@ var UserSchema = new Schema({
         type: Boolean,
         default: false
     },
+    invited: Boolean, // 是否是通过hr发邀请来注册的
     //既然一开始就要填邀请码，此属性已不需要.
     // //是否填了公司验证码
     // invite_active:{

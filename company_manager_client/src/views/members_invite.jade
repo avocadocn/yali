@@ -5,7 +5,7 @@
     div
       label 输入邮箱:
       input(type="email" name="email" ng-model="email" required)
-    button 发送邀请信
+    button(ng-click="invite()") 发送邀请信
   div
     label 邀请链接:{{company.inviteUrl}}
     #inviteKeyQrCode
