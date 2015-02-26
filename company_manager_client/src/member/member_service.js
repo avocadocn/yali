@@ -12,12 +12,38 @@ define(['./member'], function (member) {
        return $http.get(apiBaseUrl + '/users/list/' + id,{params:params});
       },
       /**
+       * 获取公司被举报的员工
+       * @param  {String} id     公司id
+       * @return {HttpPromise}    
+       */
+      getReportedMembers: function (id) {
+
+       return $http.get(apiBaseUrl + '/companies/' + id +'/reportedMembers');
+      },
+      /**
+       * 获取员工的评论
+       * @param  {String} id     员工id
+       * @return {HttpPromise}    
+       */
+      getMemberComments: function (id) {
+
+       return $http.get(apiBaseUrl + '/users/' + id +'/comments');
+      },
+      /**
        * 激活用户
        * @param  {String} id 用户id
        * @return {HttpPromise}    
        */
       active: function (id) {
         return $http.post(apiBaseUrl + '/users/'+id+'/active');
+      },
+      /**
+       * 处理用户举报
+       * @param  {Object} dealData 处理数据
+       * @return {HttpPromise}    
+       */
+      deal: function (dealData) {
+        return $http.put(apiBaseUrl + '/report',dealData);
       }
 
     }

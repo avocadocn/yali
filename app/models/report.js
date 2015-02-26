@@ -14,8 +14,14 @@ var Report = new Schema({
   host_id: Schema.Types.ObjectId,  //留言主体的id,这个主体可以是 一条活动、一条评论、一张照片、一场比赛等等
   content: String,
   content_poster:{
-    uid:Schema.Types.ObjectId,
-    cid:Schema.Types.ObjectId
+    uid:{
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    },
+    cid:{
+      type:Schema.Types.ObjectId,
+      ref:'Company'
+    }
   },
   report_type:Number,
   //0:淫秽色情
@@ -42,7 +48,14 @@ var Report = new Schema({
     uid:Schema.Types.ObjectId,
     cid:Schema.Types.ObjectId
   },
+  //管理员的处理状态
   status:{
+    type: String,
+    enum:['active','inactive','verifying'],
+    default: 'verifying'
+  },
+  //hr的处理状态，优先级低于管理员
+  hr_status:{
     type: String,
     enum:['active','inactive','verifying'],
     default: 'verifying'
