@@ -8,7 +8,7 @@ html
     div#wrap(ng-if="company" ng-cloak)
       nav.dl_nav#top(ng-include="'/company/manager/templates/views/nav.html'")
       .dl_main_container
-        aside#left(ng-include="'/company/manager/templates/views/aside.html'")
+        aside.dl_aside#left(ng-include="'/company/manager/templates/views/aside.html'")
         .dl_content#content
           .outer(ui-view="content")
     .dl_wrap(ui-view="" ng-if="!company" ng-cloak)

@@ -14,49 +14,49 @@ body {
   display: flex;
   display: -webkit-flex;
 }
-.dl_main_container #left .dl_aside_inner .media-body {
+.dl_main_container .dl_aside .dl_aside_inner .media-body {
   width: auto;
 }
-.dl_main_container #left .dl_aside_inner #menu li.nav-header {
+.dl_main_container .dl_aside .dl_aside_inner #menu li.nav-header {
   padding: 8px 15px !important;
 }
-.dl_main_container #content .outer {
+.dl_main_container .outer {
   padding: 5px;
 }
-.dl_main_container #content .outer .inner {
+.dl_main_container .inner {
   border-width: 5px;
   padding: 0;
   min-width: 825px;
 }
-.dl_main_container #content .outer .inner .dl_panel {
+.dl_main_container .inner .dl_panel {
   margin: 10px 20px;
   border: 1px solid #99cff3;
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
 }
-.dl_main_container #content .outer .inner .dl_panel .dl_block_head {
+.dl_main_container .inner .dl_panel .dl_block_head {
   background-color: #99cff3;
   padding: 5px 15px;
   height: 30px;
 }
-.dl_main_container #content .outer .inner .dl_panel .dl_block_head .header_button {
+.dl_main_container .inner .dl_panel .dl_block_head .header_button {
   background-color: #dfeefc;
   color: #000;
   margin-right: 10px;
   padding: 0 10px;
   text-decoration: none;
 }
-.dl_main_container #content .outer .inner .dl_panel .table_block {
+.dl_main_container .inner .dl_panel .table_block {
   margin: 10px;
 }
-.dl_main_container #content .outer .inner .dl_panel .table_block .table_title {
+.dl_main_container .inner .dl_panel .table_block .table_title {
   margin-left: 15px;
 }
-.dl_main_container #content .outer .inner .dl_panel .table_block .dl_table {
+.dl_main_container .inner .dl_panel .table_block .dl_table {
   margin-top: 10px;
   border: 1px solid #ddd;
 }
-.dl_main_container #content .outer .inner .dl_panel .table_block .dl_table .center {
+.dl_main_container .inner .dl_panel .table_block .dl_table .center {
   text-align: center;
 }
 .dl_main_container .dl_content {
@@ -120,8 +120,11 @@ input:focus:-ms-input-placeholder {
 .dl_btn:disabled {
   opacity: 0.65;
 }
-.login_page {
-  background-color: #fff;
+.account_setting.inner {
+  padding: 15px;
+}
+.account_setting .email_section {
+  margin-top: 100px;
 }
 .dl_panel .calendar {
   width: 240px;
@@ -245,6 +248,9 @@ input:focus:-ms-input-placeholder {
 .members .memer_logo {
   width: 40px;
   height: 40px;
+}
+.member_invite_page.inner {
+  padding: 15px;
 }
 .statistics_page.inner {
   overflow-x: auto;
