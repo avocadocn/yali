@@ -1,50 +1,79 @@
-.dl_panel
-  .calendar
-    width 240px
-    float left
-  .select_team
-    width 500px
-    float left
-    margin-left 10px
-    .select_head
-      padding 5px 10px
-      border-bottom 1px solid #bce3fd
-      width 488px
-      background-color #525e70
-      color white
-      border-top-left-radius 2px
-      border-top-right-radius 2px
-      .select_btn
-        margin-left 10px
-        margin-bottom 2px
-        padding 3px 10px
-        background-color #3ca2e0
-        border-radius 2px
-      .select_btn.selected
-        box-shadow inset 1px 1px 1px #597599
-    .teams
-      width 100%
-      min-height 170px
-      overflow-y auto
-      max-height 210px
-      .team
+.inner
+  .dl_panel
+    .calendar
+      width 240px
+      float left
+    .select_team
+      width 500px
+      float left
+      margin-left 10px
+      .select_head
         padding 5px 10px
-        border 1px solid #bce3fd
-        border-top 0
-        float left
-        width 50%
-        cursor pointer
-        .logo
-          width 40px
-          height 40px
-      .team.right
-        border-left 0
-      .team.selected
-        background-color #a6d6f4
-      .team.disabled
-        background-color #f5f5f5
-.campaign_list
-  height 300px
-  .campaigns
-    margin 10px
-    border 1px solid #eee
+        border-bottom 1px solid #bce3fd
+        width 488px
+        background-color #525e70
+        color white
+        border-top-left-radius 2px
+        border-top-right-radius 2px
+        .select_btn
+          margin-left 10px
+          margin-bottom 2px
+          padding 3px 10px
+          background-color #3ca2e0
+          border-radius 2px
+        .select_btn.selected
+          box-shadow inset 1px 1px 1px #597599
+      .teams
+        width 100%
+        min-height 170px
+        overflow-y auto
+        max-height 210px
+        .team
+          padding 5px 10px
+          border 1px solid #bce3fd
+          border-top 0
+          float left
+          width 50%
+          cursor pointer
+          .logo
+            width 40px
+            height 40px
+            float left
+          .name, .type
+            margin-left 10px
+            width 160px
+            float left
+            white-space nowrap
+            overflow hidden
+            text-overflow ellipsis
+            color #666
+            margin-bottom 0
+          .name
+            margin-bottom 2px
+        .team.right
+          border-left 0
+        .team.selected
+          background-color #a6d6f4
+        .team.disabled
+          background-color #f5f5f5
+  .campaign_list
+    min-height 300px
+    .table_block
+      margin 0 10px !important
+      .dl_table
+        .center
+          p
+            margin-bottom 0
+        .theme
+          max-width 150px
+          white-space normal
+        .close_btn
+          margin-left 5px
+          background-color #cfcfcf
+          &:hover
+            background-color #bbb
+
+    .pages
+      text-align center
+      .pagination
+        margin 0 0 10px

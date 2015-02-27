@@ -2,7 +2,7 @@
   .dl_panel.clearfix
     .dl_block_head
       span.title 活动管理
-      span.pull-right 900个活动
+      //- span.pull-right 900个活动
       a.header_button.pull-right(href="" type="button" data-toggle="modal" data-target="#sponsorCampaignModel") 发活动
     .table_block.clearfix
       .calendar.schedule_small
@@ -34,13 +34,13 @@
         .teams
           .team(ng-repeat="team in data.teams" ng-class="{'right': $index%2===1, 'selected':currentTeamId===team._id, 'disabled':selectedType===3}" ng-click="selectTeam(team._id)")
             img.logo(ng-src="{{team.logo}}/40/40")
-            span {{team.name}}
-            span {{team.groupType}}
+            p.name(ng-cloak) {{team.name}}
+            p.type(ng-cloak) {{team.groupType}}
 
   .dl_panel.campaign_list.clearfix
     .dl_block_head
       span.title 活动详情
-    .campaigns
+    .table_block
       table.table.table-striped.dl_table
         thead
           tr
@@ -49,24 +49,32 @@
             th.center 主题
             th.center 开始时间
             th.center 结束时间
-            th.center 参加人数
+            th.center 人数
             th.center 状态
             th.center 操作
         tbody
           tr(ng-repeat="campaign in campaigns")
-            td {{$index+1}}
-            td.center
-              img(ng-src="{{campaign.logo}}/48/48")
-            td.center {{campaign.theme}}
-            td.center {{campaign.startTime}}
-            td.center {{campaign.endTime}}
-            td.center {{campaign.memberNumber}}
-            td.center {{campaign.status}}
-            td.center 
-              span 查看详情
-              button(ng-click="closeCampaign(campaign._id)") 关闭活动
-      .pages
-        .page(ng-repeat="n in [1,2,3,4,5]")
-          span {{n}}
-
+            td.center(ng-cloak) {{$index+1}}
+            td.center(ng-cloak)
+              img(ng-src="{{campaign.logo}}/40/40")
+            td.center.theme(ng-cloak) {{campaign.theme}}
+            td.center(ng-cloak) 
+              p {{campaign.startTime | date:'yyyy-MM-dd'}}
+              p {{campaign.startTime | date:'HH:mm'}}
+            td.center(ng-cloak)
+              p {{campaign.endTime | date:'yyyy-MM-dd'}}
+              p {{campaign.endTime | date:'HH:mm'}}
+            td.center(ng-cloak) {{campaign.memberNumber}}
+            td.center(ng-cloak) {{campaign.status}}
+            td.center(ng-cloak) 
+              a(ng-click="goDetail(campaign._id)" href="") 查看详情
+              button.dl_btn.close_btn(ng-click="closeCampaign(campaign._id)") 关闭活动
+    nav.pages
+      ul.pagination
+        li(ng-class="{disabled:nowPage<=0}" ng-click="getPage('pre')" ng-cloak)
+          a.page(href="") 上一页
+        li(ng-repeat="page in pages" ng-click="getPage(null,$index)" ng-class="{active:$index===nowPage}" ng-cloak)
+          a.page(href="") {{$index+1}}
+        li(ng-class="{disabled:!hasNext}" ng-click="getPage('next')" ng-cloak)
+          a.page(href="") 下一页
 sponsor-campaign(data="data")
