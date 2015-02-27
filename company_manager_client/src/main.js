@@ -13,7 +13,10 @@ requirejs.config({
     datetimepicker: '../bower-lib/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker',
     pen: '../bower-lib/pen/src/pen',
     markdown: '../bower-lib/pen/src/markdown',
-    moment: '../bower-lib/moment/moment'
+    moment: '../bower-lib/moment/moment',
+    underscore: '../bower-lib/underscore/underscore',
+    calendar: '../bower-lib/bootstrap-calendar/js/calendar',
+    zhCN: 'utils/zh-CN'
   },
   packages: [
     {
@@ -52,6 +55,9 @@ requirejs.config({
     datetimepicker: {
       deps: ['jQuery']
     },
+    calendar: {
+      deps: ['jQuery', 'underscore', 'zhCN']
+    }
     // pen: {
     //   exports: 'pen'
     // },
