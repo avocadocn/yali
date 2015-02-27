@@ -21,11 +21,14 @@
   .email_section
     h4 公司邮箱管理
     hr
-    form(name="updateDomainForm")
-      div(ng-repeat="domain in domains")
-        input(type="text" name="domain" ng-model="domains[$index]" required)
-        button(ng-if="$index!=0" ng-click="removeDomain($index)") 去掉
-      .add_domain_div(ng-if="domains.length<3")
-        input(type="text" name="newDomain" ng-model="newDomain.domain" required)
-        button(ng-click="addDomain()") 添加
-      button(type="submit" ng-disabled="updateDomainForm.$invalid" ng-click="updateDomain()") 确定
+    .row
+      form.col-xs-12.col-sm-6.col-md-4.col-lg-3(name="updateDomainForm")
+        div(ng-repeat="domain in domains" ng-class="{'input-group': $index!==0}")
+          input.form-control(type="text" name="domain" ng-model="domains[$index]" required)
+          .input-group-btn(ng-if="$index!=0")
+            button.btn.btn-default(ng-click="removeDomain($index)") 去掉
+        .add_domain_div.input-group(ng-if="domains.length<3")
+          input.form-control(type="text" name="newDomain" ng-model="newDomain.domain" required)
+          .input-group-btn
+            button.btn.btn-default(ng-click="addDomain()") 添加
+        button.btn.btn-success(type="submit" ng-disabled="updateDomainForm.$invalid" ng-click="updateDomain()") 确定
