@@ -10,26 +10,37 @@ block contentExt
           p 我们会严格审核您的申请,
           p 确保每个用户的身份都真实可靠
       .block.personal_signup.signup_block(ng-controller='ActiveController' ng-init="currentDomain='#{domains[0]}';")
+        if invitedUser
+          .hidden#invitedUserData(data-id="#{invitedUser.id}" data-email="#{invitedUser.email}" data-active="#{invitedUser.mail_active}")
         form.form-inline.form-horizontal(role="form" name='active_form' action='/users/dealActive' method='post')
           .form-group.dl_sm_group(ng-class="{'has-error':active&&active!==1}")
-            .dl_row
-              .label_left
-                label.control-label(for="email") ＊企业邮箱:
-              .input_right
-                .input_email
-                  label.sr-only Email Host
-                  input.dl-form-control(type="text" name="host" ng-model="email" placeholder="email" ng-blur="mailCheck()" required)
-                span.at @
-                .select_domain
-                  label.sr-only Email Domain
-                  if domains.length === 1
-                    input(type="hidden" name="domain" ng-model="currentDomain" value="#{domains[0]}")
-                    input.dl-form-control(type="text" value="#{domains[0]}" disabled="true")
-                  if domains.length > 1
-                    select.dl-form-control(name="domain" ng-model="currentDomain" ng-change="mailCheck()")
-                      each domain in domains
-                        option(value="#{domain}" selected='selected')= domain
-                  input(type="text" name="index" ng-model="active" ng-show='false')
+            if invitedUser
+              .dl_row
+                .label_left
+                  label.control-label ＊企业邮箱:
+                .input_right
+                  input.dl-form-control(type="text" value="{{email}}" disabled)
+              input(type="hidden" name="email" value="#{invitedUser.email}")
+              input(type="hidden" name="inviteKey" value="#{inviteKey}")
+            else
+              .dl_row
+                .label_left
+                  label.control-label(for="email") ＊企业邮箱:
+                .input_right
+                  .input_email
+                    label.sr-only Email Host
+                    input.dl-form-control(type="text" name="host" ng-model="email" placeholder="email" ng-blur="mailCheck()" required)
+                  span.at @
+                  .select_domain
+                    label.sr-only Email Domain
+                    if domains.length === 1
+                      input(type="hidden" name="domain" ng-model="currentDomain" value="#{domains[0]}")
+                      input.dl-form-control(type="text" value="#{domains[0]}" disabled="true")
+                    if domains.length > 1
+                      select.dl-form-control(name="domain" ng-model="currentDomain" ng-change="mailCheck()")
+                        each domain in domains
+                          option(value="#{domain}" selected='selected')= domain
+                    input(type="text" name="index" ng-model="active" ng-show='false')
             .dl_row.email_tip(ng-show="(active||loading)&&active!==4" ng-cloak)
               p
               img(ng-show='loading' src='/img/loading.gif')

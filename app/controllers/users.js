@@ -298,7 +298,7 @@ exports.appLogout = function(req, res) {
 
 
 /**
- * 通过邀请链接进入激活流程
+ * 通过邀请链接或是邀请信的链接进入激活流程
  */
 exports.invite = function(req, res) {
   if (req.user) {
@@ -321,21 +321,57 @@ exports.invite = function(req, res) {
       if(key === company.invite_key){
         req.session.key = key;
         req.session.key_id = cid;
-        var deviceAgent = req.headers["user-agent"].toLowerCase();
-        var agentID = deviceAgent.match(/(iphone|ipod|ipad|android)/);
-        if(agentID){
-          res.render('signup/invite_phone', {
-            title: '个人注册',
-            domains: company.email.domain,
-            cname: company.info.official_name
-          });
-        }else{
-          res.render('signup/invite', {
-            title: '个人注册',
-            domains: company.email.domain,
-            cname: company.info.official_name
-          });
-        }
+
+        // 如果邀请链接中附带uid，则将其查出并传递到视图里设置初始数据
+        var invitedUser;
+        async.waterfall([
+          function (callback) {
+            if (req.query.uid) {
+              User.findById(req.query.uid).exec()
+                .then(function (user) {
+                  if (!user) {
+                    callback(new Error('找不到邀请链接中uid对应的用户'));
+                  } else {
+                    invitedUser = user;
+                    callback();
+                  }
+                })
+                .then(null, function (err) {
+                  callback(err);
+                });
+            } else {
+              callback();
+            }
+          },
+          function (callback) {
+            var deviceAgent = req.headers["user-agent"].toLowerCase();
+            var agentID = deviceAgent.match(/(iphone|ipod|ipad|android)/);
+            if (agentID) {
+              res.render('signup/invite_phone', {
+                title: '个人注册',
+                domains: company.email.domain,
+                cname: company.info.official_name,
+                invitedUser: invitedUser,
+                inviteKey: company.invite_key
+              });
+            } else {
+              res.render('signup/invite', {
+                title: '个人注册',
+                domains: company.email.domain,
+                cname: company.info.official_name,
+                invitedUser: invitedUser,
+                inviteKey: company.invite_key
+              });
+            }
+            callback();
+          }
+        ], function (err) {
+          // 这里仅作错误处理，不接收结果
+          if (err) {
+            console.log(err.stack);
+            res.render('users/message', {title: '无效的邀请链接', message: '抱歉，这是一个无效的邀请链接。'});
+          }
+        });
         
       }else{
         console.log('key错误');
@@ -359,7 +395,7 @@ function userOperate(cid, key, res, req, index) {
     }
     //只有在不重填信息的重发时不需要验证key 其它都要
     if(index===2 || company.invite_key===key) {
-      var email = req.query.notinvited=='true'? email=req.body.email : req.body.host.toLowerCase() + '@' + req.body.domain;
+      var email = req.query.notinvited=='true'? req.body.email : req.body.host.toLowerCase() + '@' + req.body.domain;
       User.findOne({ username: email})
       .exec()
       .then(function(user) {
@@ -520,7 +556,7 @@ function userOperate(cid, key, res, req, index) {
 /**
  * 处理激活验证
  */
-exports.dealActive = function(req, res) {
+exports.dealActive = function(req, res, next) {
   if(req.query.notinvited=='true'){//非邀请步骤
     if(req.body.cid)
       userOperate(req.body.cid, req.body.inviteKey, res, req, 1);//step3 填写
@@ -540,8 +576,108 @@ exports.dealActive = function(req, res) {
     var cid = req.session.key_id;
     var index = req.body.index;
     //index为1:未注册过,2:不重填资料重新发邮件,3:重填资料重新发邮件
-    userOperate(cid, key, res, req, index);
+
+    if (req.body.inviteKey) {
+      // 如果是附带邀请码的（从邀请信的链接中进入注册页面），不创建用户，只添加信息，激活并保存，不发激活邮件。
+      checkCompanyInvitedKey(cid, req.body.inviteKey);
+    } else {
+      // 否则仍按原来逻辑执行
+      userOperate(cid, key, res, req, index);
+    }
   }
+
+  function checkCompanyInvitedKey(cid, inviteKey) {
+    Company.findById(cid).exec()
+      .then(function (company) {
+        if (company.invite_key === inviteKey) {
+          activeInvitedUser();
+        } else {
+          res.render('users/message', message.invalid);
+        }
+      })
+      .then(null, function (err) {
+        next(err);
+      });
+  }
+
+  function activeInvitedUser() {
+    User.findOne({ email: req.body.email }).exec()
+      .then(function (user) {
+        if (!user) {
+          // 如果找不到用户，极有可能是用户修改了表单数据，这在前端是不被允许的
+          res.render('users/message', { title: '激活失败', message: '激活失败。' });
+        } else {
+          user.username = user.email;
+          user.mail_active = true;
+          user.nickname = req.body.nickname;
+          user.password = req.body.password;
+          user.realname = req.body.realname;
+          user.phone = req.body.phone;
+          user.role = 'EMPLOYEE';
+
+          // 此处应该确保先保存用户信息再参加部门，因为加入部门操作是使用findByIdAndUpdate
+          // 而更新之后，再保存用户，则会保存user对象，该对象的department属性将会覆盖findByIdAndUpdate的对此的修改
+          saveUser(user, function () {
+            joinDepartment(user, console.error);
+          });
+        }
+      })
+      .then(null, function (err) {
+        next(err);
+      });
+  }
+
+  function joinDepartment(user, callback) {
+    //员工尚未激活时,他的部门信息里只能填入部门的id
+    if (req.body.main_department_id != '') {
+      if (req.body.child_department_id != '') {
+        if (req.body.grandchild_department_id != '') {
+          user.department = {'_id': req.body.grandchild_department_id};
+        } else {
+          user.department = {'_id': req.body.child_department_id};
+        }
+      } else {
+        user.department = {'_id': req.body.main_department_id};
+      }
+    }
+    var member = {
+      '_id':user._id,
+      'nickname':user.nickname,
+      'photo':user.photo,
+      'apply_status':'pass'
+    };
+    department.memberOperateByHand('join', member, user.department._id, callback);
+  }
+
+  function saveUser(user, callback) {
+    user.save(function (err) {
+      if (err) {
+        next(err);
+      } else {
+        req.session.key = null;
+        req.session.key_id = null;
+        req.session.cid = null;
+
+        var deviceAgent = req.headers["user-agent"].toLowerCase();
+        var agentID = deviceAgent.match(/(iphone|ipod|ipad|android)/);
+        if (agentID) {
+          res.render('users/app_download');
+        } else {
+          res.render('users/message', {title: '注册成功', message: '注册成功!'});
+        }
+
+        //公司人员增加
+        Company.update({'_id': user.cid._id}, {'$inc': {'info.membernumber': 1}}, function (err, company) {
+          if (err || !company) {
+            console.log(err);
+          }
+        });
+
+        callback && callback();
+      }
+    });
+  }
+
 };
 
 /**
@@ -775,7 +911,7 @@ exports.setProfile = function(req, res) {
             }
           });
           res.render('signup/setProfile', {
-            title: '激活成功',
+            title: '激活成功'
           });
         } else {
           res.render('users/message', message.invalid);

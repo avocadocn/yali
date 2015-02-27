@@ -28,6 +28,7 @@ module.exports = function(app, passport) {
     app.get('/users/invite', users.invite);
     app.post('/users/dealActive', users.dealActive);
     // app.get('/users/mailActive', users.mailActive);
+
     app.post('/users/inviteKeyCheck', users.inviteKeyCheck);
     // app.post('/users/lastStepActive', users.lastStepActive);
     app.get('/users/setProfile', users.setProfile);

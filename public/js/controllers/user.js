@@ -5,6 +5,16 @@ var userApp = angular.module('donler');
 userApp.controller('ActiveController', ['$http', '$scope', function ($http, $scope) {
   $scope.active = 0;
   $scope.loading = false;
+
+  // 从元素中获取邀请用户数据，如果存在则设置邮箱
+  $scope.isInvited = false; // 是否是被邀请邮件邀请进入的
+  var inviteUserDataEle = document.getElementById('invitedUserData');
+  if (inviteUserDataEle) {
+    var inviteUserData = inviteUserDataEle.dataset;
+    $scope.isInvited = true;
+    $scope.email = inviteUserData.email;
+  }
+
   $scope.mailCheck = function () {
     if ($scope.email) {
       $scope.loading = true;

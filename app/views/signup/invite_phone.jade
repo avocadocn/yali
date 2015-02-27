@@ -7,21 +7,29 @@ block content
     .signup_title
       span 个人注册
     div(ng-controller='ActiveController' ng-init="currentDomain='#{domains[0]}';")
+      if invitedUser
+        .hidden#invitedUserData(data-id="#{invitedUser.id}" data-email="#{invitedUser.email}" data-active="#{invitedUser.mail_active}")
       form(role="form" name='active_form' action='/users/dealActive' method='post')
         .form-group.dl_sm_group(ng-class="{'has-error':active&&active!==1}")
           .dl_row
             label.control-label(for="email") ＊企业邮箱
-          .dl_row.email_row
-            input.email_row_email(type="text" name="host" ng-model="email" placeholder="email" ng-blur="mailCheck()" required)
-            span.email_row_split @
-            if domains.length === 1
-              input(type="hidden" name="domain" ng-model="currentDomain" value="#{domains[0]}")
-              input.email_row_email(type="text" value="#{domains[0]}" disabled="true")
-            if domains.length > 1
-              select.email_row_email.dl_select(name="domain" ng-model="currentDomain" ng-change="mailCheck()")
-                each domain in domains
-                  option(value="#{domain}" selected='selected')= domain
-            input(type="text" name="index" ng-model="active" ng-show='false')
+          if invitedUser
+            .dl_row.email_row
+              input.dl-form-control(type="text" value="{{email}}" disabled)
+            input(type="hidden" name="email" value="#{invitedUser.email}")
+            input(type="hidden" name="inviteKey" value="#{inviteKey}")
+          else
+            .dl_row.email_row
+              input.email_row_email(type="text" name="host" ng-model="email" placeholder="email" ng-blur="mailCheck()" required)
+              span.email_row_split @
+              if domains.length === 1
+                input(type="hidden" name="domain" ng-model="currentDomain" value="#{domains[0]}")
+                input.email_row_email(type="text" value="#{domains[0]}" disabled="true")
+              if domains.length > 1
+                select.email_row_email.dl_select(name="domain" ng-model="currentDomain" ng-change="mailCheck()")
+                  each domain in domains
+                    option(value="#{domain}" selected='selected')= domain
+              input(type="text" name="index" ng-model="active" ng-show='false')
           div(ng-show="(active||loading)&&active!==4" ng-cloak)
             p
             img(ng-show='loading' src='/img/loading.gif')
@@ -75,7 +83,7 @@ block content
             .dl_row
               span 点击注册即同意<a target="_blank" href="/about#law">服务条款</a>
             .dl_row(ng-show="active!==3 && active!==2")
-              button.dl_btn.btn_submit(type="submit" ng-disabled="active!==1 && active!==4 || active_form.$invalid") 免费注册个人账号
+              button.dl_btn.btn_submit(type="submit" ng-disabled="(active!==1 && active!==4 && !isInvited) || active_form.$invalid") 免费注册个人账号
             .dl_row(ng-show="active==2")
               button.dl_btn.btn_submit(type="submit") 重发激活邮件
   footer.phone_footer
