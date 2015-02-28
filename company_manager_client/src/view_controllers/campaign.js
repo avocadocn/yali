@@ -64,13 +64,13 @@ define(['./controller'], function (controllers) {
           $scope.pages = [];
           $scope.nowPage = 0;
         }
-        var params =  {'cid':cid, 'result':'managerList', 'sort':'-start_time', 'limit':20};
+        var params =  {'cid':cid, 'result':'managerList', 'attrs':['showClose'], 'sort':'-start_time', 'limit':20};
         if(nextTime || $scope.endTime) params.to = nextTime || $scope.endTime;
         if($scope.startTime) params.from = $scope.startTime;
         if(nextId) params.nextId = nextId;
 
         if($scope.selectedType===1) {//获取公司&小队活动
-          params.attrs = 'allCampaign';
+          params.attrs.push('allCampaign');
           campaignService.getCampaigns(params)
           .success(function (data, status) {
             getSuccessProcess(data, nextId);
@@ -148,11 +148,11 @@ define(['./controller'], function (controllers) {
         }
         switch(type) {
           case 1:
-            var events_source = apiBaseUrl + '/campaigns?result=calendar&attrs=allCampaign&limit=200&cid='+ cid;
+            var events_source = apiBaseUrl + '/campaigns?result=calendar&attrs=allCampaign&attrs=closeShow&limit=200&cid='+ cid;
             initCalendar(events_source);
             break;
           case 3:
-            var events_source = apiBaseUrl + '/campaigns?result=calendar&limit=200&cid='+ cid;
+            var events_source = apiBaseUrl + '/campaigns?result=calendar&attrs=closeShow&limit=200&cid='+ cid;
             initCalendar(events_source);
             break;
         }
@@ -162,7 +162,7 @@ define(['./controller'], function (controllers) {
         $scope.currentTeamId = tid;
         $scope.selectedType = 2;
         getCampaigns();
-        var events_source = apiBaseUrl + '/campaigns?result=calendar&limit=200&cid='+ cid + '&tid=' + tid;
+        var events_source = apiBaseUrl + '/campaigns?result=calendar&limit=200&attrs=closeShow&cid='+ cid + '&tid=' + tid;
         initCalendar(events_source);
       };
 
@@ -217,7 +217,7 @@ define(['./controller'], function (controllers) {
 
         var calendar = $('#calendar').calendar(options);
       };
-      var events_source = apiBaseUrl + '/campaigns?result=calendar&attrs=allCampaign&limit=200&cid='+ cid;
+      var events_source = apiBaseUrl + '/campaigns?result=calendar&attrs=allCampaign&attrs=closeShow&limit=200&cid='+ cid;
       initCalendar(events_source);
 
       $scope.recoverDate = function() {

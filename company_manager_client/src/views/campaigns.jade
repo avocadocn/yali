@@ -69,7 +69,7 @@
             td.center(ng-cloak) {{campaign.status}}
             td.center(ng-cloak) 
               a(ng-click="goDetail(campaign._id)" href="") 查看详情
-              button.dl_btn.close_btn(ng-click="closeCampaign(campaign._id)") 关闭活动
+              button.dl_btn.close_btn(ng-disabled="!campaign.active" ng-click="closeCampaign(campaign._id)") {{campaign.active? '关闭活动': '已经关闭'}}
     nav.pages
       ul.pagination
         li(ng-class="{disabled:nowPage<=0}" ng-click="getPage('pre')" ng-cloak)
