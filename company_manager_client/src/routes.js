@@ -118,6 +118,15 @@ define(['app'], function (app) {
               controller: 'member.allCtrl'
             }
           }
+        })
+        .state('departments', {
+          url: '/departments',
+          views: {
+            content: {
+              templateUrl: templateUrl('/views/department.html'),
+              controller: 'department.managerCtrl'
+            }
+          }
         });
     }
   ])

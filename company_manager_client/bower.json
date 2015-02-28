@@ -2,6 +2,7 @@
   "name": "donler-company-manager",
   "version": "0.0.1",
   "dependencies": {
+    "alertify.js": "~0.3.11",
     "angular": "~1.3.9",
     "angular-ui-router": "~0.2.13",
     "cropit": "~0.1.9",

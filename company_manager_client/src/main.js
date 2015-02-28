@@ -16,7 +16,8 @@ requirejs.config({
     moment: '../bower-lib/moment/moment',
     underscore: '../bower-lib/underscore/underscore',
     calendar: '../bower-lib/bootstrap-calendar/js/calendar',
-    zhCN: 'utils/zh-CN'
+    zhCN: 'utils/zh-CN',
+    alertify: '../bower-lib/alertify.js/lib/alertify'
   },
   packages: [
     {

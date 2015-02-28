@@ -4,6 +4,8 @@
 @import '../bower-lib/pen/src/pen.css';
 @import '../custom-lib/font-awesome/font-awesome.css';
 @import '../bower-lib/bootstrap-calendar/css/calendar.css';
+@import '../bower-lib/alertify.js/themes/alertify.core.css';
+@import '../bower-lib/alertify.js/themes/alertify.bootstrap.css';
 body {
   margin-bottom: 0;
 }
@@ -278,6 +280,107 @@ input:focus:-ms-input-placeholder {
 .company_info_page .operator_button {
   position: relative;
   margin-top: 20px;
+}
+.department_page .tree {
+  min-height: 20px;
+  padding: 19px;
+  margin-bottom: 20px;
+}
+.department_page .tree li {
+  list-style-type: none;
+  margin: 0;
+  padding: 10px 5px 0 5px;
+  position: relative;
+}
+.department_page .tree li::before,
+.department_page .tree li::after {
+  content: '';
+  left: -20px;
+  position: absolute;
+  right: auto;
+}
+.department_page .tree li::before {
+  border-left: 1px solid #999;
+  bottom: 50px;
+  height: 100%;
+  top: 0;
+  width: 1px;
+}
+.department_page .tree li::after {
+  border-top: 1px solid #999;
+  height: 20px;
+  top: 30px;
+  width: 25px;
+}
+.department_page .tree .dropdown-menu {
+  border-radius: 0;
+  min-width: inherit;
+}
+.department_page .tree .dropdown-menu li {
+  padding: 0;
+}
+.department_page .tree .dropdown-menu li::before,
+.department_page .tree .dropdown-menu li::after {
+  border: none;
+}
+.department_page .tree .dropdown-menu li a {
+  padding: 0 14px;
+}
+.department_page .tree li>.self>span {
+  border: 1px solid #999;
+  border-radius: 0;
+  display: inline-block;
+  padding: 5px 8px;
+  text-decoration: none;
+}
+.department_page .tree li.parent_li>.self>span {
+  cursor: pointer;
+}
+.department_page .tree>ul>li::before,
+.department_page .tree>ul>li::after {
+  border: 0;
+}
+.department_page .tree li:last-child::before {
+  height: 30px;
+}
+.department_page .tree li.parent_li>.self>span:hover,
+.department_page .tree li.parent_li>.self>span:hover+ul li>.self>span {
+  background: #eee;
+  border: 1px solid #94a0b4;
+  color: #000;
+}
+.department_page .tree .dl_btn_small {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+.department_page .tree .inline {
+  display: inline;
+}
+.department_page .tree .manager_list {
+  float: right;
+}
+.department_page .tree .operator .operator_button {
+  border-radius: 20px;
+  border: none;
+  background: transparent;
+  outline: none;
+}
+.department_page .tree .manager {
+  margin-left: 10px;
+}
+.department_page .tree .manager .manager_photo {
+  width: 48px;
+  height: 48px;
+  border-radius: 100%;
+}
+.department_page .tree .selected {
+  border: solid 3px #5cb85c !important;
+}
+.department_page .select_tree .self>span {
+  cursor: pointer;
+}
+.department_page .company_tree li>.self>span {
+  width: 300px;
 }
 .members .memer_logo {
   width: 40px;

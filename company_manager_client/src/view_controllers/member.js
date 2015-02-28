@@ -105,7 +105,7 @@ define(['./controller','qrcode'], function (controllers) {
         .error(function (data) {
           alert(data.msg);
         });
-        departmentService.getDepartment($rootScope.company._id).success(function (data) {
+        departmentService.getDepartmentTree($rootScope.company._id).success(function (data) {
           // $scope.companyMembers = data;
         })
         .error(function (data) {
