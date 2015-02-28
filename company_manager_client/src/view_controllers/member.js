@@ -97,9 +97,16 @@ define(['./controller','qrcode'], function (controllers) {
       '$scope',
       '$state',
       'memberService',
-      function ($rootScope, $scope, $state, memberService) {
+      'departmentService',
+      function ($rootScope, $scope, $state, memberService,departmentService) {
         memberService.getMembers($rootScope.company._id,{resultType:2}).success(function (data) {
           $scope.companyMembers = data;
+        })
+        .error(function (data) {
+          alert(data.msg);
+        });
+        departmentService.getDepartment($rootScope.company._id).success(function (data) {
+          // $scope.companyMembers = data;
         })
         .error(function (data) {
           alert(data.msg);

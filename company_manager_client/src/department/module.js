@@ -1,0 +1,1 @@
+define(['./department_service'], function () {});
