@@ -16,7 +16,7 @@
             th.center 参加小队数
             th.center 参加活动数
             th.center 积分
-            td.center 查看详情
+            //- td.center 查看详情
             th.center 操作
         tbody
           tr(ng-repeat="member in companyMembers")
@@ -28,32 +28,25 @@
             td.center {{member.team.length}}
             td.center {{member.campaignCount}}
             td.center {{member.score.total}}
-            td.center 
-              button 查看详情
+            //- td.center 
+            //-   button 查看详情
             td.center
               button(ng-click="editUser($index)") 编辑
 script(type="text/ng-template" id="editUserModal.html")
   .modal-header
     h3.modal-title  编辑
   .modal-body
-    .table_block(ng-if="comments.length>0")
-      span.table_title 用户留言
-      table.team_table.table.table-striped.dl_table
-        thead
-          tr
-            th 
-            th.center 时间
-            th.center 内容
-        tbody
-          tr(ng-repeat="comment in comments")
-            td {{$index+1}}
-            td.center
-              p {{comment.create_date | date:'yyyy-MM-dd HH:mm'}}
-            td.center
-              p {{comment.content}}
-    div(ng-if="comments.length==0")
-      |  该用户还没有留言
+    .info_detail
+        .tree.select_tree
+          ul
+            li(ng-include="'node.html'" ng-class="hasChild(node)")
   .modal-footer
-    button.btn.btn-primary(ng-click="deal(nowId, true)") 屏蔽
-    button.btn(ng-click="deal(nowId, false)") 忽略
+    button.btn.btn-primary(ng-click="save()") 确定
     button.btn.btn-default(ng-click="close()") 关闭
+script(type="text/ng-template" id="node.html")
+    .self.inline
+      span(ng-click="selectNode(node)" ng-class="{'selected': node.selected}")
+        .inline &nbsp;{{node.name}}
+    ul(ng-if="!node.hideChild")
+      li(ng-repeat="node in node.department" ng-include="'node.html'" ng-class="hasChild(node)")
+

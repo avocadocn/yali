@@ -98,19 +98,84 @@ define(['./controller','qrcode'], function (controllers) {
       '$state',
       'memberService',
       'departmentService',
-      function ($rootScope, $scope, $state, memberService,departmentService) {
+      '$modal',
+      function ($rootScope, $scope, $state, memberService, departmentService, $modal) {
+        var markUserDepartment = function(user, department) {
+          if (department && user.department) {
+            for (var i = 0; i < department.length; i++) {
+              if (department[i]._id.toString() === user.department._id.toString()) {
+                department[i].selected = true;
+                $scope.last_selected_node = department[i];
+                $scope.ori_selected_node = department[i];
+              }
+              else {
+                department[i].selected = false;
+              }
+              markUserDepartment(user, department[i].department);
+            }
+          }
+        };
+
+        var formatData = function(data) {
+          $scope.node = {
+            _id: data._id,
+            name: data.name,
+            is_company: true,
+            department: data.department
+          };
+          if ($scope.node.department.length === 0) {
+            $scope.node.department = null;
+          }
+          markUserDepartment($scope.nowUser, $scope.node.department);
+        };
         memberService.getMembers($rootScope.company._id,{resultType:2}).success(function (data) {
           $scope.companyMembers = data;
         })
         .error(function (data) {
           alert(data.msg);
         });
-        departmentService.getDepartmentTree($rootScope.company._id).success(function (data) {
-          // $scope.companyMembers = data;
+        departmentService.getDepartment($rootScope.company._id).success(function (data) {
+          $scope.department = data;
         })
         .error(function (data) {
           alert(data.msg);
         });
+
+        $scope.selectNode = function(node) {
+          if (node.is_company === true) {
+            return;
+          }
+          if ($scope.last_selected_node) {
+            $scope.last_selected_node.selected = false;
+          }
+          node.selected = true;
+          $scope.last_selected_node = node;
+        };
+        $scope.editUser = function (index) {
+          $scope.nowUser = $scope.companyMembers[index];
+          formatData($scope.department);
+          
+          $scope.modalInstance = $modal.open({
+            templateUrl: 'editUserModal.html',
+            scope: $scope
+          });
+          $scope.close = function () {
+            $scope.modalInstance.dismiss('cancel');
+          }
+          $scope.save = function () {
+            $scope.modalInstance.dismiss('cancel');
+            memberService.edit($scope.nowUser._id,{did:$scope.last_selected_node._id}).success(function (data) {
+              alert('编辑成功');
+              $state.reload();
+            })
+            .error(function (data) {
+              alert(data.msg);
+            });
+
+          }
+        }
       }
     ]);
 });
+
+

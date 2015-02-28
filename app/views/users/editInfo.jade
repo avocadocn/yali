@@ -103,11 +103,7 @@ div.user_edit_info.dl_card_tebcontent(ng-show='!loading')
         span.info_label #{this_user.qq}
       .info_detail(ng-if="editing")
         input.dl_input.dl-form-control.editToggle(type="text" name="user[qq]" ng-model="user.qq" ng-maxlength=20)
-    input(type="hidden" name="user_id" value="#{this_user._id}")
-    input(type="hidden" name="user_nickname" value="#{this_user.nickname}")
-    input(type="hidden" name="user_photo" value="#{this_user.photo}")
     input(type="hidden" name="did" value="{{last_selected_node._id}}")
-    input(type="hidden" name="change_department" value="{{last_selected_node._id !== ori_selected_node._id}}")
 
   script.
     $(function() {

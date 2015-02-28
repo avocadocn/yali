@@ -619,36 +619,88 @@ exports.memberOperateByRoute = function(req, res) {
 }
 
 
-
-//手动调用函数
-exports.memberOperateByHand = function(operate, member, did, callback) {
-  if (operate === 'join') {
-    //员工提出申请后加入
-    teamOperate({
-      did: did,
-      operate: {
-        '$push': {
-          'member': member
-        }
-      },
-      user: member,
-      method: true
-    }, callback);
+var departmentOperate = function(options, callback){
+  var did = options.did;
+  var user = options.user;
+  var method = options.method;
+  var member = {
+    _id: user._id,
+    nickname: user.nickname,
+    photo: user.photo,
+    apply_status: 'pass'
   }
-  if (operate === 'quit') {
-    //踢掉
-     teamOperate({
-      did: did,
-      operate: {
-        '$pull': {
-          'member': {
-            '_id': member._id
-          }
+  var departmentOperate,teamOperate;
+  //加入
+  if(method) {
+    teamOperate = departmentOperate = {
+      '$push': {
+        'member': member
+      }
+    }
+  }
+  //退出
+  else {
+    departmentOperate = {
+      '$pull': {
+        'member': {
+          '_id': member._id
+        },
+        'manager':{'_id':member._id}
+      }
+    }
+    teamOperate = {
+      '$pull': {
+        'member': {
+          '_id': member._id
+        },
+        'leader':{'_id':member._id}
+      }
+    }
+  }
+  Department.findByIdAndUpdate({'_id':did},departmentOperate,function(err,department){
+    if (err) {
+      callback(err);
+    }
+    else if(!department){
+      callback('not found');
+    } else {
+      CompanyGroup.findByIdAndUpdate({'_id':department.team},teamOperate,function(err,company_group){
+        if(err){
+          callback(err);
+        } else if (!company_group) {
+          callback('not found');
         }
-      },
-      user: member,
-      method: false
-    }, callback);
+        else{
+          //加入
+          if(method){
+            user.department ={'_id':did,'name':department.name};
+            user.team.push({'gid':'0','group_type':'virtual','entity_type':'virtual','_id':company_group._id,'name':company_group.name,'logo':company_group.logo})
+          }
+          //退出
+          else{
+            user.department = null;
+          }
+          user.save(function (err){
+            if(err){
+              callback(err);
+            }else{
+              callback(null)
+            }
+          });
+        }
+      });
+    }
+  });
+}
+//手动调用函数
+exports.memberOperateByHand = function(user, did,callback) {
+  if(user.department) {
+    departmentOperate({did:user.department._id,user:user,method:false},function () {
+      departmentOperate({did:did,user:user,method:true},callback)
+    })
+  }
+  else {
+    departmentOperate({did:did,user:user,method:true},callback)
   }
 }
 

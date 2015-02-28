@@ -53,6 +53,9 @@ define(['./member'], function (member) {
        */
       invite: function (email) {
         return $http.post(apiBaseUrl + '/users/actions/invite', { email: email });
+      },
+      edit: function (uid,user) {
+        return $http.put(apiBaseUrl + '/users/'+uid, user);
       }
 
     };
