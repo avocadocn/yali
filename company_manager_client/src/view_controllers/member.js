@@ -130,7 +130,7 @@ define(['./controller','qrcode'], function (controllers) {
         };
         $scope.page = 1;
         $scope.hasNext = true;
-        $scope.pageNum =4;
+        $scope.pageNum =10;
         $scope.nowPage = 1;
         $scope.AllcompanyMembers =[];
         memberService.getMembers($rootScope.company._id,{resultType:2,page:$scope.page}).success(function (data) {
