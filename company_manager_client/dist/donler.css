@@ -433,6 +433,12 @@ input:focus:-ms-input-placeholder {
   width: 40px;
   height: 40px;
 }
+.members .pages {
+  text-align: center;
+}
+.members .pages .pagination {
+  margin: 0 0 10px;
+}
 .member_invite_page.inner {
   padding: 15px;
 }

@@ -15,5 +15,5 @@
           img.member_logo(ng-src="{{member.photo}}")
           span {{member.nickname}}
       .operator
-        button.btn.btn-primary(ng-click="save()") 确定
+        button.btn.btn-primary(ng-disabled="!newLeader" ng-click="save()") 确定
         button.btn.btn-warning(ng-click="cancel()") 取消
