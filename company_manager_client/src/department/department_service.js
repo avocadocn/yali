@@ -18,6 +18,9 @@ define(['./department'], function (team) {
       },
       deleteDepartment: function (did) {
         return $http.delete(apiBaseUrl + '/departments/' + did);
+      },
+      appointManager: function (did, data) {
+        return $http.post(apiBaseUrl + '/departments/' + did + '/actions/appointManager', data);
       }
     }
   }]);
