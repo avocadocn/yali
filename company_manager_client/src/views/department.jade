@@ -51,7 +51,7 @@ script(type="text/ng-template" id="node.html")
         button.dl_btn.dl_btn_small(ng-click="confirmEdit(node)") 确定
         button.cancel_btn.dl_btn_small(ng-click="cancelEdit(node)") 取消
     ul.dropdown-menu(ng-show="!node.is_creating && !node.is_editing" role="menu")
-      li(role="presentation" ng-if="!node.is_company"): a(role="menu-item" tabindex="-1" href="/department/home/{{ node._id }}") 进入部门主页
+      li(role="presentation" ng-if="!node.is_company"): a(role="menu-item" tabindex="-1" href="/department/home/{{ node._id }}" target="_blank") 进入部门主页
       li(role="presentation" ng-if="!node.is_company"): a(role="menu-item" tabindex="-1" href="javascript:void(0)" ng-click="getNode(node)") 任命管理员
       li(role="presentation"): a(role="menu-item" tabindex="-1" href="javascript:void(0)" ng-click="addNode(node)" ng-if="node.level < 3") 创建子部门
       li(role="presentation" ng-if="!node.is_company"): a(role="menu-item" tabindex="-1" href="javascript:void(0)" ng-click="editNode(node)") 修改部门名字
