@@ -29,9 +29,9 @@
             .group(ng-repeat="user in department_users")
               .dl_row
                 a(ng-if="user.leader" ng-click="appointReady($index)" ng-disabled="true")
-                  img.img_user.dl_cover.size_48r(ng-src="{{user.photo}}" ng-Mouseenter="showUserCard(user._id,user._id)" id='pop{{user._id}}')
+                  img.img_user.dl_cover(ng-src="{{user.photo}}" ng-Mouseenter="showUserCard(user._id,user._id)" id='pop{{user._id}}')
                 a(ng-if="!user.leader" ng-click="appointReady($index)" ng-disabled="true")
-                  img.size_48.img_user(ng-src="{{user.photo}}" ng-Mouseenter="showUserCard(user._id,user._id)" id='pop{{user._id}}')
+                  img.member.img_user(ng-src="{{user.photo}}" ng-Mouseenter="showUserCard(user._id,user._id)" id='pop{{user._id}}')
               .dl_row.users
                 span.user_name {{user.nickname}}
       .dl-modal-footer
