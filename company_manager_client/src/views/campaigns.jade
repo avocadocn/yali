@@ -9,7 +9,7 @@
         .schedulebox_small
           .clearfix.schedule_operator
             p.calendar_nav#calendar_nav
-              i.fa.fa-bookmark-o.pull-right(ng-click="" title="还原成不限定日期")
+              i.fa.fa-bookmark-o.pull-right(ng-click="recoverDate()" title="还原")
               a.pull-right(data-calendar-nav="next" href="javascript:void(0)") &gt;
               i.fa.fa-calendar.pull-left
               a.pull-left(data-calendar-nav="prev" href="javascript:void(0)") &lt;
@@ -40,6 +40,7 @@
   .dl_panel.campaign_list.clearfix
     .dl_block_head
       span.title 活动详情
+      span.date(ng-if="nowDay" ng-cloak) {{nowDay | date:'yyyy年MM月dd日'}}
     .table_block
       table.table.table-striped.dl_table
         thead

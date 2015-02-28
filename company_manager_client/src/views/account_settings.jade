@@ -26,7 +26,7 @@
         div(ng-repeat="domain in domains" ng-class="{'input-group': $index!==0}")
           input.form-control(type="text" name="domain" ng-model="domains[$index]" required)
           .input-group-btn(ng-if="$index!=0")
-            button.btn.btn-default(ng-click="removeDomain($index)") 去掉
+            button.btn.btn-default(ng-click="removeDomain($index)") 删除
         .add_domain_div.input-group(ng-if="domains.length<3")
           input.form-control(type="text" name="newDomain" ng-model="newDomain.domain" required)
           .input-group-btn

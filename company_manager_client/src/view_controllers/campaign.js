@@ -1,11 +1,13 @@
 define(['./controller'], function (controllers) {
   return controllers.controller('campaign.campaignCtrl', [
-    '$scope', '$rootScope', 'storageService', 'teamService', 'campaignService',
-    function ($scope, $rootScope, storageService, teamService, campaignService) {
+    '$scope', '$rootScope', 'storageService', 'teamService', 'campaignService', 'apiBaseUrl',
+    function ($scope, $rootScope, storageService, teamService, campaignService, apiBaseUrl) {
       var cid = $rootScope.company._id;
       //获取小队
+      $scope.teamsGot = false;
       teamService.getList(cid).success(function (data) {
         $scope.data = {cid: cid, teams: data};
+        $scope.teamsGot = true;
       })
       .error(function (data) {
         console.log(data.msg);
@@ -22,7 +24,6 @@ define(['./controller'], function (controllers) {
       var getSuccessProcess = function(data, nextId) {
         //logo
         var campaignsLength = data.campaigns.length;
-        console
         for(var i=0; i<campaignsLength; i++) {
           if(data.campaigns[i].campaignType===1) {
             data.campaigns[i].logo = $rootScope.company.logo;
@@ -64,7 +65,7 @@ define(['./controller'], function (controllers) {
           $scope.nowPage = 0;
         }
         if($scope.selectedType===1) {//获取公司&小队活动
-          campaignService.getCampaigns(cid, null, 'managerList', 'allCampaign', '-start_time', nextTime || $scope.startTime, $scope.endTime, nextId, 20)
+          campaignService.getCampaigns(cid, null, 'managerList', 'allCampaign', '-start_time', nextTime || $scope.endTime, $scope.startTime, nextId, 20)
           .success(function (data, status) {
             getSuccessProcess(data, nextId);
           })
@@ -72,7 +73,7 @@ define(['./controller'], function (controllers) {
             //todo
           });
         }else if($scope.selectedType ===2) {//获取单小队活动
-          campaignService.getCampaigns(cid, $scope.currentTeamId, 'managerList', null, '-start_time', nextTime || $scope.startTime, $scope.endTime, nextId, 20)
+          campaignService.getCampaigns(cid, $scope.currentTeamId, 'managerList', null, '-start_time', nextTime || $scope.endTime, $scope.startTime, nextId, 20)
           .success(function (data, status) {
             getSuccessProcess(data, nextId);
           })
@@ -80,7 +81,7 @@ define(['./controller'], function (controllers) {
             //todo
           });
         }else {//获取公司活动
-          campaignService.getCampaigns(cid, null, 'managerList', null, '-start_time', nextTime || $scope.startTime, $scope.endTime, nextId, 20)
+          campaignService.getCampaigns(cid, null, 'managerList', null, '-start_time', nextTime || $scope.endTime, $scope.startTime, nextId, 20)
           .success(function (data, status) {
             getSuccessProcess(data, nextId);
           })
@@ -127,12 +128,26 @@ define(['./controller'], function (controllers) {
       };
       
       $scope.selectedType = 1;//默认全部活动
-      getCampaigns();
+      $scope.$watch('teamsGot', function(value) {//由于必须等待小队获取完后方能获取活动，故监听是否获取完毕
+        if(value) {
+          getCampaigns();
+        }
+      })
       $scope.selectType = function(type) {
         $scope.selectedType = type;
         if(type!=2) {
           $scope.currentTeamId = '';
           getCampaigns();
+        }
+        switch(type) {
+          case 1:
+            var events_source = apiBaseUrl + '/campaigns?result=calendar&attrs=allCampaign&limit=200&cid='+ cid;
+            initCalendar(events_source);
+            break;
+          case 3:
+            var events_source = apiBaseUrl + '/campaigns?result=calendar&limit=200&cid='+ cid;
+            initCalendar(events_source);
+            break;
         }
       };
 
@@ -140,6 +155,8 @@ define(['./controller'], function (controllers) {
         $scope.currentTeamId = tid;
         $scope.selectedType = 2;
         getCampaigns();
+        var events_source = apiBaseUrl + '/campaigns?result=calendar&limit=200&cid='+ cid + '&tid=' + tid;
+        initCalendar(events_source);
       };
 
       //calendar
@@ -147,7 +164,7 @@ define(['./controller'], function (controllers) {
       var calendar_data = {};
       var initCalendar = function(events_source) {
         var options = {
-          events_source: function () { return []; },
+          events_source: events_source,
           view: 'month',
           time_end: '24:00',
           tmpl_path: '/tmpls-small/',
@@ -165,16 +182,19 @@ define(['./controller'], function (controllers) {
             $('#calendar_nav').undelegate('[data-calendar-nav]','click').delegate('[data-calendar-nav]','click',function() {
               calendar.navigate($(this).data('calendar-nav'));
             });
-            $('#calendar_view').undelegate('[data-calendar-view]','click').delegate('[data-calendar-view]','click',function() {
-              calendar.view($(this).data('calendar-view'));
-            });
             $('#calendar').undelegate('.cal-month-day','click').delegate('.cal-month-day','click',function(e){
-              // $('#events-modal').modal('show');
-              // initModalCalendar(events_source,$(this).children('span[data-cal-date]').attr('data-cal-date'));
+              $scope.nowDay = $(this).children('span[data-cal-date]').attr('data-cal-date');
+              var day = new Date($scope.nowDay);
+              $scope.startTime = day.valueOf();
+              $scope.endTime = day.valueOf() + 1000*60*60*24 - 1;
+              getCampaigns();
             });
             $('#calendar').find('span[data-cal-date]').click(function(e){
-              // $('#events-modal').modal('show');
-              // initModalCalendar(events_source,$(this).attr('data-cal-date'));
+              $scope.nowDay =$(this).attr('data-cal-date');
+              var day = new Date($scope.nowDay);
+              $scope.startTime = day.valueOf();
+              $scope.endTime = day.valueOf() + 1000*60*60*24 - 1;
+              getCampaigns();
             });
           },
           classes: {
@@ -190,7 +210,15 @@ define(['./controller'], function (controllers) {
 
         var calendar = $('#calendar').calendar(options);
       };
-      initCalendar();
+      var events_source = apiBaseUrl + '/campaigns?result=calendar&attrs=allCampaign&limit=200&cid='+ cid;
+      initCalendar(events_source);
+
+      $scope.recoverDate = function() {
+        $scope.nowDay = null;
+        $scope.startTime = null;
+        $scope.endTime = null;
+        getCampaigns();
+      };
     }
   ]);
 });

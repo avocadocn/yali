@@ -47,6 +47,12 @@ define([
         return;
       } else {
         $http.defaults.headers.common['x-access-token'] = token;
+        $.ajaxSetup({
+          beforeSend: function (xhr)
+          {
+             xhr.setRequestHeader("x-access-token", token);        
+          }
+      });
         var cid = storageService.session.get('cid');
         if (!cid) {
           $state.go('login');
