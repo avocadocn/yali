@@ -38,18 +38,7 @@ define(['./campaign'], function (campaign) {
        * @param  {date} to
        * @param  {number} limit
        */
-      getCampaigns: function (cid, tids, result, attrs, sort, to, from, page_id, limit) {
-        var params = {};
-        if(cid) params.cid = cid;
-        if(tids) params.tids = tids;
-        if(result) params.result = result;
-        if(attrs) params.attrs = attrs;
-        if(sort) params.sort = sort;
-        if(from) params.from = from;
-        if(to) params.to = to;
-        if(page_id) params.page_id = page_id;
-        if(limit) params.limit = limit;
-        else params.limit = 20;
+      getCampaigns: function (params) {
         return $http.get(apiBaseUrl + '/campaigns', {
           params: params
         });

@@ -25,7 +25,7 @@ define(['./controller'], function (controllers) {
         //logo
         var campaignsLength = data.campaigns.length;
         for(var i=0; i<campaignsLength; i++) {
-          if(data.campaigns[i].campaignType===1) {
+          if(data.campaigns[i].campaignType===1 || data.campaigns[i].campaignType>5) {
             data.campaigns[i].logo = $rootScope.company.logo;
           }else {
             var tid = data.campaigns[i].unitId;
@@ -64,8 +64,14 @@ define(['./controller'], function (controllers) {
           $scope.pages = [];
           $scope.nowPage = 0;
         }
+        var params =  {'cid':cid, 'result':'managerList', 'sort':'-start_time', 'limit':20};
+        if(nextTime || $scope.endTime) params.to = nextTime || $scope.endTime;
+        if($scope.startTime) params.from = $scope.startTime;
+        if(nextId) params.nextId = nextId;
+
         if($scope.selectedType===1) {//获取公司&小队活动
-          campaignService.getCampaigns(cid, null, 'managerList', 'allCampaign', '-start_time', nextTime || $scope.endTime, $scope.startTime, nextId, 20)
+          params.attrs = 'allCampaign';
+          campaignService.getCampaigns(params)
           .success(function (data, status) {
             getSuccessProcess(data, nextId);
           })
@@ -73,7 +79,8 @@ define(['./controller'], function (controllers) {
             //todo
           });
         }else if($scope.selectedType ===2) {//获取单小队活动
-          campaignService.getCampaigns(cid, $scope.currentTeamId, 'managerList', null, '-start_time', nextTime || $scope.endTime, $scope.startTime, nextId, 20)
+          params.tids = $scope.currentTeamId;
+          campaignService.getCampaigns(params)
           .success(function (data, status) {
             getSuccessProcess(data, nextId);
           })
@@ -81,7 +88,7 @@ define(['./controller'], function (controllers) {
             //todo
           });
         }else {//获取公司活动
-          campaignService.getCampaigns(cid, null, 'managerList', null, '-start_time', nextTime || $scope.endTime, $scope.startTime, nextId, 20)
+          campaignService.getCampaigns(params)
           .success(function (data, status) {
             getSuccessProcess(data, nextId);
           })
