@@ -6,37 +6,32 @@
       ul
         li(ng-include="'node.html'" ng-class="hasChild(node)")
 
-  div.modal.fade#managerAppointModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
-    .modal-dialog
-    .dl-modal
-      .dl-modal-header
-        button.head(type="button" class="close" data-dismiss="modal" aria-hidden="true") &times
-        .head#myModalLabel 任命部门管理员
-      .dl-modal-body.clearfix
-        .dl_modal_container
-          .dl_row.clearfix
-            //- span.subtitle 任命管理员
-            span.info_label 点选新成员任命管理员后,现任管理员自动解职
-            a(ng-click="showOriginalUser()" ng-if="search_flag" ng-cloak) 显示部门成员
-            .search_form.pull-right
-              form(name="manager_form" novalidate)
-                .search_input
-                  input(placeholder="搜索成员" type="text" ng-model="member_search_department" required)
+  .modal.fade#managerAppointModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+    .modal-dialog.appoint_modal
+      .modal-content
+        .modal-header
+          button.close(type="button" data-dismiss="modal" aria-label="Close")
+            span(aria-hidden="true") &times;
+          h4#myModalLabel 任命部门管理员
+        .modal-body
+          .row
+            .col-xs-8
+              p.text-muted 点选新成员任命管理员后,现任管理员自动解职
+                a.show_member_link(ng-click="showOriginalUser()" ng-if="search_flag" ng-cloak) 显示部门成员
+            .col-xs-4
+              form.search_form.pull-right(name="manager_form" novalidate)
+                input.search_input(placeholder="搜索成员" type="text" ng-model="member_search_department" required)
                 .search_icon(type='submit' ng-click="search()" ng-disabled="manager_form.$invalid")
-        .dl_modal_container
-          .groups(bs-popover)
-            p(ng-if="message" ng-cloak) {{message}}
-            .group(ng-repeat="user in department_users")
-              .dl_row
-                a(ng-if="user.leader" ng-click="appointReady($index)" ng-disabled="true")
-                  img.img_user.dl_cover(ng-src="{{user.photo}}" ng-Mouseenter="showUserCard(user._id,user._id)" id='pop{{user._id}}')
-                a(ng-if="!user.leader" ng-click="appointReady($index)" ng-disabled="true")
-                  img.member.img_user(ng-src="{{user.photo}}" ng-Mouseenter="showUserCard(user._id,user._id)" id='pop{{user._id}}')
-              .dl_row.users
-                span.user_name {{user.nickname}}
-      .dl-modal-footer
-        button.cancel_btn.dl_btn_large(data-dismiss="modal") 取消
-        button.dl_btn.dl_btn_large(data-dismiss="modal" ng-click="appointManager()") 任命
+          .row
+            .col-xs-12
+              p(ng-if="message" ng-cloak) {{message}}
+              .member_list.clearfix
+                .member_box(ng-repeat="user in department_users")
+                  img.photo.center-block(ng-src="{{user.photo}}" ng-class="{'leader': user.leader}" ng-click="appointReady($index)")
+                  .name.text-muted {{user.nickname}}
+        .modal-footer
+          button.btn.btn-default(data-dismiss="modal") 取消
+          button.btn.btn-primary(data-dismiss="modal" ng-click="appointManager()") 任命
 
 script(type="text/ng-template" id="node.html")
   .self.inline.dropdown
