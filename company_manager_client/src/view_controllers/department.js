@@ -45,9 +45,11 @@ define(['./controller', 'alertify'], function (controllers, alertify) {
       $scope.getNode = function(node){
         $scope.did = node._id;
         $scope.current_node = node;
-        departmentService.getDepartment(node._id).success(function(data, status) {
-          $scope.getCompanyUser(data.department.team._id,function(){$('#managerAppointModel').modal();});
-        }).error(function(data, status) {
+        departmentService.getDepartment(node._id).success(function (data, status) {
+          $scope.getCompanyUser(data.department.team._id, function (){
+            $('#managerAppointModel').modal();
+          });
+        }).error(function (data, status) {
           //TODO:更改对话框
           alertify.alert(data);
         });
