@@ -204,6 +204,10 @@ input:focus:-ms-input-placeholder {
 .inner .campaign_list {
   min-height: 300px;
 }
+.inner .campaign_list .dl_block_head>.date {
+  margin-left: 10px;
+  color: #333;
+}
 .inner .campaign_list .table_block {
   margin: 0 10px !important;
 }
@@ -215,8 +219,9 @@ input:focus:-ms-input-placeholder {
   white-space: normal;
 }
 .inner .campaign_list .table_block .dl_table .close_btn {
-  margin-left: 5px;
+  margin-left: 10px;
   background-color: #cfcfcf;
+  padding: 4px 5px;
 }
 .inner .campaign_list .table_block .dl_table .close_btn:hover {
   background-color: #bbb;
@@ -283,6 +288,9 @@ input:focus:-ms-input-placeholder {
 .company_info_page .operator_button {
   position: relative;
   margin-top: 20px;
+}
+.department_page.inner {
+  padding: 15px;
 }
 .department_page .tree {
   min-height: 20px;
@@ -376,14 +384,53 @@ input:focus:-ms-input-placeholder {
   height: 48px;
   border-radius: 100%;
 }
-.department_page .tree .selected {
-  border: solid 3px #5cb85c !important;
+.department_page .appoint_modal .search_form {
+  border: 1px solid #ddd;
+  height: 20px;
+  margin-right: 19px;
 }
-.department_page .select_tree .self>span {
+.department_page .appoint_modal .search_input {
+  float: left;
+  height: 18px;
+  line-height: 18px;
+  font-size: 14px;
+  width: 100px;
+  border: 0;
+  padding: 0 1px;
+  color: #999;
+}
+.department_page .appoint_modal .search_icon {
+  cursor: pointer;
+  float: right;
+  background-image: url("/img/icons/search_g.png");
+  background-repeat: no-repeat;
+  background-size: 15px 15px;
+  background-position: 0px 2px;
+  height: 18px;
+  width: 18px;
+}
+.department_page .appoint_modal .show_member_link {
+  margin-left: 10px;
   cursor: pointer;
 }
-.department_page .company_tree li>.self>span {
-  width: 300px;
+.department_page .appoint_modal .member_box {
+  float: left;
+  width: 60px;
+  margin: 5px;
+}
+.department_page .appoint_modal .photo {
+  width: 48px;
+  height: 48px;
+  border-radius: 100%;
+}
+.department_page .appoint_modal .leader {
+  border: 2px solid #f22;
+}
+.department_page .appoint_modal .name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
 }
 .wrap {
   min-height: 100%;
@@ -476,6 +523,12 @@ input:focus:-ms-input-placeholder {
 .members .memer_logo {
   width: 40px;
   height: 40px;
+}
+.members .pages {
+  text-align: center;
+}
+.members .pages .pagination {
+  margin: 0 0 10px;
 }
 .member_invite_page.inner {
   padding: 15px;
@@ -1032,7 +1085,7 @@ input:focus:-ms-input-placeholder {
 .no_radius {
   border-radius: 0;
 }
-.ng-dirty.ng-invalid {
+input.ng-dirty.ng-invalid {
   background-color: #ffd7de !important;
 }
 .cal-day-inmonth span[data-cal-date] {

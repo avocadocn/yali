@@ -128,12 +128,46 @@ define(['./controller','qrcode'], function (controllers) {
           }
           markUserDepartment($scope.nowUser, $scope.node.department);
         };
-        memberService.getMembers($rootScope.company._id,{resultType:2}).success(function (data) {
-          $scope.companyMembers = data;
+        $scope.page = 1;
+        $scope.hasNext = true;
+        $scope.pageNum =10;
+        $scope.nowPage = 1;
+        $scope.AllcompanyMembers =[];
+        memberService.getMembers($rootScope.company._id,{resultType:2,page:$scope.page}).success(function (data) {
+          $scope.companyMembers = data.users;
+          $scope.AllcompanyMembers.push(data.users);
+          $scope.hasNext = data.hasNext;
         })
         .error(function (data) {
           alert(data.msg);
         });
+        $scope.nextPage = function () {
+          if(!$scope.hasNext){
+            return;
+          }
+          $scope.nowPage++;
+          if($scope.nowPage>$scope.page) {
+            memberService.getMembers($rootScope.company._id,{resultType:2,page:++$scope.page}).success(function (data) {
+              $scope.AllcompanyMembers.push(data.users);
+              $scope.companyMembers = data.users;
+              $scope.hasNext = data.hasNext;
+            })
+          }
+          else {
+            $scope.companyMembers = $scope.AllcompanyMembers[$scope.nowPage-1];
+          }
+        }
+        $scope.lastPage = function () {
+          if($scope.nowPage<2){
+            return;
+          }
+          $scope.nowPage--;
+          $scope.companyMembers = $scope.AllcompanyMembers[$scope.nowPage-1];
+        }
+        $scope.getPage = function (page) {
+          $scope.nowPage =page;
+          $scope.companyMembers = $scope.AllcompanyMembers[$scope.nowPage-1];
+        }
         departmentService.getDepartmentTree($rootScope.company._id).success(function (data) {
           $scope.department = data;
         })

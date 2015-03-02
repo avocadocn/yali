@@ -32,6 +32,14 @@
             //-   button 查看详情
             td.center
               button(ng-click="editUser($index)") 编辑
+    nav.pages
+      ul.pagination
+        li(ng-class="{disabled:nowPage<=1}" ng-click="lastPage()" ng-cloak)
+          a.page(href="") 上一页
+        li(ng-repeat="page in AllcompanyMembers" ng-click="getPage($index+1)" ng-class="{active:$index+1===nowPage}" ng-cloak)
+          a.page(href="") {{$index+1}}
+        li(ng-class="{disabled:!hasNext}" ng-click="nextPage()" ng-cloak)
+          a.page(href="") 下一页
 script(type="text/ng-template" id="editUserModal.html")
   .modal-header
     h3.modal-title  编辑

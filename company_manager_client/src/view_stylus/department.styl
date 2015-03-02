@@ -1,5 +1,8 @@
 .department_page
+  &.inner
+    padding 15px
 
+  // department tree style
   .tree
     min-height 20px
     padding 19px
@@ -87,13 +90,46 @@
         width 48px
         height 48px
         border-radius 100%
-  .tree
-    .selected
-      border solid 3px #5cb85c !important
 
-  .select_tree
-    .self>span
+  // modal style
+  .appoint_modal
+    .search_form
+      border 1px solid #ddd
+      height 20px
+      margin-right 19px
+    .search_input
+      float left
+      height 18px
+      line-height 18px
+      font-size 14px
+      width 100px
+      border 0
+      padding 0 1px
+      color #999999
+    .search_icon
       cursor pointer
-
-  .company_tree li>.self>span
-    width 300px
+      float right
+      background-image url('/img/icons/search_g.png')
+      background-repeat no-repeat
+      background-size 15px 15px
+      background-position 0px 2px
+      height 18px
+      width 18px
+    .show_member_link
+      margin-left 10px
+      cursor pointer
+    .member_box
+      float left
+      width 60px
+      margin 5px
+    .photo
+      width 48px
+      height 48px
+      border-radius 100%
+    .leader
+      border 2px solid #ff2222
+    .name
+      overflow hidden
+      text-overflow ellipsis
+      white-space nowrap
+      text-align center

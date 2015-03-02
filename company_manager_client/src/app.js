@@ -16,7 +16,8 @@ define([
   './team/module',
   './campaign/module',
   './member/module',
-  './department/module'
+  './department/module',
+  './search/module'
 ], function(angular) {
   return angular.module('app', [
     'ui.router',
@@ -29,7 +30,8 @@ define([
     'team',
     'campaign',
     'member',
-    'department'
+    'department',
+    'search'
   ]).run([
     '$rootScope',
     '$state',
@@ -47,6 +49,12 @@ define([
         return;
       } else {
         $http.defaults.headers.common['x-access-token'] = token;
+        $.ajaxSetup({
+          beforeSend: function (xhr)
+          {
+             xhr.setRequestHeader("x-access-token", token);        
+          }
+      });
         var cid = storageService.session.get('cid');
         if (!cid) {
           $state.go('login');
