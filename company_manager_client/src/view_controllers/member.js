@@ -2,17 +2,21 @@ define(['./controller','qrcode'], function (controllers) {
   return controllers.controller('member.inviteCtrl', [
     '$rootScope',
     '$scope',
+    '$timeout',
     'memberService',
-    function ($rootScope, $scope, memberService) {
+    function ($rootScope, $scope, $timeout, memberService) {
       var qrcode = new QRCode("inviteKeyQrCode", {
         text: $rootScope.company.inviteUrl,
         width: 128,
         height: 128
       });
-      var img = $('#inviteKeyQrCode').find('img')[0];
-      var link = document.getElementById('saveInviteKeyQrCode');
-      link.href = img.src;
-      link.download = "inviteCode.jpg";
+      $timeout(function () {
+        var img = $('#inviteKeyQrCode').find('img')[0];
+        var link = document.getElementById('saveInviteKeyQrCode');
+        link.href = img.src;
+        link.download = "inviteCode.jpg";
+      },10)
+
 
       $scope.email = '';
       $scope.invite = function () {
