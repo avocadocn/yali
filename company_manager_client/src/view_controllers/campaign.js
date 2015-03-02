@@ -226,6 +226,25 @@ define(['./controller'], function (controllers) {
         $scope.endTime = null;
         getCampaigns();
       };
+
+      $scope.goDetail = function (campaignId) {
+        $scope.campaignId = campaignId;
+        $('#editCampaignModal').modal('show');
+      };
+
+      $scope.closeCampaign = function (campaign) {
+        if(campaign.active) {
+          campaign.active = false;
+          campaignService.closeCampaign(campaign._id)
+          .success(function (data, status) {
+
+            alert('已关闭');
+          })
+          .error(function (data, status) {
+            alert('关闭失败，请重试');
+          });
+        }
+      };
     }
   ]);
 });

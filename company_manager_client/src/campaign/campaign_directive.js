@@ -1,4 +1,4 @@
-define(['./campaign', 'echarts', 'echarts/chart/bar', 'echarts/chart/pie'], function (campaign, echarts) {
+define(['./campaign', 'echarts', 'alertify', 'echarts/chart/bar', 'echarts/chart/pie'], function (campaign, echartsm, alertify) {
   // St: statistics
   return campaign.directive('campaignStBar', ['$filter', function ($filter) {
     return {
@@ -547,7 +547,70 @@ define(['./campaign', 'echarts', 'echarts/chart/bar', 'echarts/chart/pie'], func
           };
         }
       }
-    }]);
+    }])
+    .directive('editCampaign', ['campaignService', function (campaignService) {
+      return {
+        restrict: 'E',
+        scope: {
+          campaignId: '=',
+        },
+        templateUrl: '/company/manager/templates/campaign/editCampaign.html',
+        link: function (scope, ele, attrs, ctrl) {
+          //打开modal时请求campaign数据
+          scope.$watch('campaignId', function(value) {
+            if(value) {
+              scope.editing = false;
+              campaignService.getCampaign(scope.campaignId)
+              .success(function (data, status) {
+                scope.campaign = data;
+                scope.campaign.deadline = moment(scope.campaign.deadline).format('YYYY-MM-DD HH:mm');
+                $('#deadlineEdit').datetimepicker({
+                  autoclose: true,
+                  language: 'zh-CN',
+                  startDate: new Date(),
+                  pickerPosition:"bottom-left"
+                });
+                $('#deadlineEdit').datetimepicker('setEndDate', new Date(scope.campaign.end_time));   //截至时间应小于结束时间
+              })
+              .error(function (data, status) {
+
+              });
+            }
+          })
+          
+
+          $("#deadlineEdit").on("changeDate",function (ev) {
+            var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
+            scope.campaign.deadline = moment(dateUTC).format("YYYY-MM-DD HH:mm");
+          });
+
+          var options = {
+            editor: document.getElementById('campaignDetailEdit'), // {DOM Element} [required]
+            class: 'dl_markdown', // {String} class of the editor,
+            textarea: '<textarea name="content" ng-model="content"></textarea>', // fallback for old browsers
+            list: ['h5', 'p', 'insertorderedlist','insertunorderedlist', 'indent', 'outdent', 'bold', 'italic', 'underline'], // editor menu list
+            stay: false,
+            toolBarId: 'campaignDetailEditToolBar'
+          };
+
+          var editor = new Pen(options);
+
+          scope.edit = function() {
+            scope.editing = true;
+          };
+          scope.save = function() {
+            campaignService.editCampaign(scope.campaign)
+            .success(function (data, status) {
+              alert('保存成功');
+              scope.editing = false;
+            })
+            .error(function (data, status) {
+              alert('保存失败:' + data.msg);
+            })
+          };
+        }
+      }
+    }])
 });
 
 

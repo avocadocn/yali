@@ -42,6 +42,21 @@ define(['./campaign'], function (campaign) {
         return $http.get(apiBaseUrl + '/campaigns', {
           params: params
         });
+      },
+
+      getCampaign: function (campaignId) {
+        return $http.get(apiBaseUrl + '/campaigns/' + campaignId);
+      },
+      editCampaign: function (campaign) {
+        var data = {};
+        if(campaign.member_min) data.member_min = campaign.member_min;
+        if(campaign.member_max) data.member_max = campaign.member_max;
+        if(campaign.content) data.content = campaign.content;
+        if(campaign.deadline) data.deadline = campaign.deadline;
+        return $http.put(apiBaseUrl + '/campaigns/' + campaign._id, data);
+      },
+      closeCampaign: function (campaignId) {
+        return $http.delete(apiBaseUrl + '/campaigns/' + campaignId);
       }
     };
   }]);

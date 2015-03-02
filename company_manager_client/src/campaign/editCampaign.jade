@@ -1,0 +1,76 @@
+.modal.fade#editCampaignModal(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+  .modal-dialog
+    .dl_campaign_modal
+      .dl_modal_header
+        .headline
+          i.fa.fa-bullhorn.head_logo
+          span {{campaign.theme}}
+          button.dl_close(type="button" data-dismiss="modal" aria-hidden="true") ×
+        form(name="campaign_edit_form" novalidate)
+          .dl_modal_body.clearfix
+            .dl_modal_content.clearfix
+              .dl_modal_container
+                .logos(ng-repeat="unit in campaign.campaign_unit")
+                  img.logo(ng-if="campaign.campaignType===1" ng-src="{{unit.company.logo}}/48/48")
+                  img.logo(ng-if="campaign.campaignType!==1" ng-src="{{unit.team.logo}}/48/48")
+                  .name {{unit.team ? unit.team.name : unit.company.name}}
+              .dl_modal_container
+                .edit_title
+                  span 活动类型:
+                .edit_input
+                  span(ng-cloak) {{campaign.campaign_mold}}
+              .dl_modal_container
+                .edit_title
+                  span 开始时间:
+                .edit_input
+                  span(ng-cloak) {{campaign.start_time | date:'yyyy-MM-dd HH:mm'}}
+              .dl_modal_container
+                .edit_title
+                  span 结束时间:
+                .edit_input
+                  span(ng-cloak) {{campaign.end_time | date:'yyyy-MM-dd HH:mm'}}
+              .dl_modal_container
+                .edit_title
+                  span 报名截止时间:
+                .edit_input
+                  span(ng-if="!editing" ng-cloak) {{campaign.deadline | date:'yyyy-MM-dd HH:mm'}}
+                  .dl_modal_half_container.end_time(ng-show="editing")
+                    .input-group.date.form_datetime#deadlineEdit
+                      input.dl_form_control.dl_modal_input(type="text" ng-model="campaign.deadline" name="deadline" placeholder="选择报名截止时间" data-date-format="YYYY-MM-DD HH:mm" readonly required)
+                      span.input-group-addon.no_radius
+                        span.glyphicon.glyphicon-calendar
+              .dl_modal_container
+                .edit_title
+                  span 人数下限:
+                .edit_input
+                  span(ng-if="!editing" ng-cloak) {{campaign.member_min}}
+                  .dl_modal_half_container(ng-if="editing")
+                    input.dl_modal_input.dl_form_control(type="text" ng-model="campaign.member_min" name="memberMin" placeholder="输入人数下限")
+              .dl_modal_container
+                .edit_title
+                  span 人数上限:
+                .edit_input
+                  span(ng-if="!editing" ng-cloak) {{campaign.member_max}}
+                  .dl_modal_half_container(ng-if="editing")
+                    input.dl_modal_input.dl_form_control(type="text" ng-model="campaign.member_max" name="memberMax" placeholder="输入人数上限")
+              .dl_modal_container
+                .edit_title
+                  span 活动地点:
+                .edit_input
+                  span(ng-cloak) {{campaign.location.name}}
+              .dl_modal_container
+                .edit_title
+                  span 活动简介:
+                .edit_input
+                  div(ng-bind-html="campaign.content | unsafe" ng-if="!editing" ng-cloak)
+                  .detail_editor.detail_input(ng-show="editing")
+                    #campaignDetailEditToolBar
+                    #campaignDetailEdit.markdownContainer.dl_modal_input(name="content" ng-model="campaign.content" contenteditable="true" mix-maxlength=4000)
+              .dl_modal_container
+                .edit_title
+                  span 活动标签:
+                .edit_input
+                  span(ng-repeat="tag in campaign.tags" ng-cloak) {{tag}}&nbsp;
+          .dl_modal_footer(ng-if="!campaign.finish&&campaign.active")
+            button.dl_btn.dl_modal_btn(type='button' ng-if="!editing" ng-click="edit()" ng-cloak) 编辑
+            button.dl_btn.dl_modal_btn(type="button" ng-if="editing" ng-click="save()" ng-cloak) 保存

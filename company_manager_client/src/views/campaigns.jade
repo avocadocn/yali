@@ -69,13 +69,14 @@
             td.center(ng-cloak) {{campaign.status}}
             td.center(ng-cloak) 
               a(ng-click="goDetail(campaign._id)" href="") 查看详情
-              button.dl_btn.close_btn(ng-disabled="!campaign.active" ng-click="closeCampaign(campaign._id)") {{campaign.active? '关闭活动': '已经关闭'}}
+              button.dl_btn.close_btn(ng-if="campaign.status==='未开始'||campaign.status==='已开始'" ng-disabled="!campaign.active" ng-click="closeCampaign(campaign)") {{campaign.active? '关闭活动': '已经关闭'}}
     nav.pages
       ul.pagination
-        li(ng-class="{disabled:nowPage<=0}" ng-click="getPage('pre')" ng-cloak)
+        li(ng-if="nowPage>0" ng-class="{disabled:nowPage<=0}" ng-click="getPage('pre')" ng-cloak)
           a.page(href="") 上一页
         li(ng-repeat="page in pages" ng-click="getPage(null,$index)" ng-class="{active:$index===nowPage}" ng-cloak)
           a.page(href="") {{$index+1}}
-        li(ng-class="{disabled:!hasNext}" ng-click="getPage('next')" ng-cloak)
+        li(ng-if="hasNext" ng-class="{disabled:!hasNext}" ng-click="getPage('next')" ng-cloak)
           a.page(href="") 下一页
 sponsor-campaign(data="data")
+edit-campaign(campaign-id="campaignId")

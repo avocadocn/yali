@@ -857,6 +857,33 @@ input:focus:-ms-input-placeholder {
   float: left;
   clear: left;
 }
+.dl_campaign_modal .dl_modal_body .dl_modal_container .logos {
+  float: left;
+  margin-right: 20px;
+  width: 80px;
+}
+.dl_campaign_modal .dl_modal_body .dl_modal_container .logos .logo {
+  height: 48px;
+  width: 48px;
+  margin-left: 25px;
+}
+.dl_campaign_modal .dl_modal_body .dl_modal_container .logos .name {
+  width: 100px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-align: center;
+  color: #666;
+}
+.dl_campaign_modal .dl_modal_body .dl_modal_container .edit_title {
+  float: left;
+  width: 100px;
+  color: #666;
+}
+.dl_campaign_modal .dl_modal_body .dl_modal_container .edit_input {
+  float: left;
+  width: 300px;
+  color: #666;
+}
 .dl_campaign_modal .dl_modal_body .dl_modal_container .select {
   margin: 20px;
   color: #9b9b9b;
