@@ -673,28 +673,28 @@ textarea {
 textarea {
   resize: none;
 }
-::-webkit-input-placeholder /* WebKit browsers */ {
+::-webkit-input-placeholder {
   color: #ccc;
 }
-:-moz-placeholder /* Mozilla Firefox 4 to 18 */ {
+:-moz-placeholder {
   color: #ccc;
 }
-::-moz-placeholder /* Mozilla Firefox 19+ */ {
+::-moz-placeholder {
   color: #ccc;
 }
-:-ms-input-placeholder /* Internet Explorer 10+ */ {
+:-ms-input-placeholder {
   color: #ccc;
 }
-input:focus::-webkit-input-placeholder /* WebKit browsers */ {
+input:focus::-webkit-input-placeholder {
   color: transparent !important;
 }
-input:focus::-moz-placeholder /* Mozilla Firefox 4 to 18 */ {
+input:focus::-moz-placeholder {
   color: transparent !important;
 }
-input:focus::-moz-placeholder /* Mozilla Firefox 19+ */ {
+input:focus::-moz-placeholder {
   color: transparent !important;
 }
-input:focus:-ms-input-placeholder /* Internet Explorer 10+ */ {
+input:focus:-ms-input-placeholder {
   color: transparent !important;
 }
 .transparent {
@@ -1241,7 +1241,6 @@ input:focus:-ms-input-placeholder /* Internet Explorer 10+ */ {
     opacity: 1;
     -webkit-transform: scale(1);
   }
-
   100% {
     opacity: 0;
     -webkit-transform: scale(1.5);
@@ -1252,7 +1251,6 @@ input:focus:-ms-input-placeholder /* Internet Explorer 10+ */ {
     opacity: 1;
     -moz-transform: scale(1);
   }
-
   100% {
     opacity: 0;
     -moz-transform: scale(1.5);
@@ -1478,7 +1476,6 @@ input:focus:-ms-input-placeholder /* Internet Explorer 10+ */ {
   position: relative;
   overflow: hidden;
   -moz-box-shadow: 1px 1px 3px #ccc;
-/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 .dl_container .side .groupsbox .head_title {
@@ -2723,7 +2720,7 @@ input.ng-invalid.ng-dirty {
   font-size: 80px;
   color: #3498db;
 }
-[ngcloak],
+[ng:cloak],
 [ng-cloak],
 [data-ng-cloak],
 [x-ng-cloak],
@@ -3098,14 +3095,12 @@ input.ng-invalid.ng-dirty {
   padding: 0;
   border: none;
   -moz-box-shadow: 1px 1px 3px #ccc;
-/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 .timeline_element:hover {
   cursor: pointer;
   opacity: 1;
   -moz-box-shadow: 3px 3px 3px #ccc;
-/* 老的 Firefox */
   box-shadow: 3px 3px 3px #ccc;
 }
 .timeline_element .timeline_head {
@@ -3395,7 +3390,6 @@ input.ng-invalid.ng-dirty {
   width: 360px;
   float: left;
   -moz-box-shadow: 1px 1px 3px #ccc;
-/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 #events-modal .calendar_box .schedule_type {
@@ -3614,11 +3608,8 @@ input.ng-invalid.ng-dirty {
   bottom: -100px;
   transition: bottom 0.5s;
   -moz-transition: bottom 0.5s;
-/* Firefox 4 */
   -webkit-transition: bottom 0.5s;
-/* Safari and Chrome */
   -o-transition: bottom 0.5s;
-/* Opera */
 }
 .icon_backtop.affix {
   bottom: 70px;
@@ -3628,7 +3619,6 @@ input.ng-invalid.ng-dirty {
     opacity: 1;
     transform: scale(1);
   }
-
   100% {
     opacity: 0;
     transform: scale(1.5);
@@ -3639,7 +3629,6 @@ input.ng-invalid.ng-dirty {
     opacity: 1;
     transform: scale(1);
   }
-
   100% {
     opacity: 0;
     transform: scale(1.5);
@@ -3650,18 +3639,6 @@ input.ng-invalid.ng-dirty {
     opacity: 1;
     transform: scale(1);
   }
-
-  100% {
-    opacity: 0;
-    transform: scale(1.5);
-  }
-}
-@-ms-keyframes scaleFade {
-  50% {
-    opacity: 1;
-    transform: scale(1);
-  }
-
   100% {
     opacity: 0;
     transform: scale(1.5);
@@ -3672,7 +3649,6 @@ input.ng-invalid.ng-dirty {
     opacity: 1;
     transform: scale(1);
   }
-
   100% {
     opacity: 0;
     transform: scale(1.5);
