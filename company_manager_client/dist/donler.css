@@ -4,10 +4,10 @@
 @import '../bower-lib/pen/src/pen.css';
 @import '../custom-lib/font-awesome/font-awesome.css';
 @import '../bower-lib/bootstrap-calendar/css/calendar.css';
-@import '../bower-lib/alertify.js/themes/alertify.core.css';
-@import '../bower-lib/alertify.js/themes/alertify.bootstrap.css';
-body {
+body,
+html {
   margin-bottom: 0;
+  height: 100%;
 }
 #top > .navbar {
   padding: 0 15px;
@@ -64,6 +64,9 @@ body {
 .dl_main_container .dl_content {
   flex: 1;
   -webkit-flex: 1;
+}
+.dl_wrap {
+  height: 100%;
 }
 button {
   border: none;
@@ -381,6 +384,94 @@ input:focus:-ms-input-placeholder {
 }
 .department_page .company_tree li>.self>span {
   width: 300px;
+}
+.wrap {
+  min-height: 100%;
+  height: auto;
+  min-width: 960px;
+  position: relative;
+  background-color: #f4f4f4;
+}
+.navbar {
+  border: none;
+}
+.header_container {
+  width: 960px;
+  margin: auto;
+}
+.navbar-brand {
+  float: left;
+  padding: 15px 15px;
+  font-size: 18px;
+  line-height: 20px;
+}
+.dl_nav {
+  height: 50px;
+  background-color: #3498db;
+  border-color: #fff;
+  color: #fff;
+  border-radius: 0;
+  margin-bottom: 0;
+  min-width: 960px;
+}
+.dl_nav .header_container {
+  max-width: 1280px;
+  width: auto;
+  min-width: 960px;
+  padding: 0 50px;
+}
+.navbar-inverse .navbar-brand {
+  padding: 6px 0;
+}
+.margin_top_123 {
+  margin-top: 123px;
+}
+.dl-form-control {
+  display: block;
+  width: 100%;
+  min-height: 34px;
+  height: auto;
+  padding: 6px 5px;
+  font-size: 12px;
+  line-height: 1.42857143;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 0;
+  color: #999;
+  float: left;
+}
+.dl_container {
+  width: 960px;
+  min-width: 960px;
+  margin: 0 auto;
+  padding-top: 15px;
+}
+.dl_row {
+  min-height: 34px;
+  padding: 2px 0;
+  margin-left: 0;
+  margin-right: 0;
+}
+.dl_footer {
+  background-color: #f0f0f0;
+  height: 60px;
+  min-width: 960px;
+  color: #999;
+}
+.dl_footer a {
+  color: #999;
+  margin-left: 50px;
+  font-size: 12px;
+}
+.dl_footer .dl_container {
+  padding-top: 0;
+}
+.dl_footer .dl_row {
+  padding: 0;
+}
+.dl_footer .text_icp {
+  line-height: 60px;
 }
 .members .memer_logo {
   width: 40px;
