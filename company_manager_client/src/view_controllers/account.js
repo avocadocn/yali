@@ -54,9 +54,9 @@ define(['./controller'], function (controllers) {
           accountService.update($rootScope.company._id,{domain:$scope.domains.join(' ')}).success(function (data) {
             alert('修改邮箱后缀成功')
           })
-            .error(function (data) {
-              alert(data.msg);
-            });
+          .error(function (data) {
+            alert(data.msg);
+          });
         };
         $scope.changePassword = function () {
           var passwordData = {
@@ -66,9 +66,9 @@ define(['./controller'], function (controllers) {
           accountService.update($rootScope.company._id,passwordData).success(function (data) {
             alert('修改密码成功')
           })
-            .error(function (data) {
-              alert(data.msg);
-            });
+          .error(function (data) {
+            alert(data.msg);
+          });
         };
 
 
