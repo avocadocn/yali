@@ -1,27 +1,28 @@
 .inner
-  .head 
-    span.title 被举报成员
-    span.pull-right(ng-cloak) {{companyReportedMembers.length}}人待审核
-  .table_block
-      span.table_title 
-      table.team_table.table.table-striped.dl_table
-        thead
-          tr
-            th 
-            th.center 邮箱
-            th.center 举报时间
-            th.center
-            th.center 操作
-        tbody
-          tr(ng-repeat="member in companyReportedMembers")
-            td {{$index+1}}
-            td.center {{member.user.username}}
-            td.center {{member.report_date | date:'yyyy-MM-dd HH:mm'}}
-            td.center 
-              button.btn.btn-link(ng-click="getDetail(member.user._id)") 查看详情
-            th.center
-              button.btn.btn-primary(ng-click="deal(member.user._id,true)") 屏蔽
-              button.btn(ng-click="deal(member.user._id,false)") 忽略
+  .dl_panel
+    .dl_block_head
+      span.title 被举报成员
+      span.pull-right(ng-cloak) {{companyReportedMembers.length}}人待审核
+    .table_block
+        span.table_title 
+        table.team_table.table.table-striped.dl_table
+          thead
+            tr
+              th 
+              th.center 邮箱
+              th.center 举报时间
+              th.center
+              th.center 操作
+          tbody
+            tr(ng-repeat="member in companyReportedMembers")
+              td {{$index+1}}
+              td.center {{member.user.username}}
+              td.center {{member.report_date | date:'yyyy-MM-dd HH:mm'}}
+              td.center 
+                button.btn.btn-link(ng-click="getDetail(member.user._id)") 查看详情
+              th.center
+                button.btn.btn-primary(ng-click="deal(member.user._id,true)") 屏蔽
+                button.btn(ng-click="deal(member.user._id,false)") 忽略
 script(type="text/ng-template" id="getUserCommentModal.html")
   .modal-header
     h3.modal-title  举报详情
