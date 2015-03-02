@@ -2,9 +2,9 @@ define(['./controller', 'alertify'], function (controllers, alertify) {
   return controllers.controller('department.managerCtrl', [
     '$scope',
     '$rootScope',
-    '$http', // todo temp
+    'searchService',
     'departmentService',
-    function ($scope, $rootScope, $http, departmentService) {
+    function ($scope, $rootScope, searchService, departmentService) {
 
       // todo copy from yali tabviewCompany.js
 
@@ -145,54 +145,52 @@ define(['./controller', 'alertify'], function (controllers, alertify) {
 
       //获取该公司所有员工
       $scope.getCompanyUser = function (tid, callback) {
-        $http({
-          method: 'post',
-          url: '/search/user',
-          data: {
-            tid: tid
-          }
-        }).success(function (data, status) {
-          $scope.company_users = [];
-          $scope.company_users = data.all_users;
-          $scope.managers = data.leaders;
-          $scope.origin_manager_id = data.leaders.length > 0 ? data.leaders[0]._id : null;
-          $scope.department_users = data.users;
-          // wait_for_join : 是否将该员工强制加入该部门的标志
-          for (var i = 0; i < $scope.department_users.length; i++) {
-            if ($scope.department_users[i] != null)
-              $scope.department_users[i].wait_for_join = false;
-          }
 
-          // 找出没有加入任何部门的公司员工,成为部门管理员的候选人(如果选他成为管理员必须先让他加入该部门)
-          if ($scope.company_users.length > 0) {
-            for (var i = 0; i < $scope.company_users.length; i++) {
-              if ($scope.company_users[i].department == undefined || $scope.company_users[i].department == null) {
-                $scope.company_users[i].wait_for_join = true;
-                $scope.department_users.push($scope.company_users[i]);
+        searchService.searchUsers({ tid: tid })
+          .success(function (data) {
+            $scope.company_users = [];
+            $scope.company_users = data.all_users;
+            $scope.managers = data.leaders;
+            $scope.origin_manager_id = data.leaders.length > 0 ? data.leaders[0]._id : null;
+            $scope.department_users = data.users;
+            // wait_for_join : 是否将该员工强制加入该部门的标志
+            for (var i = 0; i < $scope.department_users.length; i++) {
+              if ($scope.department_users[i] != null)
+                $scope.department_users[i].wait_for_join = false;
+            }
+
+            // 找出没有加入任何部门的公司员工,成为部门管理员的候选人(如果选他成为管理员必须先让他加入该部门)
+            if ($scope.company_users.length > 0) {
+              for (var i = 0; i < $scope.company_users.length; i++) {
+                if ($scope.company_users[i].department == undefined || $scope.company_users[i].department == null) {
+                  $scope.company_users[i].wait_for_join = true;
+                  $scope.department_users.push($scope.company_users[i]);
+                }
               }
             }
-          }
-          var manager_find = false;
-          for (var i = 0; i < $scope.department_users.length && !manager_find; i++) {
-            for (var j = 0; j < $scope.managers.length; j++) {
-              //标记
-              if ($scope.managers[j]._id.toString() === $scope.department_users[i]._id.toString()) {
-                //换到第一个
-                var temp = $scope.department_users[i];
-                $scope.department_users[i] = $scope.department_users[0];
-                $scope.department_users[0] = temp;
-                $scope.department_users[0].leader = true;
-                manager_find = true;
-                break;//目前一个小队只有一个组长
+            var manager_find = false;
+            for (var i = 0; i < $scope.department_users.length && !manager_find; i++) {
+              for (var j = 0; j < $scope.managers.length; j++) {
+                //标记
+                if ($scope.managers[j]._id.toString() === $scope.department_users[i]._id.toString()) {
+                  //换到第一个
+                  var temp = $scope.department_users[i];
+                  $scope.department_users[i] = $scope.department_users[0];
+                  $scope.department_users[0] = temp;
+                  $scope.department_users[0].leader = true;
+                  manager_find = true;
+                  break;//目前一个小队只有一个组长
+                }
               }
             }
-          }
-          $scope.member_backup_department = $scope.department_users.slice(0);
-          callback();
-        }).error(function (data, status) {
-          //TODO:更改对话框
-          alertify.alert(data);
-        });
+            $scope.member_backup_department = $scope.department_users.slice(0);
+            callback();
+          })
+          .error(function (data) {
+            //TODO:更改对话框
+            alertify.alert(data);
+          });
+
       };
       //从员工中进一步搜索
       $scope.search = function () {
@@ -233,15 +231,6 @@ define(['./controller', 'alertify'], function (controllers, alertify) {
         $scope.department_user = $scope.department_users[index];
         $scope.department_index = index;
         $scope.department_users[index].leader = true;
-
-        // if($scope.origin_manager_id != null && $scope.origin_manager_id != undefined){
-        //     for(var i = 0; i < $scope.department_users.length; i ++) {
-        //         if($scope.origin_manager_id.toString() === $scope.department_users[i]._id.toString()){
-        //             $scope.department_users[i].leader = false;
-        //             break;
-        //         }
-        //     }
-        // }
 
         for (var i = 0; i < $scope.department_users.length; i++) {
           if ($scope.department_users[i]._id != $scope.department_user._id) {
