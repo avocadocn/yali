@@ -6,7 +6,6 @@ define(['./controller', 'alertify'], function (controllers, alertify) {
     'departmentService',
     function ($scope, $rootScope, searchService, departmentService) {
 
-      // todo copy from yali tabviewCompany.js
 
       var formatData = function(data) {
         $scope.node = {
@@ -26,8 +25,10 @@ define(['./controller', 'alertify'], function (controllers, alertify) {
         departmentService.getDepartmentTreeDetail(cid)
           .success(function (data) {
             formatData(data);
+          })
+          .error(function () {
+            alertify.alert('获取部门数据失败');
           });
-        // todo handle error
       };
       getDepartments();
 
@@ -50,7 +51,6 @@ define(['./controller', 'alertify'], function (controllers, alertify) {
             $('#managerAppointModel').modal();
           });
         }).error(function (data, status) {
-          //TODO:更改对话框
           alertify.alert(data);
         });
       };
@@ -187,7 +187,6 @@ define(['./controller', 'alertify'], function (controllers, alertify) {
             callback();
           })
           .error(function (data) {
-            //TODO:更改对话框
             alertify.alert(data);
           });
 
@@ -262,7 +261,6 @@ define(['./controller', 'alertify'], function (controllers, alertify) {
             .success(function (data, status) {
 
             }).error(function (data, status) {
-              //TODO:更改对话框
               alertify.alert(data);
             });
         }
@@ -311,7 +309,6 @@ define(['./controller', 'alertify'], function (controllers, alertify) {
               }
               alertify.alert('任命成功！');
             }).error(function (data, status) {
-              //TODO:更改对话框
               alertify.alert('DATA ERROR');
             });
           }
@@ -320,9 +317,6 @@ define(['./controller', 'alertify'], function (controllers, alertify) {
           }
         }
       };
-
-
-      // end for todo
 
     }
   ]);
