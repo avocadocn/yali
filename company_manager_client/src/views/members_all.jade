@@ -31,7 +31,7 @@
             //- td.center 
             //-   button 查看详情
             td.center
-              button(ng-click="editUser($index)") 编辑
+              button.btn.btn-primary(ng-click="editUser($index)") 编辑
     nav.pages
       ul.pagination
         li(ng-class="{disabled:nowPage<=1}" ng-click="lastPage()" ng-cloak)
