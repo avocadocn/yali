@@ -130,5 +130,5 @@ define(['app'], function (app) {
         });
     }
   ])
-    .constant('apiBaseUrl', 'http://localhost:3002');
+    .constant('apiBaseUrl', 'http://' + window.location.hostname + ':3002');
 });

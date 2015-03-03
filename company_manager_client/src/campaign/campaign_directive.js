@@ -1,4 +1,4 @@
-define(['./campaign', 'echarts', 'alertify', 'echarts/chart/bar', 'echarts/chart/pie'], function (campaign, echartsm, alertify) {
+define(['./campaign', 'echarts', 'alertify', 'echarts/chart/bar', 'echarts/chart/pie'], function (campaign, echarts, alertify) {
   // St: statistics
   return campaign.directive('campaignStBar', ['$filter', function ($filter) {
     return {
