@@ -1,8 +1,9 @@
 define(['app'], function (app) {
   return app.config([
     '$httpProvider',
+    '$urlRouterProvider',
     '$stateProvider',
-    function ($httpProvider, $stateProvider) {
+    function ($httpProvider, $urlRouterProvider, $stateProvider) {
 
       $httpProvider.interceptors.push('unAuthRedirectService');
 
@@ -10,6 +11,9 @@ define(['app'], function (app) {
         var baseUrl = '/company/manager/templates';
         return baseUrl + url;
       };
+
+      $urlRouterProvider
+        .when("/", "/statistics");
 
       $stateProvider
         .state('home', {

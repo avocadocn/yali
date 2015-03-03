@@ -20,7 +20,7 @@ define(['./controller'], function (controllers) {
 
             accountService.get(data.id).success(function (data) {
               $rootScope.company = data;
-              $state.go('home');
+              $state.go('statistics');
             });
 
           })
