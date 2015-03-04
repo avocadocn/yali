@@ -12,7 +12,7 @@
       .members
         .member(ng-repeat="member in members" ng-class="{'active':newLeader._id==member._id}" ng-click="changeLeader($index)")
           input(type="radio" name="leader" ng-model="newLeader" ng-value="member")
-          img.member_logo(ng-src="{{member.photo}}")
+          img.member_logo(ng-src="{{member.photo}}/40/40")
           span {{member.nickname}}
       .operator
         button.btn.btn-primary(ng-disabled="!newLeader" ng-click="save()") 确定
