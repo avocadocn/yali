@@ -239,15 +239,15 @@ exports.resultConfirm = function (req, res, next) {
         if(err){
           return res.send(err);
         } else {
-          GroupMessage.findOne({campaign:competition._id},function(err,groupMessage){
-            groupMessage.message_type = 6;
-            groupMessage.create_time = new Date();
-            groupMessage.save(function(err){
-              if(err){
-                console.log(err);
-              }
-            });
-          });
+          // GroupMessage.findOne({campaign:competition._id},function(err,groupMessage){
+          //   groupMessage.message_type = 6;
+          //   groupMessage.create_time = new Date();
+          //   groupMessage.save(function(err){
+          //     if(err){
+          //       console.log(err);
+          //     }
+          //   });
+          // });
           //发送站内信
           if(!rst_accept&&req.competition_leader.length<competition.camp.length&&competition.team[(req.competition_leader[0]+1)%2].leader.length > 0){
             var olid = competition.team[(req.competition_leader[0]+1)%2].leader[0]._id;

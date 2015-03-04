@@ -87,7 +87,41 @@ var sendScoreBoardMessage = function (req, scoreBoard, leaderTeam, status, oppon
   }
 
 };
-
+var winScore =3;
+var tieScore = 1;
+var loseScore = 0;
+var addTeamScore = function (scoreBoard) {
+  CompanyGroup.find({'_id':{'$in':scoreBoard.owner.teams}}).exec(function(err,teams){
+    if(err){
+      log(err);
+      return;
+    }
+    teams.forEach(function(team, index){
+      var _index=0;
+      if(scoreBoard.playing_teams[0].tid.toString()!==team._id.toString()){
+        _index =1;
+      }
+      switch(scoreBoard.playing_teams[_index].result) {
+        case 1:
+          team.score_rank.score+=winScore;
+          break;
+        case 0:
+          team.score_rank.score+=tieScore;
+          break;
+        case -1:
+          team.score_rank.score+=loseScore;
+          break;
+      }
+      team.save(function (err) {
+        console.log(team);
+        if(err){
+          log(err)
+        }
+      })
+    });
+    
+  });
+}
 exports.ScoreBoard = {
 
   setScore: function (req, res, next) {
@@ -203,6 +237,10 @@ exports.ScoreBoard = {
               res.send({ result: 1 });
             }
           });
+          if(scoreBoard.status==2){
+            console.log(scoreBoard);
+            addTeamScore(scoreBoard);
+          }
 
           // 发站内信
           if (opponentTid) {
