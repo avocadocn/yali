@@ -188,6 +188,18 @@ var CompanyGroup = new Schema({
         rank:{
             type: Number,
             default: 0
+        },
+        win:{
+            type: Number,
+            default: 0
+        },
+        tie:{
+            type: Number,
+            default: 0
+        },
+        lose:{
+            type: Number,
+            default: 0
         }
     }
 });
