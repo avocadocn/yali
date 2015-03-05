@@ -222,7 +222,7 @@ define(['./campaign', 'echarts', 'alertify', 'echarts/chart/bar', 'echarts/chart
                   data: ['没有参加', '参加1次', '参加2次', '3次或以上']
                 },
                 toolbox: {
-                  show: true,
+                  show: false, // 暂且隐藏，因为每个饼图的标题不能在图表中显示
                   feature: {
                     saveAsImage: {show: true}
                   }
