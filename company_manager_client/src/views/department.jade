@@ -1,10 +1,12 @@
 .inner.department_page
-  h4 部门管理
-  hr
-  .dl_department
-    .tree.company_tree
-      ul
-        li(ng-include="'node.html'" ng-class="hasChild(node)")
+  .dl_panel
+    .dl_block_head
+      span.title 部门管理
+    .table_block
+      .dl_department
+        .tree.company_tree
+          ul
+            li(ng-include="'node.html'" ng-class="hasChild(node)")
 
   .modal.fade#managerAppointModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
     .modal-dialog.appoint_modal

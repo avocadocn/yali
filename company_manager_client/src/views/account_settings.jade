@@ -1,34 +1,38 @@
 .inner.account_setting
   .password_section
-    h4 修改密码
-    hr
-    .row
-      form.col-xs-12.col-sm-6.col-md-4.col-lg-3(name="changePasswordForm")
-        .form-group
-          label 旧密码:
-          input.form-control(type="password" name="oldPassword" ng-model="oldPassword" ng-minlength=6 required)
-        .form-group
-          label 新密码：
-          input.form-control(type="password" name="password" ng-model="password" ng-minlength=6 required)
-        .form-group
-          label 新密码确认:
-          input.form-control(type="password" name="confirmPassword" ng-model="confirmPassword" match="password" ng-minlength=6 required)
-        .form-group
-          button.btn.btn-default(type="submit" ng-disabled="changePasswordForm.$invalid" ng-click="changePassword()") 确认修改
-    .row
-      .col-xs-12
-        p 注册邮箱：{{company.login_email}}
+    .dl_panel
+      .dl_block_head
+        span.title 修改密码
+      .table_block
+        .row
+          form.col-xs-12.col-sm-6.col-md-4.col-lg-3(name="changePasswordForm")
+            .form-group
+              label 旧密码:
+              input.form-control(type="password" name="oldPassword" ng-model="oldPassword" ng-minlength=6 required)
+            .form-group
+              label 新密码：
+              input.form-control(type="password" name="password" ng-model="password" ng-minlength=6 required)
+            .form-group
+              label 新密码确认:
+              input.form-control(type="password" name="confirmPassword" ng-model="confirmPassword" match="password" ng-minlength=6 required)
+            .form-group
+              button.btn.btn-default(type="submit" ng-disabled="changePasswordForm.$invalid" ng-click="changePassword()") 确认修改
+        .row
+          .col-xs-12
+            p 注册邮箱：{{company.login_email}}
   .email_section
-    h4 公司邮箱管理
-    hr
-    .row
-      form.col-xs-12.col-sm-6.col-md-4.col-lg-3(name="updateDomainForm")
-        .form-group(ng-repeat="domain in domains" ng-class="{'input-group': $index!==0}")
-          input.form-control(type="text" name="domain{{$index}}" ng-model="domain" required)
-          .input-group-btn(ng-if="$index!=0")
-            button.btn.btn-default(ng-click="removeDomain($index)") 删除
-        .add_domain_div.input-group(ng-if="domains.length<3")
-          input.form-control(type="text" name="newDomain" ng-model="newDomain.domain")
-          .input-group-btn
-            button.btn.btn-default(ng-click="addDomain()") 添加
-        button.btn.btn-success(type="submit" ng-disabled="updateDomainForm.$invalid" ng-click="updateDomain()") 确定
+    .dl_panel
+      .dl_block_head
+        span.title 公司邮箱管理
+      .table_block
+        .row
+          form.col-xs-12.col-sm-6.col-md-4.col-lg-3(name="updateDomainForm")
+            .form-group(ng-repeat="domain in domains" ng-class="{'input-group': $index!==0}")
+              input.form-control(type="text" name="domain{{$index}}" ng-model="domain" required)
+              .input-group-btn(ng-if="$index!=0")
+                button.btn.btn-default(ng-click="removeDomain($index)") 删除
+            .add_domain_div.input-group(ng-if="domains.length<3")
+              input.form-control(type="text" name="newDomain" ng-model="newDomain.domain")
+              .input-group-btn
+                button.btn.btn-default(ng-click="addDomain()") 添加
+            button.btn.btn-success(type="submit" ng-disabled="updateDomainForm.$invalid" ng-click="updateDomain()") 确定

@@ -132,7 +132,7 @@ input:focus:-ms-input-placeholder {
   padding: 15px;
 }
 .account_setting .email_section {
-  margin-top: 100px;
+  margin-top: 50px;
 }
 .inner .dl_panel .calendar {
   width: 240px;
@@ -234,6 +234,9 @@ input:focus:-ms-input-placeholder {
 }
 .inner .campaign_list .pages .pagination {
   margin: 0 0 10px;
+}
+.company_info_page .dl_panel {
+  height: 500px;
 }
 .company_info_page .company_info_form,
 .company_info_page .edit_logo_container {

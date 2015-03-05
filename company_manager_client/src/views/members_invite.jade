@@ -1,18 +1,20 @@
 .inner.member_invite_page
-  h4 邀请成员
-  hr
-  .row
-    .col-xs-12
-      form.form-inline
-        .form-group
-          label(for="email") 输入邮箱:
-          input.form-control#email(type="email" name="email" ng-model="email" required)
-        button.btn.btn-default(ng-click="invite()") 发送邀请信
-  .row
-    .col-xs-12
-      p 邀请链接:
-        span.text-primary {{company.inviteUrl}}
-  .row
-    .col-xs-12
-      #inviteKeyQrCode
-      a#saveInviteKeyQrCode 下载邀请专用二维码
+  .dl_panel
+    .dl_block_head
+      span.title 邀请成员
+    .table_block
+      .row
+        .col-xs-12
+          form.form-inline
+            .form-group
+              label(for="email") 输入邮箱:
+              input.form-control#email(type="email" name="email" ng-model="email" required)
+            button.btn.btn-default(ng-click="invite()") 发送邀请信
+      .row
+        .col-xs-12
+          p 邀请链接:
+            span.text-primary {{company.inviteUrl}}
+      .row
+        .col-xs-12
+          #inviteKeyQrCode
+          a#saveInviteKeyQrCode 下载邀请专用二维码
