@@ -20,22 +20,7 @@ exports.render = function(req, res) {
   // }else{
   //   res.render('index');
   // }
-  if(req.query.signature) {
-    var signature = req.query.signature;
-    var timestamp = req.query.timestamp;
-    var nonce = req.query.nonce;
-    var tmpArr = [token, timestamp, nonce];
-    tmpArr.sort();
-    var tmpStr = tmpArr.join('');
-    tmpStr = sha1(tmpStr);
-    
-    if( tmpStr == signature ){
-      return res.send(req.query.echostr);
-    }else{
-      return res.sendStatus(401);
-    }
-  }
-  else if (req.user) {
+if (req.user) {
     if (req.user.provider === 'company') {
        return res.redirect('/company/home');
     }
