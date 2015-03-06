@@ -116,11 +116,6 @@ var CompanyGroup = new Schema({
         total:{
             type: Number,
             default: 0
-        },
-        //活跃度排名
-        rank:{
-            type: Number,
-            default: 0
         }
     },
     photo_album_list: [{
