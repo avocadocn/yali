@@ -25,7 +25,7 @@ exports.get = function(req, res) {
 exports.post = function(req, res) {
   if(checkSignature(req.query)){
     console.log(req.body);
-    return res.send(200);
+    return res.send("");
   }else{
     return res.sendStatus(401);
   }
