@@ -92,9 +92,10 @@ exports.post = function(req, res) {
           case 'scancode_waitmsg':
             console.log(xmlMsg.ScanCodeInfo[0]);
             console.log(xmlMsg.ScanCodeInfo[0].ScanType[0]);
-            console.log(xmlMsg.ScanCodeInfo[0].ScanResult[0]);
-            if(xmlMsg.ScanCodeInfo[0].ScanResult[0].indexOf('registration:')==0){
-              var RegistrationUrl ="http://www.55yali.com/weixin/" + xmlMsg.ScanResult[0].slice(13);
+            var scanResult = xmlMsg.ScanCodeInfo[0].ScanResult[0];
+            console.log(scanResult);
+            if(scanResult.indexOf('registration:')==0){
+              var RegistrationUrl ="http://www.55yali.com/weixin/" + scanResult.slice(13);
               var xml = buildXml(xmlMsg.FromUserName, xmlMsg.ToUserName, 'text', '0', function(xml) {
                 return xml.ele('Content')
                   .dat(RegistrationUrl);
