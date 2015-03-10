@@ -95,7 +95,7 @@ exports.post = function(req, res) {
             var scanResult = xmlMsg.ScanCodeInfo[0].ScanResult[0];
             // console.log(scanResult);
             if(scanResult.indexOf('registration:')==0){
-              var RegistrationUrl ="http://www.55yali.com/weixin?campaign=" + scanResult.slice(13);
+              var RegistrationUrl ="http://www.55yali.com/weixin/registration?campaign=" + scanResult.slice(13);
               var xml = buildXml(xmlMsg.FromUserName, xmlMsg.ToUserName, 'text', '0', function(xml) {
                 return xml.ele('Content')
                   .dat(RegistrationUrl);
