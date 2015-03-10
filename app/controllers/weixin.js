@@ -38,7 +38,7 @@ exports.get = function(req, res) {
   if(checkSignature(req.query)){
     return res.send(req.query.echostr);
   }else{
-    return res.sendStatus(401);
+    return res.status(401).send('');
   }
 };
 exports.registration = function(req, res) {
