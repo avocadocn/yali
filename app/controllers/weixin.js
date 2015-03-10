@@ -77,7 +77,7 @@ exports.postXml = function (req, res) {
       });
   });
 
-  console.log(xml);
+  // console.log(xml);
   req.write(xml);
   req.end();
   res.send(200);
@@ -85,22 +85,22 @@ exports.postXml = function (req, res) {
 exports.post = function(req, res) {
   if(checkSignature(req.query)) {
     var xmlMsg = req.body.xml;
-    console.log(xmlMsg)
+    // console.log(xmlMsg)
     switch(xmlMsg.MsgType[0]) {
       case 'event':
         switch(xmlMsg.Event[0]) {
           case 'scancode_waitmsg':
-            console.log(xmlMsg.ScanCodeInfo[0]);
-            console.log(xmlMsg.ScanCodeInfo[0].ScanType[0]);
+            // console.log(xmlMsg.ScanCodeInfo[0]);
+            // console.log(xmlMsg.ScanCodeInfo[0].ScanType[0]);
             var scanResult = xmlMsg.ScanCodeInfo[0].ScanResult[0];
-            console.log(scanResult);
+            // console.log(scanResult);
             if(scanResult.indexOf('registration:')==0){
-              var RegistrationUrl ="http://www.55yali.com/weixin/" + scanResult.slice(13);
+              var RegistrationUrl ="http://www.55yali.com/weixin?campaign=" + scanResult.slice(13);
               var xml = buildXml(xmlMsg.FromUserName, xmlMsg.ToUserName, 'text', '0', function(xml) {
                 return xml.ele('Content')
                   .dat(RegistrationUrl);
               });
-              console.log(xml);
+              // console.log(xml);
               res.contentType('text/xml');
               return res.send(xml);
             }

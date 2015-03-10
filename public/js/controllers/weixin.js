@@ -48,7 +48,7 @@ weixinApp
   }])
 .controller('ChatController', ['$http', '$scope', '$location','Socket', function ($http, $scope, $location, Socket) {
   Socket.login();
-  Socket.emit('enterRoom',$location.search().chatRoom)
+  Socket.emit('enterRoom',$location.search().campaign)
   $scope.msgs=[];
   Socket.on('message',function (message) {
     console.log(message);
