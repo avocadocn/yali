@@ -1,0 +1,22 @@
+extends ../layouts/base
+
+block content
+  form.signin.form-horizontal(action="/users/session" method="post")
+    .form-group
+      .col-md-6.col-sm-6.col-xs-6.col-xs-offset-4
+        label #{msg}
+    .form-group
+      label.col-md-4.col-sm-4.col-xs-4.control-label(for="email") #{__("EMAIL")}
+      .col-md-6.col-sm-8.col-xs-8
+        input#email.form-control(type="email" name="username" placeholder="Email" required)
+    .form-group
+      label.col-md-4.col-sm-4.col-xs-4.control-label(for="password") #{__("PASSWORD")}
+      .col-md-6.col-sm-8.col-xs-8
+        input#password.form-control(type="password" name="password" placeholder="password" minlength=6 required)
+    .form-group
+      .col-xs-offset-4.col-md-8.col-sm-8.col-xs-8
+        button.btn.btn-primary(type="submit") #{__("SIGNIN")}
+        | &nbsp;or&nbsp;
+        a.show-signup(href="/company/signup") #{__("SIGNUP")}
+        | &nbsp;&nbsp;
+        a.reset-pwd(href="/users/forgetPwd")  #{__("FORGET")}#{__("PASSWORD")}

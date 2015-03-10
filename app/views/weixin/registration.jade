@@ -1,0 +1,14 @@
+extends ../layouts/base
+
+block content
+  .chat_room(ng-controller="ChatController")
+    .msg(ng-repeat="msg in msgs")
+      p {{msg.text}}
+      p {{msg.from}}
+      p {{msg.time | date:'yyyy-MM-dd HH:mm'}}
+      hr
+    input(type="text" ng-model="sendMsg")
+    button(ng-click="send()") 发送
+append footExt
+  script(src="/js/socket.io.js")
+  script(src="/js/controllers/weixin.js")
