@@ -12,7 +12,8 @@ users.forEach(function (user) {
     var teamChatRooms = teams.map(function (team) {
       return {
         _id: team._id,
-        unread: 0
+        join_time: new Date(),
+        read_time: new Date()
       };
     });
     user.chatrooms = user.chatrooms.concat(teamChatRooms);
@@ -21,7 +22,8 @@ users.forEach(function (user) {
   if (user.role === 'LEADER') {
     user.chatrooms.push({
       _id: user.cid,
-      unread: 0
+      join_time: new Date(),
+      read_time: new Date()
     });
   }
 
