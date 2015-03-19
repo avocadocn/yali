@@ -1,0 +1,20 @@
+extends ../layouts/base
+
+block content
+  .chat_room(ng-controller="ChatController")
+    //- p= registrationFlag
+    .msg(ng-repeat="msg in msgs")
+      p {{msg.text}}
+      .user
+        p {{msg.from.nickname}}
+        img(ng-src="{{msg.from.photo}}/50/50")
+      p {{msg.time | date:'yyyy-MM-dd HH:mm'}}
+      hr
+    input(type="text" ng-model="sendMsg.msg")
+    button(ng-click="send()") 发送
+    .user#userId(data-uid="#{user._id}" data-nickname="#{user.nickname}" data-photo="#{user.photo}")
+      p= user.nickname
+      img(src="#{user.photo}/50/50")
+append footExt
+  script(src="/js/socket.io.js")
+  script(src="/js/controllers/weixin.js")

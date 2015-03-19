@@ -116,11 +116,6 @@ var CompanyGroup = new Schema({
         total:{
             type: Number,
             default: 0
-        },
-        //活跃度排名
-        rank:{
-            type: Number,
-            default: 0
         }
     },
     photo_album_list: [{
@@ -186,6 +181,18 @@ var CompanyGroup = new Schema({
         },
         //战绩排名
         rank:{
+            type: Number,
+            default: 0
+        },
+        win:{
+            type: Number,
+            default: 0
+        },
+        tie:{
+            type: Number,
+            default: 0
+        },
+        lose:{
             type: Number,
             default: 0
         }

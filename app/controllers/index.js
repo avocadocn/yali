@@ -4,7 +4,8 @@ var schedule = require('../services/schedule'),
     config = require('../config/config'),
     mail = require('../services/mail'),
     webpower = require('../services/webpower');
-    
+var sha1 = require('sha1');
+var token = "donler";
 exports.render = function(req, res) {
   // if(req.session.Global != undefined && req.session.Global != null && req.session.Global != ""){
   //   if(req.session.Global.role==="HR"){
@@ -19,8 +20,7 @@ exports.render = function(req, res) {
   // }else{
   //   res.render('index');
   // }
-
-  if (req.user) {
+if (req.user) {
     if (req.user.provider === 'company') {
        return res.redirect('/company/home');
     }

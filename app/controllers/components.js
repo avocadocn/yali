@@ -104,16 +104,18 @@ var addTeamScore = function (scoreBoard) {
       switch(scoreBoard.playing_teams[_index].result) {
         case 1:
           team.score_rank.score+=winScore;
+          team.score_rank.win++;
           break;
         case 0:
           team.score_rank.score+=tieScore;
+          team.score_rank.tie++;
           break;
         case -1:
           team.score_rank.score+=loseScore;
+          team.score_rank.lose++;
           break;
       }
       team.save(function (err) {
-        console.log(team);
         if(err){
           log(err)
         }
