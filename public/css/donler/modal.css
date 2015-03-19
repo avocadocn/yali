@@ -4,16 +4,16 @@
   background-clip: padding-box;
   width: 460px;
 }
-.dl_campaign_modal ::-webkit-input-placeholder /* WebKit browsers */ {
+.dl_campaign_modal ::-webkit-input-placeholder {
   color: #989898;
 }
-.dl_campaign_modal :-moz-placeholder /* Mozilla Firefox 4 to 18 */ {
+.dl_campaign_modal :-moz-placeholder {
   color: #989898;
 }
-.dl_campaign_modal ::-moz-placeholder /* Mozilla Firefox 19+ */ {
+.dl_campaign_modal ::-moz-placeholder {
   color: #989898;
 }
-.dl_campaign_modal :-ms-input-placeholder /* Internet Explorer 10+ */ {
+.dl_campaign_modal :-ms-input-placeholder {
   color: #989898;
 }
 .dl_campaign_modal .dl_modal_header {
