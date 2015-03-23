@@ -34,20 +34,20 @@ define(['./controller'], function (controllers) {
       });
       $scope.closeTeam = function (tid) {
         teamService.close(tid).success(function (data) {
-          alert('关闭小队成功')
+          alert('关闭小队成功');
         })
         .error(function (data) {
-          alert(data.msg)
+          alert(data.msg);
         });
-      }
+      };
       $scope.openTeam = function (tid) {
         teamService.open(tid).success(function (data) {
-          alert('打开小队成功')
+          alert('打开小队成功');
         })
         .error(function (data) {
-          alert(data.msg)
+          alert(data.msg);
         });
-      }
+      };
       $scope.editTeam = function (type, index) {
         $scope.team = $scope[type][index];
         var modalInstance = $modal.open({
