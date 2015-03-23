@@ -4,7 +4,6 @@ define(['./controller'], function (controller) {
     '$rootScope',
     'campaignService',
     function ($scope, $rootScope, campaignService) {
-
       campaignService.getChartsData($rootScope.company._id, 'bar')
         .success(function (data) {
           $scope.barData = data;
@@ -28,7 +27,6 @@ define(['./controller'], function (controller) {
             alert('获取图表数据失败');
           }
         });
-
 
     }
   ]);

@@ -70,5 +70,41 @@ define(['./controller', 'jQuery', 'cropit'], function (controllers, $) {
       };
 
     }
-  ]);
+  ])
+  .controller('company.homeCtrl', ['$scope', '$rootScope', 'companyService', 'campaignService', 
+    function ($scope, $rootScope, companyService, campaignService) {
+
+      var cid = $rootScope.company._id;
+      companyService.getUndisposed(cid, function(err, data) {
+        if(!err) {
+          $scope.noLeaderTeams = data.noLeaderTeams;
+          $scope.unActivatedUsers = data.unActivatedUsers;
+        }
+      });
+
+      campaignService.getChartsData(cid, 'bar')
+        .success(function (data) {
+          $scope.barData = data;
+        })
+        .error(function (data) {
+          if (data && data.msg) {
+            alert(data.msg);
+          } else {
+            alert('获取图表数据失败');
+          }
+        });
+
+      campaignService.getChartsData(cid, 'pie')
+        .success(function (data) {
+          $scope.pieData = data;
+        })
+        .error(function (data) {
+          if (data && data.msg) {
+            alert(data.msg);
+          } else {
+            alert('获取图表数据失败');
+          }
+        });
+
+    }])
 });

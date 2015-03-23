@@ -20,7 +20,7 @@ define(['./controller'], function (controllers) {
 
             accountService.get(data.id).success(function (data) {
               $rootScope.company = data;
-              $state.go('statistics');
+              $state.go('home');
             });
 
           })
@@ -28,8 +28,6 @@ define(['./controller'], function (controllers) {
             alert(data.msg);
           });
       };
-
-
     }
   ])
     .controller('account.settingCtrl', [

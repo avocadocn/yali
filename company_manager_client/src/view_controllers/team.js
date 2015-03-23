@@ -6,21 +6,28 @@ define(['./controller'], function (controllers) {
     '$modal',
     function ($rootScope, $scope, teamService, $modal) {
       var noLeaderFilter = function(team) {
-        if(!team.leaders || team.leaders.length==0) {
+        if((!team.leaders || team.leaders.length==0)&&team.active === true) {
           return true;
         }
         return false;
       };
       var haveLeaderFilter = function(team) {
-        if(team.leaders.length>0) {
+        if(team.leaders.length>0 && team.active === true) {
           return true;
         }
         return false;
       };
+      var isClosedFilter = function(team) {
+        if(team.active===false) {
+          return true;
+        }
+        return false;
+      }
       teamService.getList($rootScope.company._id).success(function (data) {
         $scope.teams = data;
         $scope.noLeaderTeams = data.filter(noLeaderFilter);
         $scope.leaderTeams = data.filter(haveLeaderFilter);
+        $scope.closedTeams = data.filter(isClosedFilter);
       })
       .error(function (data) {
         alert(data.msg)

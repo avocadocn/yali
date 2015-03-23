@@ -13,11 +13,17 @@ define(['app'], function (app) {
       };
 
       $urlRouterProvider
-        .when("/", "/statistics");
+        .when("/", "/index");
 
       $stateProvider
         .state('home', {
-          url: '/'
+          url: '/index',
+          views: {
+            content: {
+              templateUrl: templateUrl('/views/home.html'),
+              controller: 'company.homeCtrl'
+            }
+          }
         })
         .state('login', {
           url: '/login',
@@ -131,7 +137,7 @@ define(['app'], function (app) {
               controller: 'department.managerCtrl'
             }
           }
-        });
+        })
     }
   ])
     .constant('apiBaseUrl', 'http://' + window.location.hostname + ':3002');

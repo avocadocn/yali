@@ -26,6 +26,16 @@ define(['./company', 'jQuery'], function (company, $) {
             callback(data.msg || 'error');
           }
         });
+      },
+
+      getUndisposed: function(id, callback) {
+        $http.get(apiBaseUrl + '/companies/' + id + '/undisposed')
+        .success(function (data, status) {
+          callback(null, data);
+        })
+        .error(function (data, status) {
+          callback('获取失败');
+        });
       }
     }
   }]);

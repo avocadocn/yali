@@ -542,6 +542,29 @@ input:focus:-ms-input-placeholder {
 .statistics_page.inner {
   overflow-x: auto;
 }
+.statistics_page .home_table {
+  margin: 2%;
+  width: 96%;
+  text-align: center;
+  display: flex;
+  display: -webkit-flex;
+}
+.statistics_page .home_table .home_box {
+  flex: 1;
+  border: 1px solid #99cff3;
+  padding: 10px 0;
+}
+.statistics_page .home_table .home_box .row {
+  min-height: 34px;
+}
+.statistics_page .home_table .home_box_1,
+.statistics_page .home_table .home_box_2 {
+  border-right: 0;
+}
+.statistics_page .home_table .home_box_1>.row>a:first-child,
+.statistics_page .home_table .home_box_3>.row>a:first-child {
+  margin-right: 10px;
+}
 .point_leader img.member_logo {
   height: 40px;
   width: 40px;

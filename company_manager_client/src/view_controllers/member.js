@@ -37,8 +37,22 @@ define(['./controller','qrcode'], function (controllers) {
       '$state',
       'memberService',
       function ($rootScope, $scope, $state, memberService) {
+        var closedUserFilter = function(user) {
+          if(user.mail_active===true) {
+            return true;
+          }
+          return false;
+        };
+        var unClosedUserFilter = function(user) {
+          if(user.mail_active===false) {
+            return true;
+          }
+          return false;
+        }
         memberService.getMembers($rootScope.company._id,{resultType:3}).success(function (data) {
           $scope.companyMembers = data;
+          $scope.closedMembers = data.filter(closedUserFilter);
+          $scope.unClosedMembers = data.filter(unClosedUserFilter);
         })
         .error(function (data) {
           alert(data.msg);
@@ -51,7 +65,7 @@ define(['./controller','qrcode'], function (controllers) {
           .error(function (data) {
             alert(data.msg);
           });
-        }
+        };
       }
     ])
     .controller('member.inactiveCtrl', [

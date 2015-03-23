@@ -2,9 +2,9 @@
   .dl_panel
     .dl_block_head
       span.title 待激活成员
-      span.pull-right(ng-cloak) {{companyMembers.length}}人待激活
+      span.pull-right(ng-cloak) {{unClosedMembers.length}}人待激活
     .table_block
-        span.table_title 
+        span.table_title 待激活成员
         table.team_table.table.table-striped.dl_table
           thead
             tr
@@ -13,7 +13,7 @@
               th.center 注册时间
               th.center 操作
           tbody
-            tr(ng-repeat="member in companyMembers")
+            tr(ng-repeat="member in unClosedMembers")
               td {{$index+1}}
               td.center {{member.username}}
               td.center {{member.register_date | date:'yyyy-MM-dd HH:mm'}}
@@ -21,3 +21,21 @@
               //-   button 查看详情
               td.center
                 button.btn.btn-primary(ng-click="active(member._id)") 激活
+
+        span.table_title 被屏蔽成员
+        table.team_table.table.table-striped.dl_table
+          thead
+            tr
+              th 
+              th.center 邮箱
+              th.center 昵称
+              th.center 操作
+          tbody
+            tr(ng-repeat="member in closedMembers")
+              td {{$index+1}}
+              td.center {{member.username}}
+              td.center {{member.nickname}}
+              //- td.center 
+              //-   button 查看详情
+              td.center
+                button.btn.btn-primary(ng-click="active(member._id)") 取消屏蔽
