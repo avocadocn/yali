@@ -4,6 +4,7 @@
       span.title 待激活成员
       span.pull-right(ng-cloak) {{unClosedMembers.length}}人待激活
     .table_block
+      div(ng-show="unClosedMembers.length")
         span.table_title 待激活成员
         table.team_table.table.table-striped.dl_table
           thead
@@ -21,7 +22,7 @@
               //-   button 查看详情
               td.center
                 button.btn.btn-primary(ng-click="active(member._id)") 激活
-
+      div(ng-show="closedMembers.length")
         span.table_title 被屏蔽成员
         table.team_table.table.table-striped.dl_table
           thead
