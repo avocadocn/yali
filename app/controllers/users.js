@@ -593,7 +593,7 @@ exports.dealActive = function(req, res, next) {
         if (company.invite_key === inviteKey) {
           User.findById(inviteUserId).exec()
           .then(function(user) {
-            if(user.cid.toString() == inviteUserId) {
+            if(user.cid.toString() == cid) {
               ctiveInvitedUser();
             } else {
               res.render('users/message', message.invalid);
