@@ -305,6 +305,7 @@ exports.invite = function(req, res) {
     req.logout();
     res.locals.global_user = null;
   }
+
   var key = decodeURIComponent(req.query.key);
   var cid = req.query.cid;
   req.session.cid = req.query.cid; //给注册页显示部门用
@@ -579,18 +580,28 @@ exports.dealActive = function(req, res, next) {
 
     if (req.body.inviteKey) {
       // 如果是附带邀请码的（从邀请信的链接中进入注册页面），不创建用户，只添加信息，激活并保存，不发激活邮件。
-      checkCompanyInvitedKey(cid, req.body.inviteKey);
+      checkCompanyInvitedKey(cid, req.body.inviteKey, req.body.inviteUserId);
     } else {
       // 否则仍按原来逻辑执行
       userOperate(cid, key, res, req, index);
     }
   }
 
-  function checkCompanyInvitedKey(cid, inviteKey) {
+  function checkCompanyInvitedKey(cid, inviteKey, inviteUserId) {
     Company.findById(cid).exec()
       .then(function (company) {
         if (company.invite_key === inviteKey) {
-          activeInvitedUser();
+          User.findById(inviteUserId).exec()
+          .then(function(user) {
+            if(user.cid.toString() == inviteUserId) {
+              ctiveInvitedUser();
+            } else {
+              res.render('users/message', message.invalid);
+            }
+          })
+          .then(null, function(err) {
+            next(err);
+          });
         } else {
           res.render('users/message', message.invalid);
         }
@@ -614,6 +625,7 @@ exports.dealActive = function(req, res, next) {
           user.realname = req.body.realname;
           user.phone = req.body.phone;
           user.role = 'EMPLOYEE';
+          user.invite_person = req.body.inviteUserId;
 
           // 此处应该确保先保存用户信息再参加部门，因为加入部门操作是使用findByIdAndUpdate
           // 而更新之后，再保存用户，则会保存user对象，该对象的department属性将会覆盖findByIdAndUpdate的对此的修改

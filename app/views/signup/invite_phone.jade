@@ -18,6 +18,7 @@ block content
               input.dl-form-control(type="text" value="{{email}}" disabled)
             input(type="hidden" name="email" value="#{invitedUser.email}")
             input(type="hidden" name="inviteKey" value="#{inviteKey}")
+            input(type="hidden" name="inviteUserId" value="#{invitedUser.id}")
           else
             .dl_row.email_row
               input.email_row_email(type="text" name="host" ng-model="email" placeholder="email" ng-blur="mailCheck()" required)

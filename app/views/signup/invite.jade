@@ -22,6 +22,7 @@ block contentExt
                   input.dl-form-control(type="text" value="{{email}}" disabled)
               input(type="hidden" name="email" value="#{invitedUser.email}")
               input(type="hidden" name="inviteKey" value="#{inviteKey}")
+              input(type="hidden" name="inviteUserId" value="#{invitedUser.id}")
             else
               .dl_row
                 .label_left
