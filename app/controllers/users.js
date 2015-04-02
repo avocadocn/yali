@@ -714,7 +714,7 @@ exports.dealActive = function(req, res, next) {
                         realname: req.body.realname,
                         phone: req.body.phone,
                         role: 'EMPLOYEE',
-                        mail_active: true,
+                        // mail_active: true,
                         invite_person: uid
                       });
                       
@@ -748,18 +748,17 @@ exports.dealActive = function(req, res, next) {
                             title: '注册成功',
                             message: '注册成功!'
                           });
-                          Company.update({
-                            '_id': user.cid._id
-                          }, {
-                            '$inc': {
-                              'info.membernumber': 1
-                            }
-                          }, function(err, company) {
-                            if (err || !company) {
-                              console.log(err);
-                            }
-                          });
-
+                          // Company.update({
+                          //   '_id': user.cid._id
+                          // }, {
+                          //   '$inc': {
+                          //     'info.membernumber': 1
+                          //   }
+                          // }, function(err, company) {
+                          //   if (err || !company) {
+                          //     console.log(err);
+                          //   }
+                          // });
                         }
                       })
                     })
@@ -875,7 +874,6 @@ exports.dealActive = function(req, res, next) {
       }
     });
   }
-
 };
 
 /**
