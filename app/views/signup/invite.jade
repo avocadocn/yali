@@ -22,7 +22,6 @@ block contentExt
                   input.dl-form-control(type="text" value="{{email}}" disabled)
               input(type="hidden" name="email" value="#{invitedUser.email}")
               input(type="hidden" name="inviteKey" value="#{inviteKey}")
-              input(type="hidden" name="inviteUserId" value="#{invitedUser.id}")
             else
               .dl_row
                 .label_left
@@ -42,6 +41,8 @@ block contentExt
                         each domain in domains
                           option(value="#{domain}" selected='selected')= domain
                     input(type="text" name="index" ng-model="active" ng-show='false')
+                input(type="hidden" name="inviteKey" value="#{inviteKey}")
+                input(type="hidden" name="uid" value="#{uid}")
             .dl_row.email_tip(ng-show="(active||loading)&&active!==4" ng-cloak)
               p
               img(ng-show='loading' src='/img/loading.gif')

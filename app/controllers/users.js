@@ -386,6 +386,92 @@ exports.invite = function(req, res) {
   }
 };
 
+exports.inviteQR = function(req, res) {
+  if (req.user) {
+    req.logout();
+    res.locals.global_user = null;
+  }
+  console.log('1');
+  var key = decodeURIComponent(req.query.key);
+  var cid = req.query.cid;
+  var uid = req.query.uid;
+
+  req.session.cid = req.query.cid; //给注册页显示部门用
+
+  if (key == undefined || cid == undefined || uid === undefined) {
+    res.render('users/message', {
+      title: 'error',
+      message: 'bad request'
+    });
+  } else {
+    Company
+      .findOne({
+        _id: cid
+      })
+      .exec()
+      .then(function(company) {
+        if (!company) {
+          throw 'Not Found';
+        }
+        if (key === company.invite_key) {
+          req.session.key = key;
+          req.session.key_id = cid;
+
+          // 如果邀请链接中附带uid，则将其查出并传递到视图里设置初始数据
+          User.findById(uid).exec()
+            .then(function(user) {
+              if (!user) {
+                res.render('users/message', {
+                  title: '无效的邀请链接',
+                  message: '抱歉，这是一个无效的邀请链接。'
+                });
+              } else {
+                if (user.cid.toString() === cid) {
+                  var deviceAgent = req.headers["user-agent"].toLowerCase();
+                  var agentID = deviceAgent.match(/(iphone|ipod|ipad|android)/);
+                  if (agentID) {
+                    res.render('signup/invite_phone', {
+                      title: '个人注册',
+                      domains: company.email.domain,
+                      cname: company.info.official_name,
+                      uid: uid,
+                      inviteKey: company.invite_key
+                    });
+                  } else {
+                    res.render('signup/invite', {
+                      title: '个人注册',
+                      domains: company.email.domain,
+                      cname: company.info.official_name,
+                      uid: uid,
+                      inviteKey: company.invite_key
+                    });
+                  }
+                } else {
+                  res.render('users/message', {
+                    title: '无效的邀请链接',
+                    message: '抱歉，这是一个无效的邀请链接。'
+                  });
+                }
+              }
+            });
+        } else {
+          console.log('key错误');
+          res.render('users/message', {
+            title: 'error',
+            message: 'bad request'
+          });
+        }
+      })
+      .then(null, function(err) {
+        console.log(err);
+        res.render('users/message', {
+          title: 'error',
+          message: 'bad request'
+        });
+      });
+  }
+};
+
 function userOperate(cid, key, res, req, index) {
   Company
   .findOne({ _id: cid })
@@ -572,36 +658,137 @@ exports.dealActive = function(req, res, next) {
       })
     }
   }
-  else{//邀请链接来的
+  else { //邀请链接来的
     var key = req.session.key;
     var cid = req.session.key_id;
     var index = req.body.index;
     //index为1:未注册过,2:不重填资料重新发邮件,3:重填资料重新发邮件
-
     if (req.body.inviteKey) {
-      // 如果是附带邀请码的（从邀请信的链接中进入注册页面），不创建用户，只添加信息，激活并保存，不发激活邮件。
-      checkCompanyInvitedKey(cid, req.body.inviteKey, req.body.inviteUserId);
+      if (req.body.uid == undefined || req.body.uid == null) {
+        // 如果是附带邀请码的（从邀请信的链接中进入注册页面），不创建用户，只添加信息，激活并保存，不发激活邮件。
+        checkCompanyInvitedKey(cid, req.body.inviteKey, req.body.inviteUserId);
+      } else {
+        // return res.render('users/message', message.invalid);
+        userSave(cid, req.body.inviteKey, req.body.uid);
+      }
     } else {
       // 否则仍按原来逻辑执行
       userOperate(cid, key, res, req, index);
     }
   }
 
+  function userSave(cid, key, uid) {
+    Company.findById(cid).exec()
+      .then(function(company) {
+        if (!company) {
+          return res.render('users/message', message.invalid);
+        }
+        if (company.invite_key === key) {
+
+          User.findById(uid).exec()
+            .then(function(user) {
+              if (!user) {
+                return res.render('users/message', message.invalid);
+              } else {
+                if (user.cid.toString() === cid) {
+                  var email = req.body.host.toLowerCase() + '@' + req.body.domain;
+                  User.findOne({
+                      username: email
+                    })
+                    .exec()
+                    .then(function(user) {
+                      if (user) {
+                        return res.render('signup/invite', {
+                          title: 'validate',
+                          domains: company.email.domain,
+                          message: '该邮箱已被注册'
+                        });
+                      }
+                      var user = new User({
+                        email: email,
+                        username: email,
+                        cid: company._id,
+                        cname: company.info.name,
+                        nickname: req.body.nickname,
+                        password: req.body.password,
+                        realname: req.body.realname,
+                        phone: req.body.phone,
+                        role: 'EMPLOYEE',
+                        mail_active: true,
+                        invite_person: uid
+                      });
+                      
+                      if (req.body.main_department_id != '') {
+                        if (req.body.child_department_id != '') {
+                          if (req.body.grandchild_department_id != '') {
+                            user.department = {
+                              '_id': req.body.grandchild_department_id
+                            };
+                          } else {
+                            user.department = {
+                              '_id': req.body.child_department_id
+                            };
+                          }
+                        } else {
+                          user.department = {
+                            '_id': req.body.main_department_id
+                          };
+                        }
+                      }
+
+                      user.save(function(err) {
+                        if (err) {
+                          console.log(err);
+                          res.render('users/message', {
+                            title: '注册失败',
+                            message: '注册失败。'
+                          });
+                        } else {
+                          res.render('users/message', {
+                            title: '注册成功',
+                            message: '注册成功!'
+                          });
+                          Company.update({
+                            '_id': user.cid._id
+                          }, {
+                            '$inc': {
+                              'info.membernumber': 1
+                            }
+                          }, function(err, company) {
+                            if (err || !company) {
+                              console.log(err);
+                            }
+                          });
+
+                        }
+                      })
+                    })
+                    .then(null, function(err) {
+                      console.log(err);
+                      return res.render('users/message', message.invalid);
+                    });
+
+                } else {
+                  return res.render('users/message', message.invalid);
+                }
+              }
+            })
+            .then(null, function(err) {
+              res.render('users/message', message.invalid);
+            });
+        } else {
+          res.render('users/message', message.invalid);
+        }
+      })
+      .then(null, function(err) {
+        res.render('users/message', message.invalid);
+      });
+  }
   function checkCompanyInvitedKey(cid, inviteKey, inviteUserId) {
     Company.findById(cid).exec()
       .then(function (company) {
         if (company.invite_key === inviteKey) {
-          User.findById(inviteUserId).exec()
-          .then(function(user) {
-            if(user.cid.toString() == cid) {
-              ctiveInvitedUser();
-            } else {
-              res.render('users/message', message.invalid);
-            }
-          })
-          .then(null, function(err) {
-            next(err);
-          });
+          ctiveInvitedUser();
         } else {
           res.render('users/message', message.invalid);
         }
@@ -625,7 +812,6 @@ exports.dealActive = function(req, res, next) {
           user.realname = req.body.realname;
           user.phone = req.body.phone;
           user.role = 'EMPLOYEE';
-          user.invite_person = req.body.inviteUserId;
 
           // 此处应该确保先保存用户信息再参加部门，因为加入部门操作是使用findByIdAndUpdate
           // 而更新之后，再保存用户，则会保存user对象，该对象的department属性将会覆盖findByIdAndUpdate的对此的修改

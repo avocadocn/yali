@@ -26,6 +26,7 @@ module.exports = function(app, passport) {
     // Active produce
     app.post('/users/mailCheck', users.mailCheck);
     app.get('/users/invite', users.invite);
+    app.get('/users/inviteQR', users.inviteQR);
     app.post('/users/dealActive', users.dealActive);
     // app.get('/users/mailActive', users.mailActive);
 
