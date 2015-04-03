@@ -717,7 +717,8 @@ exports.dealActive = function(req, res, next) {
                         // mail_active: true,
                         invite_person: uid
                       });
-                      
+
+                      // return res.render('users/message', message.invalid);
                       if (req.body.main_department_id != '') {
                         if (req.body.child_department_id != '') {
                           if (req.body.grandchild_department_id != '') {
@@ -735,7 +736,7 @@ exports.dealActive = function(req, res, next) {
                           };
                         }
                       }
-
+                      console.log(user);
                       user.save(function(err) {
                         if (err) {
                           console.log(err);
@@ -744,21 +745,35 @@ exports.dealActive = function(req, res, next) {
                             message: '注册失败。'
                           });
                         } else {
-                          res.render('users/message', {
-                            title: '注册成功',
-                            message: '注册成功!'
-                          });
-                          // Company.update({
-                          //   '_id': user.cid._id
-                          // }, {
-                          //   '$inc': {
-                          //     'info.membernumber': 1
-                          //   }
-                          // }, function(err, company) {
-                          //   if (err || !company) {
-                          //     console.log(err);
-                          //   }
+                          // res.render('users/message', {
+                          //   title: '注册成功',
+                          //   message: '注册成功!'
                           // });
+                          mongoose.model('Config').findOne({
+                            name: config.CONFIG_NAME
+                          }, function(err, config) {
+                            if (err || !config || !config.smtp || config.smtp === 'webpower') {
+                              webpower.sendStaffActiveMail(email, user._id.toString(), company._id.toString(), req.headers.host, function(err) {
+                                if (err) {
+                                  console.log(err);
+                                }
+                              });
+                            } else if (config.smtp === '163') {
+                              mail.sendStaffActiveMail(email, user._id.toString(), company._id.toString(), req.headers.host);
+                            } else if (config.smtp === 'sendcloud') {
+                              sendcloud.sendStaffActiveMail(email, user._id.toString(), company._id.toString(), req.headers.host);
+                            }
+                          });
+                          delete req.session.key;
+                          delete req.session.key_id;
+                          delete req.session.cid;
+                          var deviceAgent = req.headers["user-agent"].toLowerCase();
+                          var agentID = deviceAgent.match(/(iphone|ipod|ipad|android)/);
+                          if (agentID) {
+                            return res.render('users/app_download');
+                          } else {
+                            return res.render('users/message', message.wait);
+                          }
                         }
                       })
                     })

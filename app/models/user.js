@@ -176,7 +176,8 @@ var UserSchema = new Schema({
             type: Number,
             default: 0
         }
-    }
+    },
+    invite_person: Schema.Types.ObjectId
 });
 
 /**
