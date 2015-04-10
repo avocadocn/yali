@@ -1,5 +1,5 @@
 //修改小队类型，使存在比分
-db.companygroups.update({score_rank:{$exists:false}},{$set:{"score_rank" : {
+db.companygroups.update({"score_rank.score":{$exists:false}},{$set:{"score_rank" : {
     "rank" : 0,
     "score" : 0,
     'win' : 0,
