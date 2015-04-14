@@ -30,8 +30,10 @@ block content
                   each domain in domains
                     option(value="#{domain}" selected='selected')= domain
               input(type="text" name="index" ng-model="active" ng-show='false')
-            input(type="hidden" name="inviteKey" value="#{inviteKey}")
-            input(type="hidden" name="uid" value="#{uid}")
+            if inviteQR
+              input(type="hidden" name="inviteKey" value="#{inviteKey}")
+              input(type="hidden" name="uid" value="#{uid}")
+              input(type="hidden" name="inviteKind" value="QR")
           div(ng-show="(active||loading)&&active!==4" ng-cloak)
             p
             img(ng-show='loading' src='/img/loading.gif')

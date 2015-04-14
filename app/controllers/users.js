@@ -435,7 +435,8 @@ exports.inviteQR = function(req, res) {
                       domains: company.email.domain,
                       cname: company.info.official_name,
                       uid: uid,
-                      inviteKey: company.invite_key
+                      inviteKey: company.invite_key,
+                      inviteQR: true
                     });
                   } else {
                     res.render('signup/invite', {
@@ -443,7 +444,8 @@ exports.inviteQR = function(req, res) {
                       domains: company.email.domain,
                       cname: company.info.official_name,
                       uid: uid,
-                      inviteKey: company.invite_key
+                      inviteKey: company.invite_key,
+                      inviteQR: true
                     });
                   }
                 } else {
@@ -664,13 +666,16 @@ exports.dealActive = function(req, res, next) {
     var index = req.body.index;
     //index为1:未注册过,2:不重填资料重新发邮件,3:重填资料重新发邮件
     if (req.body.inviteKey) {
-      if (req.body.uid == undefined || req.body.uid == null) {
-        // 如果是附带邀请码的（从邀请信的链接中进入注册页面），不创建用户，只添加信息，激活并保存，不发激活邮件。
-        checkCompanyInvitedKey(cid, req.body.inviteKey, req.body.inviteUserId);
-      } else {
-        // return res.render('users/message', message.invalid);
+      if (req.body.inviteKind === 'QR') {
+        // 扫描用户的二维码进行注册
         userSave(cid, req.body.inviteKey, req.body.uid);
       }
+      else {
+        // 如果是附带邀请码的（从邀请信的链接中进入注册页面），不创建用户，只添加信息，激活并保存，不发激活邮件。
+        // 并且不是扫描用户二维码注册
+        checkCompanyInvitedKey(cid, req.body.inviteKey, req.body.inviteUserId);
+      }
+
     } else {
       // 否则仍按原来逻辑执行
       userOperate(cid, key, res, req, index);
@@ -802,7 +807,7 @@ exports.dealActive = function(req, res, next) {
     Company.findById(cid).exec()
       .then(function (company) {
         if (company.invite_key === inviteKey) {
-          ctiveInvitedUser();
+          activeInvitedUser();
         } else {
           res.render('users/message', message.invalid);
         }
@@ -852,13 +857,7 @@ exports.dealActive = function(req, res, next) {
         user.department = {'_id': req.body.main_department_id};
       }
     }
-    var member = {
-      '_id':user._id,
-      'nickname':user.nickname,
-      'photo':user.photo,
-      'apply_status':'pass'
-    };
-    department.memberOperateByHand('join', member, user.department._id, callback);
+    department.memberOperateByHand(user, user.department._id, callback);
   }
 
   function saveUser(user, callback) {
@@ -1084,13 +1083,7 @@ exports.setProfile = function(req, res) {
                 console.log(err);
               }
             }
-            var member = {
-              '_id':user._id,
-              'nickname':user.nickname,
-              'photo':user.photo,
-              'apply_status':'pass'
-            };
-            department.memberOperateByHand('join',member,user.department._id,callback);
+            department.memberOperateByHand(user ,user.department._id, callback);
           }
           user.save(function(err){
             if(err){
