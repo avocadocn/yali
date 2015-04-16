@@ -1,0 +1,9 @@
+extends ../../layouts/base
+
+block content
+  .header
+    img.logo(src="/img/dl_logol.png")
+  .mobile_company_confirm_page(id='confirm' ng-view)
+
+append footExt
+  script(src="/js/controllers/company.js")

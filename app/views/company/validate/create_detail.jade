@@ -32,9 +32,9 @@
       .form-group.dl_sm_group(ng-class="{'has-error':createForm.confirmPassword.$invalid && createForm.confirmPassword.$dirty}")
         .dl_row
           .label_left
-            label.control-label(for="password") *密码确认：
+            label.control-label(for="confirmPassword") *密码确认：
           .input_right
-            input#password.dl-form-control(type="password" name="confirmPassword" ng-model="detail.confirmPassword" ng-minlength=6 match="detail.password" required)
+            input#confirmPassword.dl-form-control(type="password" name="confirmPassword" ng-model="detail.confirmPassword" ng-minlength=6 match="detail.password" required)
       .form-group.dl_sm_group
         .dl_row
           .label_left

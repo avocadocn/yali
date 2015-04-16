@@ -37,6 +37,12 @@ var mail = require('../services/mail');
 var sendcloud = require('../services/sendcloud');
 var webpower = require('../services/webpower');
 var encrypt = require('../middlewares/encrypt');
+
+var isMobile = function(req) {
+  var deviceAgent = req.headers["user-agent"].toLowerCase();
+  return deviceAgent.match(/(iphone|ipod|ipad|android)/);
+};
+
 /**
  * Auth callback
  */
@@ -224,25 +230,46 @@ exports.validateError = function(req, res) {
 
 //开始转入公司注册账户页面
 exports.validateConfirm = function(req, res) {
+  var renderData = {
+    title: '验证成功!'
+  };
+
   if (req.session.company_id !== '') {
-    res.render('company/validate/confirm', {
-      title: '验证成功!'
-    });
+    if (isMobile(req)) {
+      res.render('company/validate/mobile_confirm', renderData);
+    }
+    else {
+      res.render('company/validate/confirm', renderData);
+    }
   }
 };
 //配合路由渲染公司注册账户页面
 exports.create_company_account = function(req, res) {
-  res.render('company/validate/create_detail', {
+  var renderData = {
     group_head: '企业',
     title: '选择组件!'
-  });
+  };
+
+  if (isMobile(req)) {
+    res.render('company/validate/mobile_create_detail', renderData);
+  }
+  else {
+    res.render('company/validate/create_detail', renderData);
+  }
 };
 //配合路由渲染公司选组件页面
 exports.select = function(req, res) {
-  res.render('company/validate/group_select', {
+  var renderData = {
     group_head: '企业',
     title: '选择组件!'
-  });
+  };
+
+  if (isMobile(req)) {
+    res.render('company/validate/mobile_group_select', renderData);
+  }
+  else {
+    res.render('company/validate/group_select', renderData);
+  }
 };
 //配合路由渲染邀请链接页面
 exports.invite = function(req, res) {
@@ -257,12 +284,20 @@ exports.invite = function(req, res) {
     }
     var invite_key = encodeURIComponent(company.invite_key).replace(/'/g,"%27").replace(/"/g,"%22");
     var inviteUrl = 'http://'+req.headers.host+'/users/invite?key='+invite_key+'&cid=' + companyId;
-    res.render('company/validate/invite', {
+    
+    var renderData = {
       title: '邀请链接',
       inviteLink: inviteUrl,
       companyId: companyId,
       defaultDomain: company.email.domain[0]
-    });
+    };
+
+    if (isMobile(req)) {
+      res.render('company/validate/mobile_invite', renderData);
+    }
+    else {
+      res.render('company/validate/invite', renderData);
+    }
   });
 
 };
