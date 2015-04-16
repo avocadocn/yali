@@ -1,7 +1,7 @@
 
 requirejs.config({
   name: 'main',
-  out: '../dist/donler.js',
+  out: '../../public/company_client/js/donler.js',
   paths: {
     angular: '../bower-lib/angular/angular',
     uiRouter: '../bower-lib/angular-ui-router/release/angular-ui-router',

@@ -14,7 +14,7 @@ module.exports = function(grunt) {
       },
       stylus: {
         files: ['src/**/*.styl'],
-        tasks: ['stylus']
+        tasks: ['stylus', 'concat']
       }
     },
     jade: {
@@ -47,12 +47,46 @@ module.exports = function(grunt) {
       compile: {
         options: {
           urlfunc: 'embedurl',
-          compress: false,
+          compress: true,
           cache: false
         },
         files: [{
-          'dist/donler.css': 'src/donler.styl'
+          'dist/donler.min.css': 'src/donler.styl'
         }]
+      }
+    },
+    copy: {
+      main: {
+        files: [
+          {
+            expand: true,
+            flatten: true,
+            filter: 'isFile',
+            src: ['bower-lib/bootstrap/dist/fonts/**', 'custom-lib/fonts/**'],
+            dest: '../public/company_client/fonts/'
+          },
+          {
+            expand: true,
+            flatten: true,
+            src: ['custom-lib/require.js'],
+            dest: '../public/company_client/js/'
+          }
+        ]
+      }
+    },
+    concat: {
+      css: {
+        src: [
+          'bower-lib/bootstrap/dist/css/bootstrap.min.css',
+          'custom-lib/admin-template/main.min.css',
+          'custom-lib/admin-template/theme.css',
+          'bower-lib/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css',
+          'bower-lib/pen/src/pen.css',
+          'custom-lib/font-awesome/font-awesome.min.css',
+          'bower-lib/bootstrap-calendar/css/calendar.min.css',
+          'dist/donler.min.css'
+        ],
+        dest: '../public/company_client/css/donler.min.css'
       }
     }
   });
@@ -61,10 +95,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-stylus');
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-concat');
 
   grunt.registerTask('default', ['product', 'develop']);
   grunt.registerTask('develop', ['watch']);
-  grunt.registerTask('product', ['jade', 'stylus', 'requirejs']);
+  grunt.registerTask('product', ['jade', 'stylus', 'requirejs', 'copy', 'concat']);
 
 };
 
