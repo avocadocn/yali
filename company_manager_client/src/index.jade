@@ -66,21 +66,8 @@ html
               a(ui-sref="accountSetting")
                 span 账号设置
 
-      .content-wrapper
-        // TODO 这个也许用得着，先注释
-        //- section.content-header
-        //-   h1
-        //-     | Page Header
-        //-     small Optional description
-        //-   ol.breadcrumb
-        //-     li
-        //-       a(href='#')
-        //-         i.fa.fa-dashboard
-        //-         |  Level
-        //-     li.active Here
+      .content-wrapper(ui-view="content" ng-if="company")
 
-        section.content
-          div(ui-view="content" ng-if="company")
       footer.main-footer
         .pull-right.hidden-xs
           a.footer_link(href="/about#about") 关于我们
