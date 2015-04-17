@@ -1,3 +1,3 @@
-define(['angular', 'app', 'routes', 'AdminLTE'], function(angular) {
+define(['angular', 'app', 'routes'], function(angular) {
   return angular.bootstrap(document, ['app']);
 });

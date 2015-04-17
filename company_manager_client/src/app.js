@@ -8,6 +8,7 @@ define([
   'markdown',
   'moment',
   'calendar',
+  'AdminLTE',
   './view_controllers/controllers',
   './storage/storage',
   './utils/utils',
@@ -54,7 +55,7 @@ define([
         $.ajaxSetup({
           beforeSend: function (xhr)
           {
-             xhr.setRequestHeader("x-access-token", token);        
+             xhr.setRequestHeader("x-access-token", token);
           }
       });
         var cid = storageService.session.get('cid');

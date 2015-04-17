@@ -13,7 +13,8 @@ define(['app'], function (app) {
       };
 
       $urlRouterProvider
-        .when("/", "/index");
+        .when('/', '/index')
+        .otherwise('/');
 
       $stateProvider
         .state('home', {
@@ -137,7 +138,7 @@ define(['app'], function (app) {
               controller: 'department.managerCtrl'
             }
           }
-        })
+        });
     }
   ])
     .constant('apiBaseUrl', 'http://' + window.location.hostname + ':3002');
