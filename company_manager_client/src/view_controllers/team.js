@@ -107,7 +107,9 @@ define(['./controller'], function (controllers) {
       function ($rootScope, $scope, $state, teamService, memberService) {
         $scope.showTeamMember = true;
         $scope.memberTitle =['显示公司成员','显示小队成员'];
+        $scope.memberBoxTitle = ['小队成员', '公司成员'];
         $scope.showTeamMemberTitle = $scope.memberTitle[0];
+        $scope.showMemberBoxTitle = $scope.memberBoxTitle[0];
         teamService.get($state.params.teamId).success(function (data) {
           $scope.team = data;
           $scope.teamMembers = data.members;
@@ -124,7 +126,8 @@ define(['./controller'], function (controllers) {
         });
         $scope.toggleMember = function () {
           $scope.showTeamMember =!$scope.showTeamMember;
-          $scope.showTeamMemberTitle = $scope.memberTitle[$scope.showTeamMember ?0:1];
+          $scope.showTeamMemberTitle = $scope.memberTitle[$scope.showTeamMember ? 0 : 1];
+          $scope.showMemberBoxTitle = $scope.memberBoxTitle[$scope.showTeamMember ? 0 : 1];
           $scope.members = $scope.showTeamMember ? $scope.teamMembers : $scope.companyMembers;
         }
         $scope.changeLeader = function (index) {
@@ -140,7 +143,7 @@ define(['./controller'], function (controllers) {
           })
         }
         $scope.cancel = function () {
-          $state.go('teamList');
+          $scope.newLeader = null;
         }
       }
     ]);

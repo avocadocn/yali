@@ -1,19 +1,38 @@
-.inner
-  .head 
-    span.title 任命队长
-  .point_leader
-    .now_leader(ng-if="team.leaders.length>0")
-      span 现任队长:
-      img.member_logo(ng-src="{{team.leaders[0].photo}}")
-      span(ng-bind="team.leaders[0].nickname")
-    h2 选择队长：
-    button(ng-click="toggleMember()" ng-bind="showTeamMemberTitle") 
-    form.choose_leader
-      .members
-        .member(ng-repeat="member in members" ng-class="{'active':newLeader._id==member._id}" ng-click="changeLeader($index)")
-          input(type="radio" name="leader" ng-model="newLeader" ng-value="member")
-          img.member_logo(ng-src="{{member.photo}}/40/40")
-          span {{member.nickname}}
-      .operator
-        button.btn.btn-primary(ng-disabled="!newLeader" ng-click="save()") 确定
-        button.btn.btn-warning(ng-click="cancel()") 取消
+.point_leader_page
+  section.content-header
+    h1
+      | 任命队长
+      small 选择一个用户，然后点击确定按钮即可任命队长
+    ol.breadcrumb
+      li: a(ui-sref="teamList") 小队管理
+      li.active 任命队长
+  section.content
+    .row
+      .col-xs-12.col-sm-4(ng-if="team.leaders.length > 0")
+        .box.box-primary
+          .box-header
+            h3.box-title 现任队长
+          .box-body
+            ul.products-list.product-list-in-box
+              li.item
+                .product-img
+                  img(ng-src="{{team.leaders[0].photo}}")
+                .product-info
+                  a.product-title(ng-href="/users/timeLine/{{team.leaders[0]._id}}" target="_blank" ng-bind="team.leaders[0].nickname")
+      .col-xs-12(ng-class="{'col-sm-8': team.leaders.length > 0, 'col-sm-12': team.leaders.length === 0 }")
+        .box.box-primary
+          .box-header
+            h3.box-title(ng-bind="showMemberBoxTitle")
+            .box-tools
+              button.btn.btn-default.btn-xs(ng-click="toggleMember()" ng-bind="showTeamMemberTitle")
+          .box-body.no-padding
+            form
+              ul.users-list.clearfix
+                li.user_item(ng-repeat="member in members" ng-click="changeLeader($index)")
+                  img(ng-src="{{member.photo}}/64/64" ng-class="{'selected_user': newLeader._id===member._id}")
+                  a.users-list-name(ng-href="/users/timeLine/{{member._id}}" target="_blank" ng-bind="member.nickname")
+              p.text-center(ng-if="members.length === 0" ng-cloak) 该小队没有成员
+              .text-center.operator(ng-if="newLeader")
+                button.btn.btn-primary(ng-click="save()") 确定
+                | &nbsp;
+                button.btn.btn-default(ng-click="cancel()") 取消
