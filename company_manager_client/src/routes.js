@@ -12,13 +12,9 @@ define(['app'], function (app) {
         return baseUrl + url;
       };
 
-      $urlRouterProvider
-        .when('/', '/index')
-        .otherwise('/');
-
       $stateProvider
         .state('home', {
-          url: '/index',
+          url: '/',
           views: {
             content: {
               templateUrl: templateUrl('/views/home.html'),
