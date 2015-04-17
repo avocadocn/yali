@@ -13,6 +13,7 @@
     "smalot-bootstrap-datetimepicker": "latest",
     "pen": "https://github.com/afeidonler/pen.git#master",
     "moment": "^2.7.0",
-    "bootstrap-calendar": "https://github.com/CahaVar/bootstrap-calendar.git#0.2.9"
+    "bootstrap-calendar": "https://github.com/CahaVar/bootstrap-calendar.git#0.2.9",
+    "admin-lte": "~2.0.3"
   }
 }

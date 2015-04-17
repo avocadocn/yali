@@ -78,12 +78,12 @@ module.exports = function(grunt) {
       css: {
         src: [
           'bower-lib/bootstrap/dist/css/bootstrap.min.css',
-          'custom-lib/admin-template/main.min.css',
-          'custom-lib/admin-template/theme.css',
           'bower-lib/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css',
           'bower-lib/pen/src/pen.css',
           'custom-lib/font-awesome/font-awesome.min.css',
           'bower-lib/bootstrap-calendar/css/calendar.min.css',
+          'bower-lib/admin-lte/dist/css/AdminLTE.min.css',
+          'bower-lib/admin-lte/dist/css/skins/skin-blue.min.css',
           'dist/donler.min.css'
         ],
         dest: '../public/company_client/css/donler.min.css'

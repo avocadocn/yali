@@ -1,68 +1,4 @@
-// @require '../bower-lib/bootstrap/dist/css/bootstrap.min.css'
-// @require '../custom-lib/admin-template/main.min.css'
-// @require '../custom-lib/admin-template/theme.css'
-// @require '../bower-lib/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css'
-// @require '../bower-lib/pen/src/pen.css'
-// @require '../custom-lib/font-awesome/font-awesome.css'
-// @require '../bower-lib/bootstrap-calendar/css/calendar.css'
 
-// 全局样式
-body
-html
-  margin-bottom 0
-  height 100%
-#wrap
-  min-height 100%
-#top > .navbar
-  padding 0 15px
-
-// 整体布局
-.dl_main_container
-  display flex
-  display -webkit-flex
-  .dl_aside
-    .dl_aside_inner
-      .media-body
-        width auto
-      #menu
-        li.nav-header
-          padding 8px 15px !important
-  .outer
-    padding 5px
-  .inner
-    border-width 5px
-    padding 0
-    min-width 825px
-    .dl_panel
-      margin 10px 20px
-      border 1px solid #99cff3
-      border-top-left-radius 3px
-      border-top-right-radius 3px
-      .dl_block_head
-        background-color #99cff3
-        padding 5px 15px
-        height 30px
-        .header_button
-          background-color #dfeefc
-          color black
-          margin-right 10px
-          padding 0 10px
-          text-decoration none
-      .table_block
-        margin 10px
-        .table_title
-          margin-left 15px
-        .dl_table
-          margin-top 10px
-          border 1px solid #ddd
-          .center
-            text-align center
-
-  .dl_content
-    flex 1
-    -webkit-flex 1
-.dl_wrap
-  height 100%
 //- 通用属性
 button
   border none
@@ -108,6 +44,11 @@ input:focus:-ms-input-placeholder /* Internet Explorer 10+ */
     border-color #2980B9
   &:disabled
     opacity .65
+
+//- 上面的样式也许会在换主题后弃用
+.main-footer
+  .footer_link
+    margin-left 5px
 
 // view stylus 应该放在最后
 @require 'view_stylus/*'

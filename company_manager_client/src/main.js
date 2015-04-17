@@ -17,7 +17,8 @@ requirejs.config({
     underscore: '../bower-lib/underscore/underscore',
     calendar: '../bower-lib/bootstrap-calendar/js/calendar',
     zhCN: 'utils/zh-CN',
-    alertify: '../bower-lib/alertify.js/lib/alertify'
+    alertify: '../bower-lib/alertify.js/lib/alertify',
+    AdminLTE: '../bower-lib/admin-lte/dist/js/app'
   },
   packages: [
     {
@@ -58,13 +59,16 @@ requirejs.config({
     },
     calendar: {
       deps: ['jQuery', 'underscore', 'zhCN']
-    }
+    },
     // pen: {
     //   exports: 'pen'
     // },
     // markdown: {
     //   deps: ['pen']
     // }
+    AdminLTE: {
+      deps: ['jQuery', 'bootstrap']
+    }
   },
   deps: ['./init'],
   urlArgs: '',
