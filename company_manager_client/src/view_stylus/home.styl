@@ -19,6 +19,8 @@ flexValue(value)
   -ms-flex value
   flex value
 
+col_card_border = #ddd
+
 .home_page
   .sup_text
     font-size 20px
@@ -29,9 +31,12 @@ flexValue(value)
     .box_footer_link
       color white
 
-  .dl_campaign_item
+  .dl_cp_card_date
+    color gray
+
+  .dl_cp_card
     margin-bottom 10px
-    border 1px solid gray
+    border 1px solid col_card_border
     displayFlex()
     .cp_logos
       width 80px
@@ -64,6 +69,11 @@ flexValue(value)
     .cp_texts
       flexValue(1)
       padding-top 5px
+      padding-right 10px
+      padding-bottom 10px
+      .fa
+        width 14px
+        text-align center
     .cp_theme
       margin 0
       font-size 14px
@@ -76,7 +86,7 @@ flexValue(value)
     .cp_member_count
       margin 10px 0
       width 80px
-      border-left 1px solid gray
+      border-left 1px solid col_card_border
       .count_number
         display block
         margin-top 8px
