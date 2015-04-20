@@ -71,8 +71,8 @@ define(['./controller', 'jQuery', 'cropit'], function (controllers, $) {
 
     }
   ])
-  .controller('company.homeCtrl', ['$scope', '$rootScope', 'companyService',
-    function ($scope, $rootScope, companyService) {
+  .controller('company.homeCtrl', ['$scope', '$rootScope', 'companyService', 'campaignService',
+    function ($scope, $rootScope, companyService, campaignService) {
       var cid = $rootScope.company._id;
       companyService.getUndisposed(cid, function(err, data) {
         if(!err) {
@@ -87,6 +87,13 @@ define(['./controller', 'jQuery', 'cropit'], function (controllers, $) {
         // todo
       });
 
-    }])
+      campaignService.getTimeline('company', cid).success(function(data) {
+        $scope.latestCampaignList = data;
+      }).error(function(data, status) {
+        // todo
+      });
+
+    }
+  ])
 });
 

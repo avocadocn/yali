@@ -57,6 +57,12 @@ define(['./campaign'], function (campaign) {
       },
       closeCampaign: function (campaignId) {
         return $http.delete(apiBaseUrl + '/campaigns/' + campaignId);
+      },
+
+      getTimeline: function(hostType, hostId, query) {
+        return $http.get(apiBaseUrl + '/timeline/' + hostType + '/'+ hostId, {
+          params: query
+        });
       }
     };
   }]);

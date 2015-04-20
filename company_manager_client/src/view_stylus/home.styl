@@ -1,9 +1,91 @@
+textOverflow()
+  overflow hidden
+  text-overflow ellipsis
+  white-space nowrap
+
+displayFlex()
+  display -webkit-box
+  display -webkit-flex
+  display -moz-box
+  display -moz-flex
+  display -ms-flexbox
+  display flex
+
+flexValue(value)
+  -webkit-box-flex value
+  -webkit-flex value
+  -moz-box-flex value
+  -moz-flex value
+  -ms-flex value
+  flex value
+
 .home_page
   .sup_text
     font-size 20px
-    
+
   .small-box-footer
     padding-left 10px
     padding-right 10px
     .box_footer_link
       color white
+
+  .dl_campaign_item
+    margin-bottom 10px
+    border 1px solid gray
+    displayFlex()
+    .cp_logos
+      width 80px
+      padding 10px
+      border-radius 5px
+    .team_logo
+      width 60px
+      height 60px
+      border-radius 5px
+    .cp_logos_2
+      .team_logo
+        width 29px
+        height 29px
+        margin-top 7px
+        margin-bottom 6px
+        border-radius 3px
+        float left
+        &:first-child
+          margin-right 2px
+    .provoke_label, .fellowship_label
+      width 100%
+      height 14px
+      color #fff
+      float left
+      text-align center
+      line-height 14px
+      background-color #f48361
+    .fellowship_label
+      background-color #ffc053
+    .cp_texts
+      flexValue(1)
+      padding-top 5px
+    .cp_theme
+      margin 0
+      font-size 14px
+      line-height 24px
+    .cp_time, .cp_address
+      margin 0
+      font-size 14px
+      line-height 20px
+      color #999
+    .cp_member_count
+      margin 10px 0
+      width 80px
+      border-left 1px solid gray
+      .count_number
+        display block
+        margin-top 8px
+        line-height 24px
+        font-size 24px
+        font-weight bold
+      .count_text
+        display block
+        line-height 20px
+        font-size 14px
+
+

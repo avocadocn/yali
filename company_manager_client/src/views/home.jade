@@ -44,7 +44,7 @@
               i.fa.fa-arrow-circle-right
 
     .row
-      .col-md-4
+      .col-lg-4.col-md-6
         .box.box-warning
           .box-header.with-border
             h3.box-title 新成员
@@ -56,4 +56,30 @@
                 span.users-list-date(ng-bind-template="{{user.register_date | date:'yyyy-MM-dd'}}")
           .box-footer.text-center
             a(ui-sref="allMembers") 所有成员
-      .col-md-8
+      .col-lg-4.col-md-6
+        .box.box-primary
+          .box-header.with-border
+            h3.box-title 近期活动
+            .box-tools.pull-right
+              a.btn.btn-box-tool(ui-sref="campaigns") 更多&nbsp;
+                i.fa.fa-angle-double-right
+          .box-body
+            .dl_campaign_list
+              .dl_campaign_item(ng-repeat="campaign in latestCampaignList")
+                .cp_logos(class="cp_logos_{{campaign.campaign_unit.length}}")
+                  img.team_logo(ng-repeat="campaign_unit in campaign.campaign_unit" ng-src="{{(campaign_unit.team.logo || campaign_unit.company.logo)}}/60/60")
+                  .provoke_label(ng-if="campaign.campaign_type===4 || campaign.campaign_type===5")
+                    span 挑战
+                  .fellowship_label(ng-if="campaign.campaign_type===7")
+                    span 联谊
+                .cp_texts
+                  h4.cp_theme(ng-bind="campaign.theme")
+                  p.cp_time
+                    i.fa.fa-clock-o
+                    span(ng-bind-template="{{campaign.start_time | date:'HH:mm'}}")
+                  p.cp_address
+                    i.fa.fa-map-marker
+                    span(ng-bind="campaign.location.name")
+                .cp_member_count.text-center
+                  span.count_number(ng-bind-template="{{campaign.members_count || 0}}")
+                  span.count_text 报名
