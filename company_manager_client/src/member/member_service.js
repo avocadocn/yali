@@ -4,7 +4,7 @@ define(['./member'], function (member) {
       /**
        * 获取公司成员
        * @param  {String} 公司id
-       * @param {Object} 参数 resultType :1 任命队长时获取，2 统计成员时获取， 3待激活用户
+       * @param {Object} 参数 resultType :1 任命队长时获取，2 统计成员时获取， 3待激活用户，4在成员页显示多少未激活用户
        * @return {HttpPromise}    
        */
       getMembers: function (id, params) {
@@ -35,6 +35,15 @@ define(['./member'], function (member) {
        */
       active: function (id) {
         return $http.post(apiBaseUrl + '/users/'+id+'/active');
+      },
+
+      /**
+       * 屏蔽用户
+       * @param  {String} id 用户id
+       * @return {HttpPromise}    
+       */
+      close: function (id) {
+        return $http.post(apiBaseUrl + '/users/'+id+'/close');
       },
 
       /**

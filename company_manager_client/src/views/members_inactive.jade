@@ -20,7 +20,7 @@
               td {{member.user.username}}
               td {{member.report_date | date:'yyyy-MM-dd HH:mm'}}
               td
-                button.btn.btn-link(ng-click="getDetail(member.user._id)") 查看详情
+                a.btn-link(ng-click="getDetail(member.user._id)") 查看详情
               th
                 button.btn.btn-primary.btn-xs.btn-flat(ng-click="deal(member.user._id,true)") 屏蔽
                 button.btn.btn-default.btn-xs.btn-flat(ng-click="deal(member.user._id,false)") 忽略
