@@ -1,45 +1,48 @@
-.inner.members
-  .dl_panel
-    .dl_block_head
-      span.title 所有成员
-      span.pull-right(ng-cloak) 共{{companyMembers.length}}人
-    .table_block
-      span.table_title 
-      table.team_table.table.table-striped.dl_table
-        thead
-          tr
-            th 
-            th 头像
-            th.center 邮箱
-            th.center 真实姓名
-            th.center 部门
-            th.center 参加小队数
-            th.center 参加活动数
-            th.center 积分
-            //- td.center 查看详情
-            th.center 操作
-        tbody
-          tr(ng-repeat="member in companyMembers")
-            td {{$index+1}}
-            td: img.memer_logo(ng-src="{{member.photo}}/40/40")
-            td.center {{member.username}}
-            td.center {{member.realname}}
-            td.center {{member.department.name}}
-            td.center {{member.team.length}}
-            td.center {{member.campaignCount}}
-            td.center {{member.score.total}}
-            //- td.center 
-            //-   button 查看详情
-            td.center
-              button.btn.btn-primary(ng-click="editUser($index)") 编辑
-    nav.pages
-      ul.pagination
-        li(ng-class="{disabled:nowPage<=1}" ng-click="lastPage()" ng-cloak)
-          a.page(href="") 上一页
-        li(ng-repeat="page in AllcompanyMembers" ng-click="getPage($index+1)" ng-class="{active:$index+1===nowPage}" ng-cloak)
-          a.page(href="") {{$index+1}}
-        li(ng-class="{disabled:!hasNext}" ng-click="nextPage()" ng-cloak)
-          a.page(href="") 下一页
+.members
+  section.content-header
+    h1
+      | 所有成员
+      small(ng-bind-template="共{{companyMembers.length}}人")
+  section.content
+    .box.box-primary
+      .box-header
+        h3.box-title 所有成员
+        .box-tools.pull-right
+          ul.pagination.pagination-sm.inline
+            li(ng-class="{disabled:nowPage<=1}" ng-click="lastPage()" ng-cloak)
+              a.page(href="") 上一页
+            li(ng-repeat="page in AllcompanyMembers" ng-click="getPage($index+1)" ng-class="{active:$index+1===nowPage}" ng-cloak)
+              a.page(href="") {{$index+1}}
+            li(ng-class="{disabled:!hasNext}" ng-click="nextPage()" ng-cloak)
+              a.page(href="") 下一页
+      .box-body.no-padding
+        table.table.table-striped
+          thead
+            tr
+              th
+              th 头像
+              th 邮箱
+              th 真实姓名
+              th 部门
+              th 参加小队数
+              th 参加活动数
+              th 积分
+              //- td 查看详情
+              th 操作
+          tbody
+            tr(ng-repeat="member in companyMembers")
+              td {{$index+1}}
+              td: img.memer_logo(ng-src="{{member.photo}}/40/40")
+              td {{member.username}}
+              td {{member.realname}}
+              td {{member.department.name}}
+              td {{member.team.length}}
+              td {{member.campaignCount}}
+              td {{member.score.total}}
+              //- td
+              //-   button 查看详情
+              td
+                button.btn.btn-primary(ng-click="editUser($index)") 编辑
 script(type="text/ng-template" id="editUserModal.html")
   .modal-header
     h3.modal-title  编辑

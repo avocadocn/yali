@@ -1,28 +1,29 @@
-.inner
-  .dl_panel
-    .dl_block_head
-      span.title 被举报成员
-      span.pull-right(ng-cloak) {{companyReportedMembers.length}}人待审核
-    .table_block
-        span.table_title 
-        table.team_table.table.table-striped.dl_table
+.member_inactive_page
+  section.content-header
+    h1
+      | 被举报成员
+      small(ng-bind-template="{{companyReportedMembers.length}}人待审核")
+  section.content
+    .box.box-primary
+      .box-body.no-padding
+        table.table.table-striped
           thead
             tr
-              th 
-              th.center 邮箱
-              th.center 举报时间
-              th.center
-              th.center 操作
+              th
+              th 邮箱
+              th 举报时间
+              th
+              th 操作
           tbody
             tr(ng-repeat="member in companyReportedMembers")
               td {{$index+1}}
-              td.center {{member.user.username}}
-              td.center {{member.report_date | date:'yyyy-MM-dd HH:mm'}}
-              td.center 
+              td {{member.user.username}}
+              td {{member.report_date | date:'yyyy-MM-dd HH:mm'}}
+              td
                 button.btn.btn-link(ng-click="getDetail(member.user._id)") 查看详情
-              th.center
-                button.btn.btn-primary(ng-click="deal(member.user._id,true)") 屏蔽
-                button.btn(ng-click="deal(member.user._id,false)") 忽略
+              th
+                button.btn.btn-primary.btn-xs.btn-flat(ng-click="deal(member.user._id,true)") 屏蔽
+                button.btn.btn-default.btn-xs.btn-flat(ng-click="deal(member.user._id,false)") 忽略
 script(type="text/ng-template" id="getUserCommentModal.html")
   .modal-header
     h3.modal-title  举报详情
@@ -33,14 +34,14 @@ script(type="text/ng-template" id="getUserCommentModal.html")
         thead
           tr
             th 
-            th.center 时间
-            th.center 内容
+            th 时间
+            th 内容
         tbody
           tr(ng-repeat="comment in comments")
             td {{$index+1}}
-            td.center
+            td
               p {{comment.create_date | date:'yyyy-MM-dd HH:mm'}}
-            td.center
+            td
               p {{comment.content}}
     div(ng-if="comments.length==0")
       |  该用户还没有留言

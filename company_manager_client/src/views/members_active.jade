@@ -1,42 +1,46 @@
-.inner.members
-  .dl_panel
-    .dl_block_head
-      span.title 待激活成员
-      span.pull-right(ng-cloak) {{unClosedMembers.length}}人待激活
-    .table_block
-      div(ng-show="unClosedMembers.length")
-        span.table_title 待激活成员
-        table.team_table.table.table-striped.dl_table
+.members
+  section.content-header
+    h1
+      | 待激活成员
+      small(ng-bind-template="{{unClosedMembers.length}}人待激活")
+  section.content
+    .box.box-primary(ng-show="unClosedMembers.length")
+      .box-header
+        h3.box-title 待激活成员
+      .box-body.no-padding
+        table.table.table-striped
           thead
             tr
-              th 
-              th.center 邮箱
-              th.center 注册时间
-              th.center 操作
+              th
+              th 邮箱
+              th 注册时间
+              th 操作
           tbody
             tr(ng-repeat="member in unClosedMembers")
               td {{$index+1}}
-              td.center {{member.username}}
-              td.center {{member.register_date | date:'yyyy-MM-dd HH:mm'}}
-              //- td.center 
+              td {{member.username}}
+              td {{member.register_date | date:'yyyy-MM-dd HH:mm'}}
+              //- td
               //-   button 查看详情
-              td.center
-                button.btn.btn-primary(ng-click="active(member._id)") 激活
-      div(ng-show="closedMembers.length")
-        span.table_title 被屏蔽成员
-        table.team_table.table.table-striped.dl_table
+              td
+                button.btn.btn-primary.btn-xs.btn-flat(ng-click="active(member._id)") 激活
+    .box.box-primary(ng-show="closedMembers.length")
+      .box-header
+        h3.box-title 被屏蔽成员
+      .box-body.no-padding
+        table.table.table-striped
           thead
             tr
-              th 
-              th.center 邮箱
-              th.center 昵称
-              th.center 操作
+              th
+              th 邮箱
+              th 昵称
+              th 操作
           tbody
             tr(ng-repeat="member in closedMembers")
               td {{$index+1}}
-              td.center {{member.username}}
-              td.center {{member.nickname}}
-              //- td.center 
+              td {{member.username}}
+              td {{member.nickname}}
+              //- td
               //-   button 查看详情
-              td.center
-                button.btn.btn-primary(ng-click="active(member._id)") 取消屏蔽
+              td
+                button.btn.btn-primary.btn-xs.btn-flat(ng-click="active(member._id)") 取消屏蔽
