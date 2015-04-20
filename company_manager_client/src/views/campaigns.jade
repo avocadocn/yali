@@ -3,10 +3,47 @@
     h1 
       |活动管理
       //- span.pull-right 900个活动
-      a.header_button.pull-right(href="" type="button" data-toggle="modal" data-target="#sponsorCampaignModel") 发活动
+      //- a(href="" type="button" data-toggle="modal" data-target="#sponsorCampaignModel" class="btn btn-primary pull-right") 发活动
+      a.btn.btn-primary.pull-right(href="" type="button" data-toggle="modal" data-target="#sponsorCampaignModel") 发活动
   section.content
     .table_block.clearfix
-      .calendar.schedule_small
+      //- .calendar.schedule_small
+      //-   .schedulebox_small
+      //-     .clearfix.schedule_operator
+      //-       p.calendar_nav#calendar_nav
+      //-         i.fa.fa-bookmark-o.pull-right(ng-click="recoverDate()" title="还原")
+      //-         a.pull-right(data-calendar-nav="next" href="javascript:void(0)") &gt;
+      //-         i.fa.fa-calendar.pull-left
+      //-         a.pull-left(data-calendar-nav="prev" href="javascript:void(0)") &lt;
+      //-         a.calendar_title(data-calendar-nav="today" href="javascript:void(0)") 
+      //-           span#calendar_title
+      //-     .calendar_box.calendar_box_small
+      //-       #calendar_view
+      //-         #calendar
+      //-     .calendar_tips
+      //-       span.join_sign.length_1
+      //-       label.campaign_label 没有活动
+      //-       span.join_sign.length_2
+      //-       label.campaign_label 2个及以下
+      //-       span.join_sign.length_3
+      //-       label.campaign_label 2个以上
+      .select_team
+        .select_head
+          span.head_text 选择小队
+          //- button.dl_btn.select_btn(ng-click="selectType(1)" ng-class="{'selected': selectedType===1}") 全部活动
+          //- button.dl_btn.select_btn(ng-click="selectType(2)" ng-class="{'selected': selectedType===2}") 小队活动
+          //- button.dl_btn.select_btn(ng-click="selectType(3)" ng-class="{'selected': selectedType===3}") 公司活动
+        .teams
+          .team(ng-repeat="team in data.teams" ng-class="{'right': $index%2===1, 'selected':currentTeamId===team._id, 'disabled':selectedType===3}" ng-click="selectTeam(team._id)")
+            img.logo(ng-src="{{team.logo}}/40/40")
+            p.name(ng-cloak) {{team.name}}
+            p.type(ng-cloak) {{team.groupType}}
+  section
+    .table-header
+      | 每页
+      select.table-header-select(ng-model="number" ng-options="number.num for number in numbers" ng-change="selectNumOfPage()")
+      | 个
+      .calendar.schedule_small(ng-show="false")
         .schedulebox_small
           .clearfix.schedule_operator
             p.calendar_nav#calendar_nav
@@ -26,22 +63,11 @@
             label.campaign_label 2个及以下
             span.join_sign.length_3
             label.campaign_label 2个以上
-      .select_team
-        .select_head
-          span.head_text 选择查看活动单位
-          button.dl_btn.select_btn(ng-click="selectType(1)" ng-class="{'selected': selectedType===1}") 全部活动
-          button.dl_btn.select_btn(ng-click="selectType(2)" ng-class="{'selected': selectedType===2}") 小队活动
-          button.dl_btn.select_btn(ng-click="selectType(3)" ng-class="{'selected': selectedType===3}") 公司活动
-        .teams
-          .team(ng-repeat="team in data.teams" ng-class="{'right': $index%2===1, 'selected':currentTeamId===team._id, 'disabled':selectedType===3}" ng-click="selectTeam(team._id)")
-            img.logo(ng-src="{{team.logo}}/40/40")
-            p.name(ng-cloak) {{team.name}}
-            p.type(ng-cloak) {{team.groupType}}
-
-  section.content-header
-    h4
-      | 活动详情
-      span.date(ng-if="nowDay" ng-cloak) {{nowDay | date:'yyyy年MM月dd日'}}
+      a.btn.btn-primary.pull-right 搜索
+      input.pull-right.table-header-search
+    //- h4
+    //-   | 活动详情
+    //-   span.date(ng-if="nowDay" ng-cloak) {{nowDay | date:'yyyy年MM月dd日'}}
   section.content
     .campaign_list.clearfix
       .dl_block_head

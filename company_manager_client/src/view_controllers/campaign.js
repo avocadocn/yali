@@ -12,15 +12,23 @@ define(['./controller'], function (controllers) {
       .error(function (data) {
         console.log(data.msg);
       });
-
+      $scope.numbers = [
+        {id: 1, num: 10},
+        {id: 2, num: 25},
+        {id: 3, num: 50},
+        {id: 4, num: 100}
+      ];
       //campaigns
       $scope.pages = [];
       $scope.nowPage = 0;
+      $scope.number = $scope.numbers[0];
+      $scope.numOfPage = 10;
       //调用情况：
       //  1、日期变更时
       //  2、活动单位变更
       //  3、小队变更
       //  4、翻页
+      //  5、每页数目变更
       var getSuccessProcess = function(data, nextId) {
         //logo
         var campaignsLength = data.campaigns.length;
@@ -64,7 +72,7 @@ define(['./controller'], function (controllers) {
           $scope.pages = [];
           $scope.nowPage = 0;
         }
-        var params =  {'cid':cid, 'result':'managerList', 'attrs':['showClose'], 'sort':'-start_time', 'limit':20};
+        var params =  {'cid':cid, 'result':'managerList', 'attrs':['showClose'], 'sort':'-start_time', 'limit':$scope.numOfPage};
         if(nextTime || $scope.endTime) params.to = nextTime || $scope.endTime;
         if($scope.startTime) params.from = $scope.startTime;
         if(nextId) params.nextId = nextId;
@@ -226,7 +234,13 @@ define(['./controller'], function (controllers) {
         $scope.endTime = null;
         getCampaigns();
       };
-
+      $scope.selectNumOfPage = function() {
+        $scope.nowDay = null;
+        $scope.startTime = null;
+        $scope.endTime = null;
+        $scope.numOfPage = $scope.number.num;
+        getCampaigns();
+      };
       $scope.goDetail = function (campaignId) {
         $scope.campaignId = campaignId;
         $('#editCampaignModal').modal('show');
