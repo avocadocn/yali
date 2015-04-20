@@ -1,66 +1,66 @@
-.inner
-  .dl_panel
-    .calendar
-      width 240px
-      float left
-    .select_team
-      width 500px
-      float left
-      margin-left 10px
-      .select_head
+.campaigns_page
+  .calendar
+    width 240px
+    float left
+  .select_team
+    width 500px
+    float left
+    margin-left 10px
+    .select_head
+      padding 5px 10px
+      border-bottom 1px solid #bce3fd
+      width 488px
+      background-color #525e70
+      color white
+      border-top-left-radius 2px
+      border-top-right-radius 2px
+      .select_btn
+        margin-left 10px
+        margin-bottom 2px
+        padding 3px 10px
+        background-color #3ca2e0
+        border-radius 2px
+      .select_btn.selected
+        box-shadow inset 1px 1px 1px #597599
+    .teams
+      width 100%
+      min-height 170px
+      overflow-y auto
+      max-height 210px
+      .team
         padding 5px 10px
-        border-bottom 1px solid #bce3fd
-        width 488px
-        background-color #525e70
-        color white
-        border-top-left-radius 2px
-        border-top-right-radius 2px
-        .select_btn
-          margin-left 10px
-          margin-bottom 2px
-          padding 3px 10px
-          background-color #3ca2e0
-          border-radius 2px
-        .select_btn.selected
-          box-shadow inset 1px 1px 1px #597599
-      .teams
-        width 100%
-        min-height 170px
-        overflow-y auto
-        max-height 210px
-        .team
-          padding 5px 10px
-          border 1px solid #bce3fd
-          border-top 0
+        border 1px solid #bce3fd
+        border-top 0
+        float left
+        width 50%
+        cursor pointer
+        .logo
+          width 40px
+          height 40px
           float left
-          width 50%
-          cursor pointer
-          .logo
-            width 40px
-            height 40px
-            float left
-          .name, .type
-            margin-left 10px
-            width 160px
-            float left
-            white-space nowrap
-            overflow hidden
-            text-overflow ellipsis
-            color #666
-            margin-bottom 0
-          .name
-            margin-bottom 2px
-        .team.right
-          border-left 0
-        .team.selected
-          background-color #a6d6f4
-        .team.disabled
-          background-color #f5f5f5
+        .name, .type
+          margin-left 10px
+          width 160px
+          float left
+          white-space nowrap
+          overflow hidden
+          text-overflow ellipsis
+          color #666
+          margin-bottom 0
+        .name
+          margin-bottom 2px
+      .team.right
+        border-left 0
+      .team.selected
+        background-color #a6d6f4
+      .team.disabled
+        background-color #f5f5f5
+  .date
+    margin-left 10px
+    color #333
+    font-size 14px
   .campaign_list
     min-height 300px
-    .dl_block_head>.date
-      margin-left 10px
-      color #333
     .table_block
       margin 0 10px !important
       .dl_table

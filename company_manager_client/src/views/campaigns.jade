@@ -1,9 +1,10 @@
-.inner
-  .dl_panel.clearfix
-    .dl_block_head
-      span.title 活动管理
+.campaigns_page
+  section.content-header
+    h1 
+      |活动管理
       //- span.pull-right 900个活动
       a.header_button.pull-right(href="" type="button" data-toggle="modal" data-target="#sponsorCampaignModel") 发活动
+  section.content
     .table_block.clearfix
       .calendar.schedule_small
         .schedulebox_small
@@ -37,46 +38,50 @@
             p.name(ng-cloak) {{team.name}}
             p.type(ng-cloak) {{team.groupType}}
 
-  .dl_panel.campaign_list.clearfix
-    .dl_block_head
-      span.title 活动详情
+  section.content-header
+    h4
+      | 活动详情
       span.date(ng-if="nowDay" ng-cloak) {{nowDay | date:'yyyy年MM月dd日'}}
-    .table_block
-      table.table.table-striped.dl_table
-        thead
-          tr
-            th.center 序号
-            th.center Logo
-            th.center 主题
-            th.center 开始时间
-            th.center 结束时间
-            th.center 人数
-            th.center 状态
-            th.center 操作
-        tbody
-          tr(ng-repeat="campaign in campaigns")
-            td.center(ng-cloak) {{$index+1}}
-            td.center(ng-cloak)
-              img(ng-src="{{campaign.logo}}/40/40")
-            td.center.theme(ng-cloak) {{campaign.theme}}
-            td.center(ng-cloak) 
-              p {{campaign.startTime | date:'yyyy-MM-dd'}}
-              p {{campaign.startTime | date:'HH:mm'}}
-            td.center(ng-cloak)
-              p {{campaign.endTime | date:'yyyy-MM-dd'}}
-              p {{campaign.endTime | date:'HH:mm'}}
-            td.center(ng-cloak) {{campaign.memberNumber}}
-            td.center(ng-cloak) {{campaign.status}}
-            td.center(ng-cloak) 
-              a(ng-click="goDetail(campaign._id)" href="") 查看详情
-              button.dl_btn.close_btn(ng-if="campaign.status==='未开始'||campaign.status==='已开始'" ng-disabled="!campaign.active" ng-click="closeCampaign(campaign)") {{campaign.active? '关闭活动': '已经关闭'}}
-    nav.pages
-      ul.pagination
-        li(ng-if="nowPage>0" ng-class="{disabled:nowPage<=0}" ng-click="getPage('pre')" ng-cloak)
-          a.page(href="") 上一页
-        li(ng-repeat="page in pages" ng-click="getPage(null,$index)" ng-class="{active:$index===nowPage}" ng-cloak)
-          a.page(href="") {{$index+1}}
-        li(ng-if="hasNext" ng-class="{disabled:!hasNext}" ng-click="getPage('next')" ng-cloak)
-          a.page(href="") 下一页
+  section.content
+    .campaign_list.clearfix
+      .dl_block_head
+        
+      .table_block
+        table.table.table-striped.dl_table
+          thead
+            tr
+              th.center 序号
+              th.center Logo
+              th.center 主题
+              th.center 开始时间
+              th.center 结束时间
+              th.center 人数
+              th.center 状态
+              th.center 操作
+          tbody
+            tr(ng-repeat="campaign in campaigns")
+              td.center(ng-cloak) {{$index+1}}
+              td.center(ng-cloak)
+                img(ng-src="{{campaign.logo}}/40/40")
+              td.center.theme(ng-cloak) {{campaign.theme}}
+              td.center(ng-cloak) 
+                p {{campaign.startTime | date:'yyyy-MM-dd'}}
+                p {{campaign.startTime | date:'HH:mm'}}
+              td.center(ng-cloak)
+                p {{campaign.endTime | date:'yyyy-MM-dd'}}
+                p {{campaign.endTime | date:'HH:mm'}}
+              td.center(ng-cloak) {{campaign.memberNumber}}
+              td.center(ng-cloak) {{campaign.status}}
+              td.center(ng-cloak) 
+                a(ng-click="goDetail(campaign._id)" href="") 查看详情
+                button.dl_btn.close_btn(ng-if="campaign.status==='未开始'||campaign.status==='已开始'" ng-disabled="!campaign.active" ng-click="closeCampaign(campaign)") {{campaign.active? '关闭活动': '已经关闭'}}
+      nav.pages
+        ul.pagination
+          li(ng-if="nowPage>0" ng-class="{disabled:nowPage<=0}" ng-click="getPage('pre')" ng-cloak)
+            a.page(href="") 上一页
+          li(ng-repeat="page in pages" ng-click="getPage(null,$index)" ng-class="{active:$index===nowPage}" ng-cloak)
+            a.page(href="") {{$index+1}}
+          li(ng-if="hasNext" ng-class="{disabled:!hasNext}" ng-click="getPage('next')" ng-cloak)
+            a.page(href="") 下一页
 sponsor-campaign(data="data")
 edit-campaign(campaign-id="campaignId")
