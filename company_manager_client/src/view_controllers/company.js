@@ -88,7 +88,7 @@ define(['./controller', 'jQuery', 'cropit'], function (controllers, $) {
       });
 
       campaignService.getTimeline('company', cid).success(function(data) {
-        $scope.latestCampaignList = data;
+        $scope.latestCampaignList = data.slice(0, 5);
       }).error(function(data, status) {
         // todo
       });
