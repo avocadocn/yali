@@ -43,21 +43,17 @@
             a.pull-right.box_footer_link(ui-sref="activeMembers") 审核&nbsp;
               i.fa.fa-arrow-circle-right
 
-    //- .home_table
-    //-   .home_box.home_box_1
-    //-     .row
-    //-       span 活动情况
-    //-     .row
-    //-       a.btn.btn-sm.btn-primary(ui-sref="campaigns") 发活动
-    //-       a.btn.btn-sm.btn-primary(ui-sref="campaigns") 管理活动
-    //-   .home_box.home_box_2(ng-if="noLeaderTeams")
-    //-     .row
-    //-       span 您还有{{noLeaderTeams}}个小队未任命队长
-    //-     .row
-    //-       a.btn.btn-sm.btn-warning(ui-sref="teamList") 任命队长
-    //-   .home_box.home_box_3
-    //-     .row
-    //-       span 您还有{{unActivatedUsers}}名员工等待
-    //-     .row
-    //-       a.btn.btn-sm.btn-info(ui-sref="activeMembers") 审核
-    //-       a.btn.btn-sm.btn-success(ui-sref="inviteMembers") 邀请
+    .row
+      .col-md-4
+        .box.box-warning
+          .box-header.with-border
+            h3.box-title 新成员
+          .box-body.no-padding
+            .users-list.clearfix
+              li(ng-repeat="user in latestUserList")
+                img(ng-src="{{user.photo}}/64/64")
+                a.users-list-name(href="#" ng-bind="user.nickname")
+                span.users-list-date(ng-bind-template="{{user.register_date | date:'yyyy-MM-dd'}}")
+          .box-footer.text-center
+            a(ui-sref="allMembers") 所有成员
+      .col-md-8

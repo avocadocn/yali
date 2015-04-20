@@ -36,6 +36,10 @@ define(['./company', 'jQuery'], function (company, $) {
         .error(function (data, status) {
           callback('获取失败');
         });
+      },
+
+      getLatestMembers: function(id) {
+        return $http.get(apiBaseUrl + '/companies/' + id + '/latestMembers');
       }
     }
   }]);

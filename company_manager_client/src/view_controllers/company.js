@@ -81,6 +81,12 @@ define(['./controller', 'jQuery', 'cropit'], function (controllers, $) {
         }
       });
 
+      companyService.getLatestMembers(cid).success(function(data) {
+        $scope.latestUserList = data.users;
+      }).error(function(data, status) {
+        // todo
+      });
+
     }])
 });
 
