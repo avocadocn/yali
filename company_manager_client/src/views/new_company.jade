@@ -2,7 +2,7 @@
   section.content
     .todo_box_list.clearfix#todo_box
 
-      .todo_box
+      .todo_box(ng-if="hasCompleteInfo === false" ng-cloak)
         .small-box.bg-primary
           .inner
             h3 您还没有完善公司资料
@@ -12,7 +12,7 @@
           a.small-box-footer(ui-sref="companyInfo") 去完善&nbsp;
             i.fa.fa-arrow-circle-right
 
-      .todo_box
+      .todo_box(ng-if="hasTeam === false" ng-cloak)
         .small-box.bg-green
           .inner
             h3 您还没有小队
@@ -22,7 +22,7 @@
           a.small-box-footer(ui-sref="createTeam") 建小队&nbsp;
             i.fa.fa-arrow-circle-right
 
-      .todo_box
+      .todo_box(ng-if="hasLeader === false" ng-cloak)
         .small-box.bg-green
           .inner
             h3 您还没有设队长
@@ -32,7 +32,7 @@
           a.small-box-footer(ui-sref="teamList") 设队长&nbsp;
             i.fa.fa-arrow-circle-right
 
-      .todo_box
+      .todo_box(ng-if="hasMember === false" ng-cloak)
         .small-box.bg-yellow
           .inner
             h3 您还没有成员
