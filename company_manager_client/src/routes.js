@@ -90,6 +90,15 @@ define(['app'], function (app) {
             }
           }
         })
+        .state('campaignsCanlendar', {
+          url: '/campaignsCanlendar',
+          views: {
+            content: {
+              templateUrl: templateUrl('/views/campaigns-canlendar.html'),
+              controller: 'campaign.campaignCtrl'
+            }
+          }
+        })
         .state('inviteMembers', {
           url: '/members/invite',
           views: {
