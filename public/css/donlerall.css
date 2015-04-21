@@ -9070,7 +9070,6 @@ Timeline UI Base
   width: 865px;
   margin-top: 10px;
   -moz-box-shadow: 1px 1px 3px #ccc;
-/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 .user_page .dl_container .main .dl_info_container .info_left {
@@ -9363,7 +9362,6 @@ Timeline UI Base
   margin-top: 5px;
   background-color: #fff;
   -moz-box-shadow: 1px 1px 3px #ccc;
-/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
   border-radius: 2px;
   padding-top: 10px;
@@ -9448,7 +9446,6 @@ Timeline UI Base
   margin-top: 4px;
   margin-bottom: 10px;
   -moz-box-shadow: 1px 1px 3px #ccc;
-/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
   border-radius: 2px;
   width: 100%;
@@ -9860,7 +9857,6 @@ Timeline UI Base
   background-color: #fff;
   margin-bottom: 10px;
   -moz-box-shadow: 1px 1px 3px #ccc;
-/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 .user_page .dl_container .side {
@@ -9883,7 +9879,6 @@ Timeline UI Base
   border-radius: 2px;
   width: 240px;
   -moz-box-shadow: 1px 1px 3px #ccc;
-/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 .user_page .dl_container .side .old_campaign_container.commentCampaign {
@@ -9954,7 +9949,6 @@ Timeline UI Base
   margin-bottom: 10px;
   border-radius: 2px;
   -moz-box-shadow: 1px 1px 3px #ccc;
-/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 .user_page .dl_container .side .sponsor_container:hover .dl_icons {
@@ -9999,7 +9993,6 @@ Timeline UI Base
   height: 98px;
   border-radius: 2px;
   -moz-box-shadow: 1px 1px 3px #ccc;
-/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 .user_page .dl_container .side .infobox .head_title {
@@ -10061,7 +10054,6 @@ Timeline UI Base
 }
 .user_page .dl_container .schedule_small {
   -moz-box-shadow: 1px 1px 3px #ccc;
-/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 .user_page .dl_container .schedule_small.affix {

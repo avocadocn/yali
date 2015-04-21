@@ -88,6 +88,15 @@
       position relative
       width 145px
       float right
+    .search-time-button
+      position absolute
+      right -80px
+    .date-range-picker
+      border 1px solid #ccc
+      background #fff
+      cursor pointer
+      padding 5px 10px
+      float left
     .col-xs-6
       .data-table-paginate
         float right
@@ -95,6 +104,37 @@
         ul.pagination
           margin 2px 0
           white-space nowrap
+  .row.content
+    .box-success
+      border-color #3c8dbc
+      .box-header
+        background #3c8dbc
+    .box-body
+      min-height 150px
+      max-height 210px
+      overflow-y auto
+  .team-card
+    position relative
+    width 23%
+    float left
+    margin-top 10px
+    margin-right 10px
+    cursor pointer
+    .info-box
+      min-height 45px
+      .info-box-icon
+        width 50px
+        height 50px
+        background-color #fff
+        img
+          position absolute
+          width 40px
+          height 40px
+          top 5px
+          left 5px
+    &.selected
+      .info-box
+        background-color #a6d6f4
 //- @media (min-width: 1315px)
 //-   .select_team
 //-     width 720px !important
