@@ -48,23 +48,24 @@
         .box.box-warning
           .box-header.with-border
             h3.box-title 新成员
-          .box-body.no-padding
-            .users-list.clearfix
+          .box-body(ng-class="{'no-padding': latestUserList.length > 0}")
+            .users-list.clearfix(ng-if="latestUserList.length > 0")
               li(ng-repeat="user in latestUserList")
                 img(ng-src="{{user.photo}}/64/64")
                 a.users-list-name(href="#" ng-bind="user.nickname")
                 span.users-list-date(ng-bind-template="{{user.register_date | date:'yyyy-MM-dd'}}")
-          .box-footer.text-center
+            p.description_text(ng-if="!latestUserList || latestUserList.length === 0" ng-cloak) 还没有成员
+          .box-footer.text-center(ng-if="latestUserList.length > 0")
             a(ui-sref="allMembers") 所有成员
       .col-md-6
         .box.box-primary
           .box-header.with-border
             h3.box-title 近期活动
-            .box-tools.pull-right
+            .box-tools.pull-right(ng-if="latestCampaignList && latestCampaignList.length > 0")
               a.btn.btn-box-tool(ui-sref="campaigns") 更多&nbsp;
                 i.fa.fa-angle-double-right
           .box-body
-            .dl_campaign_list(ng-if="latestCampaignList")
+            .dl_campaign_list(ng-if="latestCampaignList && latestCampaignList.length > 0")
               .dl_campaign_item(ng-repeat="campaign in latestCampaignList")
                 p.dl_cp_card_date(ng-if="needShowTime($index)" ng-bind-template="{{campaign.start_time | date:'yyyy年M月d日'}}")
                 .dl_cp_card
@@ -87,3 +88,5 @@
                   .cp_member_count.text-center
                     span.count_number(ng-bind-template="{{campaign.members_count || 0}}")
                     span.count_text 报名
+            p.description_text(ng-if="!latestCampaignList || latestCampaignList.length === 0") 还没有活动
+
