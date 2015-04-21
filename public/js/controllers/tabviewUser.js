@@ -1087,135 +1087,136 @@ tabViewUser.controller('ScheduleSmallController', ['$scope', '$http', '$rootScop
     $scope.getCampaigns($scope.campaignsType);
   }
 ]);
-tabViewUser.controller('CampaignListController', ['$scope', '$http', '$rootScope',
-  function($scope, $http, $rootScope) {
-    $scope.company = false;
-    $http.get('/campaign/getCampaigns/user/'+$rootScope.uid+'/all/0/0?' + (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
-      $scope.campaigns = data.campaigns;
-      $rootScope.sum = $scope.campaigns.length;
-      if(data.campaignLength<20){
-        $scope.loadMore_flag = false;
-      }
-      else{
-        $scope.loadMore_flag = true;
-      }
-    });
-    $scope.loadMore_flag = true;
-    $scope.block = 1;
-    $scope.page = 0;
-    $scope.lastPage_flag = false;
-    $scope.nextPage_flag = false;
-    $scope.loadMore = function(){
-      $http.get('/campaign/getCampaigns/user/'+$rootScope.uid+'/all/'+$scope.page+'/'+$scope.block+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
-        if(data.result===1 && data.campaigns.length>0){
-          $scope.campaigns = $scope.campaigns.concat(data.campaigns);
-          if(data.campaignLength<20){
-            $scope.loadMore_flag = false;
-          }
-          else{
-            $scope.loadMore_flag = true;
-          }
-          if(++$scope.block==5){
-            $scope.nextPage_flag = true;
-            $scope.loadMore_flag = false;
-            if($scope.page>1){
-              $scope.lastPage_flag = true;
-            }
-          }
+// 似乎已经是不用的活动列表controller。注释 by -M 2015.4.21
+// tabViewUser.controller('CampaignListController', ['$scope', '$http', '$rootScope',
+//   function($scope, $http, $rootScope) {
+//     $scope.company = false;
+//     $http.get('/campaign/getCampaigns/user/'+$rootScope.uid+'/all/0/0?' + (Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+//       $scope.campaigns = data.campaigns;
+//       $rootScope.sum = $scope.campaigns.length;
+//       if(data.campaignLength<20){
+//         $scope.loadMore_flag = false;
+//       }
+//       else{
+//         $scope.loadMore_flag = true;
+//       }
+//     });
+//     $scope.loadMore_flag = true;
+//     $scope.block = 1;
+//     $scope.page = 0;
+//     $scope.lastPage_flag = false;
+//     $scope.nextPage_flag = false;
+//     $scope.loadMore = function(){
+//       $http.get('/campaign/getCampaigns/user/'+$rootScope.uid+'/all/'+$scope.page+'/'+$scope.block+'?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+//         if(data.result===1 && data.campaigns.length>0){
+//           $scope.campaigns = $scope.campaigns.concat(data.campaigns);
+//           if(data.campaignLength<20){
+//             $scope.loadMore_flag = false;
+//           }
+//           else{
+//             $scope.loadMore_flag = true;
+//           }
+//           if(++$scope.block==5){
+//             $scope.nextPage_flag = true;
+//             $scope.loadMore_flag = false;
+//             if($scope.page>1){
+//               $scope.lastPage_flag = true;
+//             }
+//           }
 
-        }
-        else{
-          $scope.loadOver_flag = true;
-          $scope.loadMore_flag = false;
-          $scope.nextPage_flag = false;
-        }
-      });
-    };
-    $scope.changePage = function(flag){
-      $http.get('/campaign/getCampaigns/user/'+$rootScope.uid+'/all/'+($scope.page+flag)+'/0?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
-        if(data.result===1 && data.campaigns.length>0){
-          if(flag ==1){
-            $scope.page++;
-          }
-          else{
-            $scope.page--;
-          }
-          $scope.campaigns = data.campaigns;
-          $scope.nextPage_flag = false;
-          $scope.lastPage_flag = false;
-          $scope.loadOver_flag = false;
-          $scope.block = 1;
-          if(data.campaignLength<20){
-            $scope.loadMore_flag = false;
-            if(flag==1){
-              $scope.lastPage_flag = true;
-              $scope.nextPage_flag = false;
-            }
-            else{
-              $scope.lastPage_flag = false;
-              $scope.nextPage_flag = true;
-            }
-            $scope.loadOver_flag = true;
-          }
-          else{
-            $scope.loadMore_flag = true;
-            $scope.nextPage_flag = false;
-            $scope.lastPage_flag = false;
-            $scope.loadOver_flag = false;
-          }
-          window.scroll(0,0);
-        }
-        else{
-          $scope.nextPage_flag = false;
-          $scope.loadMore_flag = false;
-          $scope.loadOver_flag = true;
-        }
-      });
-    };
-    $scope.join = function(campaign_id,index,tid) {
-      if(!tid||tid.length<2){
-        try {
-          $http({
-            method: 'post',
-            url: '/campaign/joinCampaign/'+campaign_id,
-            data:{
-              campaign_id : campaign_id,
-              tid : tid?tid[0]._id : null
-            }
-          }).success(function(data, status) {
-            if(data.result===1){
-              alertify.alert('成功加入该活动!');
-              $scope.campaigns[index].join_flag = 1;
-            }
-            else{
-              alertify.alert(data.msg);
-            }
-          }).error(function(data, status) {
-            alertify.alert('DATA ERROR');
-          });
-        }
-        catch(e) {
-          console.log(e);
-        }
-      }
-      else{
-        $scope.join_teams=tid;
-        $scope.select_index = 0;
-        $scope.join_team = $scope.join_teams[0];
-        $('#joinTeamSelectmodal').modal();
-        $scope.campaign_id = campaign_id;
-        $scope.campaign_index = index;
-      }
-    };
-    $scope.selcetJoinTeam = function(index){
-      $scope.join_team = $scope.join_teams[index];
-      $scope.select_index = index;
-    };
-    $scope.joinCampaign = function(){
-      $scope.join($scope.campaign_id,$scope.campaign_index,[$scope.join_team]);
-    };
-  }
-]);
+//         }
+//         else{
+//           $scope.loadOver_flag = true;
+//           $scope.loadMore_flag = false;
+//           $scope.nextPage_flag = false;
+//         }
+//       });
+//     };
+//     $scope.changePage = function(flag){
+//       $http.get('/campaign/getCampaigns/user/'+$rootScope.uid+'/all/'+($scope.page+flag)+'/0?'+(Math.round(Math.random()*100) + Date.now())).success(function(data, status) {
+//         if(data.result===1 && data.campaigns.length>0){
+//           if(flag ==1){
+//             $scope.page++;
+//           }
+//           else{
+//             $scope.page--;
+//           }
+//           $scope.campaigns = data.campaigns;
+//           $scope.nextPage_flag = false;
+//           $scope.lastPage_flag = false;
+//           $scope.loadOver_flag = false;
+//           $scope.block = 1;
+//           if(data.campaignLength<20){
+//             $scope.loadMore_flag = false;
+//             if(flag==1){
+//               $scope.lastPage_flag = true;
+//               $scope.nextPage_flag = false;
+//             }
+//             else{
+//               $scope.lastPage_flag = false;
+//               $scope.nextPage_flag = true;
+//             }
+//             $scope.loadOver_flag = true;
+//           }
+//           else{
+//             $scope.loadMore_flag = true;
+//             $scope.nextPage_flag = false;
+//             $scope.lastPage_flag = false;
+//             $scope.loadOver_flag = false;
+//           }
+//           window.scroll(0,0);
+//         }
+//         else{
+//           $scope.nextPage_flag = false;
+//           $scope.loadMore_flag = false;
+//           $scope.loadOver_flag = true;
+//         }
+//       });
+//     };
+//     $scope.join = function(campaign_id,index,tid) {
+//       if(!tid||tid.length<2){
+//         try {
+//           $http({
+//             method: 'post',
+//             url: '/campaign/joinCampaign/'+campaign_id,
+//             data:{
+//               campaign_id : campaign_id,
+//               tid : tid?tid[0]._id : null
+//             }
+//           }).success(function(data, status) {
+//             if(data.result===1){
+//               alertify.alert('成功加入该活动!');
+//               $scope.campaigns[index].join_flag = 1;
+//             }
+//             else{
+//               alertify.alert(data.msg);
+//             }
+//           }).error(function(data, status) {
+//             alertify.alert('DATA ERROR');
+//           });
+//         }
+//         catch(e) {
+//           console.log(e);
+//         }
+//       }
+//       else{
+//         $scope.join_teams=tid;
+//         $scope.select_index = 0;
+//         $scope.join_team = $scope.join_teams[0];
+//         $('#joinTeamSelectmodal').modal();
+//         $scope.campaign_id = campaign_id;
+//         $scope.campaign_index = index;
+//       }
+//     };
+//     $scope.selcetJoinTeam = function(index){
+//       $scope.join_team = $scope.join_teams[index];
+//       $scope.select_index = index;
+//     };
+//     $scope.joinCampaign = function(){
+//       $scope.join($scope.campaign_id,$scope.campaign_index,[$scope.join_team]);
+//     };
+//   }
+// ]);
 tabViewUser.controller('AccountFormController', ['$scope', '$http', '$rootScope',
   function($scope, $http, $rootScope) {
     angular.element('.tooltip').hide();

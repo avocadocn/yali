@@ -1,28 +1,58 @@
-.members
+.member_invite_page
   section.content-header
     h1
       | 批量导入
-    form.form-inline
+    form.form-inline#importForm
       .form-group
         label(for="importFile") 导入员工名单:
         input.form-control(type="file" id="importFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-      button.btn.btn-default(ng-click="importExcel()") 导入
-      button.btn.btn-primary(ng-click="invite()" ng-disabled="!members||members.length==0") 激活
+      button.btn.btn-default(ng-click="importExcel()") 上传
   section.content
-    .box.box-primary
+    .box.box-primary(ng-if="validMembers&&validMembers.length>0")
       .box-header
-        h3.box-title 所有成员
+        h3.box-title 有效成员列表
+        small(ng-bind-template="{{validMembers.length}}人")
       .box-body.no-padding
-        table.table.table-striped
-          thead
-            tr
-              th 序号
-              th 邮箱
-              th 真实姓名
-              th 状态
-          tbody
-            tr(ng-repeat="member in members")
-              td {{$index+1}}
-              td {{member.email}}
-              td {{member.name}}
-              td {{member.status}}
+        .table_container
+          table.table.table-striped
+            thead
+              tr
+                th
+                  button.btn.btn-link(ng-click="selectAll()") 全选
+                th 序号
+                th 邮箱
+                th 真实姓名
+                th 状态
+            tbody
+              tr(ng-repeat="member in validMembers")
+                td 
+                  input(type="checkbox" ng-model="member.select")
+                td {{$index+1}}
+                td {{member.email}}
+                td {{member.name}}
+                td {{member.status| inviteMemberFormat}}
+        .row.operator.text-center
+          .col-md-4.col-md-offset-2
+            button.btn.btn-info(ng-click="reset()" ng-disabled="!members||members.length==0") 重新选择
+          .col-md-4
+            button.btn.btn-primary(ng-click="invite()" ng-disabled="!validMembers||validMembers.length==0") 邀请
+        
+    .box.box-primary(ng-if="invalidMembers&&invalidMembers.length>0")
+      .box-header
+        h3.box-title 无效成员列表
+        small(ng-bind-template="{{invalidMembers.length}}人")
+      .box-body.no-padding
+        .table_container
+          table.table.table-striped
+            thead
+              tr
+                th 序号
+                th 邮箱
+                th 真实姓名
+                th 状态
+            tbody
+              tr(ng-repeat="member in invalidMembers")
+                td {{$index+1}}
+                td {{member.email}}
+                td {{member.name}}
+                td {{member.status | inviteMemberFormat}}
