@@ -106,5 +106,18 @@ define(['./controller', 'jQuery', 'cropit'], function (controllers, $) {
 
     }
   ])
+  .controller('company.newCompanyCtrl', ['$scope', function($scope) {
+
+    setTimeout(function() {
+      var wrapEle = document.querySelector('.content-wrapper');
+      var todoBoxEle = document.querySelector('#todo_box');
+
+      var todoBoxLastLineMarginBottom = 20;
+      var contentPadding = 15;
+      var marginTopValue = (wrapEle.clientHeight - (todoBoxEle.clientHeight - todoBoxLastLineMarginBottom) - contentPadding * 2) / 2;
+      todoBoxEle.style.marginTop = marginTopValue + 'px';
+    });
+
+  }])
 });
 

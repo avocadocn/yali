@@ -22,6 +22,15 @@ define(['app'], function (app) {
             }
           }
         })
+        .state('newCompany', {
+          url: '/new',
+          views: {
+            content: {
+              templateUrl: templateUrl('/views/new_company.html'),
+              controller: 'company.newCompanyCtrl'
+            }
+          }
+        })
         .state('login', {
           url: '/login',
           templateUrl: '/company/manager/login.html',
