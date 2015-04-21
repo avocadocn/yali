@@ -1,0 +1,89 @@
+.campaigns_page
+  section.content-header
+    h1 
+      |活动管理
+      //- span.pull-right 900个活动
+      //- a(href="" type="button" data-toggle="modal" data-target="#sponsorCampaignModel" class="btn btn-primary pull-right") 发活动
+      a.btn.btn-primary.pull-right(href="" type="button" data-toggle="modal" data-target="#sponsorCampaignModel") 发活动
+  section.content
+    .table_block.clearfix
+      .calendar.schedule_small
+        .schedulebox_small
+          .clearfix.schedule_operator
+            p.calendar_nav#calendar_nav
+              i.fa.fa-bookmark-o.pull-right(ng-click="recoverDate()" title="还原")
+              a.pull-right(data-calendar-nav="next" href="javascript:void(0)") &gt;
+              i.fa.fa-calendar.pull-left
+              a.pull-left(data-calendar-nav="prev" href="javascript:void(0)") &lt;
+              a.calendar_title(data-calendar-nav="today" href="javascript:void(0)") 
+                span#calendar_title
+          .calendar_box.calendar_box_small
+            #calendar_view
+              #calendar
+          .calendar_tips
+            span.join_sign.length_1
+            label.campaign_label 没有活动
+            span.join_sign.length_2
+            label.campaign_label 2个及以下
+            span.join_sign.length_3
+            label.campaign_label 2个以上
+      .col-md-3.col-sm-6.col-xs-12
+        .info-box.bg-yellow
+          span.info-box-icon
+            i.fa.fa-calendar
+          .info-box-content
+            span.info-box-text Events
+            span.info-box-number 123
+  section.content
+    .campaign_list.clearfix
+      .dl_block_head
+      .box.box-primary
+        .box-header.with-border
+          h4 活动
+          .box-tools.pull-right
+            .has-feedback
+              input(type="text" class="form-control input-sm" placeholder="Search...")
+              span(class="glyphicon glyphicon-search form-control-feedback")
+          .box-tools.pull-right
+            .select
+              .select-label 每页
+              select.form-control.input-sm(ng-model="number" ng-options="number.num for number in numbers" ng-change="selectNumOfPage()")
+        .box-body
+          table.table.table-striped.dl_table
+            thead
+              tr
+                th.center 序号
+                th.center Logo
+                th.center 主题
+                th.center 开始时间
+                th.center 结束时间
+                th.center 人数
+                th.center 状态
+                th.center 操作
+            tbody
+              tr(ng-repeat="campaign in campaigns")
+                td.center(ng-cloak) {{$index+1}}
+                td.center(ng-cloak)
+                  img(ng-src="{{campaign.logo}}/40/40")
+                td.center.theme(ng-cloak) {{campaign.theme}}
+                td.center(ng-cloak) 
+                  p {{campaign.startTime | date:'yyyy-MM-dd'}}
+                  p {{campaign.startTime | date:'HH:mm'}}
+                td.center(ng-cloak)
+                  p {{campaign.endTime | date:'yyyy-MM-dd'}}
+                  p {{campaign.endTime | date:'HH:mm'}}
+                td.center(ng-cloak) {{campaign.memberNumber}}
+                td.center(ng-cloak) {{campaign.status}}
+                td.center(ng-cloak) 
+                  a(ng-click="goDetail(campaign._id)" href="") 查看详情
+                  button.dl_btn.close_btn(ng-if="campaign.status==='未开始'||campaign.status==='已开始'" ng-disabled="!campaign.active" ng-click="closeCampaign(campaign)") {{campaign.active? '关闭活动': '已经关闭'}}
+      nav.pages
+        ul.pagination
+          li(ng-if="nowPage>0" ng-class="{disabled:nowPage<=0}" ng-click="getPage('pre')" ng-cloak)
+            a.page(href="") 上一页
+          li(ng-repeat="page in pages" ng-click="getPage(null,$index)" ng-class="{active:$index===nowPage}" ng-cloak)
+            a.page(href="") {{$index+1}}
+          li(ng-if="hasNext" ng-class="{disabled:!hasNext}" ng-click="getPage('next')" ng-cloak)
+            a.page(href="") 下一页
+sponsor-campaign(data="data")
+edit-campaign(campaign-id="campaignId")

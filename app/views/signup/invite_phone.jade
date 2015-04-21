@@ -8,7 +8,7 @@ block content
       span 个人注册
     div(ng-controller='ActiveController' ng-init="currentDomain='#{domains[0]}';")
       if invitedUser
-        .hidden#invitedUserData(data-id="#{invitedUser.id}" data-email="#{invitedUser.email}" data-active="#{invitedUser.mail_active}")
+        .hidden#invitedUserData(data-id="#{invitedUser.id}" data-email="#{invitedUser.email}"  data-realname="#{invitedUser.realname}" data-nickname="#{invitedUser.nickname}" data-active="#{invitedUser.mail_active}")
       form(role="form" name='active_form' action='/users/dealActive' method='post')
         .form-group.dl_sm_group(ng-class="{'has-error':active&&active!==1}")
           .dl_row

@@ -40,6 +40,10 @@ define(['./company', 'jQuery'], function (company, $) {
 
       getLatestMembers: function(id) {
         return $http.get(apiBaseUrl + '/companies/' + id + '/latestMembers');
+      },
+
+      getHasLeader: function(id) {
+        return $http.get(apiBaseUrl + '/companies/' + id + '/hasLeader');
       }
     }
   }]);

@@ -9,7 +9,7 @@
               sup.sup_text 个小队
             p 没有任命队长
           .icon
-            i.fa.fa-flag
+            i.fa.fa-flag.fa-fw
           a.small-box-footer(ui-sref="teamList") 任命队长&nbsp;
             i.fa.fa-arrow-circle-right
 
@@ -19,7 +19,7 @@
             h3 活动
             p &nbsp;
           .icon
-            i.fa.fa-table
+            i.fa.fa-table.fa-fw
           .small-box-footer.clearfix
             a.pull-left.box_footer_link(ui-sref="campaigns")
               i.fa.fa-plus
@@ -35,7 +35,7 @@
               sup.sup_text 名员工
             p 等待审核
           .icon
-            i.fa.fa-users
+            i.fa.fa-user-plus.fa-fw
           .small-box-footer.clearfix
             a.pull-left.box_footer_link(ui-sref="inviteMembers")
               i.fa.fa-plus
@@ -44,7 +44,7 @@
               i.fa.fa-arrow-circle-right
 
     .row
-      .col-lg-offset-1.col-lg-4.col-md-6
+      .col-md-6
         .box.box-warning
           .box-header.with-border
             h3.box-title 新成员
@@ -56,7 +56,7 @@
                 span.users-list-date(ng-bind-template="{{user.register_date | date:'yyyy-MM-dd'}}")
           .box-footer.text-center
             a(ui-sref="allMembers") 所有成员
-      .col-lg-offset-1.col-lg-5.col-md-6
+      .col-md-6
         .box.box-primary
           .box-header.with-border
             h3.box-title 近期活动

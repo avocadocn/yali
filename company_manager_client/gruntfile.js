@@ -62,7 +62,7 @@ module.exports = function(grunt) {
             expand: true,
             flatten: true,
             filter: 'isFile',
-            src: ['bower-lib/bootstrap/dist/fonts/**', 'custom-lib/fonts/**'],
+            src: ['bower-lib/bootstrap/dist/fonts/**', 'bower-lib/font-awesome/fonts/**'],
             dest: '../public/company_client/fonts/'
           },
           {
@@ -80,7 +80,7 @@ module.exports = function(grunt) {
           'bower-lib/bootstrap/dist/css/bootstrap.min.css',
           'bower-lib/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css',
           'bower-lib/pen/src/pen.css',
-          'custom-lib/font-awesome/font-awesome.min.css',
+          'bower-lib/font-awesome/css/font-awesome.min.css',
           'bower-lib/bootstrap-calendar/css/calendar.min.css',
           'bower-lib/admin-lte/dist/css/AdminLTE.min.css',
           'bower-lib/admin-lte/dist/css/skins/skin-blue.min.css',

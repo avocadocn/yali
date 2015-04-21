@@ -22,20 +22,29 @@ define(['app'], function (app) {
             }
           }
         })
+        .state('newCompany', {
+          url: '/new',
+          views: {
+            content: {
+              templateUrl: templateUrl('/views/new_company.html'),
+              controller: 'company.newCompanyCtrl'
+            }
+          }
+        })
         .state('login', {
           url: '/login',
           templateUrl: '/company/manager/login.html',
           controller: 'account.loginCtrl'
         })
-        .state('statistics', {
-          url: '/statistics',
-          views: {
-            content: {
-              templateUrl: templateUrl('/views/statistics.html'),
-              controller: 'statistics.chartsCtrl'
-            }
-          }
-        })
+        // .state('statistics', {
+        //   url: '/statistics',
+        //   views: {
+        //     content: {
+        //       templateUrl: templateUrl('/views/statistics.html'),
+        //       controller: 'statistics.chartsCtrl'
+        //     }
+        //   }
+        // })
         .state('companyInfo', {
           url: '/company/info',
           views: {
@@ -90,6 +99,15 @@ define(['app'], function (app) {
             }
           }
         })
+        .state('campaignsCanlendar', {
+          url: '/campaignsCanlendar',
+          views: {
+            content: {
+              templateUrl: templateUrl('/views/campaigns-canlendar.html'),
+              controller: 'campaign.campaignCtrl'
+            }
+          }
+        })
         .state('inviteMembers', {
           url: '/members/invite',
           views: {
@@ -123,6 +141,15 @@ define(['app'], function (app) {
             content: {
               templateUrl: templateUrl('/views/members_all.html'),
               controller: 'member.allCtrl'
+            }
+          }
+        })
+        .state('batchImport', {
+          url: '/members/batchImport',
+          views: {
+            content: {
+              templateUrl: templateUrl('/views/members_batchimport.html'),
+              controller: 'member.batchImport'
             }
           }
         })

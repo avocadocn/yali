@@ -23,6 +23,7 @@ define(['./controller'], function (controllers) {
       $scope.nowPage = 0;
       $scope.number = $scope.numbers[0];
       $scope.numOfPage = 10;
+      $scope.show = false;
       //调用情况：
       //  1、日期变更时
       //  2、活动单位变更
@@ -209,6 +210,7 @@ define(['./controller'], function (controllers) {
               var day = new Date($scope.nowDay);
               $scope.startTime = day.valueOf();
               $scope.endTime = day.valueOf() + 1000*60*60*24 - 1;
+              $scope.show = false;
               getCampaigns();
             });
           },
@@ -245,7 +247,9 @@ define(['./controller'], function (controllers) {
         $scope.campaignId = campaignId;
         $('#editCampaignModal').modal('show');
       };
-
+      $scope.showCanlendar = function() {
+        $scope.show = true;
+      }
       $scope.closeCampaign = function (campaign) {
         if(campaign.active) {
           campaign.active = false;

@@ -14,6 +14,9 @@
     "pen": "https://github.com/afeidonler/pen.git#master",
     "moment": "^2.7.0",
     "bootstrap-calendar": "https://github.com/CahaVar/bootstrap-calendar.git#0.2.9",
-    "admin-lte": "~2.0.3"
+    "admin-lte": "~2.0.3",
+    "js-xlsx": "~0.8.0",
+    "jszip": "Stuk/jszip#~2.5.0",
+    "font-awesome": "~4.3.0"
   }
 }
