@@ -1,0 +1,31 @@
+sideWidth = 230px
+smallBoxWidth = 470px
+smallBoxMargin = 10px
+todoBoxWidth = smallBoxWidth + smallBoxMargin * 2
+todoListWidthInOneBox = sideWidth + todoBoxWidth
+todoListWidthInTwoBox = sideWidth + todoBoxWidth * 2
+
+smallBox()
+  width smallBoxWidth
+  margin-left auto
+  margin-right auto
+
+.new_company_page
+  .todo_box_list
+    margin-left auto
+    margin-right auto
+    @media (min-width: todoListWidthInOneBox) and (max-width: todoListWidthInTwoBox - 1px)
+      width todoBoxWidth
+    @media (min-width: todoListWidthInTwoBox)
+      width todoBoxWidth * 2
+  .todo_box
+    @media (min-width: todoListWidthInTwoBox)
+      float left
+      width 50%
+      .small-box
+        smallBox()
+    @media (min-width: todoListWidthInOneBox) and (max-width: todoListWidthInTwoBox - 1px)
+      .small-box
+        smallBox()
+    h3
+      white-space normal

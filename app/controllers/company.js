@@ -1176,35 +1176,37 @@ exports.getCompanyTeamsInfo = function(req, res) {
                   }
                 }
               }
-              photo_album_controller.getNewPhotos(team._id, 2, function(photos) { //给每个小队增加最新图片
-                var _team = {
-                  '_id': team._id,
-                  'gid': team.gid,
-                  'did': did,
-                  'group_type': team.group_type,
-                  'logo': team.logo,
-                  'active': team.active,
-                  'count': team.count,
-                  // 'entity_type': team.entity_type,
-                  'leader': team.leader,
-                  'member': team.member,
-                  'name': team.name,
-                  'campaign_theme': teaminfo.campaign_theme,
-                  'campaign_id': teaminfo.campaign_id,
-                  'campaign_start_time': teaminfo.start_time,
-                  'photos': photos,
-                  'photo_list': teaminfo.start_time,
-                  //more 为 true 可以展开
-                  'more': team.member.length > 7 ? true : false,
-                  //初始状态为收起
-                  'collapse': false
-                };
-                team.did = did;
-                team.set('did', did, {
-                  strict: false
-                });
-                allcallback(null, _team);
+              var _team = {
+                '_id': team._id,
+                'gid': team.gid,
+                'did': did,
+                'group_type': team.group_type,
+                'logo': team.logo,
+                'active': team.active,
+                'count': team.count,
+                // 'entity_type': team.entity_type,
+                'leader': team.leader,
+                'member': team.member,
+                'name': team.name,
+                'campaign_theme': teaminfo.campaign_theme,
+                'campaign_id': teaminfo.campaign_id,
+                'campaign_start_time': teaminfo.start_time,
+                // 'photos': photos,
+                // 'photo_list': teaminfo.start_time,
+                //more 为 true 可以展开
+                'more': team.member.length > 7 ? true : false,
+                //初始状态为收起
+                'collapse': false
+              };
+              team.did = did;
+              team.set('did', did, {
+                strict: false
               });
+              allcallback(null, _team);
+              //最新图片不要了 2015.4.21 -M
+              // photo_album_controller.getNewPhotos(team._id, 2, function(photos) { //给每个小队增加最新图片
+                
+              // });
             }
           ]);
         }, function(err, results) {
@@ -1321,7 +1323,7 @@ exports.timeLine = function(req, res) {
             start_time: campaign.start_time,
             provoke: ct===4||ct===5||ct===7||ct===9,
             year: getYear(campaign),
-            photo_list: photo_album_controller.getLatestPhotos(campaign.photo_album, 6)
+            // photo_list: photo_album_controller.getLatestPhotos(campaign.photo_album, 6)
           }
           // todo new time style
           // console.log(campaign);

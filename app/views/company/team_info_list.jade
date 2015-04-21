@@ -80,10 +80,10 @@ div(ng-if = "!loading&&role !== 'HR'")
             p
               a(href="/campaign/detail/{{team.campaign_id}}" target="_blank" ) &nbsp;&nbsp;&nbsp;&nbsp;{{team.campaign_theme}} ({{team.campaign_start_time | date:'yyyy-MM-dd HH:mm:ss' | dateView}})
 
-        .photos.clearfix(ng-if="team.photos")
-          p 最新照片:
-          .photo(ng-repeat="photo in team.photos")
-            img.img_contain(ng-src="{{photo.uri}}/134/134")
+        //- .photos.clearfix(ng-if="team.photos")
+        //-   p 最新照片:
+        //-   .photo(ng-repeat="photo in team.photos")
+        //-     img.img_contain(ng-src="{{photo.uri}}/134/134")
         .memberlist(ng-if="team.member.length > 0")
           //- collapse 为true 是展开状态
           .dl_row.clearfix

@@ -149,15 +149,15 @@ block contentExt
                   .leader(ng-if="member.isLeader")
                   img.member_photo(ng-src="{{member.photo}}/32/32" ng-Mouseenter="showUserCard(member._id, member._id + 'member_card')" id='pop{{member._id}}member_card' rel='popover')
 
-        if isActive
-          .component.photo_album_card(class="#{helper.start('order-4')} #{helper.end('order-4')}")
-            a.photo_wrap(href="/photoAlbum/#{campaign.photo_album._id}/detailView")
-              i.fa.fa-chevron-circle-right.fa-3x.view
-              p.text 影集
-            if photo
-              img(src="#{photo}/240/180")
-            else
-              img(src="/img/photo_album.png")
+        //- if isActive
+        //-   .component.photo_album_card(class="#{helper.start('order-4')} #{helper.end('order-4')}")
+        //-     a.photo_wrap(href="/photoAlbum/#{campaign.photo_album._id}/detailView")
+        //-       i.fa.fa-chevron-circle-right.fa-3x.view
+        //-       p.text 影集
+        //-     if photo
+        //-       img(src="#{photo}/240/180")
+        //-     else
+        //-       img(src="/img/photo_album.png")
 
         if components.ScoreBoard && isStart && isActive
           each scoreBoard in components.ScoreBoard

@@ -77,7 +77,7 @@ mixin campaignsContainer(containerTitle,containerClass,items,detailFlag)
       //-     img.photo(ng-click="showMorePhoto(item.photo_album_id,photo.uri)" ng-repeat="photo in item.photo_thumbnails" class="photo_{{$index}}" ng-src="{{($index==0?photo.uri+'/282/305':photo.uri+'/282/150')}}")
       //-   div(class="photos_{{item.photo_thumbnails.length}}" ng-switch-when="4")
       //-     img.photo(ng-click="showMorePhoto(item.photo_album_id,photo.uri)" ng-repeat="photo in item.photo_thumbnails" class="photo_{{$index}}" ng-src="{{($index==0 || $index==3)?photo.uri+'/235/170':photo.uri+'/330/170'}}")
-      pre-image-box(ng-if="(#{detailFlag}&&#{containerClass})||nowShow=='#{containerClass}'" images="item.photo_thumbnails" photo-album-id="item.photo_album_id")
+      //- pre-image-box(ng-if="(#{detailFlag}&&#{containerClass})||nowShow=='#{containerClass}'" images="item.photo_thumbnails" photo-album-id="item.photo_album_id")
       .comments(ng-if="(#{detailFlag}&&#{containerClass})||nowShow=='#{containerClass}'")
         //- a.clearLinkUnderline.pull-right.vote(ng-if="!item.confirm_status") {{item.campaign_unit[item.team[0]].positive}}个赞成
         a.clearLinkUnderline.pull-right.comment_num(ng-click="$root.showComment=$root.showComment=='#{containerClass}'+$index?null:'#{containerClass}'+$index;")
@@ -147,16 +147,16 @@ block aside
       a.clearLinkUnderline.fullparent(href="javascript:void(0);" ng-click="newCampaign()")
         span.dl_icons.icon_speaker
         label 发活动
-    .sponsor_container.provoke.affix_directive(title="进入找对手页面")
-      a.clearLinkUnderline.fullparent(href="/users/searchOpponents")
-        span.dl_icons.icon_binoculars
-        label 找对手
-  .old_campaign_container.commentCampaign.affix_directive(class="#{user_role=='LEADER'?'affix_leader':''}" title="查看有讨论的活动")
-    a.clearLinkUnderline.fullparent(href="#/commentCampaign/#{uid}" ng-click="openModal('commentCampaign')")
-      span.dl_icons.comment_w
-      label.label_info 活动讨论
-      label.news_count(ng-cloak) {{newReply.length}}
-        i.fa.fa-angle-right
+    //- .sponsor_container.provoke.affix_directive(title="进入找对手页面")
+    //-   a.clearLinkUnderline.fullparent(href="/users/searchOpponents")
+    //-     span.dl_icons.icon_binoculars
+    //-     label 找对手
+  //- .old_campaign_container.commentCampaign.affix_directive(class="#{user_role=='LEADER'?'affix_leader':''}" title="查看有讨论的活动")
+  //-   a.clearLinkUnderline.fullparent(href="#/commentCampaign/#{uid}" ng-click="openModal('commentCampaign')")
+  //-     span.dl_icons.comment_w
+  //-     label.label_info 活动讨论
+  //-     label.news_count(ng-cloak) {{newReply.length}}
+  //-       i.fa.fa-angle-right
   .old_campaign_container.timeline_container.affix_directive(class="#{user_role=='LEADER'?'affix_leader':''}" title="进入活动足迹页面")
     a.clearLinkUnderline.fullparent(href="/users/timeLine/#{uid}")
       span.dl_icons.footprint
