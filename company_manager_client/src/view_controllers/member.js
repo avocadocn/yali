@@ -75,39 +75,39 @@ define(['./controller','qrcode'], function (controllers,qrcode) {
       'memberService',
       '$modal',
       function ($rootScope, $scope, $state, memberService, $modal) {
-        memberService.getReportedMembers($rootScope.company._id).success(function (data) {
-          $scope.companyReportedMembers = data;
-        })
-        .error(function (data) {
-          alert(data.msg);
-        });
-        $scope.deal = function (id, dealFlag) {
-          memberService.deal({host_type:'user',host_id:id,flag:dealFlag}).success(function (data) {
-            $scope.modalInstance.dismiss('cancel');
-            alert('处理成功');
-          })
-          .error(function (data) {
-            $scope.modalInstance.dismiss('cancel');
-            alert(data.msg);
-
-          });
-        }
-        $scope.getDetail = function (id) {
-          $scope.nowId = id;
-          memberService.getMemberComments(id).success(function (data) {
-            $scope.comments = data;
-            $scope.modalInstance = $modal.open({
-              templateUrl: 'getUserCommentModal.html',
-              scope: $scope
-            });
-            $scope.close = function () {
-              $scope.modalInstance.dismiss('cancel');
-            }
-          })
-          .error(function (data) {
-            alert(data.msg);
-          });
-        }
+        // 屏蔽页暂时不要 －M 2014/4/20
+        // memberService.getReportedMembers($rootScope.company._id).success(function (data) {
+        //   $scope.companyReportedMembers = data;
+        // })
+        // .error(function (data) {
+        //   alert(data.msg);
+        // });
+        // $scope.deal = function (id, dealFlag) {
+        //   memberService.deal({host_type:'user',host_id:id,flag:dealFlag}).success(function (data) {
+        //     $scope.modalInstance.dismiss('cancel');
+        //     alert('处理成功');
+        //   })
+        //   .error(function (data) {
+        //     $scope.modalInstance.dismiss('cancel');
+        //     alert(data.msg);
+        //   });
+        // }
+        // $scope.getDetail = function (id) {
+        //   $scope.nowId = id;
+        //   memberService.getMemberComments(id).success(function (data) {
+        //     $scope.comments = data;
+        //     $scope.modalInstance = $modal.open({
+        //       templateUrl: 'getUserCommentModal.html',
+        //       scope: $scope
+        //     });
+        //     $scope.close = function () {
+        //       $scope.modalInstance.dismiss('cancel');
+        //     }
+        //   })
+        //   .error(function (data) {
+        //     alert(data.msg);
+        //   });
+        // }
       }
     ])
     .controller('member.allCtrl', [
@@ -133,6 +133,12 @@ define(['./controller','qrcode'], function (controllers,qrcode) {
             }
           }
         };
+        memberService.getMembers($rootScope.company._id,{resultType:4}).success(function (data) {
+          $scope.inactiveMemberLength = data.length;
+        })
+        .error(function (data) {
+          console.log(data.msg);
+        });
 
         var formatData = function(data) {
           $scope.node = {
@@ -193,17 +199,22 @@ define(['./controller','qrcode'], function (controllers,qrcode) {
           alert(data.msg);
         });
 
-        $scope.selectNode = function(node) {
-          if (node.is_company === true) {
-            return;
-          }
-          if ($scope.last_selected_node) {
-            $scope.last_selected_node.selected = false;
-          }
-          node.selected = true;
-          $scope.last_selected_node = node;
-        };
+        
+        
+
+        //编辑成员
+        // $scope.selectNode = function(node) {
+        //   if (node.is_company === true) {
+        //     return;
+        //   }
+        //   if ($scope.last_selected_node) {
+        //     $scope.last_selected_node.selected = false;
+        //   }
+        //   node.selected = true;
+        //   $scope.last_selected_node = node;
+        // };
         $scope.editUser = function (index) {
+          $scope.index = index;
           $scope.nowUser = $scope.companyMembers[index];
           formatData($scope.department);
           
@@ -211,20 +222,47 @@ define(['./controller','qrcode'], function (controllers,qrcode) {
             templateUrl: 'editUserModal.html',
             scope: $scope
           });
+          //关闭modal
           $scope.close = function () {
             $scope.modalInstance.dismiss('cancel');
           }
-          $scope.save = function () {
-            $scope.modalInstance.dismiss('cancel');
-            memberService.edit($scope.nowUser._id,{did:$scope.last_selected_node._id}).success(function (data) {
-              alert('编辑成功');
-              $state.reload();
+          //激活
+          $scope.active = function () {
+            var id = $scope.companyMembers[$scope.index]._id;
+            memberService.active(id).success(function (data) {
+              alert('激活成功');
+              $scope.companyMembers[$scope.index].active = true;
+              $scope.companyMembers[$scope.index].mail_active = true;
+              $scope.nowUser.active = true;
+              $scope.nowUser.mail_active = true;
             })
             .error(function (data) {
               alert(data.msg);
             });
+          };
+          //屏蔽
+          $scope.closeUser = function() {
+            var id = $scope.companyMembers[$scope.index]._id;
+            memberService.close(id).success(function (data) {
+              alert('屏蔽成功');
+              $scope.companyMembers[$scope.index].active = false;
+              $scope.nowUser.active = false;
+            })
+            .error(function (data) {
+              alert(data.msg);
+            });
+          };
+          // $scope.save = function () {
+          //   $scope.modalInstance.dismiss('cancel');
+          //   memberService.edit($scope.nowUser._id,{did:$scope.last_selected_node._id}).success(function (data) {
+          //     alert('编辑成功');
+          //     $state.reload();
+          //   })
+          //   .error(function (data) {
+          //     alert(data.msg);
+          //   });
 
-          }
+          // }
         }
       }
     ]).controller('member.batchImport', [

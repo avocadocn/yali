@@ -73,8 +73,9 @@ define(['./controller'], function (controllers) {
     .controller('team.createCtrl', [
       '$rootScope',
       '$scope',
+      '$state',
       'teamService',
-      function ($rootScope, $scope, teamService) {
+      function ($rootScope, $scope, $state, teamService) {
         $scope.newTeam = {
           _id: '',
           teamName: ''
@@ -87,10 +88,12 @@ define(['./controller'], function (controllers) {
         });
         $scope.changeType = function (index) {
           $scope.newTeam._id = $scope.groups[index]._id;
+          $scope.newTeam.teamName = $rootScope.company.shortName + '-' + $scope.groups[index].groupType + '队';
         }
         $scope.save = function () {
           teamService.create({selectedGroups:[$scope.newTeam]}).success(function (data) {
             alert('成功创建小队');
+            $state.go('teamList');
           })
           .error(function (data) {
             alert(data.msg)

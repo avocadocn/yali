@@ -1,11 +1,26 @@
 .members
-  section.content-header
-    h1
-      | 所有成员
-      small(ng-bind-template="共{{companyMembers.length}}人")
+  //- section.content-header
+  //-   h1
+  //-     | 所有成员
+      //- small(ng-bind-template="共{{companyMembers.length}}人")
+      //-这个人数不对 有bug -M
   section.content
+    .row
+      .col-md-6.col-sm-6.col-xs-12
+        a.info-box(ui-sref="inviteMembers")
+          .info-box-icon.bg-blue
+            i.fa.fa-group
+          .info-box-content
+            .info-box-text 邀请
+      .col-md-6.col-sm-6.col-xs-12
+        a.info-box(ui-sref="activeMembers")
+          .info-box-icon.bg-green
+            i.fa.fa-child
+          .info-box-content
+            .info-box-text 等待审核
+            .info-box-number(ng-cloak) {{inactiveMemberLength}}人
     .box.box-primary
-      .box-header
+      .box-header.with-border
         h3.box-title 所有成员
         .box-tools.pull-right
           ul.pagination.pagination-sm.inline
@@ -20,44 +35,75 @@
           thead
             tr
               th
-              th 头像
-              th 邮箱
-              th 真实姓名
-              th 部门
-              th 参加小队数
-              th 参加活动数
-              th 积分
+              th.center 头像
+              th.center 邮箱
+              th.center 真实姓名
+              th.center 部门
+              th.center 参加小队
+              th.center 参加活动
+              th.center 活跃度
               //- td 查看详情
-              th 操作
+              th.center 状态
+              th.center 编辑
           tbody
-            tr(ng-repeat="member in companyMembers")
+            tr(ng-repeat="member in companyMembers" ng-cloak)
               td {{$index+1}}
               td: img.memer_logo(ng-src="{{member.photo}}/40/40")
               td {{member.username}}
-              td {{member.realname}}
-              td {{member.department.name}}
-              td {{member.team.length}}
-              td {{member.campaignCount}}
-              td {{member.score.total}}
+              td.center {{member.realname || '-'}}
+              td.center {{member.department.name || '-'}}
+              td.center {{member.team.length}}
+              td.center {{member.campaignCount}}
+              td.center {{member.score.total}}
               //- td
               //-   button 查看详情
-              td
-                button.btn.btn-primary(ng-click="editUser($index)") 编辑
+              td.center
+                {{member.active? '正常' : member.mail_active ? '屏蔽中' : '未激活'}}
+              td.center
+                i.fa.fa-edit(ng-click="editUser($index)")
 script(type="text/ng-template" id="editUserModal.html")
   .modal-header
     h3.modal-title  编辑
   .modal-body
     .info_detail
-        .tree.select_tree
-          ul
-            li(ng-include="'node.html'" ng-class="hasChild(node)")
+      .form-group
+        span.col-sm-2.control-label 昵称
+        span.detail {{nowUser.nickname}}
+      .form-group
+        span.col-sm-2.control-label 真实姓名
+        span.detail {{nowUser.realname || '-'}}
+      .form-group
+        span.col-sm-2.control-label 邮箱
+        span.detail {{nowUser.username}}
+      .form-group
+        span.col-sm-2.control-label 部门
+        span.detail {{nowUser.department.name || '-'}}
+      .form-group
+        span.col-sm-2.control-label 参加小队
+        span.detail {{nowUser.team.length}}
+      .form-group
+        span.col-sm-2.control-label 参加活动
+        span.detail {{nowUser.campaignCount}}
+      .form-group
+        span.col-sm-2.control-label 活跃度
+        span {{nowUser.score.total}}
+      .form-group
+        span.col-sm-2.control-label 状态
+        span.detail {{nowUser.active? '正常' : nowUser.mail_active ? '屏蔽中' : '未激活'}}
+        
+      //- .tree.select_tree(ng-show="showDepartment")
+      //-   ul
+      //-     li(ng-include="'node.html'" ng-class="hasChild(node)")
   .modal-footer
-    button.btn.btn-primary(ng-click="save()") 确定
+    //- button.btn.btn-primary(ng-click="save()") 保存
+    button.btn.btn-danger(ng-if="nowUser.active" ng-click="closeUser()") 屏蔽
+    button.btn.btn-warning(ng-if="!nowUser.active && nowUser.mail_active" ng-click="active()") 取消屏蔽
+    button.btn.btn-info(ng-if="!nowUser.active && !nowUser.mail_active" ng-click="active()") 激活
     button.btn.btn-default(ng-click="close()") 关闭
-script(type="text/ng-template" id="node.html")
-    .self.inline
-      span(ng-click="selectNode(node)" ng-class="{'selected': node.selected}")
-        .inline &nbsp;{{node.name}}
-    ul(ng-if="!node.hideChild")
-      li(ng-repeat="node in node.department" ng-include="'node.html'" ng-class="hasChild(node)")
+//- script(type="text/ng-template" id="node.html")
+//-     .self.inline
+//-       span(ng-click="selectNode(node)" ng-class="{'selected': node.selected}")
+//-         .inline &nbsp;{{node.name}}
+//-     ul(ng-if="!node.hideChild")
+//-       li(ng-repeat="node in node.department" ng-include="'node.html'" ng-class="hasChild(node)")
 

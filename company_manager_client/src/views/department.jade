@@ -1,12 +1,14 @@
-.inner.department_page
-  .dl_panel
-    .dl_block_head
-      span.title 部门管理
-    .table_block
-      .dl_department
-        .tree.company_tree
-          ul
-            li(ng-include="'node.html'" ng-class="hasChild(node)")
+.department_page
+  section.content-header
+    h1
+      | 部门管理
+  section.content
+    .box.box-primary
+      .box-body
+        .dl_department
+          .tree.company_tree
+            ul
+              li(ng-include="'node.html'" ng-class="hasChild(node)")
 
   .modal.fade#managerAppointModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
     .modal-dialog.appoint_modal
@@ -46,12 +48,12 @@ script(type="text/ng-template" id="node.html")
           img.manager_photo(tooltip-placement="bottom" tooltip-append-to-body="true" tooltip="{{manager.nickname}}" ng-src="{{manager.photo}}")
       .inline(ng-if="node.is_creating")
         input(type="text" ng-model="node.edit_name")
-        button.dl_btn.dl_btn_small(ng-click="confirmCreate(node)") 确定
-        button.cancel_btn.dl_btn_small(ng-click="cancelCreate(node)") 取消
+        button.btn.btn-primary.btn-xs.btn-flat(ng-click="confirmCreate(node)") 确定
+        button.btn.btn-default.btn-xs.btn-flat(ng-click="cancelCreate(node)") 取消
       .inline(ng-if="node.is_editing")
         input(type="text" ng-model="node.temp_name")
-        button.dl_btn.dl_btn_small(ng-click="confirmEdit(node)") 确定
-        button.cancel_btn.dl_btn_small(ng-click="cancelEdit(node)") 取消
+        button.btn.btn-primary.btn-xs.btn-flat(ng-click="confirmEdit(node)") 确定
+        button.btn.btn-default.btn-xs.btn-flat(ng-click="cancelEdit(node)") 取消
     ul.dropdown-menu(ng-show="!node.is_creating && !node.is_editing" role="menu")
       li(role="presentation" ng-if="!node.is_company"): a(role="menu-item" tabindex="-1" href="/department/home/{{ node._id }}" target="_blank") 进入部门主页
       li(role="presentation" ng-if="!node.is_company"): a(role="menu-item" tabindex="-1" href="javascript:void(0)" ng-click="getNode(node)") 任命管理员

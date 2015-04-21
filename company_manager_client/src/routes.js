@@ -27,15 +27,15 @@ define(['app'], function (app) {
           templateUrl: '/company/manager/login.html',
           controller: 'account.loginCtrl'
         })
-        .state('statistics', {
-          url: '/statistics',
-          views: {
-            content: {
-              templateUrl: templateUrl('/views/statistics.html'),
-              controller: 'statistics.chartsCtrl'
-            }
-          }
-        })
+        // .state('statistics', {
+        //   url: '/statistics',
+        //   views: {
+        //     content: {
+        //       templateUrl: templateUrl('/views/statistics.html'),
+        //       controller: 'statistics.chartsCtrl'
+        //     }
+        //   }
+        // })
         .state('companyInfo', {
           url: '/company/info',
           views: {
@@ -86,6 +86,15 @@ define(['app'], function (app) {
           views: {
             content: {
               templateUrl: templateUrl('/views/campaigns.html'),
+              controller: 'campaign.campaignCtrl'
+            }
+          }
+        })
+        .state('campaignsCanlendar', {
+          url: '/campaignsCanlendar',
+          views: {
+            content: {
+              templateUrl: templateUrl('/views/campaigns-canlendar.html'),
               controller: 'campaign.campaignCtrl'
             }
           }

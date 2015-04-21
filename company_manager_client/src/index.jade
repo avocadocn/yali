@@ -25,23 +25,32 @@ html
               img.img-circle(ng-src="{{company.logo}}/50/50")
             a.pull-left.info(ui-sref="home")
               p(ng-bind="company.shortName")
-          form.sidebar-form
-            .input-group
-              input.form-control(type="text" name="q" placeholder="搜索")
-              span.input-group-btn
-                button#search-btn.btn.btn-flat(type="submit" name="search")
-                  i.fa.fa-search
+          //- form.sidebar-form
+          //-   .input-group
+          //-     input.form-control(type="text" name="q" placeholder="搜索")
+          //-     span.input-group-btn
+          //-       button#search-btn.btn.btn-flat(type="submit" name="search")
+          //-         i.fa.fa-search
           ul.sidebar-menu
             li.header 活动体系
+            //- li(ui-sref-active="active")
+            //-   a(ui-sref="statistics")
+            //-     span 统计报告
             li(ui-sref-active="active")
-              a(ui-sref="statistics")
-                span 统计报告
+              a(ui-sref="campaigns")
+                span 发活动
+            li(ui-sref-active="active")
+              a(ui-sref="campaigns")
+                span 活动日历
+            li(ui-sref-active="active")
+              a(ui-sref="campaigns")
+                span 活动列表
+            li(ui-sref-active="active")
+              a(ui-sref="createTeam")
+                span 建小队
             li(ui-sref-active="active")
               a(ui-sref="teamList")
                 span 小队管理
-            li(ui-sref-active="active")
-              a(ui-sref="campaigns")
-                span 活动管理
             li.header 成员管理
             li(ui-sref-active="active")
               a(ui-sref="inviteMembers")
@@ -49,9 +58,9 @@ html
             li(ui-sref-active="active")
               a(ui-sref="activeMembers")
                 span 激活
-            li(ui-sref-active="active")
-              a(ui-sref="inactiveMembers")
-                span 屏蔽
+            //- li(ui-sref-active="active")
+            //-   a(ui-sref="inactiveMembers")
+            //-     span 屏蔽
             li(ui-sref-active="active")
               a(ui-sref="allMembers")
                 span 所有成员

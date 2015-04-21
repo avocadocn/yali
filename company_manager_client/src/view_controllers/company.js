@@ -71,8 +71,8 @@ define(['./controller', 'jQuery', 'cropit'], function (controllers, $) {
 
     }
   ])
-  .controller('company.homeCtrl', ['$scope', '$rootScope', 'companyService',
-    function ($scope, $rootScope, companyService) {
+  .controller('company.homeCtrl', ['$scope', '$rootScope', 'companyService', 'campaignService',
+    function ($scope, $rootScope, companyService, campaignService) {
       var cid = $rootScope.company._id;
       companyService.getUndisposed(cid, function(err, data) {
         if(!err) {
@@ -87,6 +87,24 @@ define(['./controller', 'jQuery', 'cropit'], function (controllers, $) {
         // todo
       });
 
-    }])
+      campaignService.getTimeline('company', cid).success(function(data) {
+        $scope.latestCampaignList = data.slice(0, 5);
+      }).error(function(data, status) {
+        // todo
+      });
+
+      // 是否需要显示时间
+      $scope.needShowTime = function(index) {
+        if (index === 0) {
+          return true;
+        } else {
+          var preTime = new Date($scope.latestCampaignList[index - 1].start_time);
+          var nowTime = new Date($scope.latestCampaignList[index].start_time);
+          return nowTime.getDate() != preTime.getDate() || nowTime.getMonth() != preTime.getMonth() || nowTime.getFullYear() != preTime.getFullYear();
+        }
+      };
+
+    }
+  ])
 });
 
