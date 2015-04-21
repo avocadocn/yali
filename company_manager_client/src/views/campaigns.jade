@@ -22,10 +22,10 @@
       .box-body
         .table-content
           .row
-            .col-xs-6
-              .col-xs-2
+            .col-xs-8
+              .col-xs-1
                 select.form-control.input-sm(ng-model="number" ng-options="number.num for number in numbers" ng-change="selectNumOfPage()")
-              .col-xs-8
+              .col-xs-11
                 .col-xs-6
                   .input-group.date.form_datetime#startTime
                     span.input-group-addon.no_radius 开始
@@ -43,8 +43,8 @@
                   button.btn.bg-maroon(ng-click="quitSearchCampaignByTime()") 取消
 
               //- select.form-control.input-sm(ng-model="number" ng-options="number.num for number in numbers" ng-change="selectNumOfPage()")
-            .col-xs-6
-                .input-group.margin.search
+            .col-xs-3
+                .input-group.search
                   input.form-control(type="text" placeholder="Search...")
                   span.input-group-btn
                     button.btn.btn-info.btn-flat(ng-click="searchCampaign()") 搜索
