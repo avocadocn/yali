@@ -656,11 +656,12 @@ var formatCampaign = function(campaign,pageType,role,user,other){
     if(temp.type != 'provoke' && pageType==='team'&&(role ==='LEADER' ||role ==='HR' ) || pageType==='company'&&role ==='HR'){
       temp.close_flag=true;
     }
-    if(_other.photoFlag){
-      temp.photo_thumbnails = photo_album_controller.getLatestPhotos(_campaign.photo_album, 4);
-      temp.photo_album_id = _campaign.photo_album._id;
-      // temp.camp = _campaign.camp;//...
-    }
+    //注释by M 首页不用取图片了.
+    // if(_other.photoFlag){
+    //   temp.photo_thumbnails = photo_album_controller.getLatestPhotos(_campaign.photo_album, 4);
+    //   temp.photo_album_id = _campaign.photo_album._id;
+    //   // temp.camp = _campaign.camp;//...
+    // }
     //???-M
     // if(_other.unConfirm){
     //   temp.voteFlag = false;
@@ -2563,7 +2564,7 @@ exports.getCampaignData = function (req, res) {
   }
   Campaign
     .find(options)
-    .populate('photo_album')
+    // .populate('photo_album')
     .sort('-start_time')
     .exec()
     .then(function (campaigns) {
@@ -2636,7 +2637,7 @@ exports.getCampaignData = function (req, res) {
           isStart: campaign.start_time < Date.now(),
           isEnd: campaign.end_time < Date.now(),
           unitInfos: unitInfos,
-          photo_list: photo_album_controller.getLatestPhotos(campaign.photo_album,4)
+          // photo_list: photo_album_controller.getLatestPhotos(campaign.photo_album,4)
         }
         tempObj.components = campaign.formatComponents();
         var allow = auth(req.user, {

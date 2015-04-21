@@ -66,7 +66,9 @@ donler.controller('TeamPageController', ['$rootScope', '$scope', '$timeout', '$l
         Campaign.getCampaignsDateRecord('team', teamId, function(err, record) {
           if (!err) {
             $scope.timelines = record;
-            addCampaign(record[0].year + '_' + record[0].month[0].month);
+            if(record.length) {
+              addCampaign(record[0].year + '_' + record[0].month[0].month);
+            }
           }
         });
       }
