@@ -126,6 +126,15 @@ define(['app'], function (app) {
             }
           }
         })
+        .state('batchImport', {
+          url: '/members/batchImport',
+          views: {
+            content: {
+              templateUrl: templateUrl('/views/members_batchimport.html'),
+              controller: 'member.batchImport'
+            }
+          }
+        })
         .state('departments', {
           url: '/departments',
           views: {

@@ -13,6 +13,8 @@ userApp.controller('ActiveController', ['$http', '$scope', function ($http, $sco
     var inviteUserData = inviteUserDataEle.dataset;
     $scope.isInvited = true;
     $scope.email = inviteUserData.email;
+    $scope.realname = inviteUserData.realname;
+    $scope.nickname = inviteUserData.nickname;
   }
 
   $scope.mailCheck = function () {

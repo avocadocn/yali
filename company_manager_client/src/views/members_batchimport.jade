@@ -1,0 +1,28 @@
+.members
+  section.content-header
+    h1
+      | 批量导入
+    form.form-inline
+      .form-group
+        label(for="importFile") 导入员工名单:
+        input.form-control(type="file" id="importFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+      button.btn.btn-default(ng-click="importExcel()") 导入
+      button.btn.btn-primary(ng-click="invite()" ng-disabled="!members||members.length==0") 激活
+  section.content
+    .box.box-primary
+      .box-header
+        h3.box-title 所有成员
+      .box-body.no-padding
+        table.table.table-striped
+          thead
+            tr
+              th 序号
+              th 邮箱
+              th 真实姓名
+              th 状态
+          tbody
+            tr(ng-repeat="member in members")
+              td {{$index+1}}
+              td {{member.email}}
+              td {{member.name}}
+              td {{member.status}}

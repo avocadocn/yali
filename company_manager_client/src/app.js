@@ -9,6 +9,8 @@ define([
   'moment',
   'calendar',
   'AdminLTE',
+  'jsZip',
+  'jsXlsx',
   './view_controllers/controllers',
   './storage/storage',
   './utils/utils',

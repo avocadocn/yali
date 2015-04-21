@@ -1,4 +1,4 @@
-define(['./controller','qrcode'], function (controllers) {
+define(['./controller','qrcode'], function (controllers,qrcode) {
   return controllers.controller('member.inviteCtrl', [
     '$rootScope',
     '$scope',
@@ -227,7 +227,67 @@ define(['./controller','qrcode'], function (controllers) {
           }
         }
       }
+    ]).controller('member.batchImport', [
+      '$rootScope',
+      '$scope',
+      '$state',
+      'memberService',
+      function ($rootScope, $scope, $state, memberService) {
+        $scope.members = []
+        $scope.importExcel = function () {
+          var reader = new FileReader(),
+            fileData;
+          function to_json(workbook) {
+            var result = {};
+            workbook.SheetNames.forEach(function(sheetName) {
+              var roa = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+              if(roa.length > 0){
+                var formatRows =[]
+                roa.forEach(function(element, index){
+                  var formatRow ={}
+                  for (var col in element){
+                    if(col=='邮件'){
+                      formatRow.email = element[col]
+                    }
+                    else if(col=='用户名'){
+                      formatRow.name = element[col]
+                    }
+                  }
+                  if(formatRow.email && formatRow.email.indexOf('@')>-1){
+                    formatRows.push(formatRow)
+                  }
+                });
+                result[sheetName] = formatRows;
+              }
+            });
+            return result;
+          }
+          reader.onload = function(e){
+            var data = e.target.result;
+            var workbook = XLSX.read(data, {type: 'binary'});
+            var output = to_json(workbook);
+            $scope.members = []
+            for (var sheet in output){
+              $scope.members = $scope.members.concat(output[sheet])
+            }
+            $scope.$apply()
+          };
+          if ($('#importFile')[0].files[0]) {
+            reader.readAsBinaryString($('#importFile')[0].files[0]);
+          }
+        }
+        $scope.invite = function () {
+          memberService.batchInvite($scope.members).success(function (data) {
+            $scope.members = data;
+          })
+          .error(function (data) {
+            alert(data.msg);
+          });
+        }
+      }
     ]);
 });
+
+
 
 

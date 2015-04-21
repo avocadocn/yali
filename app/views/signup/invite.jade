@@ -11,7 +11,7 @@ block contentExt
           p 确保每个用户的身份都真实可靠
       .block.personal_signup.signup_block(ng-controller='ActiveController' ng-init="currentDomain='#{domains[0]}';")
         if invitedUser
-          .hidden#invitedUserData(data-id="#{invitedUser.id}" data-email="#{invitedUser.email}" data-active="#{invitedUser.mail_active}")
+          .hidden#invitedUserData(data-id="#{invitedUser.id}" data-email="#{invitedUser.email}" data-realname="#{invitedUser.realname}" data-nickname="#{invitedUser.nickname}" data-active="#{invitedUser.mail_active}")
         form.form-inline.form-horizontal(role="form" name='active_form' action='/users/dealActive' method='post')
           .form-group.dl_sm_group(ng-class="{'has-error':active&&active!==1}")
             if invitedUser

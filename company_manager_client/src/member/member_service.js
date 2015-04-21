@@ -54,6 +54,14 @@ define(['./member'], function (member) {
       invite: function (email) {
         return $http.post(apiBaseUrl + '/users/actions/invite', { email: email });
       },
+      /**
+       * 批量邀请用户注册
+       * @param {String} email 邮箱
+       * @returns {HttpPromise}
+       */
+      batchInvite: function (members) {
+        return $http.post(apiBaseUrl + '/users/actions/batchinvite', { members: members });
+      },
       edit: function (uid,user) {
         return $http.put(apiBaseUrl + '/users/'+uid, user);
       }
