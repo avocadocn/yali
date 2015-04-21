@@ -31,6 +31,36 @@ define(['./controller','qrcode'], function (controllers,qrcode) {
 
     }
   ])
+  .filter('inviteMemberFormat', function() {
+    return function(input) {
+      switch (input) {
+        case 0:
+          input = '未注册';
+          break;
+        case 1:
+          input = '邀请成功';
+          break;
+        case 2:
+          input = '已经激活';
+          break;
+        case 3:
+          input = '已注册，未激活';
+          break;
+        case 4:
+          input = '不是企业邮箱';
+          break;
+        case 5:
+          input = '不是有效的邮箱';
+          break;
+        case 6:
+          input = '发生错误';
+          break;
+        default:
+          input = '';
+      }
+      return input;
+    }
+  })
     .controller('member.activeCtrl', [
       '$rootScope',
       '$scope',
@@ -308,19 +338,55 @@ define(['./controller','qrcode'], function (controllers,qrcode) {
             for (var sheet in output){
               $scope.members = $scope.members.concat(output[sheet])
             }
-            $scope.$apply()
+            memberService.batchInviteCheck($scope.members).success(function (data) {
+              $scope.validMembers =[]
+              $scope.invalidMembers =[]
+              data.forEach(function(element, index){
+                if(element.status==0){
+                  element.select = false;
+                  $scope.validMembers.push(element)
+                }
+                else{
+                  $scope.invalidMembers.push(element)
+                }
+              });
+              $scope.members = data;
+            })
+            .error(function (data) {
+              alert(data.msg);
+            });
           };
           if ($('#importFile')[0].files[0]) {
             reader.readAsBinaryString($('#importFile')[0].files[0]);
           }
         }
-        $scope.invite = function () {
-          memberService.batchInvite($scope.members).success(function (data) {
-            $scope.members = data;
-          })
-          .error(function (data) {
-            alert(data.msg);
+        $scope.selectAll = function () {
+          $scope.validMembers.forEach(function(element, index){
+            element.select = true;
           });
+        }
+        $scope.reset= function (argument) {
+          document.getElementById("importForm").reset();
+          $scope.validMembers =[]
+          $scope.invalidMembers =[]
+        }
+        $scope.invite = function () {
+          var inviteMembers = $scope.validMembers.filter(function (member) {
+            return member.select==true;
+          })
+          if(inviteMembers.length==0){
+            alert('您未选择要邀请的员工')
+            return;
+          }
+          else{
+            memberService.batchInvite(inviteMembers).success(function (data) {
+              $scope.validMembers = data;
+            })
+            .error(function (data) {
+              alert(data.msg);
+            });
+          }
+          
         }
       }
     ]);
