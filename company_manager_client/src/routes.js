@@ -27,15 +27,15 @@ define(['app'], function (app) {
           templateUrl: '/company/manager/login.html',
           controller: 'account.loginCtrl'
         })
-        .state('statistics', {
-          url: '/statistics',
-          views: {
-            content: {
-              templateUrl: templateUrl('/views/statistics.html'),
-              controller: 'statistics.chartsCtrl'
-            }
-          }
-        })
+        // .state('statistics', {
+        //   url: '/statistics',
+        //   views: {
+        //     content: {
+        //       templateUrl: templateUrl('/views/statistics.html'),
+        //       controller: 'statistics.chartsCtrl'
+        //     }
+        //   }
+        // })
         .state('companyInfo', {
           url: '/company/info',
           views: {

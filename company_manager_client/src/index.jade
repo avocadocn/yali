@@ -33,15 +33,24 @@ html
           //-         i.fa.fa-search
           ul.sidebar-menu
             li.header 活动体系
+            //- li(ui-sref-active="active")
+            //-   a(ui-sref="statistics")
+            //-     span 统计报告
             li(ui-sref-active="active")
-              a(ui-sref="statistics")
-                span 统计报告
+              a(ui-sref="campaigns")
+                span 发活动
+            li(ui-sref-active="active")
+              a(ui-sref="campaigns")
+                span 活动日历
+            li(ui-sref-active="active")
+              a(ui-sref="campaigns")
+                span 活动列表
+            li(ui-sref-active="active")
+              a(ui-sref="createTeam")
+                span 建小队
             li(ui-sref-active="active")
               a(ui-sref="teamList")
                 span 小队管理
-            li(ui-sref-active="active")
-              a(ui-sref="campaigns")
-                span 活动管理
             li.header 成员管理
             li(ui-sref-active="active")
               a(ui-sref="inviteMembers")
