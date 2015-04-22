@@ -25,9 +25,18 @@ define(['angular', 'app', 'init_data', 'routes'], function(angular, app, initDat
         hasLeader: initData.hasLeader.hasLeader
       });
       angular.bootstrap(document, ['app']);
-    }).then(null, function(err) {
-      console.log(err);
-      alert('获取公司数据失败，请刷新页面重试');
+    }).then(null, function(res) {
+      if (res.status === 401) {
+        app.value('initData', {
+          company: null,
+          hasLeader: null
+        });
+        angular.bootstrap(document, ['app']);
+        location.hash = '#/login';
+      }
+      else {
+        alert('获取公司数据失败，请刷新页面重试');
+      }
     });
 
   }
