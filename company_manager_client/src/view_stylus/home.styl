@@ -99,13 +99,28 @@ todoListWidthInTwoBox = sideWidth + todoBoxWidth * 2
           line-height 20px
           font-size 14px
 
+  .new_company_home
+    position absolute
+    top 0
+    left 0
+    width 100%
+    height 100%
+    display -webkit-flex
+    display flex
+    -webkit-align-items center
+    align-items center
+    -webkit-justify-content center
+    justify-content center
+
   .todo_box_list
-      margin-left auto
-      margin-right auto
-      @media (min-width: todoListWidthInOneBox) and (max-width: todoListWidthInTwoBox - 1px)
-        width todoBoxWidth
-      @media (min-width: todoListWidthInTwoBox)
-        width todoBoxWidth * 2
+    margin-left auto
+    margin-right auto
+    @media (min-width: todoListWidthInOneBox) and (max-width: todoListWidthInTwoBox - 1px)
+      width todoBoxWidth
+    @media (min-width: todoListWidthInTwoBox)
+      width todoBoxWidth * 2
+    &.single_box
+      width todoBoxWidth
     .todo_box
       @media (min-width: todoListWidthInTwoBox)
         float left

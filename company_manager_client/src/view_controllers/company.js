@@ -75,11 +75,15 @@ define(['angular', 'jQuery', 'cropit'], function (angular, $) {
     function ($scope, $rootScope, companyService, campaignService, initData) {
       var company = initData.company;
       var cid = company._id;
-      $scope.hasCompleteInfo = company.shortName && company.address && company.number && company.contacts;
+      $scope.hasCompleteInfo = Boolean(company.shortName && company.address && company.number && company.contacts);
       $scope.hasTeam = (company.teamNumber > 0);
       $scope.hasMember = (company.memberNumber > 0);
-      $scope.hasLeader = initData.hasLeader.hasLeader;
-      
+      $scope.hasLeader = initData.hasLeader;
+
+      var total = 4;
+      var finishCount = Number($scope.hasCompleteInfo) + Number($scope.hasTeam) + Number($scope.hasMember) + Number($scope.hasLeader);
+      $scope.unFinishCount = total - finishCount;
+
       $scope.hasFinishNewTask = companyService.hasFinishNewTask(company, initData.hasLeader);
 
       companyService.getUndisposed(cid, function(err, data) {

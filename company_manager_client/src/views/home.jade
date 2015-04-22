@@ -91,44 +91,45 @@
                       span.count_text 报名
               p.description_text(ng-if="!latestCampaignList || latestCampaignList.length === 0") 还没有活动
 
-    .todo_box_list.clearfix#todo_box(ng-if="!hasFinishNewTask" ng-cloak)
+    .new_company_home
+      .todo_box_list.clearfix#todo_box(ng-if="!hasFinishNewTask" ng-class="{'single_box': unFinishCount === 1}" ng-cloak)
 
-      .todo_box(ng-if="hasCompleteInfo === false" ng-cloak)
-        .small-box.bg-primary
-          .inner
-            h3 您还没有完善公司资料
-            p &nbsp;
-          .icon
-            i.fa.fa-info.fa-fw
-          a.small-box-footer(ui-sref="manager.companyInfo") 去完善&nbsp;
-            i.fa.fa-arrow-circle-right
+        .todo_box(ng-if="hasCompleteInfo === false" ng-cloak)
+          .small-box.bg-primary
+            .inner
+              h3 您还没有完善公司资料
+              p &nbsp;
+            .icon
+              i.fa.fa-info.fa-fw
+            a.small-box-footer(ui-sref="manager.companyInfo") 去完善&nbsp;
+              i.fa.fa-arrow-circle-right
 
-      .todo_box(ng-if="hasTeam === false" ng-cloak)
-        .small-box.bg-green
-          .inner
-            h3 您还没有小队
-            p &nbsp;
-          .icon
-            i.fa.fa-flag.fa-fw
-          a.small-box-footer(ui-sref="manager.createTeam") 建小队&nbsp;
-            i.fa.fa-arrow-circle-right
+        .todo_box(ng-if="hasTeam === false" ng-cloak)
+          .small-box.bg-green
+            .inner
+              h3 您还没有小队
+              p &nbsp;
+            .icon
+              i.fa.fa-flag.fa-fw
+            a.small-box-footer(ui-sref="manager.createTeam") 建小队&nbsp;
+              i.fa.fa-arrow-circle-right
 
-      .todo_box(ng-if="hasLeader === false" ng-cloak)
-        .small-box.bg-green
-          .inner
-            h3 您还没有设队长
-            p &nbsp;
-          .icon
-            i.fa.fa-users.fa-fw
-          a.small-box-footer(ui-sref="manager.teamList") 设队长&nbsp;
-            i.fa.fa-arrow-circle-right
+        .todo_box(ng-if="hasLeader === false" ng-cloak)
+          .small-box.bg-green
+            .inner
+              h3 您还没有设队长
+              p &nbsp;
+            .icon
+              i.fa.fa-users.fa-fw
+            a.small-box-footer(ui-sref="manager.teamList") 设队长&nbsp;
+              i.fa.fa-arrow-circle-right
 
-      .todo_box(ng-if="hasMember === false" ng-cloak)
-        .small-box.bg-yellow
-          .inner
-            h3 您还没有成员
-            p &nbsp;
-          .icon
-            i.fa.fa-user-plus.fa-fw
-          a.small-box-footer(ui-sref="manager.inviteMembers") 邀请&nbsp;
-            i.fa.fa-arrow-circle-right
+        .todo_box(ng-if="hasMember === false" ng-cloak)
+          .small-box.bg-yellow
+            .inner
+              h3 您还没有成员
+              p &nbsp;
+            .icon
+              i.fa.fa-user-plus.fa-fw
+            a.small-box-footer(ui-sref="manager.inviteMembers") 邀请&nbsp;
+              i.fa.fa-arrow-circle-right
