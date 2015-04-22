@@ -15,7 +15,7 @@ define(['app'], function (app) {
       $stateProvider
         .state('manager', {
           abstract: true,
-          url: '/',
+          url: '',
           templateUrl: templateUrl('/views/manager_layout.html'),
           controller: 'layout.adminLTECtrl'
         })

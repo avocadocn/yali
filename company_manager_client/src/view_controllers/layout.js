@@ -5,11 +5,22 @@ define(['angular', 'theme/admin_lte', 'jQuery', 'uiRouter'], function(angular, a
     .controller('layout.adminLTECtrl', ['$scope', '$rootScope', function($scope, $rootScope) {
       setTimeout(adminLTE);
 
+      var isManagerState = function(state) {
+        return (state.name.indexOf('manager.') !== -1);
+      };
+
+      $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+        if (isManagerState(toState)) {
+          $rootScope.isLoading = true;
+        }
+      });
+
       $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-        if (toState.name.indexOf('manager.') !== -1) {
+        if (isManagerState(toState)) {
           setTimeout(function() {
-            var contentWrapperEle = $('.content-wrapper');
             $.AdminLTE.layout.fix();
+            $rootScope.isLoading = false;
+            $rootScope.$digest();
           });
         }
       });

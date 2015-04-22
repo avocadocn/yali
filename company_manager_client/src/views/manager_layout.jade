@@ -72,9 +72,13 @@
             span 账号设置
 
   //- 注，此处千万不要简写成(ui-view)，jade可能会编译成(ui-view="ui-view")，会使得路由无法工作
-  .content-wrapper(ui-view="")
+  .content-wrapper
+    //- 效果不好，暂且不显示loading
+    //- .content_wrapper_loading_box(ng-class="{'transparent': !isLoading}")
+    //-   i.fa.fa-spinner.fa-pulse.fa-5x
+    .content_container(ui-view="" ng-class="{'transparent': isLoading}")
 
-  footer.main-footer
+  footer.main-footer(ng-class="{'transparent': isLoading}")
     .pull-right.hidden-xs
       a.footer_link(href="/about#about") 关于我们
       a.footer_link(href="/about#law") 法律声明
