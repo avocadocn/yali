@@ -32,38 +32,12 @@ define(['angular'], function (angular) {
       .error(function (data) {
         alert(data.msg)
       });
-      $scope.closeTeam = function (tid) {
-        teamService.close(tid).success(function (data) {
-          alert('关闭小队成功');
-        })
-        .error(function (data) {
-          alert(data.msg);
-        });
-      };
-      $scope.openTeam = function (tid) {
-        teamService.open(tid).success(function (data) {
-          alert('打开小队成功');
-        })
-        .error(function (data) {
-          alert(data.msg);
-        });
-      };
-      $scope.editTeam = function (type, index) {
+      $scope.detail = function (type, index) {
         $scope.team = $scope[type][index];
         var modalInstance = $modal.open({
-          templateUrl: 'editTeamModal.html',
+          templateUrl: 'teamDetailModal.html',
           scope: $scope
         });
-        $scope.save = function () {
-          modalInstance.dismiss('ok');
-          teamService.update($scope.team._id,{name:$scope.team.name}).success(function (data) {
-            alert('修改小队名成功')
-          })
-            .error(function (data) {
-              alert(data.msg)
-            });
-
-        }
         $scope.cancel = function () {
           modalInstance.dismiss('cancel');
         }
@@ -192,7 +166,24 @@ define(['angular'], function (angular) {
         .error(function (data) {
           alert(data.msg);
         });
-
+        $scope.closeTeam = function (tid) {
+          teamService.close(tid).success(function (data) {
+            alert('关闭小队成功');
+            $scope.team.active = false;
+          })
+          .error(function (data) {
+            alert(data.msg);
+          });
+        };
+        $scope.openTeam = function (tid) {
+          teamService.open(tid).success(function (data) {
+            alert('打开小队成功');
+            $scope.team.active = true;
+          })
+          .error(function (data) {
+            alert(data.msg);
+          });
+        };
 
         $scope.edit = function () {
           // 阻止提交，在这里不需要做提示，应该在页上使按钮不可用并作出错误提示。

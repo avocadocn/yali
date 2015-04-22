@@ -88,27 +88,50 @@ script(type="text/ng-template" id="teamDetailModal.html")
       span(aria-hidden="true") &times;
     h4.modal-title 小队详情
   .modal-body
-    form
-      .form-group
-        label 名称:
-        input.form-control(type="text" ng-model="team.name")
+    .team_detail_modal(ng-cloak)
+      .row
+        .col-md-2 队名
+        .col-md-10 {{team.name}}
+      .row
+        .col-md-2 公司名
+        .col-md-10 {{team.cname}}
+      .row
+        .col-md-2 类型
+        .col-md-10 {{team.groupType}}
+      .row
+        .col-md-2 主场一
+        .col-md-10 {{team.homeCourts.length>0?team.homeCourts[0].name :'暂无'}}
+      .row
+        .col-md-2 主场二
+        .col-md-10 {{team.homeCourts.length>1?team.homeCourts[1].name :'暂无'}}
+      .row
+        .col-md-2 活跃度
+        .col-md-10 {{team.score.total}}
+      .row
+        .col-md-2 积分
+        .col-md-10 {{team.score_rank.score}}
+      .row
+        .col-md-2 队长
+        .col-md-2.user(ng-repeat="leader in team.leaders")
+          img.user_logo(ng-src="{{leader.photo}}/40/40")
+          .user_name {{leader.nickname}}
+      .row
+        .col-md-2 成员
+        .col-md-2.user(ng-repeat="member in team.members")
+          img.user_logo(ng-src="{{member.photo}}/40/40")
+          .user_name {{member.nickname}}
+      .row
+        .col-md-2 近期活动
+        .col-md-10 {{team.lastCampaign?team.lastCampaign.theme :'无'}}
   .modal-footer
-    button.btn.btn-danger.pull-left(ng-if="team.active" ng-click="closeTeam(team._id)") 关闭小队
-    button.btn.btn-default.pull-left(ng-if="!team.active" ng-click="openTeam(team._id)") 打开小队
-    button.btn.btn-primary(ng-click="save()") 确定
-    button.btn.btn-default(ng-click="cancel()") 取消
-script(type="text/ng-template" id="editTeamModal.html")
-  .modal-header
-    button.close(type="button" data-dismiss="modal" aria-label="Close" ng-click="cancel()")
-      span(aria-hidden="true") &times;
-    h4.modal-title 编辑小队信息
-  .modal-body
-    form
-      .form-group
-        label 名称:
-        input.form-control(type="text" ng-model="team.name")
-  .modal-footer
-    button.btn.btn-danger.pull-left(ng-if="team.active" ng-click="closeTeam(team._id)") 关闭小队
-    button.btn.btn-default.pull-left(ng-if="!team.active" ng-click="openTeam(team._id)") 打开小队
-    button.btn.btn-primary(ng-click="save()") 确定
-    button.btn.btn-default(ng-click="cancel()") 取消
+    button.btn.btn-primary(ng-click="cancel()") 确定
+
+
+
+
+
+
+
+
+
+

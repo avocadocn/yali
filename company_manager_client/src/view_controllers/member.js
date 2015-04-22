@@ -326,7 +326,7 @@ define(['angular', 'qrcode'], function (angular, qrcode) {
       '$state',
       'memberService',
       function ($rootScope, $scope, $state, memberService) {
-        $scope.members = []
+        $scope.importFlag = false;
         $scope.importExcel = function () {
           var reader = new FileReader(),
             fileData;
@@ -356,6 +356,7 @@ define(['angular', 'qrcode'], function (angular, qrcode) {
             return result;
           }
           reader.onload = function(e){
+            $scope.importFlag = true;
             var data = e.target.result;
             var workbook = XLSX.read(data, {type: 'binary'});
             var output = to_json(workbook);
@@ -391,6 +392,7 @@ define(['angular', 'qrcode'], function (angular, qrcode) {
           });
         }
         $scope.reset= function (argument) {
+          $scope.importFlag =false;
           document.getElementById("importForm").reset();
           $scope.validMembers =[]
           $scope.invalidMembers =[]

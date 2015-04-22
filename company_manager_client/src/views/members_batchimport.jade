@@ -8,12 +8,22 @@
         input.form-control(type="file" id="importFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
       button.btn.btn-default(ng-click="importExcel()") 上传
   section.content
-    .box.box-primary(ng-if="validMembers&&validMembers.length>0")
+    .box.box-primary(ng-if="!importFlag")
+      .box-header
+        h3.box-title 说明
+      .box-body.no-padding
+        p 首先建立一个Excel报表文件(.xlsx文件):第一列列首为"邮箱"，第二列列首为"用户名"。下面为对应的员工企业邮箱和员工姓名。
+        p 注意：导入的邮箱后缀必须与公司设置的邮箱后缀一致
+        p 然后在批量导入界面点击选中文件，在文件夹中找到刚刚建立的文件，并选中，点击确定
+        p 之后点击上传按钮，出现导入的文件中的用户列表。包含有效的和无效的数据。
+        p 最后选中想要邀请的有效员工数据。点击邀请发送邀请邮件。
+    .box.box-primary(ng-if="importFlag")
       .box-header
         h3.box-title 有效成员列表
         small(ng-bind-template="{{validMembers.length}}人")
       .box-body.no-padding
-        .table_container
+        p(ng-if="validMembers&&validMembers.length==0") 您导入的文件没有有效的数据，请重新导入数据
+        .table_container(ng-if="validMembers&&validMembers.length>0")
           table.table.table-striped
             thead
               tr
@@ -37,7 +47,7 @@
           .col-md-4
             button.btn.btn-primary(ng-click="invite()" ng-disabled="!validMembers||validMembers.length==0") 邀请
         
-    .box.box-primary(ng-if="invalidMembers&&invalidMembers.length>0")
+    .box.box-primary(ng-if="importFlag && invalidMembers&&invalidMembers.length>0")
       .box-header
         h3.box-title 无效成员列表
         small(ng-bind-template="{{invalidMembers.length}}人")

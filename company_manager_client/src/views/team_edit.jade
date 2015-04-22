@@ -11,6 +11,8 @@
         .box.box-primary
           .box-header.with-border
             h3.box-title 小队信息
+            button.btn.btn-danger.pull-right(ng-if="team && team.active" ng-click="closeTeam(team._id)") 关闭小队
+            button.btn.btn-primary.pull-right(ng-if="team && !team.active" ng-click="openTeam(team._id)") 打开小队
           .box-body
             form.team_info_form(name="editInfoForm")
               .form-group
