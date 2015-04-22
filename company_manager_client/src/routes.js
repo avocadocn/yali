@@ -68,6 +68,10 @@ define(['app'], function (app) {
           templateUrl: templateUrl('/views/point_leader.html'),
           controller: 'team.pointLeaderCtrl'
         })
+        .state('manager.createCampaign', {
+          url: '/campaigns/create',
+          templateUrl: templateUrl('/views/create_campaign.html')
+        })
         .state('manager.campaigns', {
           url: '/campaigns',
           templateUrl: templateUrl('/views/campaigns.html'),
