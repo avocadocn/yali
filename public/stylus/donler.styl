@@ -1561,7 +1561,204 @@ input.ng-invalid.ng-dirty
 
   .remark
     margin-top 10px
-
+      
+.timeline_element
+  background-color #FFFFFF
+  text-shadow none
+  position relative
+  margin 10px 0px
+  clear both
+  border-radius 0px
+  color #888888
+  padding 0
+  border none
+  dl_shadow()
+  &:hover
+    cursor pointer
+    opacity 1
+    -moz-box-shadow 3px 3px 3px secondaryfontColor /* 老的 Firefox */
+    box-shadow 3px 3px 3px secondaryfontColor
+  .timeline_head
+    clear both
+    padding 10px
+    font-size 14px
+    &.top_border
+      border-top 1px solid #efefef
+  a
+    color #AAAAAA
+  .title
+    position relative
+    font-size 10px
+    overflow hidden
+    text-transform uppercase
+    word-break break-all
+    margin-bottom 0
+    border-bottom none
+    padding 10px
+    a
+      color #AAAAAA
+      display block
+      &:hover
+        text-decoration none
+    .timeline_logo
+      margin-top 7px
+      margin-right 4px
+      height 40px
+      width 40px
+    .date
+      width 30px
+      line-height 13px
+      margin 8px 4px
+      float left
+    .name
+      line-height 30px
+      margin-right 10px
+      margin-top 8px
+      max-width 250px
+      overflow hidden
+      text-overflow ellipsis
+      white-space nowrap
+      text-align center
+    .day
+      float left
+      font-size 28px
+      margin 11px 6px
+      margin-right 0
+    .head
+      color #AAAAAA
+      font-size 12px
+      line-height 22px
+      max-width 250px
+      word-break break-all
+      overflow hidden
+      text-overflow ellipsis
+      white-space nowrap
+      display inline-block
+      float left
+  .join_button, .quit_button
+    float right
+    width 60px
+    height 30px
+    color white
+  .join_button
+    background-color #3ca2e0
+  .quit_button
+    background-color #cccccc
+  .single_remind
+    height 50px
+    padding 10px 40px
+    background-color #fbfbfb
+    .remind
+      float left
+      height 30px
+      line-height 30px
+  .multi_remind
+    height 110px
+    padding 10px 40px
+    background-color #fbfbfb
+    .unit_info
+      float left
+      display flex
+      display -webkit-flex
+      .unit
+        width 70px
+        height 90px
+      .unit_1
+        order 1
+        -webkit-order 1
+      .unit_2
+        order 3
+        -webkit-order 3
+      .name
+        width 70px
+        display inline-block
+        overflow hidden
+        text-overflow ellipsis
+        white-space nowrap
+      .vs
+        width 30px
+        height 70px
+        line-height 70px
+        order 2
+        -webkit-order 2
+        font-size 14px
+        text-align center
+        color #f48361
+    .operator
+      float right
+      text-align right
+      .remind
+        height 50px
+        .count_down
+          height 25px
+        .starting
+          height 50px
+  .img_scroll
+    .photo
+      float left
+      width 86px
+      height 86px
+      background url("/img/loading.gif") center center no-repeat
+      display inline-block
+      margin-right 0
+    .photos_1
+      .photo_0
+        width 400px
+        height 250px
+    .photos_2
+      .photo_0,.photo_1
+        width 195px
+        height 180px
+        float left
+      .photo_0
+        margin-right 10px
+    .photos_3
+      .photo_0
+        width 195px
+        height 290px
+        margin-left 10px
+        float right
+      .photo_1, .photo_2
+        width 195px
+        height 140px
+        float right
+      .photo_1
+        margin-bottom 10px
+    .photos_4
+      .photo_0,.photo_3
+        width 160px
+        height 145px
+        margin-bottom 5px
+        float left
+      .photo_1, .photo_2
+        width 230px
+        height 145px
+        margin-bottom 10px
+        float left
+      .photo_0,.photo_2
+        margin-right 10px
+  .content
+    p
+      margin-bottom 0
+    a
+      color #888888
+      display block
+      &:hover
+        text-decoration none
+  .comments
+    clear both
+    background-color #FBFBFB
+    a
+      color secondaryfontColor
+    a.comment_num
+      display inline-block
+      color #ccc
+      width 100%
+      padding 5px 10px
+      text-align right
+      background-color #FBFBFB
+      .icon_reply
+        margin-right 7px
 #family
   margin-bottom 30px
   width 100%
@@ -1625,26 +1822,82 @@ input.ng-invalid.ng-dirty
           padding 25px 0px 
           min-width 140px
   .timeline_element
+    width 400px!important
+    padding-bottom 5px
     .title
       padding 0
-      padding-bottom 5px
-      margin-bottom 10px
-      border-bottom 1px solid #ddd
-    .timeline_logo
-      margin 0 !important
-      margin-right 4px !important
-    .timeline_text
-      float left !important
-      .date
-        display block
-        float none
-        margin 0
-        width auto
-        height 18px
-        line-height 18px
-      .head
-        display block
-        float none
+      .dl_timeline_logos
+        width 60px
+        height 60px
+        border-radius 5px
+        background-color #e3e3e3
+        float left
+        overflow hidden
+        margin-right 15px
+        margin-top 3px
+        .dl_team_logo
+          width 60px
+          height 60px
+          border-radius 5px
+        .provoke_label,.fellowship_label
+          width 100%
+          height 14px
+          color #fff
+          float left
+          text-align center
+          line-height 14px
+          background-color #f48361
+        .fellowship_label
+          background-color #ffc053
+      .timeline_team_name
+        float left
+        margin-top 10px
+      .logos_2
+        .dl_team_logo
+          width 29px
+          height 29px
+          margin-top 7px
+          margin-bottom 6px
+          border-radius 3px
+          float left
+          &:first-child
+            margin-right 2px
+      .timeline_text
+        float left
+        margin-top 3px
+        width 200px
+        .fa
+          float left
+          margin-right 10px
+          font-size 14px
+          margin-top -2px
+        .fa-paper-plane-o
+          font-size 12px
+          margin-top 0
+        .fa-map-marker
+          padding-left 1.5px
+        .date,.head,.location
+          display block
+          float none
+          margin 0 0 12px
+          width auto
+          line-height 1
+          font-size 12px
+        .location
+          margin-bottom 0
+      .timeline_member
+        float right
+        height 90px
+        width 80px
+        border-left 1px solid #ddd
+        font-size 12px
+        padding 20px
+        text-align center
+        .dl_timeline_member
+          font-size 14px
+          margin-left 2px
+        p
+          margin-bottom 5px
 
 .dl_compaign_member
   padding 20px 10px 0px
@@ -2077,204 +2330,7 @@ input.ng-invalid.ng-dirty
 //       left 20px
 //     .next
 //       right 20px
-      
-.timeline_element
-  background-color #FFFFFF
-  text-shadow none
-  position relative
-  margin 10px 0px
-  clear both
-  border-radius 0px
-  color #888888
-  padding 0
-  border none
-  dl_shadow()
-  &:hover
-    cursor pointer
-    opacity 1
-    -moz-box-shadow 3px 3px 3px secondaryfontColor /* 老的 Firefox */
-    box-shadow 3px 3px 3px secondaryfontColor
-  .timeline_head
-    clear both
-    padding 10px
-    font-size 14px
-    &.top_border
-      border-top 1px solid #efefef
-  a
-    color #AAAAAA
-  .title
-    position relative
-    font-size 10px
-    overflow hidden
-    text-transform uppercase
-    word-break break-all
-    margin-bottom 0
-    border-bottom none
-    padding 10px
-    a
-      color #AAAAAA
-      display block
-      &:hover
-        text-decoration none
-    .timeline_logo
-      margin-top 7px
-      margin-right 4px
-      height 40px
-      width 40px
-    .date
-      width 30px
-      line-height 13px
-      margin 8px 4px
-      float left
-    .name
-      line-height 30px
-      margin-right 10px
-      margin-top 8px
-      max-width 250px
-      overflow hidden
-      text-overflow ellipsis
-      white-space nowrap
-      text-align center
-    .day
-      float left
-      font-size 28px
-      margin 11px 6px
-      margin-right 0
-    .head
-      color #AAAAAA
-      font-size 12px
-      line-height 22px
-      max-width 250px
-      word-break break-all
-      overflow hidden
-      text-overflow ellipsis
-      white-space nowrap
-      display inline-block
-      float left
-  .join_button, .quit_button
-    float right
-    width 60px
-    height 30px
-    color white
-  .join_button
-    background-color #3ca2e0
-  .quit_button
-    background-color #cccccc
-  .single_remind
-    height 50px
-    padding 10px 40px
-    background-color #fbfbfb
-    .remind
-      float left
-      height 30px
-      line-height 30px
-  .multi_remind
-    height 110px
-    padding 10px 40px
-    background-color #fbfbfb
-    .unit_info
-      float left
-      display flex
-      display -webkit-flex
-      .unit
-        width 70px
-        height 90px
-      .unit_1
-        order 1
-        -webkit-order 1
-      .unit_2
-        order 3
-        -webkit-order 3
-      .name
-        width 70px
-        display inline-block
-        overflow hidden
-        text-overflow ellipsis
-        white-space nowrap
-      .vs
-        width 30px
-        height 70px
-        line-height 70px
-        order 2
-        -webkit-order 2
-        font-size 14px
-        text-align center
-        color #f48361
-    .operator
-      float right
-      text-align right
-      .remind
-        height 50px
-        .count_down
-          height 25px
-        .starting
-          height 50px
-  .img_scroll
-    .photo
-      float left
-      width 86px
-      height 86px
-      background url("/img/loading.gif") center center no-repeat
-      display inline-block
-      margin-right 0
-    .photos_1
-      .photo_0
-        width 400px
-        height 250px
-    .photos_2
-      .photo_0,.photo_1
-        width 195px
-        height 180px
-        float left
-      .photo_0
-        margin-right 10px
-    .photos_3
-      .photo_0
-        width 195px
-        height 290px
-        margin-left 10px
-        float right
-      .photo_1, .photo_2
-        width 195px
-        height 140px
-        float right
-      .photo_1
-        margin-bottom 10px
-    .photos_4
-      .photo_0,.photo_3
-        width 160px
-        height 145px
-        margin-bottom 5px
-        float left
-      .photo_1, .photo_2
-        width 230px
-        height 145px
-        margin-bottom 10px
-        float left
-      .photo_0,.photo_2
-        margin-right 10px
-  .content
-    p
-      margin-bottom 0
-    a
-      color #888888
-      display block
-      &:hover
-        text-decoration none
-  .comments
-    clear both
-    background-color #FBFBFB
-    a
-      color secondaryfontColor
-    a.comment_num
-      display inline-block
-      color #ccc
-      width 100%
-      padding 5px 10px
-      text-align right
-      background-color #FBFBFB
-      .icon_reply
-        margin-right 7px
+
 #events-modal
   .modal-dialog
     width 964px

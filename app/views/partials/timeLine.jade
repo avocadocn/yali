@@ -42,20 +42,68 @@ div(ng-show = '!loading')
             .timeline_element
               .title(ng-show="role!=='GUEST'&&role!=='GUESTHR'&&role!=='GUESTLEADER'")
                 a(href="/campaign/detail/#{item.id}" target="_blank")
-                  img.timeline_logo.pull-left(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
+                  //- img.timeline_logo.pull-left(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
+                  .dl_timeline_logos(class="logos_#{item.campaignUnit.length}")
+                    each campaignUnit in item.campaignUnit
+                      img.dl_team_logo(ng-src="#{campaignUnit.team.logo || campaignUnit.company.logo}/60/60")
+                    .provoke_label(ng-if="#{item.campaignType}===4 || #{item.campaignType}===5")
+                      span 挑战
+                    .fellowship_label(ng-if="#{item.campaignType}===7")
+                      span 联谊 
                   .timeline_text
-                    span.date= moment(item.start_time).format('MM/DD')
-                    span.head= item.head
+                    .head
+                      i.fa.fa-paper-plane-o
+                      span= item.head
+                    .date
+                      i.fa.fa-clock-o
+                      span= moment(item.startTime).format('M/DD')
+                    .location
+                      i.fa.fa-map-marker
+                      span= item.location
+                  .timeline_member
+                    p.dl_timeline_member
+                      span.number #{item.memberNumber || '0'}
+                    p 人
+                  .timeline_team_name 
+                    //- if item.campaignUnit.
+                    //- span= item.campaignUnit
+                    //- else
+                    each campaignUnit,index in item.campaignUnit
+                      span= campaignUnit.team.name
+                      if(index===0 && item.campaignUnit.length>1)
+                        span &nbsp;vs&nbsp;
+                    //- span #{item.campaignUnit}
+                    //- if item.campaignUnit.length>1
+                    //-   span &nbsp;vs&nbsp;
+                    //-   span= item.campaignUnit[1].team.name
               //- .img_scroll(ng-show="role!=='GUEST'&&role!=='GUESTHR'&&role!=='GUESTLEADER'")
               //-   a(href="/campaign/detail/#{item.id}" target="_blank")
               //-     div
               //-       each imgs,img_index in item.photo_list
               //-         img.photo(src="#{imgs.uri}/86/86")
               .title(ng-show="role==='GUEST'||role==='GUESTHR'||role==='GUESTLEADER'")
-                img.timeline_logo.pull-left(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
+                //- img.timeline_logo.pull-left(src="#{item.logo ? item.logo :'/img/icons/default_company_logo.png'}")
+                .dl_timeline_logos(class="logos_#{item.campaignUnit.length}")
+                  each campaignUnit in item.campaignUnit
+                    img.dl_team_logo(ng-src="#{campaignUnit.team.logo || campaignUnit.company.logo}/60/60")
+                  .provoke_label(ng-if="#{item.campaignType}===4 || #{item.campaignType}===5")
+                    span 挑战
+                  .fellowship_label(ng-if="#{item.campaignType}===7")
+                    span 联谊 
                 .timeline_text
-                  span.date= moment(item.start_time).format('MM/DD')
                   span.head= item.head
+                  span.date= moment(item.startTime).format('M/DD')
+                  span.location= item.location
+                .timeline_member
+                  p.dl_timeline_member
+                    span.number #{item.memberNumber || '0'}
+                  p 人
+                .timeline_team_name 
+                  //- span= item.campaignUnit[0].team.name
+                  //- if item.campaignUnit.length>1
+                  //-   span &nbsp;vs&nbsp;
+                  //-   span= item.campaignUnit[1].team.name
+
               //- .img_scroll(ng-show="role==='GUEST'||role==='GUESTHR'||role==='GUESTLEADER'")
               //-   a(href="/campaign/detail/#{item.id}",target="_blank")
               //-     div

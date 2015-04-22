@@ -1290,43 +1290,43 @@ exports.timeLine = function(req, res) {
       var newTimeLines = [];
       // todo new time style
       campaigns.forEach(function(campaign) {
-        var _head, _logo;
-        var ct = campaign.campaign_type;
+        var _logo;
+        // var ct = campaign.campaign_type;
         
         //公司活动
-        if(ct===1){
-          // _head = '公司活动';
-          _logo = campaign.campaign_unit[0].company.logo;
-        }
-        //多队
-        else if(ct!==6&&ct!==2){
-          // _head = campaign.team[0].name +'对' + campaign.team[1].name +'的比赛';
-          for(var i = 0;i<campaign.campaign_unit.length;i++){
-            var index = model_helper.arrayObjectIndexOf(campaign.campaign_unit[i].company,companyId,'_id');
-            if(index>-1)
-              _logo = campaign.campaign_unit[i].team.logo;
-          }
-        }
+        // if(ct===1){
+        //   // _head = '公司活动';
+        //   _logo = campaign.campaign_unit[0].company.logo;
+        // }
+        // //多队
+        // else if(ct!==6&&ct!==2){
+        //   // _head = campaign.team[0].name +'对' + campaign.team[1].name +'的比赛';
+        //   for(var i = 0;i<campaign.campaign_unit.length;i++){
+        //     var index = model_helper.arrayObjectIndexOf(campaign.campaign_unit[i].company,companyId,'_id');
+        //     if(index>-1)
+        //       _logo = campaign.campaign_unit[i].team.logo;
+        //   }
+        // }
         //单队
-        else {
-          console.log(ct,campaign._id,campaign.campaign_unit);
-          // _head = campaign.compaign_unit.team.name + '活动';
-          _logo = campaign.campaign_unit[0].team.logo;
-        }
+        // else {
+        //   // _head = campaign.compaign_unit.team.name + '活动';
+        //   _logo = campaign.campaign_unit[0].team.logo;
+        // }
         var tempObj = {
             id: campaign._id,
             //head: _head,
             head: campaign.theme,
-            logo: _logo,
+            // logo: _logo,
+            campaignUnit: campaign.campaign_unit,
+            campaignType: campaign.campaign_type,
             content: campaign.content,
-            location: campaign.location,
-            start_time: campaign.start_time,
-            provoke: ct===4||ct===5||ct===7||ct===9,
+            location: campaign.location.name,
+            startTime: campaign.start_time,
+            // provoke: ct===4||ct===5||ct===7||ct===9,
             year: getYear(campaign),
+            memberNumber: campaign.members.length
             // photo_list: photo_album_controller.getLatestPhotos(campaign.photo_album, 6)
           }
-          // todo new time style
-          // console.log(campaign);
 
         function getYear(dates) {
           var response = String(dates.end_time);
@@ -1334,7 +1334,6 @@ exports.timeLine = function(req, res) {
           var year = _[3]
           return year;
         }
-        // console.log(getYear(campaign));
         var groupYear = getYear(campaign);
         if (newTimeLines.length == 0 || newTimeLines[newTimeLines.length - 1][0].year != groupYear) {
           newTimeLines.push([]);
