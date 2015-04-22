@@ -162,6 +162,12 @@ define(['angular'], function (angular) {
       function ($rootScope, $scope, $state, teamService, memberService,imageService,$modal,$timeout) {
         teamService.get($state.params.teamId).success(function (data) {
           $scope.team = data;
+          teamService.getFamilyPhotos($state.params.teamId).success(function (data) {
+            $scope.team.familyPhoto = data[0];
+          })
+          .error(function (data) {
+            console.log(data.msg);
+          });
           $scope.formData = {
             name: data.name
           };
@@ -228,7 +234,6 @@ define(['angular'], function (angular) {
           var fd = new FormData();
           var blob = imageService.dataURItoBlob(dataURI);
           fd.append('logo', blob);
-          console.log(FormData, fd);
           teamService.editLogo($scope.team._id, fd, function (err) {
             if (err) {
               alert(err);
@@ -240,7 +245,43 @@ define(['angular'], function (angular) {
           });
 
         };
+        var cropperFamily = $('#image_cropper_family').cropit({
+          onFileChange: function () {
+            $scope.familyIsUploading = true;
+            $scope.$digest();
+          },
+          imageBackground: true
+        });
 
+        $scope.familyIsUploading = false;
+        var cropitImageInputFamily = $('#cropit_image_input_family');
+        $scope.selectFamily = function () {
+          cropitImageInputFamily.click();
+        };
+
+        $scope.editFamily = function () {
+          var dataURI = cropperFamily.cropit('export', {
+            type: 'image/jpeg',
+            quality: 1
+          });
+          if (!dataURI || dataURI === '') {
+            return;
+          }
+          var fd = new FormData();
+          var blob = imageService.dataURItoBlob(dataURI);
+          fd.append('photo', blob);
+          console.log(dataURI,blob);
+          teamService.uploadFamilyPhotos($scope.team._id, fd, function (err) {
+            if (err) {
+              alert(err);
+            } else {
+              $scope.familyIsUploading = false;
+              alert('上传成功');
+              window.location.reload();
+            }
+          });
+
+        };
         $scope.showMapModal = function () {
           $scope.modalInstance = $modal.open({
             templateUrl: 'homeCourtModal.html',

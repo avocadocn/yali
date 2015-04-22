@@ -34,6 +34,12 @@ define(['./team'], function (team) {
       update: function (id, updateData) {
         return $http.put(apiBaseUrl + '/teams/' +id, updateData);
       },
+      /**
+       * 编辑logo
+       * @param  {String}   id       小队id
+       * @param  {Object}   fd       更新的数据,包含logo
+       * @param  {Function} callback [description]
+       */
       editLogo: function (id, fd, callback) {
         $.ajax({
           url: apiBaseUrl + '/teams/' + id,
@@ -45,11 +51,7 @@ define(['./team'], function (team) {
             'x-access-token': $http.defaults.headers.common['x-access-token']
           },
           success: function (data, status) {
-            if (data.result === 1) {
-              callback();
-            } else {
-              callback(data.msg);
-            }
+            callback();
           },
           error: function (data, status) {
             callback(data.msg || 'error');
@@ -79,9 +81,38 @@ define(['./team'], function (team) {
        */
       open: function (tid) {
         return $http.post(apiBaseUrl + '/teams/' +tid +'/actions/open');
+      },
+      /**
+       * 获取小队封面
+       * @param  {String} tid 小队id
+       * @return {HttpPromise}     [description]
+       */
+      getFamilyPhotos: function (tid) {
+        return $http.get(apiBaseUrl + '/teams/' +tid +'/family_photos');
+      },
+      /**
+       * 上传小队封面
+       * @param  {String} id 小队id
+       * @return {HttpPromise}     [description]
+       */
+      uploadFamilyPhotos: function (id, fd, callback) {
+        $.ajax({
+          url: apiBaseUrl + '/teams/' + id+'/family_photos',
+          type: 'POST',
+          data: fd,
+          processData: false,  // 告诉jQuery不要去处理发送的数据
+          contentType: false,  // 告诉jQuery不要去设置Content-Type请求头
+          headers: {
+            'x-access-token': $http.defaults.headers.common['x-access-token']
+          },
+          success: function (data, status) {
+            callback();
+          },
+          error: function (data, status) {
+            callback(data.msg || 'error');
+          }
+        });
       }
-
-
     }
   }]);
 });
