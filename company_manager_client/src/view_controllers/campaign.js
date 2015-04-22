@@ -1,4 +1,4 @@
-define(['./controller'], function (controllers) {
+define(['./controller', 'moment'], function (controllers, moment) {
   return controllers.controller('campaign.campaignCtrl', [
     '$scope', '$rootScope', 'storageService', 'teamService', 'campaignService', 'apiBaseUrl',
     function ($scope, $rootScope, storageService, teamService, campaignService, apiBaseUrl) {
@@ -18,6 +18,29 @@ define(['./controller'], function (controllers) {
         {id: 3, num: 50},
         {id: 4, num: 100}
       ];
+      $('#startTime').datetimepicker({
+        autoclose: true,
+        language: 'zh-CN',
+        pickerPosition: "bottom-left"
+      });
+      $('#endTime').datetimepicker({
+        autoclose: true,
+        language: 'zh-CN',
+        startDate: new Date(),
+        pickerPosition:"bottom-left"
+      });
+      $("#startTime").on("changeDate",function (ev) {
+        var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
+        $scope.start_time = moment(dateUTC).format("YYYY-MM-DD HH:mm");
+        $scope.startTime = dateUTC.valueOf();
+        $('#endTime').datetimepicker('setStartDate', dateUTC); //开始时间应小于结束时间
+      });
+      $("#endTime").on("changeDate",function (ev) {
+        var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
+        $scope.end_time = moment(dateUTC).format("YYYY-MM-DD HH:mm");
+        $scope.endTime = dateUTC.valueOf();
+        $('#startTime').datetimepicker('setEndDate', dateUTC); //开始时间应小于结束时间
+      });
       //campaigns
       $scope.pages = [];
       $scope.nowPage = 0;
@@ -249,6 +272,22 @@ define(['./controller'], function (controllers) {
       };
       $scope.showCanlendar = function() {
         $scope.show = true;
+      }
+      $scope.searchCampaignByTime = function() {
+        if($scope.startTime == undefined || $scope.startTime == null || $scope.endTime == undefined || $scope.endTime == null) {
+          return ;
+        }
+        getCampaigns();
+      }
+      $scope.quitSearchCampaignByTime = function() {
+        $scope.start_time = null;
+        $scope.end_time = null;
+        $scope.startTime = null;
+        $scope.endTime = null;
+        getCampaigns();
+      }
+      $scope.searchCampaign = function() {
+        console.log('q');
       }
       $scope.closeCampaign = function (campaign) {
         if(campaign.active) {

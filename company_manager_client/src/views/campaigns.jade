@@ -3,31 +3,18 @@
     h1 
       |活动管理
       a.btn.btn-primary.pull-right(href="" type="button" data-toggle="modal" data-target="#sponsorCampaignModel") 发活动
-  section.content
-    .table_block.clearfix
-      .select_team
-        .select_head
-          span.head_text 选择小队
-          //- button.dl_btn.select_btn(ng-click="selectType(1)" ng-class="{'selected': selectedType===1}") 全部活动
-          //- button.dl_btn.select_btn(ng-click="selectType(2)" ng-class="{'selected': selectedType===2}") 小队活动
-          //- button.dl_btn.select_btn(ng-click="selectType(3)" ng-class="{'selected': selectedType===3}") 公司活动
-        .teams
-          .team(ng-repeat="team in data.teams" ng-class="{'right': $index%2===1, 'selected':currentTeamId===team._id, 'disabled':selectedType===3}" ng-click="selectTeam(team._id)")
-            img.logo(ng-src="{{team.logo}}/40/40")
-            p.name(ng-cloak) {{team.name}}
-            p.type(ng-cloak) {{team.groupType}}
-
-      .col-xs-3
-        .small-box.bg-aqua
-          .inner
-            h3 活动
-            p &nbsp;
-          .icon
-            i.fa.fa-table
-          .small-box-footer.clearfix
-            a.pull-right.box_footer_link(ui-sref="campaignsCanlendar") 活动日历&nbsp;
-              i.fa.fa-arrow-circle-right
-
+  .row.content
+      .box.box-success.box-solid
+        .box-header.with-border
+          h3.box-title 选择小队
+        .box-body.clearfix
+          .team-card(ng-repeat="team in data.teams" ng-class="{'selected':currentTeamId===team._id}" ng-click="selectTeam(team._id)")
+            .info-box
+              .info-box-icon
+                img(ng-src="{{team.logo}}/40/40")
+              .info-box-content
+                .info-box-text(ng-cloak) {{team.name}}
+                .info-box-text(ng-cloak) {{team.groupType}}
   .content.clearfix
     .box.box-primary
       .box-header
@@ -35,14 +22,32 @@
       .box-body
         .table-content
           .row
+            .col-xs-8
+              .col-xs-1
+                select.form-control.input-sm(ng-model="number" ng-options="number.num for number in numbers" ng-change="selectNumOfPage()")
+              .col-xs-11
+                .col-xs-6
+                  .input-group.date.form_datetime#startTime
+                    span.input-group-addon.no_radius 开始
+                    input.dl_form_control.dl_modal_input(type="text" ng-model="start_time" name="startTime" placeholder="选择活动开始时间" data-date-format="YYYY-MM-DD HH:mm" readonly required)
+                    span.input-group-addon.no_radius
+                      span.glyphicon.glyphicon-calendar
+                .col-xs-6
+                  .input-group.date.form_datetime#endTime
+                    span.input-group-addon.no_radius 结束
+                    input.dl_form_control.dl_modal_input(type="text" ng-model="end_time" name="endTime" placeholder="选择活动结束时间" data-date-format="YYYY-MM-DD HH:mm" readonly required)
+                    span.input-group-addon.no_radius
+                      span.glyphicon.glyphicon-calendar
+                .search-time-button
+                  button.btn.bg-olive(ng-click="searchCampaignByTime()") 确定
+                  button.btn.bg-maroon(ng-click="quitSearchCampaignByTime()") 取消
+
+              //- select.form-control.input-sm(ng-model="number" ng-options="number.num for number in numbers" ng-change="selectNumOfPage()")
             .col-xs-3
-              select.form-control.input-sm(ng-model="number" ng-options="number.num for number in numbers" ng-change="selectNumOfPage()")
-            .col-xs-3
-              select.form-control.input-sm(ng-model="number" ng-options="number.num for number in numbers" ng-change="selectNumOfPage()")
-            .col-xs-6
-              .search
-                input(type="text" class="form-control input-sm" placeholder="Search...")
-                span(class="glyphicon glyphicon-search form-control-feedback")
+                .input-group.search
+                  input.form-control(type="text" placeholder="Search...")
+                  span.input-group-btn
+                    button.btn.btn-info.btn-flat(ng-click="searchCampaign()") 搜索
           table.table.table-striped.dl_table
             thead
               tr
