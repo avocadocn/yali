@@ -72,6 +72,15 @@ define(['app'], function (app) {
             }
           }
         })
+        .state('editTeam', {
+          url: '/team/edit/:teamId',
+          views: {
+            content: {
+              templateUrl: templateUrl('/views/team_edit.html'),
+              controller: 'team.editCtrl'
+            }
+          }
+        })
         .state('pointTeamLeader', {
           url: '/team/pointLeader/:teamId',
           views: {

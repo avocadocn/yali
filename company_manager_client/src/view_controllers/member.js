@@ -182,45 +182,70 @@ define(['./controller','qrcode'], function (controllers,qrcode) {
           }
           markUserDepartment($scope.nowUser, $scope.node.department);
         };
-        $scope.page = 1;
-        $scope.hasNext = true;
         $scope.pageNum =10;
         $scope.nowPage = 1;
         $scope.AllcompanyMembers =[];
-        memberService.getMembers($rootScope.company._id,{resultType:2,page:$scope.page}).success(function (data) {
+        memberService.getMembers($rootScope.company._id,{resultType:2,page:$scope.nowPage}).success(function (data) {
           $scope.companyMembers = data.users;
-          $scope.AllcompanyMembers.push(data.users);
-          $scope.hasNext = data.hasNext;
+          $scope.AllcompanyMembers = new Array(data.maxPage);
+          $scope.AllcompanyMembers[0] =data.users;
+          $scope.maxPage = data.maxPage;
+
         })
         .error(function (data) {
           alert(data.msg);
         });
         $scope.nextPage = function () {
-          if(!$scope.hasNext){
+          if($scope.maxPage<=$scope.nowPage){
             return;
           }
           $scope.nowPage++;
-          if($scope.nowPage>$scope.page) {
-            memberService.getMembers($rootScope.company._id,{resultType:2,page:++$scope.page}).success(function (data) {
-              $scope.AllcompanyMembers.push(data.users);
-              $scope.companyMembers = data.users;
-              $scope.hasNext = data.hasNext;
-            })
-          }
-          else {
+          // if($scope.nowPage>$scope.page) {
+          //   memberService.getMembers($rootScope.company._id,{resultType:2,page:++$scope.page}).success(function (data) {
+          //     $scope.AllcompanyMembers.push(data.users);
+          //     $scope.companyMembers = data.users;
+          //     $scope.hasNext = data.hasNext;
+          //   })
+          // }
+          // else {
             $scope.companyMembers = $scope.AllcompanyMembers[$scope.nowPage-1];
-          }
+          // }
         }
         $scope.lastPage = function () {
           if($scope.nowPage<2){
             return;
           }
           $scope.nowPage--;
-          $scope.companyMembers = $scope.AllcompanyMembers[$scope.nowPage-1];
+          if($scope.AllcompanyMembers[$scope.nowPage-1]){
+            $scope.companyMembers = $scope.AllcompanyMembers[$scope.nowPage-1];
+          }
+          else{
+            memberService.getMembers($rootScope.company._id,{resultType:2,page:$scope.nowPage}).success(function (data) {
+              $scope.companyMembers = data.users;
+              $scope.AllcompanyMembers = new Array(data.maxPage);
+              $scope.AllcompanyMembers[$scope.nowPage-1] = data.users;
+            })
+            .error(function (data) {
+              alert(data.msg);
+            });
+          }
         }
         $scope.getPage = function (page) {
           $scope.nowPage =page;
-          $scope.companyMembers = $scope.AllcompanyMembers[$scope.nowPage-1];
+          if($scope.AllcompanyMembers[$scope.nowPage-1]){
+            $scope.companyMembers = $scope.AllcompanyMembers[$scope.nowPage-1];
+          }
+          else{
+            memberService.getMembers($rootScope.company._id,{resultType:2,page:page}).success(function (data) {
+              $scope.companyMembers = data.users;
+              $scope.AllcompanyMembers = new Array(data.maxPage);
+              $scope.AllcompanyMembers[page-1] =data.users;
+            })
+            .error(function (data) {
+              alert(data.msg);
+            });
+          }
+          
         }
         departmentService.getDepartmentTree($rootScope.company._id).success(function (data) {
           $scope.department = data;

@@ -3,35 +3,17 @@
     h1
       | 小队管理
       small(ng-bind-template="{{teams.length}}个小队")
-      a.btn.btn-primary.pull-right(ui-sref="createTeam") 新建小队
   section.content
     .row
-      .col-xs-12
-        .box.box-primary(ng-show="noLeaderTeams.length")
-          .box-header
-            h3.box-title 无队长的小队
-          .box-body.no-padding
-            table.table.table-striped
-              thead
-                tr
-                  th 名称
-                  th 人数
-                  th 上月活动数
-                  th 总活动数
-                  th 积分
-                  th 编辑
-                  th 任命
-              tbody
-                tr(ng-repeat="team in noLeaderTeams")
-                  td {{team.name}}
-                  td {{team.memberCount}}
-                  td {{team.count.last_month_campaign}}
-                  td {{team.count.total_campaign}}
-                  td {{team.score.total}}
-                  td
-                    button.btn.btn-primary.btn-xs.btn-flat(ng-click="editTeam('noLeaderTeams', $index)") 编辑
-                  td
-                    a(ui-sref="pointTeamLeader({teamId:team._id})") 任命队长
+      .col-md-2.col-sm-4.col-xs-12.text-center
+        a.btn.btn-primary(ui-sref="createTeam") 新建小队
+      .col-md-10.col-sm-8.col-xs-12(ng-if="noLeaderTeams.length>0")
+        .row
+          .col-md-3.col-sm-6.col-xs-12(ng-repeat="team in noLeaderTeams")
+            .small-box(ng-class="{'bg-aqua':$index%4==0,'bg-green':$index%4==1,'bg-yellow':$index%4==2,'bg-red':$index%4==3}")
+              .inner
+                p {{team.name}},还没有队长
+              a.small-box-footer(ui-sref="pointTeamLeader({teamId:team._id})") 任命队长
     .row
       .col-xs-12
         .box.box-primary(ng-show="leaderTeams.length")
@@ -47,6 +29,8 @@
                   th 上月活动数
                   th 总活动数
                   th 积分
+                  th 活跃度
+                  th 详情
                   th 编辑
                   th 任命
               tbody
@@ -56,9 +40,12 @@
                   td {{team.memberCount}}
                   td {{team.count.last_month_campaign}}
                   td {{team.count.total_campaign}}
+                  td {{team.score_rank.score}}
                   td {{team.score.total}}
                   td
-                    button.btn.btn-primary.btn-xs.btn-flat(ng-click="editTeam('leaderTeams', $index)") 编辑
+                    button.btn.btn-xs.btn-link(ng-click="detail('leaderTeams', $index)") 详情
+                  td
+                    a(ui-sref="editTeam({teamId:team._id})") 编辑
                   td
                     a(ui-sref="pointTeamLeader({teamId:team._id})") 任命队长
     .row
@@ -76,6 +63,8 @@
                   th 上月活动数
                   th 总活动数
                   th 积分
+                  th 活跃度
+                  th 详情
                   th 编辑
                   //- th.center 任命
               tbody
@@ -85,12 +74,29 @@
                   td {{team.memberCount}}
                   td {{team.count.last_month_campaign}}
                   td {{team.count.total_campaign}}
+                  td {{team.score_rank.score}}
                   td {{team.score.total}}
                   td
-                    button.btn.btn-primary.btn-xs.btn-flat(ng-click="editTeam('closedTeams', $index)") 编辑
+                    button.btn.btn-xs.btn-link(ng-click="detail('leaderTeams', $index)") 详情
+                  td
+                    a(ui-sref="editTeam({teamId:team._id})") 编辑
                   //- td.center
                   //-   a(ui-sref="pointTeamLeader({teamId:team._id})") 任命队长
-
+script(type="text/ng-template" id="teamDetailModal.html")
+  .modal-header
+    button.close(type="button" data-dismiss="modal" aria-label="Close" ng-click="cancel()")
+      span(aria-hidden="true") &times;
+    h4.modal-title 小队详情
+  .modal-body
+    form
+      .form-group
+        label 名称:
+        input.form-control(type="text" ng-model="team.name")
+  .modal-footer
+    button.btn.btn-danger.pull-left(ng-if="team.active" ng-click="closeTeam(team._id)") 关闭小队
+    button.btn.btn-default.pull-left(ng-if="!team.active" ng-click="openTeam(team._id)") 打开小队
+    button.btn.btn-primary(ng-click="save()") 确定
+    button.btn.btn-default(ng-click="cancel()") 取消
 script(type="text/ng-template" id="editTeamModal.html")
   .modal-header
     button.close(type="button" data-dismiss="modal" aria-label="Close" ng-click="cancel()")
