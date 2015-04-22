@@ -40,11 +40,12 @@ html
               a(ui-sref="campaigns")
                 span 发活动
             li(ui-sref-active="active")
-              a(ui-sref="campaigns")
-                span 活动日历
+              a(ui-sref="campaignsCanlendar")
+                span 活动日程
             li(ui-sref-active="active")
               a(ui-sref="campaigns")
-                span 活动列表
+                span 活动管理
+            li.header 队伍管理
             li(ui-sref-active="active")
               a(ui-sref="createTeam")
                 span 建小队
@@ -52,6 +53,9 @@ html
               a(ui-sref="teamList")
                 span 小队管理
             li.header 成员管理
+            li(ui-sref-active="active")
+              a(ui-sref="allMembers")
+                span 所有成员
             li(ui-sref-active="active")
               a(ui-sref="inviteMembers")
                 span 邀请
@@ -61,9 +65,6 @@ html
             //- li(ui-sref-active="active")
             //-   a(ui-sref="inactiveMembers")
             //-     span 屏蔽
-            li(ui-sref-active="active")
-              a(ui-sref="allMembers")
-                span 所有成员
             li(ui-sref-active="active")
               a(ui-sref="batchImport")
                 span 批量导入
