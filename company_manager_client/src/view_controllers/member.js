@@ -1,5 +1,5 @@
-define(['./controller','qrcode'], function (controllers,qrcode) {
-  return controllers.controller('member.inviteCtrl', [
+define(['angular', 'qrcode'], function (angular, qrcode) {
+  return angular.module('memberCtrls', []).controller('member.inviteCtrl', [
     '$rootScope',
     '$scope',
     '$timeout',

@@ -13,14 +13,16 @@ define(['app'], function (app) {
       };
 
       $stateProvider
-        .state('home', {
+        .state('manager', {
+          abstract: true,
           url: '/',
-          views: {
-            content: {
-              templateUrl: templateUrl('/views/home.html'),
-              controller: 'company.homeCtrl'
-            }
-          }
+          templateUrl: templateUrl('/views/manager_layout.html'),
+          controller: 'layout.adminLTECtrl'
+        })
+        .state('manager.home', {
+          url: '/home',
+          templateUrl: templateUrl('/views/home.html'),
+          controller: 'company.homeCtrl'
         })
         .state('login', {
           url: '/login',
@@ -36,132 +38,77 @@ define(['app'], function (app) {
         //     }
         //   }
         // })
-        .state('companyInfo', {
+        .state('manager.companyInfo', {
           url: '/company/info',
-          views: {
-            content: {
-              templateUrl: templateUrl('/views/edit_info.html'),
-              controller: 'company.editCtrl'
-            }
-          }
+          templateUrl: templateUrl('/views/edit_info.html'),
+          controller: 'company.editCtrl'
         })
-        .state('accountSetting', {
+        .state('manager.accountSetting', {
           url: '/account',
-          views: {
-            content: {
-              templateUrl: templateUrl('/views/account_settings.html'),
-              controller: 'account.settingCtrl'
-            }
-          }
+          templateUrl: templateUrl('/views/account_settings.html'),
+          controller: 'account.settingCtrl'
         })
-        .state('teamList', {
+        .state('manager.teamList', {
           url: '/team/list',
-          views: {
-            content: {
-              templateUrl: templateUrl('/views/team_list.html'),
-              controller: 'team.listCtrl'
-            }
-          }
+          templateUrl: templateUrl('/views/team_list.html'),
+          controller: 'team.listCtrl'
         })
-        .state('createTeam', {
+        .state('manager.createTeam', {
           url: '/team/create',
-          views: {
-            content: {
-              templateUrl: templateUrl('/views/team_create.html'),
-              controller: 'team.createCtrl'
-            }
-          }
+          templateUrl: templateUrl('/views/team_create.html'),
+          controller: 'team.createCtrl'
         })
-        .state('editTeam', {
+        .state('manager.editTeam', {
           url: '/team/edit/:teamId',
-          views: {
-            content: {
-              templateUrl: templateUrl('/views/team_edit.html'),
-              controller: 'team.editCtrl'
-            }
-          }
+          templateUrl: templateUrl('/views/team_edit.html'),
+          controller: 'team.editCtrl'
         })
-        .state('pointTeamLeader', {
+        .state('manager.pointTeamLeader', {
           url: '/team/pointLeader/:teamId',
-          views: {
-            content: {
-              templateUrl: templateUrl('/views/point_leader.html'),
-              controller: 'team.pointLeaderCtrl'
-            }
-          }
+          templateUrl: templateUrl('/views/point_leader.html'),
+          controller: 'team.pointLeaderCtrl'
         })
-        .state('campaigns', {
+        .state('manager.campaigns', {
           url: '/campaigns',
-          views: {
-            content: {
-              templateUrl: templateUrl('/views/campaigns.html'),
-              controller: 'campaign.campaignCtrl'
-            }
-          }
+          templateUrl: templateUrl('/views/campaigns.html'),
+          controller: 'campaign.campaignCtrl'
         })
-        .state('campaignsCanlendar', {
+        .state('manager.campaignsCanlendar', {
           url: '/campaignsCanlendar',
-          views: {
-            content: {
-              templateUrl: templateUrl('/views/campaigns-canlendar.html'),
-              controller: 'campaign.campaignCtrl'
-            }
-          }
+          templateUrl: templateUrl('/views/campaigns-canlendar.html'),
+          controller: 'campaign.campaignCtrl'
         })
-        .state('inviteMembers', {
+        .state('manager.inviteMembers', {
           url: '/members/invite',
-          views: {
-            content: {
-              templateUrl: templateUrl('/views/members_invite.html'),
-              controller: 'member.inviteCtrl'
-            }
-          }
+          templateUrl: templateUrl('/views/members_invite.html'),
+          controller: 'member.inviteCtrl'
         })
-        .state('activeMembers', {
+        .state('manager.activeMembers', {
           url: '/members/active',
-          views: {
-            content: {
-              templateUrl: templateUrl('/views/members_active.html'),
-              controller: 'member.activeCtrl'
-            }
-          }
+          templateUrl: templateUrl('/views/members_active.html'),
+          controller: 'member.activeCtrl'
         })
-        .state('inactiveMembers', {
+        .state('manager.inactiveMembers', {
           url: '/members/inactive',
-          views: {
-            content: {
-              templateUrl: templateUrl('/views/members_inactive.html'),
-              controller: 'member.inactiveCtrl'
-            }
-          }
+          templateUrl: templateUrl('/views/members_inactive.html'),
+          controller: 'member.inactiveCtrl'
         })
-        .state('allMembers', {
+        .state('manager.allMembers', {
           url: '/members/all',
-          views: {
-            content: {
-              templateUrl: templateUrl('/views/members_all.html'),
-              controller: 'member.allCtrl'
-            }
-          }
+          templateUrl: templateUrl('/views/members_all.html'),
+          controller: 'member.allCtrl'
         })
-        .state('batchImport', {
+        .state('manager.batchImport', {
           url: '/members/batchImport',
-          views: {
-            content: {
-              templateUrl: templateUrl('/views/members_batchimport.html'),
-              controller: 'member.batchImport'
-            }
-          }
+          templateUrl: templateUrl('/views/members_batchimport.html'),
+          controller: 'member.batchImport'
         })
-        .state('departments', {
+        .state('manager.departments', {
           url: '/departments',
-          views: {
-            content: {
-              templateUrl: templateUrl('/views/department.html'),
-              controller: 'department.managerCtrl'
-            }
-          }
+          templateUrl: templateUrl('/views/department.html'),
+          controller: 'department.managerCtrl'
         });
     }
   ]);
 });
+

@@ -1,5 +1,5 @@
-define(['./controller'], function (controller) {
-  controller.controller('statistics.chartsCtrl', [
+define(['angular'], function (angular) {
+  return angular.module('statisticsCtrls', []).controller('statistics.chartsCtrl', [
     '$scope',
     '$rootScope',
     'campaignService',

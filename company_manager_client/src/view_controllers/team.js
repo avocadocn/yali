@@ -1,5 +1,5 @@
-define(['./controller'], function (controllers) {
-  return controllers.controller('team.listCtrl', [
+define(['angular'], function (angular) {
+  return angular.module('teamCtrls', []).controller('team.listCtrl', [
     '$rootScope',
     '$scope',
     'teamService',
@@ -93,7 +93,7 @@ define(['./controller'], function (controllers) {
         $scope.save = function () {
           teamService.create({selectedGroups:[$scope.newTeam]}).success(function (data) {
             alert('成功创建小队');
-            $state.go('teamList');
+            $state.go('manager.teamList');
           })
           .error(function (data) {
             alert(data.msg)

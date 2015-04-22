@@ -1,0 +1,89 @@
+.wrapper
+  header.main-header(ng-controller="nav.navCtrl")
+    a.logo(ui-sref="manager.home")
+      b Donler企业管理面板
+    nav.navbar.navbar-static-top(role="navigation")
+      a.sidebar-toggle(href="#" data-toggle="offcanvas" role="button")
+        span.sr-only 切换导航
+      .navbar-custom-menu
+        ul.nav.navbar-nav
+          li.dropdown.tasks-menu
+            a.dropdown-toggle(href="#" ng-click="logout()")
+              i.glyphicon.glyphicon-log-out
+  aside.main-sidebar
+    section.sidebar
+      .user-panel
+        a.pull-left.image(ui-sref="manager.home")
+          img.img-circle(ng-src="{{company.logo}}/50/50")
+        a.pull-left.info(ui-sref="manager.home")
+          p(ng-bind="company.shortName")
+      //- form.sidebar-form
+      //-   .input-group
+      //-     input.form-control(type="text" name="q" placeholder="搜索")
+      //-     span.input-group-btn
+      //-       button#search-btn.btn.btn-flat(type="submit" name="search")
+      //-         i.fa.fa-search
+      ul.sidebar-menu
+        li.header 活动体系
+        //- li(ui-sref-active="active")
+        //-   a(ui-sref="manager.statistics")
+        //-     span 统计报告
+        li(ui-sref-active="active")
+          a(ui-sref="manager.campaigns")
+            span 发活动
+        li(ui-sref-active="active")
+          a(ui-sref="manager.campaignsCanlendar")
+            span 活动日程
+        li(ui-sref-active="active")
+          a(ui-sref="manager.campaigns")
+            span 活动管理
+        li.header 队伍管理
+        li(ui-sref-active="active")
+          a(ui-sref="manager.createTeam")
+            span 建小队
+        li(ui-sref-active="active")
+          a(ui-sref="manager.teamList")
+            span 小队管理
+        li.header 成员管理
+        li(ui-sref-active="active")
+          a(ui-sref="manager.allMembers")
+            span 所有成员
+        li(ui-sref-active="active")
+          a(ui-sref="manager.inviteMembers")
+            span 邀请
+        li(ui-sref-active="active")
+          a(ui-sref="manager.activeMembers")
+            span 激活
+        //- li(ui-sref-active="active")
+        //-   a(ui-sref="manager.inactiveMembers")
+        //-     span 屏蔽
+        li(ui-sref-active="active")
+          a(ui-sref="manager.batchImport")
+            span 批量导入
+        li.header 公司管理
+        li(ui-sref-active="active")
+          a(ui-sref="manager.companyInfo")
+            span 公司资料
+        li(ui-sref-active="active")
+          a(ui-sref="manager.departments")
+            span 部门
+        li(ui-sref-active="active")
+          a(ui-sref="manager.accountSetting")
+            span 账号设置
+
+  //- 注，此处千万不要简写成(ui-view)，jade可能会编译成(ui-view="ui-view")，会使得路由无法工作
+  .content-wrapper(ui-view="")
+
+  footer.main-footer
+    .pull-right.hidden-xs
+      a.footer_link(href="/about#about") 关于我们
+      a.footer_link(href="/about#law") 法律声明
+      a.footer_link(href="/about#privacy") 隐私政策
+      a.footer_link(href="/about#question") 问题反馈
+      a.footer_link(href="/about#contact") 联系我们
+    strong
+      a(href="http://www.miitbeian.gov.cn/" title="沪ICP备14016548号" target="_blank") 沪ICP备14016548号
+      | &nbsp;Copyright&nbsp;&copy;&nbsp;2014&nbsp;&nbsp;
+      a(href='/') Donler
+      | .
+    |  All rights reserved.

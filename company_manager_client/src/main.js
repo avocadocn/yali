@@ -18,7 +18,6 @@ requirejs.config({
     calendar: '../bower-lib/bootstrap-calendar/js/calendar',
     zhCN: 'utils/zh-CN',
     alertify: '../bower-lib/alertify.js/lib/alertify',
-    AdminLTE: '../bower-lib/admin-lte/dist/js/app',
     jsZip:'../src/utils/jszip',
     jsXlsx: '../bower-lib/js-xlsx/dist/xlsx'
   },
@@ -68,9 +67,6 @@ requirejs.config({
     // markdown: {
     //   deps: ['pen']
     // }
-    AdminLTE: {
-      deps: ['jQuery', 'bootstrap']
-    }
   },
   deps: ['./init'],
   urlArgs: '',

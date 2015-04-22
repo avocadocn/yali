@@ -1,5 +1,5 @@
-define(['./controller', 'alertify'], function (controllers, alertify) {
-  return controllers.controller('department.managerCtrl', [
+define(['angular', 'alertify'], function (angular, alertify) {
+  return angular.module('departmentCtrls', []).controller('department.managerCtrl', [
     '$scope',
     '$rootScope',
     'searchService',

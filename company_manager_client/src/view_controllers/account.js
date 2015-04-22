@@ -1,5 +1,5 @@
-define(['./controller', 'init_data'], function (controllers, initDataModule) {
-  return controllers.controller('account.loginCtrl', [
+define(['angular', 'init_data'], function (angular, initDataModule) {
+  return angular.module('accountCtrls', []).controller('account.loginCtrl', [
     '$rootScope',
     '$scope',
     '$http',
@@ -27,7 +27,7 @@ define(['./controller', 'init_data'], function (controllers, initDataModule) {
               $rootScope.company = initData.company;
               initDataValue.company = initData.company;
               initDataValue.hasLeader = initData.hasLeader.hasLeader;
-              $state.go('home');
+              $state.go('manager.home');
             }, function(err) {
               console.log(err);
               alert('获取公司数据失败，请刷新页面重试');

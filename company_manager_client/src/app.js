@@ -8,10 +8,9 @@ define([
   'markdown',
   'moment',
   'calendar',
-  'AdminLTE',
   'jsZip',
   'jsXlsx',
-  './view_controllers/controllers',
+  'view_controllers/controllers',
   './storage/storage',
   './utils/utils',
   './utils/filters',
@@ -69,7 +68,7 @@ define([
         }
 
         $rootScope.company = initData.company;
-        $state.go('home');
+        $state.go('manager.home');
       }
 
     }

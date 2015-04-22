@@ -1,5 +1,5 @@
-define(['./controller', 'moment'], function (controllers, moment) {
-  return controllers.controller('campaign.campaignCtrl', [
+define(['angular', 'moment'], function (angular, moment) {
+  return angular.module('campaignCtrls', []).controller('campaign.campaignCtrl', [
     '$scope', '$rootScope', 'storageService', 'teamService', 'campaignService', 'apiBaseUrl',
     function ($scope, $rootScope, storageService, teamService, campaignService, apiBaseUrl) {
       var cid = $rootScope.company._id;
