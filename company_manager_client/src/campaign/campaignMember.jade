@@ -1,0 +1,2 @@
+img(ng-repeat="member in members" ng-src="{{member.photo}}/60/60" ng-if="$index<8 || showAll")
+.campaign-member-more(ng-if="members.length > 8" ng-click="showAllMember()") 查看更多成员

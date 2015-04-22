@@ -69,7 +69,6 @@
 }
 .campaign_detail .component {
   -moz-box-shadow: 1px 1px 3px #ccc;
-/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 .campaign_detail .component .component_head {
@@ -1245,7 +1244,6 @@
   background: -o-linear-gradient(top, transparent, #fff);
   filter: unqoute("alpha(opacity=100 finishopacity=100 style=1 startx=0,starty=0,finishx=0,finishy=20) progid:DXImageTransform.Microsoft.gradient(startcolorstr=transparent,endcolorstr=white,gradientType=0)");
   -ms-filter: unqoute("alpha(opacity=100 finishopacity=100 style=1 startx=0,starty=0,finishx=0,finishy=20) progid:DXImageTransform.Microsoft.gradient(startcolorstr=transparent,endcolorstr=white,gradientType=0)");
-/*IE8*/
 }
 .dl_detail_main .competition_detail .dl_competition_content .competition_content li {
   list-style: inherit;
@@ -3051,28 +3049,28 @@ textarea {
 textarea {
   resize: none;
 }
-::-webkit-input-placeholder /* WebKit browsers */ {
+::-webkit-input-placeholder {
   color: #ccc;
 }
-:-moz-placeholder /* Mozilla Firefox 4 to 18 */ {
+:-moz-placeholder {
   color: #ccc;
 }
-::-moz-placeholder /* Mozilla Firefox 19+ */ {
+::-moz-placeholder {
   color: #ccc;
 }
-:-ms-input-placeholder /* Internet Explorer 10+ */ {
+:-ms-input-placeholder {
   color: #ccc;
 }
-input:focus::-webkit-input-placeholder /* WebKit browsers */ {
+input:focus::-webkit-input-placeholder {
   color: transparent !important;
 }
-input:focus::-moz-placeholder /* Mozilla Firefox 4 to 18 */ {
+input:focus::-moz-placeholder {
   color: transparent !important;
 }
-input:focus::-moz-placeholder /* Mozilla Firefox 19+ */ {
+input:focus::-moz-placeholder {
   color: transparent !important;
 }
-input:focus:-ms-input-placeholder /* Internet Explorer 10+ */ {
+input:focus:-ms-input-placeholder {
   color: transparent !important;
 }
 .transparent {
@@ -3619,7 +3617,6 @@ input:focus:-ms-input-placeholder /* Internet Explorer 10+ */ {
     opacity: 1;
     -webkit-transform: scale(1);
   }
-
   100% {
     opacity: 0;
     -webkit-transform: scale(1.5);
@@ -3630,7 +3627,6 @@ input:focus:-ms-input-placeholder /* Internet Explorer 10+ */ {
     opacity: 1;
     -moz-transform: scale(1);
   }
-
   100% {
     opacity: 0;
     -moz-transform: scale(1.5);
@@ -3856,7 +3852,6 @@ input:focus:-ms-input-placeholder /* Internet Explorer 10+ */ {
   position: relative;
   overflow: hidden;
   -moz-box-shadow: 1px 1px 3px #ccc;
-/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 .dl_container .side .groupsbox .head_title {
@@ -5101,7 +5096,7 @@ input.ng-invalid.ng-dirty {
   font-size: 80px;
   color: #3498db;
 }
-[ngcloak],
+[ng:cloak],
 [ng-cloak],
 [data-ng-cloak],
 [x-ng-cloak],
@@ -5476,14 +5471,12 @@ input.ng-invalid.ng-dirty {
   padding: 0;
   border: none;
   -moz-box-shadow: 1px 1px 3px #ccc;
-/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 .timeline_element:hover {
   cursor: pointer;
   opacity: 1;
   -moz-box-shadow: 3px 3px 3px #ccc;
-/* 老的 Firefox */
   box-shadow: 3px 3px 3px #ccc;
 }
 .timeline_element .timeline_head {
@@ -5773,7 +5766,6 @@ input.ng-invalid.ng-dirty {
   width: 360px;
   float: left;
   -moz-box-shadow: 1px 1px 3px #ccc;
-/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 #events-modal .calendar_box .schedule_type {
@@ -5992,11 +5984,8 @@ input.ng-invalid.ng-dirty {
   bottom: -100px;
   transition: bottom 0.5s;
   -moz-transition: bottom 0.5s;
-/* Firefox 4 */
   -webkit-transition: bottom 0.5s;
-/* Safari and Chrome */
   -o-transition: bottom 0.5s;
-/* Opera */
 }
 .icon_backtop.affix {
   bottom: 70px;
@@ -6006,7 +5995,6 @@ input.ng-invalid.ng-dirty {
     opacity: 1;
     transform: scale(1);
   }
-
   100% {
     opacity: 0;
     transform: scale(1.5);
@@ -6017,7 +6005,6 @@ input.ng-invalid.ng-dirty {
     opacity: 1;
     transform: scale(1);
   }
-
   100% {
     opacity: 0;
     transform: scale(1.5);
@@ -6028,18 +6015,6 @@ input.ng-invalid.ng-dirty {
     opacity: 1;
     transform: scale(1);
   }
-
-  100% {
-    opacity: 0;
-    transform: scale(1.5);
-  }
-}
-@-ms-keyframes scaleFade {
-  50% {
-    opacity: 1;
-    transform: scale(1);
-  }
-
   100% {
     opacity: 0;
     transform: scale(1.5);
@@ -6050,7 +6025,6 @@ input.ng-invalid.ng-dirty {
     opacity: 1;
     transform: scale(1);
   }
-
   100% {
     opacity: 0;
     transform: scale(1.5);
@@ -6516,16 +6490,16 @@ input.ng-invalid.ng-dirty {
   background-clip: padding-box;
   width: 460px;
 }
-.dl_campaign_modal ::-webkit-input-placeholder /* WebKit browsers */ {
+.dl_campaign_modal ::-webkit-input-placeholder {
   color: #989898;
 }
-.dl_campaign_modal :-moz-placeholder /* Mozilla Firefox 4 to 18 */ {
+.dl_campaign_modal :-moz-placeholder {
   color: #989898;
 }
-.dl_campaign_modal ::-moz-placeholder /* Mozilla Firefox 19+ */ {
+.dl_campaign_modal ::-moz-placeholder {
   color: #989898;
 }
-.dl_campaign_modal :-ms-input-placeholder /* Internet Explorer 10+ */ {
+.dl_campaign_modal :-ms-input-placeholder {
   color: #989898;
 }
 .dl_campaign_modal .dl_modal_header {
@@ -7764,13 +7738,11 @@ input.ng-invalid.ng-dirty {
 }
 .teampage .card {
   -moz-box-shadow: 1px 1px 3px #ccc;
-/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
   background-color: #fff;
 }
 .teampage .card:hover {
   -moz-box-shadow: 3px 3px 3px #ccc;
-/* 老的 Firefox */
   box-shadow: 3px 3px 3px #ccc;
 }
 .teampage .info_card {
@@ -8683,10 +8655,10 @@ Timeline UI Base
   padding-right: 1px;
   padding-left: 2px;
 }
-.timeline > li .timeline-icon -webkit-border-radius 30px -moz-border-radius 30px {
+.timeline > li .timeline-icon -webkit-border-radius 30px !important -moz-border-radius 30px !important {
   border-radius: 30px !important;
 }
-@media (max-width 767px) {
+@media (max-width: 767px) {
   timeline > li .timeline-time span.time {
     font-size: 18px;
   }
@@ -8765,14 +8737,12 @@ Timeline UI Base
   padding: 10px;
   color: #888;
   -moz-box-shadow: 1px 1px 3px #ccc;
-/* 老的 Firefox */
   box-shadow: 1px 1px 3px #ccc;
 }
 .dl_timeline .column .timeline_element:hover {
   cursor: pointer;
   opacity: 1;
   -moz-box-shadow: 3px 3px 3px #ccc;
-/* 老的 Firefox */
   box-shadow: 3px 3px 3px #ccc;
 }
 .dl_timeline .column .timeline_element:before {

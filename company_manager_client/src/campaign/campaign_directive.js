@@ -1,4 +1,4 @@
-define(['./campaign', 'echarts', 'alertify', 'echarts/chart/bar', 'echarts/chart/pie'], function (campaign, echarts, alertify) {
+define(['./campaign', 'echarts', 'alertify', 'moment', 'echarts/chart/bar', 'echarts/chart/pie'], function (campaign, echarts, alertify, moment) {
   // St: statistics
   return campaign.directive('campaignStBar', ['$filter', function ($filter) {
     return {
@@ -559,55 +559,75 @@ define(['./campaign', 'echarts', 'alertify', 'echarts/chart/bar', 'echarts/chart
           //打开modal时请求campaign数据
           scope.$watch('campaignId', function(value) {
             if(value) {
-              scope.editing = false;
+              // scope.editing = false;
+              // scope.members = [];
               campaignService.getCampaign(scope.campaignId)
               .success(function (data, status) {
+                scope.campaignOfTeams = true;
                 scope.campaign = data;
+                console.log(data.campaign_type);
+                if(data.campaign_type === 1 || data.campaign_type > 5) {
+                  scope.campaignOfTeams = true;
+                }
                 scope.campaign.deadline = moment(scope.campaign.deadline).format('YYYY-MM-DD HH:mm');
-                $('#deadlineEdit').datetimepicker({
-                  autoclose: true,
-                  language: 'zh-CN',
-                  startDate: new Date(),
-                  pickerPosition:"bottom-left"
-                });
-                $('#deadlineEdit').datetimepicker('setEndDate', new Date(scope.campaign.end_time));   //截至时间应小于结束时间
+                // $('#deadlineEdit').datetimepicker({
+                //   autoclose: true,
+                //   language: 'zh-CN',
+                //   startDate: new Date(),
+                //   pickerPosition:"bottom-left"
+                // });
+                // $('#deadlineEdit').datetimepicker('setEndDate', new Date(scope.campaign.end_time));   //截至时间应小于结束时间
               })
               .error(function (data, status) {
 
               });
             }
           })
-          
 
-          $("#deadlineEdit").on("changeDate",function (ev) {
-            var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
-            scope.campaign.deadline = moment(dateUTC).format("YYYY-MM-DD HH:mm");
-          });
+          // $("#deadlineEdit").on("changeDate",function (ev) {
+          //   var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
+          //   scope.campaign.deadline = moment(dateUTC).format("YYYY-MM-DD HH:mm");
+          // });
 
-          var options = {
-            editor: document.getElementById('campaignDetailEdit'), // {DOM Element} [required]
-            class: 'dl_markdown', // {String} class of the editor,
-            textarea: '<textarea name="content" ng-model="content"></textarea>', // fallback for old browsers
-            list: ['h5', 'p', 'insertorderedlist','insertunorderedlist', 'indent', 'outdent', 'bold', 'italic', 'underline'], // editor menu list
-            stay: false,
-            toolBarId: 'campaignDetailEditToolBar'
-          };
+          // var options = {
+          //   editor: document.getElementById('campaignDetailEdit'), // {DOM Element} [required]
+          //   class: 'dl_markdown', // {String} class of the editor,
+          //   textarea: '<textarea name="content" ng-model="content"></textarea>', // fallback for old browsers
+          //   list: ['h5', 'p', 'insertorderedlist','insertunorderedlist', 'indent', 'outdent', 'bold', 'italic', 'underline'], // editor menu list
+          //   stay: false,
+          //   toolBarId: 'campaignDetailEditToolBar'
+          // };
 
-          var editor = new Pen(options);
+          // var editor = new Pen(options);
 
-          scope.edit = function() {
-            scope.editing = true;
-          };
-          scope.save = function() {
-            campaignService.editCampaign(scope.campaign)
-            .success(function (data, status) {
-              alert('保存成功');
-              scope.editing = false;
-            })
-            .error(function (data, status) {
-              alert('保存失败:' + data.msg);
-            })
-          };
+          // scope.edit = function() {
+          //   scope.editing = true;
+          // };
+          // scope.save = function() {
+          //   campaignService.editCampaign(scope.campaign)
+          //   .success(function (data, status) {
+          //     alert('保存成功');
+          //     scope.editing = false;
+          //   })
+          //   .error(function (data, status) {
+          //     alert('保存失败:' + data.msg);
+          //   })
+          // };
+        }
+      }
+    }])
+    .directive('campaignMember', ['campaignService', function (campaignService) {
+      return {
+        restrict: 'E',
+        scope: {
+          members: '=',
+        },
+        templateUrl: '/company/manager/templates/campaign/campaignMember.html',
+        link: function (scope, ele, attrs, ctrl) {
+          scope.showAll = false;
+          scope.showAllMember = function() {
+            scope.showAll = true;
+          }
         }
       }
     }])
