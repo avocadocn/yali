@@ -44,7 +44,9 @@ define([
     '$http',
     'storageService',
     'accountService',
-    function($rootScope, $state, $stateParams, $http, storageService, accountService) {
+    'initData',
+    'companyService',
+    function($rootScope, $state, $stateParams, $http, storageService, accountService, initData, companyService) {
       $rootScope.$state = $state;
       $rootScope.$stateParams = $stateParams;
 
@@ -57,18 +59,19 @@ define([
         $.ajaxSetup({
           beforeSend: function (xhr)
           {
-             xhr.setRequestHeader("x-access-token", token);
+            xhr.setRequestHeader("x-access-token", token);
           }
-      });
+        });
         var cid = storageService.session.get('cid');
         if (!cid) {
           $state.go('login');
           return;
         }
-        accountService.get(cid).success(function (data) {
-          $rootScope.company = data;
-        });
+
+        $rootScope.company = initData.company;
+        $state.go('home');
       }
+
     }
   ]);
 });

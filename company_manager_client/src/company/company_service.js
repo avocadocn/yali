@@ -44,6 +44,14 @@ define(['./company', 'jQuery'], function (company, $) {
 
       getHasLeader: function(id) {
         return $http.get(apiBaseUrl + '/companies/' + id + '/hasLeader');
+      },
+
+      // 是否完成了新公司的任务：完善资料、创建小队、任命队长、邀请成员
+      hasFinishNewTask: function(company, hasLeader) {
+        var hasCompleteInfo = company.shortName && company.address && company.number && company.contacts;
+        var hasTeam = (company.teamNumber > 0);
+        var hasMember = (company.memberNumber > 0);
+        return (hasCompleteInfo && hasTeam && hasMember && hasLeader);
       }
     }
   }]);

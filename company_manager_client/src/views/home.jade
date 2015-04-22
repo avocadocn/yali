@@ -1,92 +1,134 @@
 .home_page
   section.content
-    .row
-      .col-xs-4
-        .small-box.bg-green
-          .inner
-            h3
-              span(ng-bind="noLeaderTeams")
-              sup.sup_text 个小队
-            p 没有任命队长
-          .icon
-            i.fa.fa-flag.fa-fw
-          a.small-box-footer(ui-sref="teamList") 任命队长&nbsp;
-            i.fa.fa-arrow-circle-right
+    .company_home(ng-if="hasFinishNewTask" ng-cloak)
+      .row
+        .col-xs-4
+          .small-box.bg-green
+            .inner
+              h3
+                span(ng-bind="noLeaderTeams")
+                sup.sup_text 个小队
+              p 没有任命队长
+            .icon
+              i.fa.fa-flag.fa-fw
+            a.small-box-footer(ui-sref="teamList") 任命队长&nbsp;
+              i.fa.fa-arrow-circle-right
 
-      .col-xs-4
-        .small-box.bg-aqua
+        .col-xs-4
+          .small-box.bg-aqua
+            .inner
+              h3 活动
+              p &nbsp;
+            .icon
+              i.fa.fa-table.fa-fw
+            .small-box-footer.clearfix
+              a.pull-left.box_footer_link(ui-sref="campaigns")
+                i.fa.fa-plus
+                | &nbsp;发活动
+              a.pull-right.box_footer_link(ui-sref="campaigns") 管理活动&nbsp;
+                i.fa.fa-arrow-circle-right
+
+        .col-xs-4
+          .small-box.bg-yellow
+            .inner
+              h3
+                span(ng-bind="unActivatedUsers")
+                sup.sup_text 名员工
+              p 等待审核
+            .icon
+              i.fa.fa-user-plus.fa-fw
+            .small-box-footer.clearfix
+              a.pull-left.box_footer_link(ui-sref="inviteMembers")
+                i.fa.fa-plus
+                | &nbsp;邀请
+              a.pull-right.box_footer_link(ui-sref="activeMembers") 审核&nbsp;
+                i.fa.fa-arrow-circle-right
+
+      .row
+        .col-md-6
+          .box.box-warning
+            .box-header.with-border
+              h3.box-title 新成员
+            .box-body(ng-class="{'no-padding': latestUserList.length > 0}")
+              .users-list.clearfix(ng-if="latestUserList.length > 0")
+                li(ng-repeat="user in latestUserList")
+                  img(ng-src="{{user.photo}}/64/64")
+                  a.users-list-name(href="#" ng-bind="user.nickname")
+                  span.users-list-date(ng-bind-template="{{user.register_date | date:'yyyy-MM-dd'}}")
+              p.description_text(ng-if="!latestUserList || latestUserList.length === 0" ng-cloak) 还没有成员
+            .box-footer.text-center(ng-if="latestUserList.length > 0")
+              a(ui-sref="allMembers") 所有成员
+        .col-md-6
+          .box.box-primary
+            .box-header.with-border
+              h3.box-title 近期活动
+              .box-tools.pull-right(ng-if="latestCampaignList && latestCampaignList.length > 0")
+                a.btn.btn-box-tool(ui-sref="campaigns") 更多&nbsp;
+                  i.fa.fa-angle-double-right
+            .box-body
+              .dl_campaign_list(ng-if="latestCampaignList && latestCampaignList.length > 0")
+                .dl_campaign_item(ng-repeat="campaign in latestCampaignList")
+                  p.dl_cp_card_date(ng-if="needShowTime($index)" ng-bind-template="{{campaign.start_time | date:'yyyy年M月d日'}}")
+                  .dl_cp_card
+                    .cp_logos(class="cp_logos_{{campaign.campaign_unit.length}}")
+                      img.team_logo(ng-repeat="campaign_unit in campaign.campaign_unit" ng-src="{{(campaign_unit.team.logo || campaign_unit.company.logo)}}/60/60")
+                      .provoke_label(ng-if="campaign.campaign_type===4 || campaign.campaign_type===5")
+                        span 挑战
+                      .fellowship_label(ng-if="campaign.campaign_type===7")
+                        span 联谊
+                    .cp_texts
+                      h4.cp_theme(ng-bind="campaign.theme")
+                      p.cp_time
+                        i.fa.fa-clock-o
+                        | &nbsp;
+                        span(ng-bind-template="{{campaign.start_time | date:'HH:mm'}}")
+                      p.cp_address
+                        i.fa.fa-map-marker
+                        | &nbsp;
+                        span(ng-bind="campaign.location.name")
+                    .cp_member_count.text-center
+                      span.count_number(ng-bind-template="{{campaign.members_count || 0}}")
+                      span.count_text 报名
+              p.description_text(ng-if="!latestCampaignList || latestCampaignList.length === 0") 还没有活动
+
+    .todo_box_list.clearfix#todo_box(ng-if="!hasFinishNewTask" ng-cloak)
+
+      .todo_box(ng-if="hasCompleteInfo === false" ng-cloak)
+        .small-box.bg-primary
           .inner
-            h3 活动
+            h3 您还没有完善公司资料
             p &nbsp;
           .icon
-            i.fa.fa-table.fa-fw
-          .small-box-footer.clearfix
-            a.pull-left.box_footer_link(ui-sref="campaigns")
-              i.fa.fa-plus
-              | &nbsp;发活动
-            a.pull-right.box_footer_link(ui-sref="campaigns") 管理活动&nbsp;
-              i.fa.fa-arrow-circle-right
+            i.fa.fa-info.fa-fw
+          a.small-box-footer(ui-sref="companyInfo") 去完善&nbsp;
+            i.fa.fa-arrow-circle-right
 
-      .col-xs-4
+      .todo_box(ng-if="hasTeam === false" ng-cloak)
+        .small-box.bg-green
+          .inner
+            h3 您还没有小队
+            p &nbsp;
+          .icon
+            i.fa.fa-flag.fa-fw
+          a.small-box-footer(ui-sref="createTeam") 建小队&nbsp;
+            i.fa.fa-arrow-circle-right
+
+      .todo_box(ng-if="hasLeader === false" ng-cloak)
+        .small-box.bg-green
+          .inner
+            h3 您还没有设队长
+            p &nbsp;
+          .icon
+            i.fa.fa-users.fa-fw
+          a.small-box-footer(ui-sref="teamList") 设队长&nbsp;
+            i.fa.fa-arrow-circle-right
+
+      .todo_box(ng-if="hasMember === false" ng-cloak)
         .small-box.bg-yellow
           .inner
-            h3
-              span(ng-bind="unActivatedUsers")
-              sup.sup_text 名员工
-            p 等待审核
+            h3 您还没有成员
+            p &nbsp;
           .icon
             i.fa.fa-user-plus.fa-fw
-          .small-box-footer.clearfix
-            a.pull-left.box_footer_link(ui-sref="inviteMembers")
-              i.fa.fa-plus
-              | &nbsp;邀请
-            a.pull-right.box_footer_link(ui-sref="activeMembers") 审核&nbsp;
-              i.fa.fa-arrow-circle-right
-
-    .row
-      .col-md-6
-        .box.box-warning
-          .box-header.with-border
-            h3.box-title 新成员
-          .box-body(ng-class="{'no-padding': latestUserList.length > 0}")
-            .users-list.clearfix(ng-if="latestUserList.length > 0")
-              li(ng-repeat="user in latestUserList")
-                img(ng-src="{{user.photo}}/64/64")
-                a.users-list-name(href="#" ng-bind="user.nickname")
-                span.users-list-date(ng-bind-template="{{user.register_date | date:'yyyy-MM-dd'}}")
-            p.description_text(ng-if="!latestUserList || latestUserList.length === 0" ng-cloak) 还没有成员
-          .box-footer.text-center(ng-if="latestUserList.length > 0")
-            a(ui-sref="allMembers") 所有成员
-      .col-md-6
-        .box.box-primary
-          .box-header.with-border
-            h3.box-title 近期活动
-            .box-tools.pull-right(ng-if="latestCampaignList && latestCampaignList.length > 0")
-              a.btn.btn-box-tool(ui-sref="campaigns") 更多&nbsp;
-                i.fa.fa-angle-double-right
-          .box-body
-            .dl_campaign_list(ng-if="latestCampaignList && latestCampaignList.length > 0")
-              .dl_campaign_item(ng-repeat="campaign in latestCampaignList")
-                p.dl_cp_card_date(ng-if="needShowTime($index)" ng-bind-template="{{campaign.start_time | date:'yyyy年M月d日'}}")
-                .dl_cp_card
-                  .cp_logos(class="cp_logos_{{campaign.campaign_unit.length}}")
-                    img.team_logo(ng-repeat="campaign_unit in campaign.campaign_unit" ng-src="{{(campaign_unit.team.logo || campaign_unit.company.logo)}}/60/60")
-                    .provoke_label(ng-if="campaign.campaign_type===4 || campaign.campaign_type===5")
-                      span 挑战
-                    .fellowship_label(ng-if="campaign.campaign_type===7")
-                      span 联谊
-                  .cp_texts
-                    h4.cp_theme(ng-bind="campaign.theme")
-                    p.cp_time
-                      i.fa.fa-clock-o
-                      | &nbsp;
-                      span(ng-bind-template="{{campaign.start_time | date:'HH:mm'}}")
-                    p.cp_address
-                      i.fa.fa-map-marker
-                      | &nbsp;
-                      span(ng-bind="campaign.location.name")
-                  .cp_member_count.text-center
-                    span.count_number(ng-bind-template="{{campaign.members_count || 0}}")
-                    span.count_text 报名
-            p.description_text(ng-if="!latestCampaignList || latestCampaignList.length === 0") 还没有活动
-
+          a.small-box-footer(ui-sref="inviteMembers") 邀请&nbsp;
+            i.fa.fa-arrow-circle-right

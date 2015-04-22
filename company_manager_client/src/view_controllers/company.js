@@ -71,9 +71,17 @@ define(['./controller', 'jQuery', 'cropit'], function (controllers, $) {
 
     }
   ])
-  .controller('company.homeCtrl', ['$scope', '$rootScope', 'companyService', 'campaignService',
-    function ($scope, $rootScope, companyService, campaignService) {
-      var cid = $rootScope.company._id;
+  .controller('company.homeCtrl', ['$scope', '$rootScope', 'companyService', 'campaignService', 'initData',
+    function ($scope, $rootScope, companyService, campaignService, initData) {
+      var company = initData.company;
+      var cid = company._id;
+      $scope.hasCompleteInfo = company.shortName && company.address && company.number && company.contacts;
+      $scope.hasTeam = (company.teamNumber > 0);
+      $scope.hasMember = (company.memberNumber > 0);
+      $scope.hasLeader = initData.hasLeader.hasLeader;
+      
+      $scope.hasFinishNewTask = companyService.hasFinishNewTask(company, initData.hasLeader);
+
       companyService.getUndisposed(cid, function(err, data) {
         if(!err) {
           $scope.noLeaderTeams = data.noLeaderTeams;
@@ -104,38 +112,19 @@ define(['./controller', 'jQuery', 'cropit'], function (controllers, $) {
         }
       };
 
+      // 计算高度不能随屏幕调整进行调整，暂且不做计算
+      // setTimeout(function() {
+      //   var wrapEle = document.querySelector('.content-wrapper');
+      //   var todoBoxEle = document.querySelector('#todo_box');
+
+      //   var todoBoxLastLineMarginBottom = 20;
+      //   var contentPadding = 15;
+      //   var marginTopValue = (wrapEle.clientHeight - (todoBoxEle.clientHeight - todoBoxLastLineMarginBottom) - contentPadding * 2) / 2;
+      //   todoBoxEle.style.marginTop = marginTopValue + 'px';
+      // });
+
     }
   ])
-  .controller('company.newCompanyCtrl', ['$scope', '$rootScope', '$state', 'companyService', function($scope, $rootScope, $state, companyService) {
-    var cid = $rootScope.company._id;
-
-    // 计算高度不能随屏幕调整进行调整，暂且不做计算
-    // setTimeout(function() {
-    //   var wrapEle = document.querySelector('.content-wrapper');
-    //   var todoBoxEle = document.querySelector('#todo_box');
-
-    //   var todoBoxLastLineMarginBottom = 20;
-    //   var contentPadding = 15;
-    //   var marginTopValue = (wrapEle.clientHeight - (todoBoxEle.clientHeight - todoBoxLastLineMarginBottom) - contentPadding * 2) / 2;
-    //   todoBoxEle.style.marginTop = marginTopValue + 'px';
-    // });
-
-    var company = $rootScope.company;
-    var hasCompleteInfo = $scope.hasCompleteInfo = company.shortName && company.address && company.number && company.contacts;
-    var hasTeam = $scope.hasTeam = (company.teamNumber > 0);
-    var hasMember = $scope.hasMember = (company.memberNumber > 0);
-
-    companyService.getHasLeader(cid).success(function(data) {
-      $scope.hasLeader = data.hasLeader;
-
-      if (hasCompleteInfo && hasTeam && hasMember && $scope.hasLeader) {
-        $state.go('home');
-      }
-
-    }).error(function(data) {
-      // todo
-    });
-
-  }])
 });
+
 

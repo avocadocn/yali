@@ -1,109 +1,120 @@
-textOverflow()
-  overflow hidden
-  text-overflow ellipsis
-  white-space nowrap
+@require tools
 
-displayFlex()
-  display -webkit-box
-  display -webkit-flex
-  display -moz-box
-  display -moz-flex
-  display -ms-flexbox
-  display flex
-
-flexValue(value)
-  -webkit-box-flex value
-  -webkit-flex value
-  -moz-box-flex value
-  -moz-flex value
-  -ms-flex value
-  flex value
+smallBox()
+  width smallBoxWidth
+  margin-left auto
+  margin-right auto
 
 col_card_border = #ddd
+sideWidth = 230px
+smallBoxWidth = 470px
+smallBoxMargin = 10px
+todoBoxWidth = smallBoxWidth + smallBoxMargin * 2
+todoListWidthInOneBox = sideWidth + todoBoxWidth
+todoListWidthInTwoBox = sideWidth + todoBoxWidth * 2
 
 .home_page
-  .sup_text
-    font-size 20px
+  .company_home
+    .sup_text
+      font-size 20px
 
-  .small-box-footer
-    padding-left 10px
-    padding-right 10px
-    .box_footer_link
-      color white
-
-  .description_text
-    margin-bottom 0
-
-  .dl_cp_card_date
-    color gray
-
-  .dl_campaign_item
-    &:last-child
-      .dl_cp_card
-        margin-bottom 0
-
-  .dl_cp_card
-    margin-bottom 10px
-    border 1px solid col_card_border
-    displayFlex()
-    .cp_logos
-      width 80px
-      padding 10px
-      border-radius 5px
-    .team_logo
-      width 60px
-      height 60px
-      border-radius 5px
-    .cp_logos_2
-      .team_logo
-        width 29px
-        height 29px
-        margin-top 7px
-        margin-bottom 6px
-        border-radius 3px
-        float left
-        &:first-child
-          margin-right 2px
-    .provoke_label, .fellowship_label
-      width 100%
-      height 14px
-      color #fff
-      float left
-      text-align center
-      line-height 14px
-      background-color #f48361
-    .fellowship_label
-      background-color #ffc053
-    .cp_texts
-      flexValue(1)
-      padding-top 5px
+    .small-box-footer
+      padding-left 10px
       padding-right 10px
-      padding-bottom 10px
-      .fa
-        width 14px
-        text-align center
-    .cp_theme
-      margin 0
-      font-size 14px
-      line-height 24px
-    .cp_time, .cp_address
-      margin 0
-      font-size 14px
-      line-height 20px
-      color #999
-    .cp_member_count
-      margin 10px 0
-      width 80px
-      border-left 1px solid col_card_border
-      .count_number
-        display block
-        margin-top 8px
-        line-height 24px
-        font-size 24px
-        font-weight bold
-      .count_text
-        display block
-        line-height 20px
-        font-size 14px
+      .box_footer_link
+        color white
 
+    .description_text
+      margin-bottom 0
+
+    .dl_cp_card_date
+      color gray
+
+    .dl_campaign_item
+      &:last-child
+        .dl_cp_card
+          margin-bottom 0
+
+    .dl_cp_card
+      margin-bottom 10px
+      border 1px solid col_card_border
+      displayFlex()
+      .cp_logos
+        width 80px
+        padding 10px
+        border-radius 5px
+      .team_logo
+        width 60px
+        height 60px
+        border-radius 5px
+      .cp_logos_2
+        .team_logo
+          width 29px
+          height 29px
+          margin-top 7px
+          margin-bottom 6px
+          border-radius 3px
+          float left
+          &:first-child
+            margin-right 2px
+      .provoke_label, .fellowship_label
+        width 100%
+        height 14px
+        color #fff
+        float left
+        text-align center
+        line-height 14px
+        background-color #f48361
+      .fellowship_label
+        background-color #ffc053
+      .cp_texts
+        flexValue(1)
+        padding-top 5px
+        padding-right 10px
+        padding-bottom 10px
+        .fa
+          width 14px
+          text-align center
+      .cp_theme
+        margin 0
+        font-size 14px
+        line-height 24px
+      .cp_time, .cp_address
+        margin 0
+        font-size 14px
+        line-height 20px
+        color #999
+      .cp_member_count
+        margin 10px 0
+        width 80px
+        border-left 1px solid col_card_border
+        .count_number
+          display block
+          margin-top 8px
+          line-height 24px
+          font-size 24px
+          font-weight bold
+        .count_text
+          display block
+          line-height 20px
+          font-size 14px
+
+  .todo_box_list
+      margin-left auto
+      margin-right auto
+      @media (min-width: todoListWidthInOneBox) and (max-width: todoListWidthInTwoBox - 1px)
+        width todoBoxWidth
+      @media (min-width: todoListWidthInTwoBox)
+        width todoBoxWidth * 2
+    .todo_box
+      @media (min-width: todoListWidthInTwoBox)
+        float left
+        width 50%
+        .small-box
+          smallBox()
+      @media (min-width: todoListWidthInOneBox) and (max-width: todoListWidthInTwoBox - 1px)
+        .small-box
+          smallBox()
+      h3
+        white-space normal
 

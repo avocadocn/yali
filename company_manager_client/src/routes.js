@@ -22,15 +22,6 @@ define(['app'], function (app) {
             }
           }
         })
-        .state('newCompany', {
-          url: '/new',
-          views: {
-            content: {
-              templateUrl: templateUrl('/views/new_company.html'),
-              controller: 'company.newCompanyCtrl'
-            }
-          }
-        })
         .state('login', {
           url: '/login',
           templateUrl: '/company/manager/login.html',
@@ -163,6 +154,5 @@ define(['app'], function (app) {
           }
         });
     }
-  ])
-    .constant('apiBaseUrl', 'http://' + window.location.hostname + ':3002');
+  ]);
 });

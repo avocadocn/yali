@@ -1,12 +1,14 @@
-define(['./controller'], function (controllers) {
+define(['./controller', 'init_data'], function (controllers, initDataModule) {
   return controllers.controller('account.loginCtrl', [
     '$rootScope',
     '$scope',
     '$http',
     '$state',
     'accountService',
+    'companyService',
     'storageService',
-    function ($rootScope, $scope, $http, $state, accountService, storageService) {
+    'initData',
+    function ($rootScope, $scope, $http, $state, accountService, companyService, storageService, initDataValue) {
       $scope.loginData = {
         username: '',
         password: ''
@@ -18,9 +20,17 @@ define(['./controller'], function (controllers) {
             storageService.session.set('x-access-token', data.token);
             storageService.session.set('cid', data.id);
 
-            accountService.get(data.id).success(function (data) {
-              $rootScope.company = data;
+            initDataModule.get({
+              company: accountService.get(data.id),
+              hasLeader: companyService.getHasLeader(data.id)
+            }).then(function(initData) {
+              $rootScope.company = initData.company;
+              initDataValue.company = initData.company;
+              initDataValue.hasLeader = initData.hasLeader.hasLeader;
               $state.go('home');
+            }, function(err) {
+              console.log(err);
+              alert('获取公司数据失败，请刷新页面重试');
             });
 
           })
