@@ -25,6 +25,9 @@
                 label.cp_form_label 活动名称
                 input.cp_form_control(type="text" placeholder="请填写活动名称" ng-model="formData.theme" required)
               .cp_form_group
+                label.cp_form_label 活动类型
+                select.cp_form_control(name='campaignMold' ng-options="mold.name as mold.name for mold in molds" ng-model="formData.campaign_mold")
+              .cp_form_group
                 label.cp_form_label 开始时间
                 input.cp_form_control(type="text")
               .cp_form_group

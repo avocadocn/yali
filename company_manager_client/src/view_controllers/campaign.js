@@ -358,7 +358,8 @@ define(['angular', 'moment'], function (angular, moment) {
     'initData',
     'campaignService',
     'teamList',
-    function($scope, initData, campaignService, teamList) {
+    'molds',
+    function($scope, initData, campaignService, teamList, molds) {
       $scope.teamList = teamList.map(function(team) {
         return {
           _id: team._id,
@@ -381,6 +382,8 @@ define(['angular', 'moment'], function (angular, moment) {
         refreshTeamIds();
       };
 
+      $scope.molds = molds;
+
       $scope.campaignType = 'company'; // 'company' or 'team';
       $scope.formData = {
         cid: [''],
@@ -390,7 +393,7 @@ define(['angular', 'moment'], function (angular, moment) {
         start_time: '',
         end_time: '',
         deadline: '',
-        campaign_mold: '',
+        campaign_mold: molds[0].name,
         member_max: 0,
         member_min: 0,
         content: ''

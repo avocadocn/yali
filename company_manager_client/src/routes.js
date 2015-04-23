@@ -77,6 +77,11 @@ define(['app'], function (app) {
               return teamService.getList(initData.company._id).then(function(res) {
                 return res.data;
               });
+            }],
+            molds: ['campaignService', function(campaignService) {
+              return campaignService.getCampaignMolds().then(function(res) {
+                return res.data;
+              });
             }]
           }
         })
