@@ -1,1 +1,1 @@
-define(['./member_service'], function () {});
+define(['./member_service','./member_directive'], function () {});

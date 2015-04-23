@@ -270,57 +270,32 @@ define(['angular', 'qrcode'], function (angular, qrcode) {
         //   node.selected = true;
         //   $scope.last_selected_node = node;
         // };
-        $scope.editUser = function (index) {
-          $scope.index = index;
-          $scope.nowUser = $scope.companyMembers[index];
-          formatData($scope.department);
+        // $scope.editUser = function (index) {
+        //   $scope.index = index;
+        //   $scope.nowUser = $scope.companyMembers[index];
+        //   formatData($scope.department);
           
-          $scope.modalInstance = $modal.open({
-            templateUrl: 'editUserModal.html',
-            scope: $scope
-          });
-          //关闭modal
-          $scope.close = function () {
-            $scope.modalInstance.dismiss('cancel');
-          }
-          //激活
-          $scope.active = function () {
-            var id = $scope.companyMembers[$scope.index]._id;
-            memberService.active(id).success(function (data) {
-              alert('激活成功');
-              $scope.companyMembers[$scope.index].active = true;
-              $scope.companyMembers[$scope.index].mail_active = true;
-              $scope.nowUser.active = true;
-              $scope.nowUser.mail_active = true;
-            })
-            .error(function (data) {
-              alert(data.msg);
-            });
-          };
-          //屏蔽
-          $scope.closeUser = function() {
-            var id = $scope.companyMembers[$scope.index]._id;
-            memberService.close(id).success(function (data) {
-              alert('屏蔽成功');
-              $scope.companyMembers[$scope.index].active = false;
-              $scope.nowUser.active = false;
-            })
-            .error(function (data) {
-              alert(data.msg);
-            });
-          };
-          // $scope.save = function () {
-          //   $scope.modalInstance.dismiss('cancel');
-          //   memberService.edit($scope.nowUser._id,{did:$scope.last_selected_node._id}).success(function (data) {
-          //     alert('编辑成功');
-          //     $state.reload();
-          //   })
-          //   .error(function (data) {
-          //     alert(data.msg);
-          //   });
+        //   $scope.modalInstance = $modal.open({
+        //     templateUrl: 'editUserModal.html',
+        //     scope: $scope
+        //   });
+        //   //关闭modal
+        //   $scope.close = function () {
+        //     $scope.modalInstance.dismiss('cancel');
+        //   }
+         
+        //   // $scope.save = function () {
+        //   //   $scope.modalInstance.dismiss('cancel');
+        //   //   memberService.edit($scope.nowUser._id,{did:$scope.last_selected_node._id}).success(function (data) {
+        //   //     alert('编辑成功');
+        //   //     $state.reload();
+        //   //   })
+        //   //   .error(function (data) {
+        //   //     alert(data.msg);
+        //   //   });
 
-          // }
-        }
+        //   // }
+        // }
       }
     ]).controller('member.batchImport', [
       '$rootScope',

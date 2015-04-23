@@ -60,7 +60,7 @@
               td.center
                 {{member.active? '正常' : member.mail_active ? '屏蔽中' : '未激活'}}
               td.center
-                i.fa.fa-edit(ng-click="editUser($index)")
+                i.fa.fa-edit(edit-member now-user="member")
 script(type="text/ng-template" id="editUserModal.html")
   include ../member/editMember
 //- script(type="text/ng-template" id="node.html")
