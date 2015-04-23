@@ -8,6 +8,6 @@ html
     link(href="/img/icons/favicon.ico" rel="shortcut icon" type="image/x-icon")
   body.skin-blue.layout-boxed
     .dl_wrapper(ui-view="")
-    .loading_box
+    .loading_box(ng-if="!isAppLoaded")
       i.fa.fa-spinner.fa-pulse.fa-5x
     script(data-main="/company_client/js/donler" src="/company_client/js/require.js")

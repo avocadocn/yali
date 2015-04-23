@@ -9,4 +9,36 @@
           .box-header.with-border
             h3.box-title 发活动
           .box-body
-            p todo
+            .cp_tabs
+              .tab 公司活动
+              .tab 小队活动
+            form.create_cp_form(name="createCampaignForm")
+              .cp_form_group
+                label.cp_form_label 选择小队
+                select.cp_form_control
+                  option 小队1
+                  option 小队2
+              .cp_form_group
+                label.cp_form_label 活动名称
+                input.cp_form_control(type="text")
+              .cp_form_group
+                label.cp_form_label 开始时间
+                input.cp_form_control(type="text")
+              .cp_form_group
+                label.cp_form_label 结束时间
+                input.cp_form_control(type="text")
+              .cp_form_group
+                label.cp_form_label 地点
+                input.cp_form_control(type="text")
+              .cp_form_group
+                label.cp_form_label 报名截止时间
+                input.cp_form_control(type="text")
+              .cp_form_group
+                label.cp_form_label 报名人数上限
+                input.cp_form_control(type="text")
+              .cp_form_group
+                label.cp_form_label 最少人数
+                input.cp_form_control(type="text")
+              .cp_form_group
+                label.cp_form_label 简介
+                textarea.cp_form_control(type="text")
