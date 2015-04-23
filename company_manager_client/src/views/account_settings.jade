@@ -30,7 +30,7 @@
                 .form-group
                   label 注册邮箱：{{company.login_email}}
                 .form-group(ng-repeat="domain in domains" ng-class="{'input-group': $index!==0}")
-                  input.form-control(type="text" name="domain{{$index}}" ng-model="domain" required)
+                  input.form-control(type="text" name="domain{{$index}}" ng-model="domain.domain" required)
                   .input-group-btn(ng-if="$index!=0")
                     button.btn.btn-default(ng-click="removeDomain($index)") 删除
                 .form-group.input-group(ng-if="domains.length<3")

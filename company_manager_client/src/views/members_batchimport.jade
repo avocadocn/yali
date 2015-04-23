@@ -26,7 +26,7 @@
         small(ng-bind-template="{{validMembers.length}}人")
       .box-body.no-padding
         p(ng-if="validMembers&&validMembers.length==0") 您导入的文件没有有效的数据，请重新导入数据
-        .table_container(ng-if="validMembers&&validMembers.length>0")
+        .table_container(ng-if="validMembers.length>0")
           table.table.table-striped
             thead
               tr
@@ -51,7 +51,7 @@
             button.btn.btn-primary(ng-click="invite()" ng-disabled="!validMembers||validMembers.length==0") 邀请
       .overlay(ng-if="inviteLoading")
         i.fa.fa-refresh.fa-spin
-    .box.box-primary(ng-if="importFlag && invalidMembers&&invalidMembers.length>0")
+    .box.box-primary(ng-if="importFlag &&invalidMembers.length>0")
       .box-header
         h3.box-title 无效成员列表
         small(ng-bind-template="{{invalidMembers.length}}人")

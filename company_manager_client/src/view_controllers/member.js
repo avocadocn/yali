@@ -53,7 +53,10 @@ define(['angular', 'qrcode'], function (angular, qrcode) {
           input = '不是有效的邮箱';
           break;
         case 6:
-          input = '发生错误';
+          input = '邮件发送错误';
+          break;
+        case 7:
+          input = '数据库发生错误';
           break;
         default:
           input = '';
@@ -338,10 +341,10 @@ define(['angular', 'qrcode'], function (angular, qrcode) {
                 roa.forEach(function(element, index){
                   var formatRow ={}
                   for (var col in element){
-                    if(col=='邮件'){
+                    if(col=='邮箱'){
                       formatRow.email = element[col]
                     }
-                    else if(col=='用户名'){
+                    else if(col=='姓名'){
                       formatRow.name = element[col]
                     }
                   }
@@ -369,6 +372,7 @@ define(['angular', 'qrcode'], function (angular, qrcode) {
               data.forEach(function(element, index){
                 if(element.status==0){
                   element.select = false;
+                  element.index = $scope.validMembers.length;
                   $scope.validMembers.push(element)
                 }
                 else{
@@ -407,7 +411,9 @@ define(['angular', 'qrcode'], function (angular, qrcode) {
           else{
             $scope.inviteLoading = true;
             memberService.batchInvite(inviteMembers).success(function (data) {
-              $scope.validMembers = data;
+              data.forEach(function(member, index){
+                $scope.validMembers[member.index] = member;
+              });
               $scope.inviteLoading = false;
             })
             .error(function (data) {

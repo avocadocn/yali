@@ -47,11 +47,14 @@ define(['angular', 'init_data'], function (angular, initDataModule) {
       '$state',
       'accountService',
       function ($rootScope, $scope, $http, $state, accountService) {
-        $scope.domains = $rootScope.company.domains;
-        $scope.newDomain ={};
+        $scope.domains = []
+        $rootScope.company.domains.forEach(function(domain){
+          $scope.domains.push({domain:domain})
+        });;
+        $scope.newDomain ={domain:undefined};
         $scope.addDomain = function () {
           if($scope.domains.length<3){
-            $scope.domains.push($scope.newDomain.domain);
+            $scope.domains.push($scope.newDomain);
             $scope.newDomain.domain = undefined;
           }
         };
@@ -59,7 +62,11 @@ define(['angular', 'init_data'], function (angular, initDataModule) {
           $scope.domains.splice(index,1)
         };
         $scope.updateDomain = function () {
-          accountService.update($rootScope.company._id,{domain:$scope.domains.join(' ')}).success(function (data) {
+          var formatDomains =[]
+          $scope.domains.forEach(function(domain){
+            formatDomains.push(domain.domain)
+          });
+          accountService.update($rootScope.company._id,{domain:formatDomains.join(' ')}).success(function (data) {
             alert('修改邮箱后缀成功')
           })
           .error(function (data) {
