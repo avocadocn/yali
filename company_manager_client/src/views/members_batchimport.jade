@@ -12,14 +12,31 @@
       .box-header
         h3.box-title 说明
       .box-body
-        p 1.请手动建立一个Excel报表文件(.xlsx或.xls文件):第一列列首为"邮箱"，第二列列首为"用户名"。并在每列的下方请填写对应的员工企业邮箱和员工姓名。示例如下：
-        //- p: img(ng-src="/img/example.png")
-        //- 坐等图片 =v=
-        p 
+        p 1.请手动建立一个
+          strong Excel报表文件
+          span (.xlsx或.xls文件):第一列列首为"
+          strong 邮箱
+          span "，第二列列首为"
+          strong 姓名
+          span "。并在每列的下方请填写对应的员工企业邮箱和员工姓名。
+        p
+          strong 示例
+          span 如下：
+        p: img(ng-src="/img/import_example.png")
+        p
           strong 注意：
-          span 待导入员工邮箱的后缀必须与公司设置的邮箱后缀一致。
-        p 2.在批量导入界面点击选中文件，找到文件并选中并确定，之后点击上传按钮。
-        p 3.导入的文件中的用户列表中可能包含无效数据，选中想要邀请的有效员工数据，并点击邀请发送邀请邮件。
+          span 待导入员工邮箱的后缀必须与公司设置的邮箱
+          strong 后缀一致。
+        p 2.在批量导入界面点击
+          strong 选中文件
+          span 找到文件并选中并确定，之后点击
+          strong 上传
+          span 按钮。
+        p 3.导入的文件中的用户列表中可能包含无效数据，
+          strong 勾选
+          span 想要邀请的有效员工数据，并点击
+          strong 邀请
+          span 发送邀请邮件。
     .box.box-primary(ng-if="importFlag")
       .box-header
         h3.box-title 有效成员列表

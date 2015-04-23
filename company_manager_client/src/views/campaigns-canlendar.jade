@@ -62,7 +62,7 @@
                     td.center(ng-cloak) {{campaign.memberNumber}}
                     td.center(ng-cloak) {{campaign.status}}
                     td.center(ng-cloak) 
-                      a(ng-click="goDetail(campaign._id)" href="") 详情
+                      a(href="" edit-campaign campaign-id="campaign._id") 详情
                       button.dl_btn.close_btn(ng-if="campaign.status==='未开始'||campaign.status==='已开始'" ng-disabled="!campaign.active" ng-click="closeCampaign(campaign)") {{campaign.active? '关闭': '已关闭'}}
               .row
                 .col-xs-12
@@ -74,5 +74,5 @@
                         a.page(href="") {{$index+1}}
                       li(ng-if="hasNext" ng-class="{disabled:!hasNext}" ng-click="getPage('next')" ng-cloak)
                         a.page(href="") 下一页
+
 sponsor-campaign(data="data")
-edit-campaign(campaign-id="campaignId")

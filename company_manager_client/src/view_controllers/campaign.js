@@ -37,7 +37,7 @@ define(['angular', 'moment'], function (angular, moment) {
         var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
         $scope.start_time = moment(dateUTC).format("YYYY-MM-DD");
         $scope.startTime = dateUTC.valueOf();
-        console.log(dateUTC);
+        // console.log(dateUTC);
         $('#endTime').datetimepicker('setStartDate', dateUTC); //开始时间应小于结束时间
       });
 
@@ -45,7 +45,7 @@ define(['angular', 'moment'], function (angular, moment) {
         var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
         $scope.end_time = moment(dateUTC).format("YYYY-MM-DD");
         $scope.endTime = dateUTC.valueOf();
-        console.log(dateUTC);
+        // console.log(dateUTC);
         $('#startTime').datetimepicker('setEndDate', dateUTC); //开始时间应小于结束时间
       });
 
@@ -274,10 +274,10 @@ define(['angular', 'moment'], function (angular, moment) {
         $scope.numOfPage = $scope.number.num;
         getCampaigns();
       };
-      $scope.goDetail = function (campaignId) {
-        $scope.campaignId = campaignId;
-        $('#editCampaignModal').modal('show');
-      };
+      // $scope.goDetail = function (campaignId) {
+      //   $scope.campaignId = campaignId;
+      //   $('#editCampaignModal').modal('show');
+      // };
       $scope.showCanlendar = function() {
         $scope.show = true;
       }

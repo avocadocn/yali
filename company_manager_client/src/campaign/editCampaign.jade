@@ -1,52 +1,52 @@
-.modal.fade#editCampaignModal(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
-  .modal-dialog
-    .box.box-success
-      .box-header.with-border
-        h3.box-title 活动详情
-        .box-tools.pull-right
-          .btn.btn-box-tool(data-dismiss="modal" aria-hidden="true")
-            i.fa.fa-times
-      .box-body.clearfix
-        .modal-container.modal-padding-bottom
-          .campaign-team(ng-repeat="team in campaign.campaign_unit" ng-if="campaignOfTeams")
-            .campaign-logo
-              img(ng-src="{{team.team.logo}}/60/60")
-            .campaign-theme {{team.team.name}}
-            .campaign-company {{team.company.name}}
-          .campaign-team(ng-if="!campaignOfTeams")
-            .campaign-logo 公司活动
-        .modal-container
-          .campaign-label 开始时间
-          a.campaign-content {{campaign.start_time | date:'yyyy-MM-dd HH:mm'}}
-        .modal-container
-          .campaign-label 结束时间
-          a.campaign-content {{campaign.end_time | date:'yyyy-MM-dd HH:mm'}}
-        .modal-container
-          .campaign-label 地点
-          a.campaign-content {{campaign.location.name}}
-        .modal-container
-          .campaign-label 报名截止时间
-          a.campaign-content {{campaign.deadline | date:'yyyy-MM-dd HH:mm'}}
-        .modal-container
-          .campaign-label 报名人数上限
-          a.campaign-content {{campaign.member_max}}
-        .modal-container
-          .campaign-label 最少人数
-          a.campaign-content {{campaign.member_min}}
-        .modal-container.campaign-inroduce
-          .campaign-label 简介
-            p.campaign-intro-content {{campaign.content}}
-        .modal-container.campaign-announce
-          .campaign-label 公告
-            p.campaign-announce-content 暂无
-        .modal-container
-          .campaign-label.non-float 已报名
-          .campaign-member(ng-repeat="unit in campaign.campaign_unit")
-            campaign-member(members="unit.member")
-            //- img(ng-repeat="member in team.member" ng-src="{{member.photo}}/60/60" ng-if="$index<3")
-            //- //- img(ng-repeat="member in team.member" ng-src="{{member.photo}}/60/60")
-            //- .campaign-member-more(ng-if="team.member.length > 3" ng-click="showAllMember($event)") 查看更多成员
-        .modal-container.campaign-footer
+//- .modal.fade#editCampaignModal(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+.modal-dialog
+  .box.box-success
+    .box-header.with-border
+      h3.box-title 活动详情
+      .box-tools.pull-right
+        .btn.btn-box-tool(ng-click="close()")
+          i.fa.fa-times
+    .box-body.clearfix
+      .modal-container.modal-padding-bottom
+        .campaign-team(ng-repeat="team in campaign.campaign_unit" ng-if="campaignOfTeams")
+          .campaign-logo
+            img(ng-src="{{team.team.logo}}/60/60")
+          .campaign-theme {{team.team.name}}
+          .campaign-company {{team.company.name}}
+        .campaign-team(ng-if="!campaignOfTeams")
+          .campaign-logo 公司活动
+      .modal-container
+        .campaign-label 开始时间
+        a.campaign-content {{campaign.start_time | date:'yyyy-MM-dd HH:mm'}}
+      .modal-container
+        .campaign-label 结束时间
+        a.campaign-content {{campaign.end_time | date:'yyyy-MM-dd HH:mm'}}
+      .modal-container
+        .campaign-label 地点
+        a.campaign-content {{campaign.location.name}}
+      .modal-container
+        .campaign-label 报名截止时间
+        a.campaign-content {{campaign.deadline | date:'yyyy-MM-dd HH:mm'}}
+      .modal-container
+        .campaign-label 报名人数上限
+        a.campaign-content {{campaign.member_max}}
+      .modal-container
+        .campaign-label 最少人数
+        a.campaign-content {{campaign.member_min}}
+      .modal-container.campaign-inroduce
+        .campaign-label 简介
+          p.campaign-intro-content {{campaign.content}}
+      .modal-container.campaign-announce
+        .campaign-label 公告
+          p.campaign-announce-content 暂无
+      .modal-container
+        .campaign-label.non-float 已报名
+        .campaign-member(ng-repeat="unit in campaign.campaign_unit")
+          campaign-member(members="unit.member")
+          //- img(ng-repeat="member in team.member" ng-src="{{member.photo}}/60/60" ng-if="$index<3")
+          //- //- img(ng-repeat="member in team.member" ng-src="{{member.photo}}/60/60")
+          //- .campaign-member-more(ng-if="team.member.length > 3" ng-click="showAllMember($event)") 查看更多成员
+      .modal-container.campaign-footer
         //- form(name="campaign_edit_form" novalidate)
           //- .dl_modal_body.clearfix
           //-   .dl_modal_content.clearfix

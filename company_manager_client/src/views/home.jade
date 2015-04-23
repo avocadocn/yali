@@ -69,7 +69,7 @@
               .dl_campaign_list(ng-if="latestCampaignList && latestCampaignList.length > 0")
                 .dl_campaign_item(ng-repeat="campaign in latestCampaignList")
                   p.dl_cp_card_date(ng-if="needShowTime($index)" ng-bind-template="{{campaign.start_time | date:'yyyy年M月d日'}}")
-                  .dl_cp_card
+                  a.dl_cp_card(href="" edit-campaign campaign-id="campaign._id")
                     .cp_logos(class="cp_logos_{{campaign.campaign_unit.length}}")
                       img.team_logo(ng-repeat="campaign_unit in campaign.campaign_unit" ng-src="{{(campaign_unit.team.logo || campaign_unit.company.logo)}}/60/60")
                       .provoke_label(ng-if="campaign.campaign_type===4 || campaign.campaign_type===5")
@@ -91,8 +91,8 @@
                       span.count_text 报名
               p.description_text(ng-if="!latestCampaignList || latestCampaignList.length === 0") 还没有活动
 
-    .new_company_home
-      .todo_box_list.clearfix#todo_box(ng-if="!hasFinishNewTask" ng-class="{'single_box': unFinishCount === 1}" ng-cloak)
+    .new_company_home(ng-if="!hasFinishNewTask" ng-cloak)
+      .todo_box_list.clearfix#todo_box(ng-class="{'single_box': unFinishCount === 1}" ng-cloak)
 
         .todo_box(ng-if="hasCompleteInfo === false" ng-cloak)
           .small-box.bg-primary
@@ -133,3 +133,5 @@
               i.fa.fa-user-plus.fa-fw
             a.small-box-footer(ui-sref="manager.inviteMembers") 邀请&nbsp;
               i.fa.fa-arrow-circle-right
+script(type="text/ng-template" id="editUserModal.html")
+  include ../member/memberDetail

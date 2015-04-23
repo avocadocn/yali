@@ -548,24 +548,29 @@ define(['./campaign', 'echarts', 'alertify', 'moment', 'echarts/chart/bar', 'ech
         }
       }
     }])
-    .directive('editCampaign', ['campaignService', function (campaignService) {
+    .directive('editCampaign', ['campaignService', '$modal', function (campaignService, $modal) {
       return {
-        restrict: 'E',
+        restrict: 'A',
         scope: {
           campaignId: '=',
         },
-        templateUrl: '/company/manager/templates/campaign/editCampaign.html',
+        // template: '<a href="" ng-click="getCampaign(campaignId)"> 详情</a>',
+        // templateUrl: '/company/manager/templates/campaign/editCampaign.html',
         link: function (scope, ele, attrs, ctrl) {
-          //打开modal时请求campaign数据
-          scope.$watch('campaignId', function(value) {
-            if(value) {
-              // scope.editing = false;
-              // scope.members = [];
-              campaignService.getCampaign(scope.campaignId)
+          //按按钮时请求数据
+          scope.getCampaign = function() {
+            scope.modalInstance = $modal.open({
+              templateUrl: '/company/manager/templates/campaign/editCampaign.html',
+              scope: scope
+            });
+            scope.close = function() {
+              scope.modalInstance.dismiss('cancel');
+            }
+            campaignService.getCampaign(scope.campaignId)
               .success(function (data, status) {
                 scope.campaignOfTeams = true;
                 scope.campaign = data;
-                console.log(data.campaign_type);
+                // console.log(data.campaign_type);
                 if(data.campaign_type === 1 || data.campaign_type > 5) {
                   scope.campaignOfTeams = true;
                 }
@@ -581,8 +586,8 @@ define(['./campaign', 'echarts', 'alertify', 'moment', 'echarts/chart/bar', 'ech
               .error(function (data, status) {
 
               });
-            }
-          })
+          }
+          ele.on('click', scope.getCampaign);
 
           // $("#deadlineEdit").on("changeDate",function (ev) {
           //   var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));

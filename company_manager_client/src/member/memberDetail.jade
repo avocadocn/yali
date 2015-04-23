@@ -1,0 +1,35 @@
+.modal-header
+  h3.modal-title  详情
+.modal-body
+  .info_detail
+    .form-group
+      span.col-sm-2.control-label 昵称
+      span.detail {{nowUser.nickname}}
+    .form-group
+      span.col-sm-2.control-label 真实姓名
+      span.detail {{nowUser.realname || '-'}}
+    .form-group
+      span.col-sm-2.control-label 邮箱
+      span.detail {{nowUser.username}}
+    .form-group
+      span.col-sm-2.control-label 部门
+      span.detail {{nowUser.department.name || '-'}}
+    .form-group
+      span.col-sm-2.control-label 参加小队
+      span.detail {{nowUser.team.length}}
+    .form-group
+      span.col-sm-2.control-label 参加活动
+      span.detail {{nowUser.campaignCount}}
+    .form-group
+      span.col-sm-2.control-label 活跃度
+      span {{nowUser.score.total}}
+    .form-group
+      span.col-sm-2.control-label 状态
+      span.detail {{nowUser.active? '正常' : nowUser.mail_active ? '屏蔽中' : '未激活'}}
+      
+    //- .tree.select_tree(ng-show="showDepartment")
+    //-   ul
+    //-     li(ng-include="'node.html'" ng-class="hasChild(node)")
+.modal-footer
+  //- button.btn.btn-primary(ng-click="save()") 保存
+  button.btn.btn-default(ng-click="close()") 关闭
