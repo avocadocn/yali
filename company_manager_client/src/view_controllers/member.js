@@ -169,7 +169,6 @@ define(['angular', 'qrcode'], function (angular, qrcode) {
         .error(function (data) {
           console.log(data.msg);
         });
-
         var formatData = function(data) {
           $scope.node = {
             _id: data._id,
@@ -200,16 +199,18 @@ define(['angular', 'qrcode'], function (angular, qrcode) {
             return;
           }
           $scope.nowPage++;
-          // if($scope.nowPage>$scope.page) {
-          //   memberService.getMembers($rootScope.company._id,{resultType:2,page:++$scope.page}).success(function (data) {
-          //     $scope.AllcompanyMembers.push(data.users);
-          //     $scope.companyMembers = data.users;
-          //     $scope.hasNext = data.hasNext;
-          //   })
-          // }
-          // else {
+          if($scope.AllcompanyMembers[$scope.nowPage-1]){
             $scope.companyMembers = $scope.AllcompanyMembers[$scope.nowPage-1];
-          // }
+          }
+          else{
+            memberService.getMembers($rootScope.company._id,{resultType:2,page:$scope.nowPage}).success(function (data) {
+              $scope.companyMembers = data.users;
+              $scope.AllcompanyMembers[$scope.nowPage-1] =data.users;
+            })
+            .error(function (data) {
+              alert(data.msg);
+            });
+          }
         }
         $scope.lastPage = function () {
           if($scope.nowPage<2){
@@ -222,7 +223,6 @@ define(['angular', 'qrcode'], function (angular, qrcode) {
           else{
             memberService.getMembers($rootScope.company._id,{resultType:2,page:$scope.nowPage}).success(function (data) {
               $scope.companyMembers = data.users;
-              $scope.AllcompanyMembers = new Array(data.maxPage);
               $scope.AllcompanyMembers[$scope.nowPage-1] = data.users;
             })
             .error(function (data) {
@@ -238,7 +238,6 @@ define(['angular', 'qrcode'], function (angular, qrcode) {
           else{
             memberService.getMembers($rootScope.company._id,{resultType:2,page:page}).success(function (data) {
               $scope.companyMembers = data.users;
-              $scope.AllcompanyMembers = new Array(data.maxPage);
               $scope.AllcompanyMembers[page-1] =data.users;
             })
             .error(function (data) {

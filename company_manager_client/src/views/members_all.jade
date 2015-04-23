@@ -26,7 +26,7 @@
           ul.pagination.pagination-sm.inline
             li(ng-class="{disabled:nowPage<=1}" ng-click="lastPage()" ng-cloak)
               a.page(href="") 上一页
-            li(ng-repeat="page in AllcompanyMembers track by $index" ng-click="getPage($index+1)" ng-class="{active:$index+1===nowPage}" ng-cloak)
+            li(ng-repeat="page in AllcompanyMembers track by $index" ng-if="$index>nowPage-7 &&$index<nowPage+5" ng-click="getPage($index+1)" ng-class="{active:$index+1===nowPage}" ng-cloak)
               a.page(href="") {{$index+1}}
             li(ng-class="{disabled:maxPage<=nowPage}" ng-click="nextPage()" ng-cloak)
               a.page(href="") 下一页
