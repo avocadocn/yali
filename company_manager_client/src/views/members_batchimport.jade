@@ -2,21 +2,24 @@
   section.content-header
     h1
       | 批量导入
+  section.content
     form.form-inline#importForm
       .form-group
         label(for="importFile") 导入员工名单:
         input.form-control(type="file" id="importFile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
       button.btn.btn-default(ng-click="importExcel()") 上传
-  section.content
     .box.box-primary(ng-if="!importFlag")
       .box-header
         h3.box-title 说明
-      .box-body.no-padding
-        p 首先建立一个Excel报表文件(.xlsx文件):第一列列首为"邮箱"，第二列列首为"用户名"。下面为对应的员工企业邮箱和员工姓名。
-        p 注意：导入的邮箱后缀必须与公司设置的邮箱后缀一致
-        p 然后在批量导入界面点击选中文件，在文件夹中找到刚刚建立的文件，并选中，点击确定
-        p 之后点击上传按钮，出现导入的文件中的用户列表。包含有效的和无效的数据。
-        p 最后选中想要邀请的有效员工数据。点击邀请发送邀请邮件。
+      .box-body
+        p 1.请手动建立一个Excel报表文件(.xlsx或.xls文件):第一列列首为"邮箱"，第二列列首为"用户名"。并在每列的下方请填写对应的员工企业邮箱和员工姓名。示例如下：
+        //- p: img(ng-src="/img/example.png")
+        //- 坐等图片 =v=
+        p 
+          strong 注意：
+          span 待导入员工邮箱的后缀必须与公司设置的邮箱后缀一致。
+        p 2.在批量导入界面点击选中文件，找到文件并选中并确定，之后点击上传按钮。
+        p 3.导入的文件中的用户列表中可能包含无效数据，选中想要邀请的有效员工数据，并点击邀请发送邀请邮件。
     .box.box-primary(ng-if="importFlag")
       .box-header
         h3.box-title 有效成员列表
@@ -46,7 +49,8 @@
             button.btn.btn-info(ng-click="reset()" ng-disabled="!members||members.length==0") 重新选择
           .col-md-4
             button.btn.btn-primary(ng-click="invite()" ng-disabled="!validMembers||validMembers.length==0") 邀请
-        
+      .overlay(ng-if="inviteLoading")
+        i.fa.fa-refresh.fa-spin
     .box.box-primary(ng-if="importFlag && invalidMembers&&invalidMembers.length>0")
       .box-header
         h3.box-title 无效成员列表

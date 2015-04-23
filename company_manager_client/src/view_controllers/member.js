@@ -406,11 +406,14 @@ define(['angular', 'qrcode'], function (angular, qrcode) {
             return;
           }
           else{
+            $scope.inviteLoading = true;
             memberService.batchInvite(inviteMembers).success(function (data) {
               $scope.validMembers = data;
+              $scope.inviteLoading = false;
             })
             .error(function (data) {
               alert(data.msg);
+              $scope.inviteLoading = false;
             });
           }
           
