@@ -81,38 +81,57 @@
       text-align center
       .pagination
         margin 0 0 10px
-  .table-content
-    select
-      width 75px
-    .search
-      position relative
-      width 145px
-      float right
-    .search-time-button
-      position absolute
-      right -80px
-    .date-range-picker
-      border 1px solid #ccc
-      background #fff
-      cursor pointer
-      padding 5px 10px
-      float left
-    .col-xs-6
-      .data-table-paginate
-        float right
-        margin 0
-        ul.pagination
-          margin 2px 0
-          white-space nowrap
-  .row.content
+  .row
     .box-success
       border-color #3c8dbc
       .box-header
         background #3c8dbc
-    .box-body
+    .box-body.team-list
       min-height 150px
       max-height 210px
       overflow-y auto
+    .table-content
+      .row
+        .num-of-page
+          float right
+        .date-range-select
+          float left
+          .date-range-start, .date-range-end
+            width 145px
+            float left
+            .date-form-control
+              display block
+              width 100%
+              min-height: 30px
+              height auto
+              padding 6px 5px
+              font-size 12px
+              line-height 1.42857143
+              color #fff
+              background-color #fff
+              background-image none
+              border: 1px solid #ccc
+              border-radius 0
+              color #999
+              float left
+            .date-range-label
+              padding 6px 6px
+          .search-time-button
+            width 145px
+            float left
+            button
+              margin 0px 5px
+              padding 4px 12px    
+        .data-table-paginate
+          float right
+          margin 0
+          ul.pagination
+            margin 2px 0
+            white-space nowrap
+          .page
+            font-size 12px
+            padding 5px 10px
+  
   .team-card
     position relative
     width 23%

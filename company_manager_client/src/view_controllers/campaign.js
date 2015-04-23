@@ -19,28 +19,78 @@ define(['angular', 'moment'], function (angular, moment) {
         {id: 4, num: 100}
       ];
       $('#startTime').datetimepicker({
+        format: 'yyyy-mm-dd',
         autoclose: true,
+        minView: 2,
         language: 'zh-CN',
         pickerPosition: "bottom-left"
       });
       $('#endTime').datetimepicker({
+        format: 'yyyy-mm-dd',
         autoclose: true,
+        minView: 2,
         language: 'zh-CN',
-        startDate: new Date(),
         pickerPosition:"bottom-left"
       });
+
       $("#startTime").on("changeDate",function (ev) {
         var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
-        $scope.start_time = moment(dateUTC).format("YYYY-MM-DD HH:mm");
+        $scope.start_time = moment(dateUTC).format("YYYY-MM-DD");
         $scope.startTime = dateUTC.valueOf();
+        console.log(dateUTC);
         $('#endTime').datetimepicker('setStartDate', dateUTC); //开始时间应小于结束时间
       });
+
       $("#endTime").on("changeDate",function (ev) {
         var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
-        $scope.end_time = moment(dateUTC).format("YYYY-MM-DD HH:mm");
+        $scope.end_time = moment(dateUTC).format("YYYY-MM-DD");
         $scope.endTime = dateUTC.valueOf();
+        console.log(dateUTC);
         $('#startTime').datetimepicker('setEndDate', dateUTC); //开始时间应小于结束时间
       });
+
+      $('#reportrange span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+      // $('#reportrange').daterangepicker({
+      //     format: 'MM/DD/YYYY',
+      //     startDate: moment().subtract(29, 'days'),
+      //     endDate: moment(),
+      //     minDate: '01/01/2012',
+      //     maxDate: '12/31/2015',
+      //     dateLimit: { days: 60 },
+      //     showDropdowns: true,
+      //     showWeekNumbers: true,
+      //     timePicker: false,
+      //     timePickerIncrement: 1,
+      //     timePicker12Hour: true,
+      //     ranges: {
+      //        'Today': [moment(), moment()],
+      //        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+      //        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+      //        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+      //        'This Month': [moment().startOf('month'), moment().endOf('month')],
+      //        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+      //     },
+      //     opens: 'left',
+      //     drops: 'down',
+      //     buttonClasses: ['btn', 'btn-sm'],
+      //     applyClass: 'btn-primary',
+      //     cancelClass: 'btn-default',
+      //     separator: ' to ',
+      //     locale: {
+      //         applyLabel: 'Submit',
+      //         cancelLabel: 'Cancel',
+      //         fromLabel: 'From',
+      //         toLabel: 'To',
+      //         customRangeLabel: 'Custom',
+      //         daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
+      //         monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+      //         firstDay: 1
+      //     }
+      // }, function(start, end, label) {
+      //     console.log(start.toISOString(), end.toISOString(), label);
+      //     $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+      // });
+
       //campaigns
       $scope.pages = [];
       $scope.nowPage = 0;

@@ -44,10 +44,6 @@
             .has-feedback
               input(type="text" class="form-control input-sm" placeholder="Search...")
               span(class="glyphicon glyphicon-search form-control-feedback")
-          .box-tools.pull-right
-            .select
-              .select-label 每页
-              select.form-control.input-sm(ng-model="number" ng-options="number.num for number in numbers" ng-change="selectNumOfPage()")
         .box-body
           table.table.table-striped.dl_table
             thead
