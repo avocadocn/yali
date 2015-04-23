@@ -27,18 +27,30 @@
               .cp_form_group
                 label.cp_form_label 活动类型
                 select.cp_form_control(name='campaignMold' ng-options="mold.name as mold.name for mold in molds" ng-model="formData.campaign_mold")
-              .cp_form_group
+              .cp_form_group.time_group
                 label.cp_form_label 开始时间
-                input.cp_form_control(type="text")
-              .cp_form_group
+                .cp_form_control
+                  .input-group.date#start_time
+                    input.form-control(type="text" ng-model="formData.start_time" name="endTime" placeholder="请选择活动开始时间" data-date-format="YYYY-MM-DD HH:mm" readonly required)
+                    .input-group-addon
+                      span.glyphicon.glyphicon-calendar
+              .cp_form_group.time_group
                 label.cp_form_label 结束时间
-                input.cp_form_control(type="text")
+                .cp_form_control
+                  .input-group.date.form_datetime#end_time
+                    input.form-control(type="text" ng-model="formData.end_time" name="endTime" placeholder="请选择活动结束时间" data-date-format="YYYY-MM-DD HH:mm" readonly required)
+                    span.input-group-addon
+                      span.glyphicon.glyphicon-calendar
               .cp_form_group
                 label.cp_form_label 地点
                 input.cp_form_control(type="text" placeholder="请填写活动地点")
-              .cp_form_group
+              .cp_form_group.time_group
                 label.cp_form_label 报名截止时间
-                input.cp_form_control(type="text")
+                .cp_form_control
+                  .input-group.date.form_datetime#deadline
+                    input.form-control(type="text" ng-model="formData.deadline" name="deadline" placeholder="请选择报名截止时间" data-date-format="YYYY-MM-DD HH:mm" readonly required)
+                    span.input-group-addon
+                      span.glyphicon.glyphicon-calendar
               .cp_form_group
                 label.cp_form_label 报名人数上限
                 input.cp_form_control(type="number" ng-model="formData.member_max")

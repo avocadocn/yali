@@ -348,9 +348,9 @@ define(['angular', 'moment'], function (angular, moment) {
         campaign_type: 'company',
         theme: '',
         location: {}, // todo
-        start_time: '',
-        end_time: '',
-        deadline: '',
+        start_time: null,
+        end_time: null,
+        deadline: null,
         campaign_mold: molds[0].name,
         member_max: 0,
         member_min: 0,
@@ -369,6 +369,37 @@ define(['angular', 'moment'], function (angular, moment) {
           $scope.formData.tid = teamIds;
         }
       };
+
+      //时间相关
+      var initDatetimePicker = function(query) {
+        $(query).datetimepicker({
+          autoclose: true,
+          language: 'zh-CN',
+          startDate: new Date(),
+          pickerPosition:"bottom-left"
+        });
+      };
+
+      initDatetimePicker('#start_time');
+      initDatetimePicker('#end_time');
+      initDatetimePicker('#deadline');
+
+      $("#start_time").on("changeDate",function (ev) {
+          var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
+          $scope.formData.start_time = moment(dateUTC).format("YYYY-MM-DD HH:mm");
+          $('#end_time').datetimepicker('setStartDate', dateUTC); //开始时间应小于结束时间
+      });
+      $("#end_time").on("changeDate",function (ev) {
+          var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
+          $scope.formData.end_time = moment(dateUTC).format("YYYY-MM-DD HH:mm");
+          $('#start_time').datetimepicker('setEndDate', dateUTC); //开始时间应小于结束时间
+          $('#deadline').datetimepicker('setEndDate', dateUTC);   //截至时间应小于结束时间
+      });
+      $("#deadline").on("changeDate",function (ev) {
+          var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
+          $scope.formData.deadline = moment(dateUTC).format("YYYY-MM-DD HH:mm");
+          $('#end_time').datetimepicker('setStartDate', dateUTC); //截至时间应小于结束时间
+      });
 
     }
   ]);

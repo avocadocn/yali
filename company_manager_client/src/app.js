@@ -4,6 +4,7 @@ define([
   'angularBootstrap',
   'bootstrap',
   'datetimepicker',
+  'datetimepickerLang',
   'pen',
   'markdown',
   'moment',

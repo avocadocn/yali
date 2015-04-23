@@ -11,6 +11,7 @@ requirejs.config({
     qrcode: '../src/utils/qrcode',
     bootstrap: '../bower-lib/bootstrap/dist/js/bootstrap',
     datetimepicker: '../bower-lib/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker',
+    datetimepickerLang: '../bower-lib/smalot-bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN',
     pen: '../bower-lib/pen/src/pen',
     markdown: '../bower-lib/pen/src/markdown',
     moment: '../bower-lib/moment/moment',
@@ -57,6 +58,9 @@ requirejs.config({
     },
     datetimepicker: {
       deps: ['jQuery']
+    },
+    datetimepickerLang: {
+      deps: ['datetimepicker']
     },
     calendar: {
       deps: ['jQuery', 'underscore', 'zhCN']
