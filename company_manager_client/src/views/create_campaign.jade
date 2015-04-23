@@ -23,10 +23,10 @@
                       span.cp_team_name(ng-bind="team.name")
               .cp_form_group
                 label.cp_form_label 活动名称
-                input.cp_form_control(type="text" placeholder="请填写活动名称" ng-model="formData.theme" required)
+                input.cp_form_control(type="text" name="theme" placeholder="请填写活动名称" ng-model="formData.theme" required)
               .cp_form_group
                 label.cp_form_label 活动类型
-                select.cp_form_control(name='campaignMold' ng-options="mold.name as mold.name for mold in molds" ng-model="formData.campaign_mold")
+                select.cp_form_control(name='campaignMold' ng-options="mold.name as mold.name for mold in molds" ng-model="formData.campaign_mold" required)
               .cp_form_group.time_group
                 label.cp_form_label 开始时间
                 .cp_form_control
@@ -43,22 +43,22 @@
                       span.glyphicon.glyphicon-calendar
               .cp_form_group
                 label.cp_form_label 地点
-                input.cp_form_control(type="text" placeholder="请填写活动地点")
+                input.cp_form_control(type="text" name="location" ng-model="formData.location.name" placeholder="请填写活动地点" required)
               .cp_form_group.time_group
                 label.cp_form_label 报名截止时间
                 .cp_form_control
                   .input-group.date.form_datetime#deadline
-                    input.form-control(type="text" ng-model="formData.deadline" name="deadline" placeholder="请选择报名截止时间" data-date-format="YYYY-MM-DD HH:mm" readonly required)
+                    input.form-control(type="text" ng-model="formData.deadline" name="deadline" placeholder="请选择报名截止时间" data-date-format="YYYY-MM-DD HH:mm" readonly)
                     span.input-group-addon
                       span.glyphicon.glyphicon-calendar
               .cp_form_group
                 label.cp_form_label 报名人数上限
-                input.cp_form_control(type="number" ng-model="formData.member_max")
+                input.cp_form_control(type="number" name="memberMax" ng-model="formData.member_max")
               .cp_form_group
                 label.cp_form_label 最少人数
-                input.cp_form_control(type="number" ng-model="formData.member_min")
+                input.cp_form_control(type="number" name="memberMin" ng-model="formData.member_min")
               .cp_form_group
                 label.cp_form_label 简介
-                textarea.cp_form_control(type="text" placeholder="请填写活动简介" ng-model="formData.content")
+                textarea.cp_form_control(type="text" name="content" placeholder="请填写活动简介" ng-model="formData.content")
               .cp_form_group_no_flex.clearfix
-                button.btn.btn-default.btn-flat.pull-right(ng-disabled="createCampaignForm.$invalid") 发布
+                button.btn.btn-default.btn-flat.pull-right(ng-disabled="createCampaignForm.$invalid" ng-click="publish()") 发布

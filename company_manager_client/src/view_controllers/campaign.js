@@ -331,6 +331,8 @@ define(['angular', 'moment'], function (angular, moment) {
         if ($scope.formData.tid) {
           $scope.formData.tid = $scope.teamList.filter(function(team) {
             return team.selected;
+          }).map(function(team) {
+            return team._id;
           });
         }
       };
@@ -344,10 +346,13 @@ define(['angular', 'moment'], function (angular, moment) {
 
       $scope.campaignType = 'company'; // 'company' or 'team';
       $scope.formData = {
-        cid: [''],
-        campaign_type: 'company',
+        cid: [initData.company._id],
+        campaign_type: 1,
         theme: '',
-        location: {}, // todo
+        location: {
+          name: '',
+          coordinates: []
+        },
         start_time: null,
         end_time: null,
         deadline: null,
@@ -361,11 +366,13 @@ define(['angular', 'moment'], function (angular, moment) {
         switch (type) {
         case 'company':
           $scope.campaignType = 'company';
+          $scope.formData.campaign_type = 1;
           delete $scope.formData.tid;
           // todo
           break;
         case 'team':
           $scope.campaignType = 'team';
+          $scope.formData.campaign_type = 2;
           $scope.formData.tid = teamIds;
         }
       };
@@ -400,6 +407,16 @@ define(['angular', 'moment'], function (angular, moment) {
           $scope.formData.deadline = moment(dateUTC).format("YYYY-MM-DD HH:mm");
           $('#end_time').datetimepicker('setStartDate', dateUTC); //截至时间应小于结束时间
       });
+
+      $scope.publish = function() {
+        campaignService.sponsor($scope.formData)
+          .success(function() {
+            alert('活动发布成功');
+          })
+          .error(function(data) {
+            alert(data.msg || '发布失败');
+          });
+      };
 
     }
   ]);
