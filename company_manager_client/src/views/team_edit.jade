@@ -4,16 +4,29 @@
       | 编辑小队信息
     ol.breadcrumb
       li: a(ui-sref="teamList") 小队管理
-      li.active 小队详情
+      li.active 编辑小队
   section.content
     .row
-      .col-sm-6
-        .box.box-primary
-          .box-header.with-border
-            h3.box-title 小队信息
-            button.btn.btn-danger.pull-right(ng-if="team && team.active" ng-click="closeTeam(team._id)") 关闭小队
-            button.btn.btn-primary.pull-right(ng-if="team && !team.active" ng-click="openTeam(team._id)") 打开小队
-          .box-body
+      .col-sm-8.col-sm-offset-2.team_logo_container
+        .row
+          .col-sm-6.col-sm-offset-3.team_edit_logo
+            .edit_logo_container
+              .cropper#image_cropper
+                .cropit-image-preview-container.img-circle(ng-show="team.logo" ng-style="{'background-image': 'url(' + team.logo + '/256/256)'}")
+                  .cropit-image-preview
+                .operator_slider(ng-show="isUploading")
+                  span.glyphicon.glyphicon-picture.icon_small
+                  input.cropit-image-zoom-input(type="range")
+                  span.glyphicon.glyphicon-picture.icon_large
+                .operator_button.text-center
+                  .btn-group
+                    button.btn.btn-default(ng-click="selectLogo()") 选择图片
+                    button.btn.btn-primary(type="button" ng-click="editLogo()" ng-if="isUploading") 确定
+                input.cropit-image-input#cropit_image_input(type="file")
+    .row
+      .col-sm-8.col-sm-offset-2.team_edit_container
+        .row
+          .col-sm-6.col-sm-offset-3.team_edit_form
             form.team_info_form(name="editInfoForm")
               .form-group
                 label 小队名
@@ -23,9 +36,10 @@
               .form-group.home_court(ng-repeat="homeCourt in homeCourts")
                 label 主场
                 label.form-control(ng-click="showMapModal()" ng-cloak) {{homeCourt.name}}
+              
               .form-group
                 label 修改小队封面
-                .edit_logo_container
+                .edit_family_container
                   .cropper#image_cropper_family
                     .cropit-image-preview-container(ng-show="team.familyPhoto" ng-style="{'background-image': 'url(' + team.familyPhoto.uri + '/256/256)'}")
                       .cropit-image-preview
@@ -38,24 +52,11 @@
                         button.btn.btn-default(ng-click="selectFamily()") 选择图片
                         button.btn.btn-primary(type="button" ng-click="editFamily()" ng-if="familyIsUploading") 确定
                     input.cropit-image-input#cropit_image_input_family(type="file")
-      .col-sm-6
-        .box.box-primary
-          .box-header.with-border
-            h3.box-title 修改logo
-          .box-body
-            .edit_logo_container
-              .cropper#image_cropper
-                .cropit-image-preview-container(ng-show="team.logo" ng-style="{'background-image': 'url(' + team.logo + '/256/256)'}")
-                  .cropit-image-preview
-                .operator_slider(ng-show="isUploading")
-                  span.glyphicon.glyphicon-picture.icon_small
-                  input.cropit-image-zoom-input(type="range")
-                  span.glyphicon.glyphicon-picture.icon_large
-                .operator_button.text-center
-                  .btn-group
-                    button.btn.btn-default(ng-click="selectLogo()") 选择图片
-                    button.btn.btn-primary(type="button" ng-click="editLogo()" ng-if="isUploading") 确定
-                input.cropit-image-input#cropit_image_input(type="file")
+              .form-group.text-center.operator
+                a.btn.btn-default(ui-sref="teamList") 取消
+                button.btn.btn-success(type="button" ng-click="edit()") 确定
+                button.btn.btn-danger(ng-if="team && team.active" ng-click="closeTeam(team._id)") 关闭小队
+                button.btn.btn-primary(ng-if="team && !team.active" ng-click="openTeam(team._id)") 打开小队
   script(type="text/ng-template" id="homeCourtModal.html")
     .modal-header
       h3.modal-title  主场

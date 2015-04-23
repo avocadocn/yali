@@ -4,11 +4,25 @@
       | 公司资料
   section.content
     .row
-      .col-sm-6
-        .box.box-primary
-          .box-header.with-border
-            h3.box-title 公司信息
-          .box-body
+      .col-sm-8.col-sm-offset-2.edit_logo_container
+        .row
+          .col-sm-6.col-sm-offset-3.edit_logo
+            .cropper#image_cropper
+              .cropit-image-preview-container.img-circle(ng-style="{'background-image': 'url(' + company.logo + '/256/256)'}")
+                .cropit-image-preview
+              .operator_slider(ng-show="isUploading")
+                span.glyphicon.glyphicon-picture.icon_small
+                input.cropit-image-zoom-input(type="range")
+                span.glyphicon.glyphicon-picture.icon_large
+              .operator_button.text-center
+                .btn-group
+                  button.btn.btn-default(ng-click="selectLogo()") 选择图片
+                  button.btn.btn-primary(type="button" ng-click="editLogo()" ng-if="isUploading") 确定
+              input.cropit-image-input#cropit_image_input(type="file")
+    .row
+      .col-sm-8.col-sm-offset-2.edit_container
+        .row
+          .col-sm-6.col-sm-offset-3.edit_form
             form.company_info_form(name="editInfoForm")
               .form-group
                 label 官方简称
@@ -30,23 +44,4 @@
                 input.form-control(type="text" name="contacts" ng-model="formData.contacts" ng-maxlength=40 required)
                 p.text-danger(ng-if="editInfoForm.contacts.$error.required" ng-cloak) 请输入企业联系人
                 p.text-danger(ng-if="editInfoForm.contacts.$error.maxlength" ng-cloak) 请输入长度不超过40个字符的联系人姓名
-              button.btn.btn-primary(type="submit" ng-click="edit()" ng-disabled="editInfoForm.$invalid") 修改
-
-      .col-sm-6
-        .box.box-primary
-          .box-header.with-border
-            h3.box-title 修改logo
-          .box-body
-            .edit_logo_container
-              .cropper#image_cropper
-                .cropit-image-preview-container(ng-style="{'background-image': 'url(' + company.logo + '/256/256)'}")
-                  .cropit-image-preview
-                .operator_slider(ng-show="isUploading")
-                  span.glyphicon.glyphicon-picture.icon_small
-                  input.cropit-image-zoom-input(type="range")
-                  span.glyphicon.glyphicon-picture.icon_large
-                .operator_button.text-center
-                  .btn-group
-                    button.btn.btn-default(ng-click="selectLogo()") 选择图片
-                    button.btn.btn-primary(type="button" ng-click="editLogo()" ng-if="isUploading") 确定
-                input.cropit-image-input#cropit_image_input(type="file")
+              button.btn.btn-success.pull-right(type="submit" ng-click="edit()" ng-disabled="editInfoForm.$invalid") 修改

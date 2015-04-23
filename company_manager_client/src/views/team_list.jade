@@ -9,11 +9,9 @@
         a.btn.btn-primary(ui-sref="manager.createTeam") 新建小队
       .col-md-10.col-sm-8.col-xs-12(ng-if="noLeaderTeams.length>0")
         .row
-          .col-md-3.col-sm-6.col-xs-12(ng-repeat="team in noLeaderTeams")
-            .small-box(ng-class="{'bg-aqua':$index%4==0,'bg-green':$index%4==1,'bg-yellow':$index%4==2,'bg-red':$index%4==3}")
-              .inner
-                p {{team.name}},还没有队长
-              a.small-box-footer(ui-sref="manager.pointTeamLeader({teamId:team._id})") 任命队长
+          .col-md-3.col-sm-6.col-xs-12.team(ng-repeat="team in noLeaderTeams")
+            p {{team.name}},还没有队长
+            a.btn.btn-primary(ui-sref="manager.pointTeamLeader({teamId:team._id})") 任命队长
     .row
       .col-xs-12
         .box.box-primary(ng-show="leaderTeams.length")

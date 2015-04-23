@@ -3,38 +3,39 @@
     h1
       | 账号设置
   section.content
-    .row
-      .col-sm-6
-        .box.box-primary
-          .box-header
-            h3.box-title 修改密码
-          .box-body
-            form(name="changePasswordForm")
-              .form-group
-                label 旧密码:
-                input.form-control(type="password" name="oldPassword" ng-model="oldPassword" ng-minlength=6 required)
-              .form-group
-                label 新密码：
-                input.form-control(type="password" name="password" ng-model="password" ng-minlength=6 required)
-              .form-group
-                label 新密码确认:
-                input.form-control(type="password" name="confirmPassword" ng-model="confirmPassword" match="password" ng-minlength=6 required)
-              .form-group
-                button.btn.btn-default(type="submit" ng-disabled="changePasswordForm.$invalid" ng-click="changePassword()") 确认修改
-              p 注册邮箱：{{company.login_email}}
-      .col-sm-6
-        .box.box-primary
-          .box-header
-            h3.box-title 公司邮箱管理
-          .box-body
-            form(name="updateDomainForm")
-              .form-group(ng-repeat="domain in domains" ng-class="{'input-group': $index!==0}")
-                input.form-control(type="text" name="domain{{$index}}" ng-model="domain" required)
-                .input-group-btn(ng-if="$index!=0")
-                  button.btn.btn-default(ng-click="removeDomain($index)") 删除
-              .form-group.input-group(ng-if="domains.length<3")
-                input.form-control(type="text" name="newDomain" ng-model="newDomain.domain")
-                .input-group-btn
-                  button.btn.btn-default(ng-click="addDomain()") 添加
-              button.btn.btn-success(type="submit" ng-disabled="updateDomainForm.$invalid" ng-click="updateDomain()") 确定
+     .row
+        .col-sm-8.col-sm-offset-2.edit_container
+          .row
+            .col-sm-6.col-sm-offset-3.edit_form
+              form(name="changePasswordForm")
+                .form-group
+                  label 更换密码
+                  hr
+                .form-group
+                  label 旧密码:
+                  input.form-control(type="password" name="oldPassword" ng-model="oldPassword" ng-minlength=6 required)
+                .form-group
+                  label 新密码：
+                  input.form-control(type="password" name="password" ng-model="password" ng-minlength=6 required)
+                .form-group
+                  label 新密码确认:
+                  input.form-control(type="password" name="confirmPassword" ng-model="confirmPassword" match="password" ng-minlength=6 required)
+                .form-group
+                  button.btn.btn-default(type="submit" ng-disabled="changePasswordForm.$invalid" ng-click="changePassword()") 确认修改
+                
+              form(name="updateDomainForm")
+                .form-group
+                  label 邮箱后缀
+                  hr
+                .form-group
+                  label 注册邮箱：{{company.login_email}}
+                .form-group(ng-repeat="domain in domains" ng-class="{'input-group': $index!==0}")
+                  input.form-control(type="text" name="domain{{$index}}" ng-model="domain" required)
+                  .input-group-btn(ng-if="$index!=0")
+                    button.btn.btn-default(ng-click="removeDomain($index)") 删除
+                .form-group.input-group(ng-if="domains.length<3")
+                  input.form-control(type="text" name="newDomain" ng-model="newDomain.domain")
+                  .input-group-btn
+                    button.btn.btn-default(ng-click="addDomain()") 添加
+                button.btn.btn-success.pull-right(type="submit" ng-disabled="updateDomainForm.$invalid" ng-click="updateDomain()") 确定
 
