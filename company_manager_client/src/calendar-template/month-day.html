@@ -1,0 +1,12 @@
+<div class="cal-month-day cal-month-day-small <%= cls %>">
+  <% var campaigns = _.countBy(events, function(event) { %>
+     <% return (event.campaiginType == 1 || event.campaiginType > 5)  ? 'company' : 'team' %>
+  <% }) %>
+  <% if (campaigns.company > 0) {%>
+    <div class="campaigin-company"><%= campaigns.company %></div>
+  <% }%>
+  <% if (campaigns.team > 0) {%>
+    <div class="<%= campaigns.company > 0 ? 'campaigin-team' :  'campaigin-team-no-com-campaign' %>"><%= campaigns.team %></div>
+  <% }%>
+  <span class="pull-right day" data-cal-date="<%= data_day %>" data-toggle="tooltip" title="<%= tooltip %>"><%=  day %></span>
+</div>

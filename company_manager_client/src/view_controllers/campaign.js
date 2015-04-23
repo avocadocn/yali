@@ -49,48 +49,6 @@ define(['angular', 'moment'], function (angular, moment) {
         $('#startTime').datetimepicker('setEndDate', dateUTC); //开始时间应小于结束时间
       });
 
-      $('#reportrange span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
-      // $('#reportrange').daterangepicker({
-      //     format: 'MM/DD/YYYY',
-      //     startDate: moment().subtract(29, 'days'),
-      //     endDate: moment(),
-      //     minDate: '01/01/2012',
-      //     maxDate: '12/31/2015',
-      //     dateLimit: { days: 60 },
-      //     showDropdowns: true,
-      //     showWeekNumbers: true,
-      //     timePicker: false,
-      //     timePickerIncrement: 1,
-      //     timePicker12Hour: true,
-      //     ranges: {
-      //        'Today': [moment(), moment()],
-      //        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-      //        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-      //        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-      //        'This Month': [moment().startOf('month'), moment().endOf('month')],
-      //        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-      //     },
-      //     opens: 'left',
-      //     drops: 'down',
-      //     buttonClasses: ['btn', 'btn-sm'],
-      //     applyClass: 'btn-primary',
-      //     cancelClass: 'btn-default',
-      //     separator: ' to ',
-      //     locale: {
-      //         applyLabel: 'Submit',
-      //         cancelLabel: 'Cancel',
-      //         fromLabel: 'From',
-      //         toLabel: 'To',
-      //         customRangeLabel: 'Custom',
-      //         daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
-      //         monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-      //         firstDay: 1
-      //     }
-      // }, function(start, end, label) {
-      //     console.log(start.toISOString(), end.toISOString(), label);
-      //     $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-      // });
-
       //campaigns
       $scope.pages = [];
       $scope.nowPage = 0;
@@ -256,7 +214,7 @@ define(['angular', 'moment'], function (angular, moment) {
           events_source: events_source,
           view: 'month',
           time_end: '24:00',
-          tmpl_path: '/tmpls-small/',
+          tmpl_path: '/company_client/calendar-template/',
           tmpl_cache: false,
           language: 'zh-CN',
           modal: '#user_modal',

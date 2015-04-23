@@ -68,6 +68,13 @@ module.exports = function(grunt) {
           {
             expand: true,
             flatten: true,
+            filter: 'isFile',
+            src: ['src/calendar-template/**'],
+            dest: '../public/company_client/calendar-template/'
+          },
+          {
+            expand: true,
+            flatten: true,
             src: ['custom-lib/require.js'],
             dest: '../public/company_client/js/'
           }
