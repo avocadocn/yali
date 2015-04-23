@@ -70,7 +70,8 @@ define(['app'], function (app) {
         })
         .state('manager.createCampaign', {
           url: '/campaigns/create',
-          templateUrl: templateUrl('/views/create_campaign.html')
+          templateUrl: templateUrl('/views/create_campaign.html'),
+          controller: 'campaign.createCampaignCtrl'
         })
         .state('manager.campaigns', {
           url: '/campaigns',

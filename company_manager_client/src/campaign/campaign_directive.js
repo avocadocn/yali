@@ -339,19 +339,19 @@ define(['./campaign', 'echarts', 'alertify', 'moment', 'echarts/chart/bar', 'ech
         },
         templateUrl: '/company/manager/templates/campaign/sponsor.html',
         link: function (scope, ele, attrs, ctrl) {
-          
+
           scope.$watch('data', function (data) {
             if (data) {
               scope.teams = scope.data.teams;
             }
           })
-          
+
           //选小队相关
           scope.selectedType = 'company';
           scope.selectType = function(selectedType) {
             scope.selectedType = selectedType;
           };
-          
+
           scope.tid = [];
           scope.toggleSelectTeam = function(tid, indexOfTeams) {
             var index = scope.tid.indexOf(tid);
@@ -363,7 +363,7 @@ define(['./campaign', 'echarts', 'alertify', 'moment', 'echarts/chart/bar', 'ech
               scope.teams[indexOfTeams].selected = true;
             }
           };
-          
+
           //获取mold
           campaignService.getCampaignMolds().success(function (data) {
             scope.molds = data;
@@ -518,8 +518,8 @@ define(['./campaign', 'echarts', 'alertify', 'moment', 'echarts/chart/bar', 'ech
               script.src = "http://webapi.amap.com/maps?v=1.3&key=077eff0a89079f77e2893d6735c2f044&callback=initialize";
               document.body.appendChild(script);
             }
-          }); 
-          
+          });
+
           //发活动
           scope.sponsorCampaign = function () {
             var campaign = {

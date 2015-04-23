@@ -1,0 +1,32 @@
+@require tools
+
+.create_campaign_page
+  .cp_tabs
+    displayFlex()
+    border-bottom 1px solid #f4f4f4
+  .cp_tab
+    flexValue(1)
+    padding 5px
+    text-align center
+    cursor pointer
+    border-bottom 2px solid white
+    &.active
+      border-bottom 2px solid #f39c12
+  .cp_tab_divider
+    margin 5px 0
+    border-left 1px solid #f4f4f4
+  .cp_form_group, .cp_form_group_no_flex
+    padding 10px
+    border-bottom 1px solid #f4f4f4
+  .cp_form_group
+    displayFlex()
+  .cp_form_label
+    margin 0
+    width 120px
+    font-size 14px
+    line-height 18px
+  .cp_form_control
+    flexValue(1)
+    border none
+    font-size 14px
+    line-height 14px

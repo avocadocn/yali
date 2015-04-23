@@ -353,5 +353,28 @@ define(['angular', 'moment'], function (angular, moment) {
         }
       };
     }
+  ]).controller('campaign.createCampaignCtrl', [
+    '$scope',
+    'initData',
+    'campaignService',
+    'teamService',
+    function($scope, initData, campaignService, teamService) {
+
+      $scope.campaignType = 'company'; // 'company' or 'team';
+      $scope.formData = {};
+
+      $scope.selectType = function(type) {
+        switch (type) {
+        case 'company':
+          $scope.campaignType = 'company';
+          // todo
+          break;
+        case 'team':
+          $scope.campaignType = 'team';
+          // todo
+        }
+      };
+
+    }
   ]);
 });
