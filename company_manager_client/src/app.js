@@ -49,6 +49,8 @@ define([
       $rootScope.$state = $state;
       $rootScope.$stateParams = $stateParams;
 
+      $rootScope.isAppLoaded = true;
+
       var token = storageService.session.get('x-access-token');
       if (!token) {
         $state.go('login');
