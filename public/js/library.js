@@ -8829,7 +8829,7 @@ if ( typeof window === "object" && typeof window.document === "object" ) {
 })( window );
 
 /**
- * @license AngularJS v1.2.27
+ * @license AngularJS v1.2.26
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -8898,7 +8898,7 @@ function minErr(module) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.2.27/' +
+    message = message + '\nhttp://errors.angularjs.org/1.2.26/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -10817,11 +10817,11 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.2.27',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.2.26',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 2,
-  dot: 27,
-  codeName: 'prime-factorization'
+  dot: 26,
+  codeName: 'captivating-disinterest'
 };
 
 
@@ -10988,7 +10988,7 @@ function publishExternalAPI(angular){
  * - [`children()`](http://api.jquery.com/children/) - Does not support selectors
  * - [`clone()`](http://api.jquery.com/clone/)
  * - [`contents()`](http://api.jquery.com/contents/)
- * - [`css()`](http://api.jquery.com/css/) - Only retrieves inline-styles, does not call `getComputedStyles()`
+ * - [`css()`](http://api.jquery.com/css/)
  * - [`data()`](http://api.jquery.com/data/)
  * - [`empty()`](http://api.jquery.com/empty/)
  * - [`eq()`](http://api.jquery.com/eq/)
@@ -12032,13 +12032,13 @@ HashMap.prototype = {
  * @kind function
  *
  * @description
- * Creates an injector object that can be used for retrieving services as well as for
+ * Creates an injector function that can be used for retrieving services as well as for
  * dependency injection (see {@link guide/di dependency injection}).
  *
 
  * @param {Array.<string|Function>} modules A list of module functions or their aliases. See
  *        {@link angular.module}. The `ng` module must be explicitly added.
- * @returns {injector} Injector object. See {@link auto.$injector $injector}.
+ * @returns {function()} Injector function. See {@link auto.$injector $injector}.
  *
  * @example
  * Typical usage
@@ -12126,6 +12126,7 @@ function annotate(fn) {
 /**
  * @ngdoc service
  * @name $injector
+ * @kind function
  *
  * @description
  *
@@ -12140,7 +12141,7 @@ function annotate(fn) {
  *   expect($injector.get('$injector')).toBe($injector);
  *   expect($injector.invoke(function($injector){
  *     return $injector;
- *   })).toBe($injector);
+ *   }).toBe($injector);
  * ```
  *
  * # Injection Function Annotation
@@ -12207,8 +12208,8 @@ function annotate(fn) {
  * @description
  * Allows the user to query if the particular service exists.
  *
- * @param {string} name Name of the service to query.
- * @returns {boolean} `true` if injector has given service.
+ * @param {string} Name of the service to query.
+ * @returns {boolean} returns true if injector has given service.
  */
 
 /**
@@ -12873,19 +12874,6 @@ function $AnchorScrollProvider() {
 
   var autoScrollingEnabled = true;
 
-  /**
-   * @ngdoc method
-   * @name $anchorScrollProvider#disableAutoScrolling
-   *
-   * @description
-   * By default, {@link ng.$anchorScroll $anchorScroll()} will automatically detect changes to
-   * {@link ng.$location#hash $location.hash()} and scroll to the element matching the new hash.<br />
-   * Use this method to disable automatic scrolling.
-   *
-   * If automatic scrolling is disabled, one must explicitly call
-   * {@link ng.$anchorScroll $anchorScroll()} in order to scroll to the element related to the
-   * current hash.
-   */
   this.disableAutoScrolling = function() {
     autoScrollingEnabled = false;
   };
@@ -13190,8 +13178,6 @@ function $$AsyncCallbackProvider(){
   }];
 }
 
-/* global stripHash: true */
-
 /**
  * ! This is a private undocumented service !
  *
@@ -13316,7 +13302,7 @@ function Browser(window, document, $log, $sniffer) {
 
   var lastBrowserUrl = location.href,
       baseElement = document.find('base'),
-      reloadLocation = null;
+      newLocation = null;
 
   /**
    * @name $browser#url
@@ -13345,13 +13331,8 @@ function Browser(window, document, $log, $sniffer) {
     // setter
     if (url) {
       if (lastBrowserUrl == url) return;
-      var sameBase = lastBrowserUrl && stripHash(lastBrowserUrl) === stripHash(url);
       lastBrowserUrl = url;
-      // Don't use history API if only the hash changed
-      // due to a bug in IE10/IE11 which leads
-      // to not firing a `hashchange` nor `popstate` event
-      // in some cases (see #9143).
-      if (!sameBase && $sniffer.history) {
+      if ($sniffer.history) {
         if (replace) history.replaceState(null, '', url);
         else {
           history.pushState(null, '', url);
@@ -13359,9 +13340,7 @@ function Browser(window, document, $log, $sniffer) {
           baseElement.attr('href', baseElement.attr('href'));
         }
       } else {
-        if (!sameBase) {
-          reloadLocation = url;
-        }
+        newLocation = url;
         if (replace) {
           location.replace(url);
         } else {
@@ -13371,10 +13350,10 @@ function Browser(window, document, $log, $sniffer) {
       return self;
     // getter
     } else {
-      // - reloadLocation is needed as browsers don't allow to read out
-      //   the new location.href if a reload happened.
+      // - newLocation is a workaround for an IE7-9 issue with location.replace and location.href
+      //   methods not updating location.href synchronously.
       // - the replacement is a workaround for https://bugzilla.mozilla.org/show_bug.cgi?id=407172
-      return reloadLocation || location.href.replace(/%27/g,"'");
+      return newLocation || location.href.replace(/%27/g,"'");
     }
   };
 
@@ -13382,6 +13361,7 @@ function Browser(window, document, $log, $sniffer) {
       urlChangeInit = false;
 
   function fireUrlChange() {
+    newLocation = null;
     if (lastBrowserUrl == self.url()) return;
 
     lastBrowserUrl = self.url();
@@ -13957,8 +13937,7 @@ function $CacheFactoryProvider() {
  * ```
  *
  * **Note:** the `script` tag containing the template does not need to be included in the `head` of
- * the document, but it must be a descendent of the {@link ng.$rootElement $rootElement} (IE,
- * element with ng-app attribute), otherwise the template will be ignored.
+ * the document, but it must be below the `ng-app` definition.
  *
  * Adding via the $templateCache service:
  *
@@ -14243,13 +14222,8 @@ function $TemplateCacheProvider() {
  * scope. This makes it possible for the widget to have private state, and the transclusion to
  * be bound to the parent (pre-`isolate`) scope.
  *
- * There are two kinds of transclusion depending upon whether you want to transclude just the contents of the
- * directive's element or the entire element:
- *
- * * `true` - transclude the content (i.e. the child nodes) of the directive's element.
- * * `'element'` - transclude the whole of the directive's element including any directives on this
- *   element that defined at a lower priority than this directive. When used, the `template`
- *   property is ignored.
+ * * `true` - transclude the content of the directive.
+ * * `'element'` - transclude the whole element including any directives defined at lower priority.
  *
  * <div class="alert alert-warning">
  * **Note:** When testing an element transclude directive you must not place the directive at the root of the
@@ -16366,18 +16340,9 @@ function $HttpProvider() {
   };
 
   /**
-   * @ngdoc property
-   * @name $httpProvider#interceptors
-   * @description
-   *
-   * Array containing service factories for all synchronous or asynchronous {@link ng.$http $http}
-   * pre-processing of request or postprocessing of responses.
-   *
-   * These service factories are ordered by request, i.e. they are applied in the same order as the
+   * Are ordered by request, i.e. they are applied in the same order as the
    * array, on request, but reverse order, on response.
-   *
-   * {@link ng.$http#interceptors Interceptors detailed info}
-   **/
+   */
   var interceptorFactories = this.interceptors = [];
 
   /**
@@ -17118,31 +17083,18 @@ function $HttpProvider() {
      * @param {Object=} config Optional configuration object
      * @returns {HttpPromise} Future object
      */
+    createShortMethodsWithData('post', 'put');
 
-    /**
-     * @ngdoc method
-     * @name $http#patch
-     *
-     * @description
-     * Shortcut method to perform `PATCH` request.
-     *
-     * @param {string} url Relative or absolute URL specifying the destination of the request
-     * @param {*} data Request content
-     * @param {Object=} config Optional configuration object
-     * @returns {HttpPromise} Future object
-     */
-    createShortMethodsWithData('post', 'put', 'patch');
-
-    /**
-     * @ngdoc property
-     * @name $http#defaults
-     *
-     * @description
-     * Runtime equivalent of the `$httpProvider.defaults` property. Allows configuration of
-     * default headers, withCredentials as well as request and response transformations.
-     *
-     * See "Setting HTTP Headers" and "Transforming Requests and Responses" sections above.
-     */
+        /**
+         * @ngdoc property
+         * @name $http#defaults
+         *
+         * @description
+         * Runtime equivalent of the `$httpProvider.defaults` property. Allows configuration of
+         * default headers, withCredentials as well as request and response transformations.
+         *
+         * See "Setting HTTP Headers" and "Transforming Requests and Responses" sections above.
+         */
     $http.defaults = defaults;
 
 
@@ -18156,26 +18108,21 @@ function LocationHtml5Url(appBase, basePrefix) {
     this.$$absUrl = appBaseNoFile + this.$$url.substr(1); // first char is always '/'
   };
 
-  this.$$parseLinkUrl = function(url, relHref) {
+  this.$$rewrite = function(url) {
     var appUrl, prevAppUrl;
-    var rewrittenUrl;
 
     if ( (appUrl = beginsWith(appBase, url)) !== undefined ) {
       prevAppUrl = appUrl;
       if ( (appUrl = beginsWith(basePrefix, appUrl)) !== undefined ) {
-        rewrittenUrl = appBaseNoFile + (beginsWith('/', appUrl) || appUrl);
+        return appBaseNoFile + (beginsWith('/', appUrl) || appUrl);
       } else {
-        rewrittenUrl = appBase + prevAppUrl;
+        return appBase + prevAppUrl;
       }
     } else if ( (appUrl = beginsWith(appBaseNoFile, url)) !== undefined ) {
-      rewrittenUrl = appBaseNoFile + appUrl;
+      return appBaseNoFile + appUrl;
     } else if (appBaseNoFile == url + '/') {
-      rewrittenUrl = appBaseNoFile;
+      return appBaseNoFile;
     }
-    if (rewrittenUrl) {
-      this.$$parse(rewrittenUrl);
-    }
-    return !!rewrittenUrl;
   };
 }
 
@@ -18265,12 +18212,10 @@ function LocationHashbangUrl(appBase, hashPrefix) {
     this.$$absUrl = appBase + (this.$$url ? hashPrefix + this.$$url : '');
   };
 
-  this.$$parseLinkUrl = function(url, relHref) {
+  this.$$rewrite = function(url) {
     if(stripHash(appBase) == stripHash(url)) {
-      this.$$parse(url);
-      return true;
+      return url;
     }
-    return false;
   };
 }
 
@@ -18290,21 +18235,16 @@ function LocationHashbangInHtml5Url(appBase, hashPrefix) {
 
   var appBaseNoFile = stripFile(appBase);
 
-  this.$$parseLinkUrl = function(url, relHref) {
-    var rewrittenUrl;
+  this.$$rewrite = function(url) {
     var appUrl;
 
     if ( appBase == stripHash(url) ) {
-      rewrittenUrl = url;
+      return url;
     } else if ( (appUrl = beginsWith(appBaseNoFile, url)) ) {
-      rewrittenUrl = appBase + hashPrefix + appUrl;
+      return appBase + hashPrefix + appUrl;
     } else if ( appBaseNoFile === url + '/') {
-      rewrittenUrl = appBaseNoFile;
+      return appBaseNoFile;
     }
-    if (rewrittenUrl) {
-      this.$$parse(rewrittenUrl);
-    }
-    return !!rewrittenUrl;
   };
 
   this.$$compose = function() {
@@ -18432,7 +18372,7 @@ LocationHashbangInHtml5Url.prototype =
    * @return {string} path
    */
   path: locationGetterSetter('$$path', function(path) {
-    path = path !== null ? path.toString() : '';
+    path = path ? path.toString() : '';
     return path.charAt(0) == '/' ? path : '/' + path;
   }),
 
@@ -18529,7 +18469,7 @@ LocationHashbangInHtml5Url.prototype =
    * @return {string} hash
    */
   hash: locationGetterSetter('$$hash', function(hash) {
-    return hash !== null ? hash.toString() : '';
+    return hash ? hash.toString() : '';
   }),
 
   /**
@@ -18677,7 +18617,7 @@ function $LocationProvider(){
       LocationMode = LocationHashbangUrl;
     }
     $location = new LocationMode(appBase, '#' + hashPrefix);
-    $location.$$parseLinkUrl(initialUrl, initialUrl);
+    $location.$$parse($location.$$rewrite(initialUrl));
 
     var IGNORE_URI_REGEXP = /^\s*(javascript|mailto):/i;
 
@@ -18696,9 +18636,6 @@ function $LocationProvider(){
       }
 
       var absHref = elm.prop('href');
-      // get the actual href attribute - see
-      // http://msdn.microsoft.com/en-us/library/ie/dd347148(v=vs.85).aspx
-      var relHref = elm.attr('href') || elm.attr('xlink:href');
 
       if (isObject(absHref) && absHref.toString() === '[object SVGAnimatedString]') {
         // SVGAnimatedString.animVal should be identical to SVGAnimatedString.baseVal, unless during
@@ -18709,18 +18646,50 @@ function $LocationProvider(){
       // Ignore when url is started with javascript: or mailto:
       if (IGNORE_URI_REGEXP.test(absHref)) return;
 
-      if (absHref && !elm.attr('target') && !event.isDefaultPrevented()) {
-        if ($location.$$parseLinkUrl(absHref, relHref)) {
-          // We do a preventDefault for all urls that are part of the angular application,
-          // in html5mode and also without, so that we are able to abort navigation without
-          // getting double entries in the location history.
-          event.preventDefault();
-          // update location manually
-          if ($location.absUrl() != $browser.url()) {
-            $rootScope.$apply();
-            // hack to work around FF6 bug 684208 when scenario runner clicks on links
-            window.angular['ff-684208-preventDefault'] = true;
+      // Make relative links work in HTML5 mode for legacy browsers (or at least IE8 & 9)
+      // The href should be a regular url e.g. /link/somewhere or link/somewhere or ../somewhere or
+      // somewhere#anchor or http://example.com/somewhere
+      if (LocationMode === LocationHashbangInHtml5Url) {
+        // get the actual href attribute - see
+        // http://msdn.microsoft.com/en-us/library/ie/dd347148(v=vs.85).aspx
+        var href = elm.attr('href') || elm.attr('xlink:href');
+
+        if (href && href.indexOf('://') < 0) {         // Ignore absolute URLs
+          var prefix = '#' + hashPrefix;
+          if (href[0] == '/') {
+            // absolute path - replace old path
+            absHref = appBase + prefix + href;
+          } else if (href[0] == '#') {
+            // local anchor
+            absHref = appBase + prefix + ($location.path() || '/') + href;
+          } else {
+            // relative path - join with current path
+            var stack = $location.path().split("/"),
+              parts = href.split("/");
+            if (stack.length === 2 && !stack[1]) stack.length = 1;
+            for (var i=0; i<parts.length; i++) {
+              if (parts[i] == ".")
+                continue;
+              else if (parts[i] == "..")
+                stack.pop();
+              else if (parts[i].length)
+                stack.push(parts[i]);
+            }
+            absHref = appBase + prefix + stack.join('/');
           }
+        }
+      }
+
+      var rewrittenUrl = $location.$$rewrite(absHref);
+
+      if (absHref && !elm.attr('target') && rewrittenUrl && !event.isDefaultPrevented()) {
+        event.preventDefault();
+        if (rewrittenUrl != $browser.url()) {
+          // update location manually
+          $location.$$parse(rewrittenUrl);
+          $rootScope.$apply();
+          // hack to work around FF6 bug 684208 when scenario runner clicks on links
+          window.angular['ff-684208-preventDefault'] = true;
         }
       }
     });
@@ -18950,7 +18919,7 @@ var promiseWarning;
 // Sandboxing Angular Expressions
 // ------------------------------
 // Angular expressions are generally considered safe because these expressions only have direct
-// access to `$scope` and locals. However, one can obtain the ability to execute arbitrary JS code by
+// access to $scope and locals. However, one can obtain the ability to execute arbitrary JS code by
 // obtaining a reference to native JS functions such as the Function constructor.
 //
 // As an example, consider the following Angular expression:
@@ -18959,7 +18928,7 @@ var promiseWarning;
 //
 // This sandboxing technique is not perfect and doesn't aim to be. The goal is to prevent exploits
 // against the expression language, but not to prevent exploits that were enabled by exposing
-// sensitive JavaScript or browser APIs on Scope. Exposing such objects on a Scope is never a good
+// sensitive JavaScript or browser apis on Scope. Exposing such objects on a Scope is never a good
 // practice and therefore we are not even trying to protect against interaction with an object
 // explicitly exposed in this way.
 //
@@ -18967,8 +18936,6 @@ var promiseWarning;
 // window or some DOM object that has a reference to window is published onto a Scope.
 // Similarly we prevent invocations of function known to be dangerous, as well as assignments to
 // native objects.
-//
-// See https://docs.angularjs.org/guide/security
 
 
 function ensureSafeMemberName(name, fullExpression) {
@@ -19819,12 +19786,7 @@ function setter(obj, path, setValue, fullExp, options) {
   return setValue;
 }
 
-var getterFnCacheDefault = {};
-var getterFnCacheExpensive = {};
-
-function isPossiblyDangerousMemberName(name) {
-  return name == 'constructor';
-}
+var getterFnCache = {};
 
 /**
  * Implementation of the "Black Hole" variant from:
@@ -19837,38 +19799,29 @@ function cspSafeGetterFn(key0, key1, key2, key3, key4, fullExp, options) {
   ensureSafeMemberName(key2, fullExp);
   ensureSafeMemberName(key3, fullExp);
   ensureSafeMemberName(key4, fullExp);
-  var eso = function(o) {
-    return ensureSafeObject(o, fullExp);
-  };
-  var expensiveChecks = options.expensiveChecks;
-  var eso0 = (expensiveChecks || isPossiblyDangerousMemberName(key0)) ? eso : identity;
-  var eso1 = (expensiveChecks || isPossiblyDangerousMemberName(key1)) ? eso : identity;
-  var eso2 = (expensiveChecks || isPossiblyDangerousMemberName(key2)) ? eso : identity;
-  var eso3 = (expensiveChecks || isPossiblyDangerousMemberName(key3)) ? eso : identity;
-  var eso4 = (expensiveChecks || isPossiblyDangerousMemberName(key4)) ? eso : identity;
 
   return !options.unwrapPromises
       ? function cspSafeGetter(scope, locals) {
           var pathVal = (locals && locals.hasOwnProperty(key0)) ? locals : scope;
 
           if (pathVal == null) return pathVal;
-          pathVal = eso0(pathVal[key0]);
+          pathVal = pathVal[key0];
 
           if (!key1) return pathVal;
           if (pathVal == null) return undefined;
-          pathVal = eso1(pathVal[key1]);
+          pathVal = pathVal[key1];
 
           if (!key2) return pathVal;
           if (pathVal == null) return undefined;
-          pathVal = eso2(pathVal[key2]);
+          pathVal = pathVal[key2];
 
           if (!key3) return pathVal;
           if (pathVal == null) return undefined;
-          pathVal = eso3(pathVal[key3]);
+          pathVal = pathVal[key3];
 
           if (!key4) return pathVal;
           if (pathVal == null) return undefined;
-          pathVal = eso4(pathVal[key4]);
+          pathVal = pathVal[key4];
 
           return pathVal;
         }
@@ -19878,81 +19831,73 @@ function cspSafeGetterFn(key0, key1, key2, key3, key4, fullExp, options) {
 
           if (pathVal == null) return pathVal;
 
-          pathVal = eso0(pathVal[key0]);
+          pathVal = pathVal[key0];
           if (pathVal && pathVal.then) {
             promiseWarning(fullExp);
             if (!("$$v" in pathVal)) {
               promise = pathVal;
               promise.$$v = undefined;
-              promise.then(function(val) { promise.$$v = eso0(val); });
+              promise.then(function(val) { promise.$$v = val; });
             }
-            pathVal = eso0(pathVal.$$v);
+            pathVal = pathVal.$$v;
           }
 
           if (!key1) return pathVal;
           if (pathVal == null) return undefined;
-          pathVal = eso1(pathVal[key1]);
+          pathVal = pathVal[key1];
           if (pathVal && pathVal.then) {
             promiseWarning(fullExp);
             if (!("$$v" in pathVal)) {
               promise = pathVal;
               promise.$$v = undefined;
-              promise.then(function(val) { promise.$$v = eso1(val); });
+              promise.then(function(val) { promise.$$v = val; });
             }
-            pathVal = eso1(pathVal.$$v);
+            pathVal = pathVal.$$v;
           }
 
           if (!key2) return pathVal;
           if (pathVal == null) return undefined;
-          pathVal = eso2(pathVal[key2]);
+          pathVal = pathVal[key2];
           if (pathVal && pathVal.then) {
             promiseWarning(fullExp);
             if (!("$$v" in pathVal)) {
               promise = pathVal;
               promise.$$v = undefined;
-              promise.then(function(val) { promise.$$v = eso2(val); });
+              promise.then(function(val) { promise.$$v = val; });
             }
-            pathVal = eso2(pathVal.$$v);
+            pathVal = pathVal.$$v;
           }
 
           if (!key3) return pathVal;
           if (pathVal == null) return undefined;
-          pathVal = eso3(pathVal[key3]);
+          pathVal = pathVal[key3];
           if (pathVal && pathVal.then) {
             promiseWarning(fullExp);
             if (!("$$v" in pathVal)) {
               promise = pathVal;
               promise.$$v = undefined;
-              promise.then(function(val) { promise.$$v = eso3(val); });
+              promise.then(function(val) { promise.$$v = val; });
             }
-            pathVal = eso3(pathVal.$$v);
+            pathVal = pathVal.$$v;
           }
 
           if (!key4) return pathVal;
           if (pathVal == null) return undefined;
-          pathVal = eso4(pathVal[key4]);
+          pathVal = pathVal[key4];
           if (pathVal && pathVal.then) {
             promiseWarning(fullExp);
             if (!("$$v" in pathVal)) {
               promise = pathVal;
               promise.$$v = undefined;
-              promise.then(function(val) { promise.$$v = eso4(val); });
+              promise.then(function(val) { promise.$$v = val; });
             }
-            pathVal = eso4(pathVal.$$v);
+            pathVal = pathVal.$$v;
           }
           return pathVal;
         };
 }
 
-function getterFnWithExtraArgs(fn, fullExpression) {
-  return function(s, l) {
-    return fn(s, l, promiseWarning, ensureSafeObject, fullExpression);
-  };
-}
-
 function getterFn(path, options, fullExp) {
-  var expensiveChecks = options.expensiveChecks;
-  var getterFnCache = (expensiveChecks ? getterFnCacheExpensive : getterFnCacheDefault);
   // Check whether the cache has this getter already.
   // We can use hasOwnProperty directly on the cache because we ensure,
   // see below, that the cache never stores a path called 'hasOwnProperty'
@@ -19984,48 +19929,35 @@ function getterFn(path, options, fullExp) {
     }
   } else {
     var code = 'var p;\n';
-    if (expensiveChecks) {
-      code += 's = eso(s, fe);\nl = eso(l, fe);\n';
-    }
-    var needsEnsureSafeObject = expensiveChecks;
     forEach(pathKeys, function(key, index) {
       ensureSafeMemberName(key, fullExp);
-      var lookupJs = (index
+      code += 'if(s == null) return undefined;\n' +
+              's='+ (index
                       // we simply dereference 's' on any .dot notation
                       ? 's'
                       // but if we are first then we check locals first, and if so read it first
-                      : '((l&&l.hasOwnProperty("' + key + '"))?l:s)') + '["' + key + '"]';
-      var wrapWithEso = expensiveChecks || isPossiblyDangerousMemberName(key);
-      if (wrapWithEso) {
-        lookupJs = 'eso(' + lookupJs + ', fe)';
-        needsEnsureSafeObject = true;
-      }
-      code += 'if(s == null) return undefined;\n' +
-              's=' + lookupJs + ';\n';
-      if (options.unwrapPromises) {
-        code += 'if (s && s.then) {\n' +
+                      : '((k&&k.hasOwnProperty("' + key + '"))?k:s)') + '["' + key + '"]' + ';\n' +
+              (options.unwrapPromises
+                ? 'if (s && s.then) {\n' +
                   ' pw("' + fullExp.replace(/(["\r\n])/g, '\\$1') + '");\n' +
                   ' if (!("$$v" in s)) {\n' +
                     ' p=s;\n' +
                     ' p.$$v = undefined;\n' +
-                    ' p.then(function(v) {p.$$v=' + (wrapWithEso ? 'eso(v)' : 'v') + ';});\n' +
+                    ' p.then(function(v) {p.$$v=v;});\n' +
                     '}\n' +
-                  ' s=' + (wrapWithEso ? 'eso(s.$$v)' : 's.$$v') + '\n' +
-                '}\n';
-
-      }
+                  ' s=s.$$v\n' +
+                '}\n'
+                : '');
     });
     code += 'return s;';
 
     /* jshint -W054 */
-    // s=scope, l=locals, pw=promiseWarning, eso=ensureSafeObject, fe=fullExpression
-    var evaledFnGetter = new Function('s', 'l', 'pw', 'eso', 'fe', code);
+    var evaledFnGetter = new Function('s', 'k', 'pw', code); // s=scope, k=locals, pw=promiseWarning
     /* jshint +W054 */
     evaledFnGetter.toString = valueFn(code);
-    if (needsEnsureSafeObject || options.unwrapPromises) {
-      evaledFnGetter = getterFnWithExtraArgs(evaledFnGetter, fullExp);
-    }
-    fn = evaledFnGetter;
+    fn = options.unwrapPromises ? function(scope, locals) {
+      return evaledFnGetter(scope, locals, promiseWarning);
+    } : evaledFnGetter;
   }
 
   // Only cache the value if it's not going to mess up the cache object
@@ -20089,14 +20021,12 @@ function getterFn(path, options, fullExp) {
  *  service.
  */
 function $ParseProvider() {
-  var cacheDefault = {};
-  var cacheExpensive = {};
+  var cache = {};
 
   var $parseOptions = {
     csp: false,
     unwrapPromises: false,
-    logPromiseWarnings: true,
-    expensiveChecks: false
+    logPromiseWarnings: true
   };
 
 
@@ -20183,12 +20113,6 @@ function $ParseProvider() {
 
   this.$get = ['$filter', '$sniffer', '$log', function($filter, $sniffer, $log) {
     $parseOptions.csp = $sniffer.csp;
-    var $parseOptionsExpensive = {
-      csp: $parseOptions.csp,
-      unwrapPromises: $parseOptions.unwrapPromises,
-      logPromiseWarnings: $parseOptions.logPromiseWarnings,
-      expensiveChecks: true
-    };
 
     promiseWarning = function promiseWarningFn(fullExp) {
       if (!$parseOptions.logPromiseWarnings || promiseWarningCache.hasOwnProperty(fullExp)) return;
@@ -20197,20 +20121,18 @@ function $ParseProvider() {
           'Automatic unwrapping of promises in Angular expressions is deprecated.');
     };
 
-    return function(exp, expensiveChecks) {
+    return function(exp) {
       var parsedExpression;
 
       switch (typeof exp) {
         case 'string':
 
-          var cache = (expensiveChecks ? cacheExpensive : cacheDefault);
           if (cache.hasOwnProperty(exp)) {
             return cache[exp];
           }
 
-          var parseOptions = expensiveChecks ? $parseOptionsExpensive : $parseOptions;
-          var lexer = new Lexer(parseOptions);
-          var parser = new Parser(lexer, $filter, parseOptions);
+          var lexer = new Lexer($parseOptions);
+          var parser = new Parser(lexer, $filter, $parseOptions);
           parsedExpression = parser.parse(exp);
 
           if (exp !== 'hasOwnProperty') {
@@ -20237,11 +20159,7 @@ function $ParseProvider() {
  * @requires $rootScope
  *
  * @description
- * A service that helps you run functions asynchronously, and use their return values (or exceptions)
- * when they are done processing.
- *
- * This is an implementation of promises/deferred objects inspired by
- * [Kris Kowal's Q](https://github.com/kriskowal/q).
+ * A promise/deferred implementation inspired by [Kris Kowal's Q](https://github.com/kriskowal/q).
  *
  * [The CommonJS Promise proposal](http://wiki.commonjs.org/wiki/Promises) describes a promise as an
  * interface for interacting with an object that represents the result of an action that is
@@ -20334,10 +20252,6 @@ function $ParseProvider() {
  *   method.
  *
  * - `catch(errorCallback)` – shorthand for `promise.then(null, errorCallback)`
- *
- *   Because `catch` is a reserved word in JavaScript and reserved keywords are not supported as
- *   property names by ES3, you'll need to invoke the method like `promise['catch'](callback)` or
- *  `promise.then(null, errorCallback)` to make your code IE8 and Android 2.x compatible.
  *
  * - `finally(callback)` – allows you to observe either the fulfillment or rejection of a promise,
  *   but to do so without modifying the final value. This is useful to release resources or do some
@@ -21770,11 +21684,8 @@ function $RootScopeProvider(){
 
         var self = this;
         return function() {
-          var indexOfListener = indexOf(namedListeners, listener);
-          if (indexOfListener !== -1) {
-            namedListeners[indexOfListener] = null;
-            decrementListenerCount(self, 1, name);
-          }
+          namedListeners[indexOf(namedListeners, listener)] = null;
+          decrementListenerCount(self, 1, name);
         };
       },
 
@@ -23715,17 +23626,17 @@ function filterFilter() {
     }
 
     var search = function(obj, text){
-      if (typeof text === 'string' && text.charAt(0) === '!') {
+      if (typeof text == 'string' && text.charAt(0) === '!') {
         return !search(obj, text.substr(1));
       }
       switch (typeof obj) {
-        case 'boolean':
-        case 'number':
-        case 'string':
+        case "boolean":
+        case "number":
+        case "string":
           return comparator(obj, text);
-        case 'object':
+        case "object":
           switch (typeof text) {
-            case 'object':
+            case "object":
               return comparator(obj, text);
             default:
               for ( var objKey in obj) {
@@ -23736,7 +23647,7 @@ function filterFilter() {
               break;
           }
           return false;
-        case 'array':
+        case "array":
           for ( var i = 0; i < obj.length; i++) {
             if (search(obj[i], text)) {
               return true;
@@ -23748,13 +23659,13 @@ function filterFilter() {
       }
     };
     switch (typeof expression) {
-      case 'boolean':
-      case 'number':
-      case 'string':
+      case "boolean":
+      case "number":
+      case "string":
         // Set up expression object and fall through
         expression = {$:expression};
         // jshint -W086
-      case 'object':
+      case "object":
         // jshint +W086
         for (var key in expression) {
           (function(path) {
@@ -24400,7 +24311,7 @@ function limitToFilter(){
  * correctly, make sure they are actually being saved as numbers and not strings.
  *
  * @param {Array} array The array to sort.
- * @param {function(*)|string|Array.<(function(*)|string)>=} expression A predicate to be
+ * @param {function(*)|string|Array.<(function(*)|string)>} expression A predicate to be
  *    used by the comparator to determine the order of elements.
  *
  *    Can be one of:
@@ -24413,12 +24324,9 @@ function limitToFilter(){
  *      is interpreted as a property name to be used in comparisons (for example `"special name"`
  *      to sort object by the value of their `special name` property). An expression can be
  *      optionally prefixed with `+` or `-` to control ascending or descending sort order
- *      (for example, `+name` or `-name`). If no property is provided, (e.g. `'+'`) then the array
- *      element itself is used to compare where sorting.
+ *      (for example, `+name` or `-name`).
  *    - `Array`: An array of function or string predicates. The first predicate in the array
  *      is used for sorting, but when two items are equivalent, the next predicate is used.
- *
- *    If the predicate is missing or empty then it defaults to `'+'`.
  *
  * @param {boolean=} reverse Reverse the order of the array.
  * @returns {Array} Sorted copy of the source array.
@@ -24508,20 +24416,14 @@ orderByFilter.$inject = ['$parse'];
 function orderByFilter($parse){
   return function(array, sortPredicate, reverseOrder) {
     if (!(isArrayLike(array))) return array;
+    if (!sortPredicate) return array;
     sortPredicate = isArray(sortPredicate) ? sortPredicate: [sortPredicate];
-    if (sortPredicate.length === 0) { sortPredicate = ['+']; }
     sortPredicate = map(sortPredicate, function(predicate){
       var descending = false, get = predicate || identity;
       if (isString(predicate)) {
         if ((predicate.charAt(0) == '+' || predicate.charAt(0) == '-')) {
           descending = predicate.charAt(0) == '-';
           predicate = predicate.substring(1);
-        }
-        if ( predicate === '' ) {
-          // Effectively no predicate was passed so we compare identity
-          return reverseComparator(function(a,b) {
-            return compare(a, b);
-          }, descending);
         }
         get = $parse(predicate);
         if (get.constant) {
@@ -24535,7 +24437,9 @@ function orderByFilter($parse){
         return compare(get(a),get(b));
       }, descending);
     });
-    return slice.call(array).sort(reverseComparator(comparator, reverseOrder));
+    var arrayCopy = [];
+    for ( var i = 0; i < array.length; i++) { arrayCopy.push(array[i]); }
+    return arrayCopy.sort(reverseComparator(comparator, reverseOrder));
 
     function comparator(o1, o2){
       for ( var i = 0; i < sortPredicate.length; i++) {
@@ -26424,7 +26328,7 @@ var VALID_CLASS = 'ng-valid',
  *
  * We are using the {@link ng.service:$sce $sce} service here and include the {@link ngSanitize $sanitize}
  * module to automatically remove "bad" content like inline event listener (e.g. `<span onclick="...">`).
- * However, as we are using `$sce` the model can still decide to provide unsafe content if it marks
+ * However, as we are using `$sce` the model can still decide to to provide unsafe content if it marks
  * that content using the `$sce` service.
  *
  * <example name="NgModelController" module="customControl" deps="angular-sanitize.js">
@@ -26456,7 +26360,7 @@ var VALID_CLASS = 'ng-valid',
 
               // Listen for change events to enable binding
               element.on('blur keyup change', function() {
-                scope.$evalAsync(read);
+                scope.$apply(read);
               });
               read(); // initialize
 
@@ -26739,7 +26643,7 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
  *
  * For best practices on using `ngModel`, see:
  *
- *  - [Understanding Scopes](https://github.com/angular/angular.js/wiki/Understanding-Scopes)
+ *  - [https://github.com/angular/angular.js/wiki/Understanding-Scopes]
  *
  * For basic examples, how to use `ngModel`, see:
  *
@@ -27239,10 +27143,7 @@ var ngBindTemplateDirective = ['$interpolate', function($interpolate) {
  * element in a secure way.  By default, the innerHTML-ed content will be sanitized using the {@link
  * ngSanitize.$sanitize $sanitize} service.  To utilize this functionality, ensure that `$sanitize`
  * is available, for example, by including {@link ngSanitize} in your module's dependencies (not in
- * core Angular). In order to use {@link ngSanitize} in your module's dependencies, you need to
- * include "angular-sanitize.js" in your application.
- *
- * You may also bypass sanitization for values you know are safe. To do so, bind to
+ * core Angular.)  You may also bypass sanitization for values you know are safe. To do so, bind to
  * an explicitly trusted value via {@link ng.$sce#trustAsHtml $sce.trustAsHtml}.  See the example
  * under {@link ng.$sce#Example Strict Contextual Escaping (SCE)}.
  *
@@ -28037,8 +27938,10 @@ var ngControllerDirective = [function() {
    </example>
  */
 /*
- * A collection of directives that allows creation of custom event handlers that are defined as
- * angular expressions and are compiled and executed within the current scope.
+ * A directive that allows creation of custom onclick handlers that are defined as angular
+ * expressions and are compiled and executed within the current scope.
+ *
+ * Events that are handled via these handler are always configured not to propagate further.
  */
 var ngEventDirectives = {};
 
@@ -28056,11 +27959,7 @@ forEach(
     ngEventDirectives[directiveName] = ['$parse', '$rootScope', function($parse, $rootScope) {
       return {
         compile: function($element, attr) {
-          // We expose the powerful $event object on the scope that provides access to the Window,
-          // etc. that isn't protected by the fast paths in $parse.  We explicitly request better
-          // checks at the cost of speed since event handler expressions are not executed as
-          // frequently as regular change detection.
-          var fn = $parse(attr[directiveName], /* expensiveChecks */ true);
+          var fn = $parse(attr[directiveName]);
           return function ngEventHandler(scope, element) {
             element.on(eventName, function(event) {
               var callback = function() {
@@ -28506,7 +28405,7 @@ forEach(
  * Note that when an element is removed using `ngIf` its scope is destroyed and a new scope
  * is created when the element is restored.  The scope created within `ngIf` inherits from
  * its parent scope using
- * [prototypal inheritance](https://github.com/angular/angular.js/wiki/Understanding-Scopes#javascript-prototypal-inheritance).
+ * [prototypal inheritance](https://github.com/angular/angular.js/wiki/The-Nuances-of-Scope-Prototypal-Inheritance).
  * An important implication of this is if `ngModel` is used within `ngIf` to bind to
  * a javascript primitive defined in the parent scope. In this case any modifications made to the
  * variable within the child scope will override (hide) the value in the parent scope.
@@ -28520,8 +28419,8 @@ forEach(
  * and `leave` effects.
  *
  * @animations
- * enter - happens just after the `ngIf` contents change and a new DOM element is created and injected into the `ngIf` container
- * leave - happens just before the `ngIf` contents are removed from the DOM
+ * enter - happens just after the ngIf contents change and a new DOM element is created and injected into the ngIf container
+ * leave - happens just before the ngIf contents are removed from the DOM
  *
  * @element ANY
  * @scope
@@ -30821,7 +30720,6 @@ var selectDirective = ['$compile', '$parse', function($compile,   $parse) {
                 lastElement = existingOption.element;
                 if (existingOption.label !== option.label) {
                   lastElement.text(existingOption.label = option.label);
-                  lastElement.prop('label', existingOption.label);
                 }
                 if (existingOption.id !== option.id) {
                   lastElement.val(existingOption.id = option.id);
@@ -30851,7 +30749,6 @@ var selectDirective = ['$compile', '$parse', function($compile,   $parse) {
                       .val(option.id)
                       .prop('selected', option.selected)
                       .attr('selected', option.selected)
-                      .prop('label', option.label)
                       .text(option.label);
                 }
 
@@ -31884,7 +31781,7 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 })(window, window.angular);
 
 //! moment.js
-//! version : 2.8.4
+//! version : 2.8.3
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
 //! license : MIT
 //! momentjs.com
@@ -31895,7 +31792,7 @@ function ngViewFillContentFactory($compile, $controller, $route) {
     ************************************/
 
     var moment,
-        VERSION = '2.8.4',
+        VERSION = '2.8.3',
         // the global-scope this is NOT the global object in Node.js
         globalScope = typeof global !== 'undefined' ? global : this,
         oldGlobalMoment,
@@ -31918,7 +31815,7 @@ function ngViewFillContentFactory($compile, $controller, $route) {
         momentProperties = [],
 
         // check for nodeJS
-        hasModule = (typeof module !== 'undefined' && module && module.exports),
+        hasModule = (typeof module !== 'undefined' && module.exports),
 
         // ASP.NET json date format regex
         aspNetJsonRegex = /^\/?Date\((\-?\d+)/i,
@@ -31929,8 +31826,8 @@ function ngViewFillContentFactory($compile, $controller, $route) {
         isoDurationRegex = /^(-)?P(?:(?:([0-9,.]*)Y)?(?:([0-9,.]*)M)?(?:([0-9,.]*)D)?(?:T(?:([0-9,.]*)H)?(?:([0-9,.]*)M)?(?:([0-9,.]*)S)?)?|([0-9,.]*)W)$/,
 
         // format tokens
-        formattingTokens = /(\[[^\[]*\])|(\\)?(Mo|MM?M?M?|Do|DDDo|DD?D?D?|ddd?d?|do?|w[o|w]?|W[o|W]?|Q|YYYYYY|YYYYY|YYYY|YY|gg(ggg?)?|GG(GGG?)?|e|E|a|A|hh?|HH?|mm?|ss?|S{1,4}|x|X|zz?|ZZ?|.)/g,
-        localFormattingTokens = /(\[[^\[]*\])|(\\)?(LTS|LT|LL?L?L?|l{1,4})/g,
+        formattingTokens = /(\[[^\[]*\])|(\\)?(Mo|MM?M?M?|Do|DDDo|DD?D?D?|ddd?d?|do?|w[o|w]?|W[o|W]?|Q|YYYYYY|YYYYY|YYYY|YY|gg(ggg?)?|GG(GGG?)?|e|E|a|A|hh?|HH?|mm?|ss?|S{1,4}|X|zz?|ZZ?|.)/g,
+        localFormattingTokens = /(\[[^\[]*\])|(\\)?(LT|LL?L?L?|l{1,4})/g,
 
         // parsing token regexes
         parseTokenOneOrTwoDigits = /\d\d?/, // 0 - 99
@@ -31941,8 +31838,8 @@ function ngViewFillContentFactory($compile, $controller, $route) {
         parseTokenWord = /[0-9]*['a-z\u00A0-\u05FF\u0700-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+|[\u0600-\u06FF\/]+(\s*?[\u0600-\u06FF]+){1,2}/i, // any word (or two) characters or numbers including two/three word month in arabic.
         parseTokenTimezone = /Z|[\+\-]\d\d:?\d\d/gi, // +00:00 -00:00 +0000 -0000 or Z
         parseTokenT = /T/i, // T (ISO separator)
-        parseTokenOffsetMs = /[\+\-]?\d+/, // 1234567890123
         parseTokenTimestampMs = /[\+\-]?\d+(\.\d{1,3})?/, // 123456789 123456789.123
+        parseTokenOrdinal = /\d{1,2}/,
 
         //strict parsing regexes
         parseTokenOneDigit = /\d/, // 0 - 9
@@ -32156,9 +32053,6 @@ function ngViewFillContentFactory($compile, $controller, $route) {
             },
             zz : function () {
                 return this.zoneName();
-            },
-            x    : function () {
-                return this.valueOf();
             },
             X    : function () {
                 return this.unix();
@@ -32586,10 +32480,7 @@ function ngViewFillContentFactory($compile, $controller, $route) {
             overflow =
                 m._a[MONTH] < 0 || m._a[MONTH] > 11 ? MONTH :
                 m._a[DATE] < 1 || m._a[DATE] > daysInMonth(m._a[YEAR], m._a[MONTH]) ? DATE :
-                m._a[HOUR] < 0 || m._a[HOUR] > 24 ||
-                    (m._a[HOUR] === 24 && (m._a[MINUTE] !== 0 ||
-                                           m._a[SECOND] !== 0 ||
-                                           m._a[MILLISECOND] !== 0)) ? HOUR :
+                m._a[HOUR] < 0 || m._a[HOUR] > 23 ? HOUR :
                 m._a[MINUTE] < 0 || m._a[MINUTE] > 59 ? MINUTE :
                 m._a[SECOND] < 0 || m._a[SECOND] > 59 ? SECOND :
                 m._a[MILLISECOND] < 0 || m._a[MILLISECOND] > 999 ? MILLISECOND :
@@ -32616,8 +32507,7 @@ function ngViewFillContentFactory($compile, $controller, $route) {
             if (m._strict) {
                 m._isValid = m._isValid &&
                     m._pf.charsLeftOver === 0 &&
-                    m._pf.unusedTokens.length === 0 &&
-                    m._pf.bigHour === undefined;
+                    m._pf.unusedTokens.length === 0;
             }
         }
         return m._isValid;
@@ -32669,18 +32559,8 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 
     // Return a moment from input, that is local/utc/zone equivalent to model.
     function makeAs(input, model) {
-        var res, diff;
-        if (model._isUTC) {
-            res = model.clone();
-            diff = (moment.isMoment(input) || isDate(input) ?
-                    +input : +moment(input)) - (+res);
-            // Use low-level api, because this fn is low-level api.
-            res._d.setTime(+res._d + diff);
-            moment.updateOffset(res, false);
-            return res;
-        } else {
-            return moment(input).local();
-        }
+        return model._isUTC ? moment(input).zone(model._offset || 0) :
+            moment(input).local();
     }
 
     /************************************
@@ -32700,9 +32580,6 @@ function ngViewFillContentFactory($compile, $controller, $route) {
                     this['_' + i] = prop;
                 }
             }
-            // Lenient ordinal parsing accepts just a number in addition to
-            // number + (possibly) stuff coming from _ordinalParseLenient.
-            this._ordinalParseLenient = new RegExp(this._ordinalParse.source + '|' + /\d{1,2}/.source);
         },
 
         _months : 'January_February_March_April_May_June_July_August_September_October_November_December'.split('_'),
@@ -32715,32 +32592,22 @@ function ngViewFillContentFactory($compile, $controller, $route) {
             return this._monthsShort[m.month()];
         },
 
-        monthsParse : function (monthName, format, strict) {
+        monthsParse : function (monthName) {
             var i, mom, regex;
 
             if (!this._monthsParse) {
                 this._monthsParse = [];
-                this._longMonthsParse = [];
-                this._shortMonthsParse = [];
             }
 
             for (i = 0; i < 12; i++) {
                 // make the regex if we don't have it already
-                mom = moment.utc([2000, i]);
-                if (strict && !this._longMonthsParse[i]) {
-                    this._longMonthsParse[i] = new RegExp('^' + this.months(mom, '').replace('.', '') + '$', 'i');
-                    this._shortMonthsParse[i] = new RegExp('^' + this.monthsShort(mom, '').replace('.', '') + '$', 'i');
-                }
-                if (!strict && !this._monthsParse[i]) {
+                if (!this._monthsParse[i]) {
+                    mom = moment.utc([2000, i]);
                     regex = '^' + this.months(mom, '') + '|^' + this.monthsShort(mom, '');
                     this._monthsParse[i] = new RegExp(regex.replace('.', ''), 'i');
                 }
                 // test the regex
-                if (strict && format === 'MMMM' && this._longMonthsParse[i].test(monthName)) {
-                    return i;
-                } else if (strict && format === 'MMM' && this._shortMonthsParse[i].test(monthName)) {
-                    return i;
-                } else if (!strict && this._monthsParse[i].test(monthName)) {
+                if (this._monthsParse[i].test(monthName)) {
                     return i;
                 }
             }
@@ -32783,7 +32650,6 @@ function ngViewFillContentFactory($compile, $controller, $route) {
         },
 
         _longDateFormat : {
-            LTS : 'h:mm:ss A',
             LT : 'h:mm A',
             L : 'MM/DD/YYYY',
             LL : 'MMMM D, YYYY',
@@ -32824,9 +32690,9 @@ function ngViewFillContentFactory($compile, $controller, $route) {
             lastWeek : '[Last] dddd [at] LT',
             sameElse : 'L'
         },
-        calendar : function (key, mom, now) {
+        calendar : function (key, mom) {
             var output = this._calendar[key];
-            return typeof output === 'function' ? output.apply(mom, [now]) : output;
+            return typeof output === 'function' ? output.apply(mom) : output;
         },
 
         _relativeTime : {
@@ -32861,7 +32727,6 @@ function ngViewFillContentFactory($compile, $controller, $route) {
             return this._ordinal.replace('%d', number);
         },
         _ordinal : '%d',
-        _ordinalParse : /\d{1,2}/,
 
         preparse : function (string) {
             return string;
@@ -33003,8 +32868,6 @@ function ngViewFillContentFactory($compile, $controller, $route) {
         case 'a':
         case 'A':
             return config._locale._meridiemParse;
-        case 'x':
-            return parseTokenOffsetMs;
         case 'X':
             return parseTokenTimestampMs;
         case 'Z':
@@ -33039,7 +32902,7 @@ function ngViewFillContentFactory($compile, $controller, $route) {
         case 'E':
             return parseTokenOneOrTwoDigits;
         case 'Do':
-            return strict ? config._locale._ordinalParse : config._locale._ordinalParseLenient;
+            return parseTokenOrdinal;
         default :
             a = new RegExp(regexpEscape(unescapeFormat(token.replace('\\', '')), 'i'));
             return a;
@@ -33076,7 +32939,7 @@ function ngViewFillContentFactory($compile, $controller, $route) {
             break;
         case 'MMM' : // fall through to MMMM
         case 'MMMM' :
-            a = config._locale.monthsParse(input, token, config._strict);
+            a = config._locale.monthsParse(input);
             // if we didn't find a month name, mark the date as invalid.
             if (a != null) {
                 datePartArray[MONTH] = a;
@@ -33093,8 +32956,7 @@ function ngViewFillContentFactory($compile, $controller, $route) {
             break;
         case 'Do' :
             if (input != null) {
-                datePartArray[DATE] = toInt(parseInt(
-                            input.match(/\d{1,2}/)[0], 10));
+                datePartArray[DATE] = toInt(parseInt(input, 10));
             }
             break;
         // DAY OF YEAR
@@ -33119,13 +32981,11 @@ function ngViewFillContentFactory($compile, $controller, $route) {
         case 'A' :
             config._isPm = config._locale.isPM(input);
             break;
-        // HOUR
+        // 24 HOUR
+        case 'H' : // fall through to hh
+        case 'HH' : // fall through to hh
         case 'h' : // fall through to hh
         case 'hh' :
-            config._pf.bigHour = true;
-            /* falls through */
-        case 'H' : // fall through to HH
-        case 'HH' :
             datePartArray[HOUR] = toInt(input);
             break;
         // MINUTE
@@ -33144,10 +33004,6 @@ function ngViewFillContentFactory($compile, $controller, $route) {
         case 'SSS' :
         case 'SSSS' :
             datePartArray[MILLISECOND] = toInt(('0.' + input) * 1000);
-            break;
-        // UNIX OFFSET (MILLISECONDS)
-        case 'x':
-            config._d = new Date(toInt(input));
             break;
         // UNIX TIMESTAMP WITH MS
         case 'X':
@@ -33285,24 +33141,11 @@ function ngViewFillContentFactory($compile, $controller, $route) {
             config._a[i] = input[i] = (config._a[i] == null) ? (i === 2 ? 1 : 0) : config._a[i];
         }
 
-        // Check for 24:00:00.000
-        if (config._a[HOUR] === 24 &&
-                config._a[MINUTE] === 0 &&
-                config._a[SECOND] === 0 &&
-                config._a[MILLISECOND] === 0) {
-            config._nextDay = true;
-            config._a[HOUR] = 0;
-        }
-
         config._d = (config._useUTC ? makeUTCDate : makeDate).apply(null, input);
         // Apply timezone offset from input. The actual zone can be changed
         // with parseZone.
         if (config._tzm != null) {
             config._d.setUTCMinutes(config._d.getUTCMinutes() + config._tzm);
-        }
-
-        if (config._nextDay) {
-            config._a[HOUR] = 24;
         }
     }
 
@@ -33317,7 +33160,7 @@ function ngViewFillContentFactory($compile, $controller, $route) {
         config._a = [
             normalizedInput.year,
             normalizedInput.month,
-            normalizedInput.day || normalizedInput.date,
+            normalizedInput.day,
             normalizedInput.hour,
             normalizedInput.minute,
             normalizedInput.second,
@@ -33390,10 +33233,6 @@ function ngViewFillContentFactory($compile, $controller, $route) {
             config._pf.unusedInput.push(string);
         }
 
-        // clear _12h flag if hour is <= 12
-        if (config._pf.bigHour === true && config._a[HOUR] <= 12) {
-            config._pf.bigHour = undefined;
-        }
         // handle am pm
         if (config._isPm && config._a[HOUR] < 12) {
             config._a[HOUR] += 12;
@@ -33402,6 +33241,7 @@ function ngViewFillContentFactory($compile, $controller, $route) {
         if (config._isPm === false && config._a[HOUR] === 12) {
             config._a[HOUR] = 0;
         }
+
         dateFromConfig(config);
         checkOverflow(config);
     }
@@ -33661,8 +33501,7 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 
     function makeMoment(config) {
         var input = config._i,
-            format = config._f,
-            res;
+            format = config._f;
 
         config._locale = config._locale || moment.localeData(config._l);
 
@@ -33686,14 +33525,7 @@ function ngViewFillContentFactory($compile, $controller, $route) {
             makeDateFromInput(config);
         }
 
-        res = new Moment(config);
-        if (res._nextDay) {
-            // Adding is smart enough around DST
-            res.add(1, 'd');
-            res._nextDay = undefined;
-        }
-
-        return res;
+        return new Moment(config);
     }
 
     moment = function (input, format, locale, strict) {
@@ -33725,7 +33557,7 @@ function ngViewFillContentFactory($compile, $controller, $route) {
         'release. Please refer to ' +
         'https://github.com/moment/moment/issues/1407 for more info.',
         function (config) {
-            config._d = new Date(config._i + (config._useUTC ? ' UTC' : ''));
+            config._d = new Date(config._i);
         }
     );
 
@@ -34037,12 +33869,7 @@ function ngViewFillContentFactory($compile, $controller, $route) {
         toISOString : function () {
             var m = moment(this).utc();
             if (0 < m.year() && m.year() <= 9999) {
-                if ('function' === typeof Date.prototype.toISOString) {
-                    // native implementation is ~50x faster, use it when we can
-                    return this.toDate().toISOString();
-                } else {
-                    return formatMoment(m, 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]');
-                }
+                return formatMoment(m, 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]');
             } else {
                 return formatMoment(m, 'YYYYYY-MM-DD[T]HH:mm:ss.SSS[Z]');
             }
@@ -34161,7 +33988,7 @@ function ngViewFillContentFactory($compile, $controller, $route) {
                     diff < 1 ? 'sameDay' :
                     diff < 2 ? 'nextDay' :
                     diff < 7 ? 'nextWeek' : 'sameElse';
-            return this.format(this.localeData().calendar(format, this, moment(now)));
+            return this.format(this.localeData().calendar(format, this));
         },
 
         isLeapYear : function () {
@@ -34230,45 +34057,36 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 
         endOf: function (units) {
             units = normalizeUnits(units);
-            if (units === undefined || units === 'millisecond') {
-                return this;
-            }
             return this.startOf(units).add(1, (units === 'isoWeek' ? 'week' : units)).subtract(1, 'ms');
         },
 
         isAfter: function (input, units) {
-            var inputMs;
             units = normalizeUnits(typeof units !== 'undefined' ? units : 'millisecond');
             if (units === 'millisecond') {
                 input = moment.isMoment(input) ? input : moment(input);
                 return +this > +input;
             } else {
-                inputMs = moment.isMoment(input) ? +input : +moment(input);
-                return inputMs < +this.clone().startOf(units);
+                return +this.clone().startOf(units) > +moment(input).startOf(units);
             }
         },
 
         isBefore: function (input, units) {
-            var inputMs;
             units = normalizeUnits(typeof units !== 'undefined' ? units : 'millisecond');
             if (units === 'millisecond') {
                 input = moment.isMoment(input) ? input : moment(input);
                 return +this < +input;
             } else {
-                inputMs = moment.isMoment(input) ? +input : +moment(input);
-                return +this.clone().endOf(units) < inputMs;
+                return +this.clone().startOf(units) < +moment(input).startOf(units);
             }
         },
 
         isSame: function (input, units) {
-            var inputMs;
             units = normalizeUnits(units || 'millisecond');
             if (units === 'millisecond') {
                 input = moment.isMoment(input) ? input : moment(input);
                 return +this === +input;
             } else {
-                inputMs = +moment(input);
-                return +(this.clone().startOf(units)) <= inputMs && inputMs <= +(this.clone().endOf(units));
+                return +this.clone().startOf(units) === +makeAs(input, this).startOf(units);
             }
         },
 
@@ -34445,7 +34263,7 @@ function ngViewFillContentFactory($compile, $controller, $route) {
         },
 
         lang : deprecate(
-            'moment().lang() is deprecated. Instead, use moment().localeData() to get the language configuration. Use moment().locale() to change languages.',
+            'moment().lang() is deprecated. Use moment().localeData() instead.',
             function (key) {
                 if (key === undefined) {
                     return this.localeData();
@@ -34666,7 +34484,7 @@ function ngViewFillContentFactory($compile, $controller, $route) {
                 return units === 'month' ? months : months / 12;
             } else {
                 // handle milliseconds separately because of floating point math errors (issue #1867)
-                days = this._days + Math.round(yearsToDays(this._months / 12));
+                days = this._days + yearsToDays(this._months / 12);
                 switch (units) {
                     case 'week': return days / 7 + this._milliseconds / 6048e5;
                     case 'day': return days + this._milliseconds / 864e5;
@@ -34768,7 +34586,6 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 
     // Set default locale, other locale will inherit from English.
     moment.locale('en', {
-        ordinalParse: /\d{1,2}(th|st|nd|rd)/,
         ordinal : function (number) {
             var b = number % 10,
                 output = (toInt(number % 100 / 10) === 1) ? 'th' :
@@ -34819,6 +34636,115 @@ function ngViewFillContentFactory($compile, $controller, $route) {
         makeGlobal();
     }
 }).call(this);
+
+// moment.js language configuration
+// language : chinese
+// author : suupic : https://github.com/suupic
+// author : Zeno Zeng : https://github.com/zenozeng
+
+(function (factory) {
+    if (typeof define === 'function' && define.amd) {
+        define(['moment'], factory); // AMD
+    } else if (typeof exports === 'object') {
+        module.exports = factory(require('../moment')); // Node
+    } else {
+        factory(window.moment); // Browser global
+    }
+}(function (moment) {
+    return moment.lang('zh-cn', {
+        months : "一月_二月_三月_四月_五月_六月_七月_八月_九月_十月_十一月_十二月".split("_"),
+        monthsShort : "1月_2月_3月_4月_5月_6月_7月_8月_9月_10月_11月_12月".split("_"),
+        weekdays : "星期日_星期一_星期二_星期三_星期四_星期五_星期六".split("_"),
+        weekdaysShort : "周日_周一_周二_周三_周四_周五_周六".split("_"),
+        weekdaysMin : "日_一_二_三_四_五_六".split("_"),
+        longDateFormat : {
+            LT : "Ah点mm",
+            L : "YYYY-MM-DD",
+            LL : "YYYY年MMMD日",
+            LLL : "YYYY年MMMD日LT",
+            LLLL : "YYYY年MMMD日ddddLT",
+            l : "YYYY-MM-DD",
+            ll : "YYYY年MMMD日",
+            lll : "YYYY年MMMD日LT",
+            llll : "YYYY年MMMD日ddddLT"
+        },
+        meridiem : function (hour, minute, isLower) {
+            var hm = hour * 100 + minute;
+            if (hm < 600) {
+                return "凌晨";
+            } else if (hm < 900) {
+                return "早上";
+            } else if (hm < 1130) {
+                return "上午";
+            } else if (hm < 1230) {
+                return "中午";
+            } else if (hm < 1800) {
+                return "下午";
+            } else {
+                return "晚上";
+            }
+        },
+        calendar : {
+            sameDay : function () {
+                return this.minutes() === 0 ? "[今天]Ah[点整]" : "[今天]LT";
+            },
+            nextDay : function () {
+                return this.minutes() === 0 ? "[明天]Ah[点整]" : "[明天]LT";
+            },
+            lastDay : function () {
+                return this.minutes() === 0 ? "[昨天]Ah[点整]" : "[昨天]LT";
+            },
+            nextWeek : function () {
+                var startOfWeek, prefix;
+                startOfWeek = moment().startOf('week');
+                prefix = this.unix() - startOfWeek.unix() >= 7 * 24 * 3600 ? '[下]' : '[本]';
+                return this.minutes() === 0 ? prefix + "dddAh点整" : prefix + "dddAh点mm";
+            },
+            lastWeek : function () {
+                var startOfWeek, prefix;
+                startOfWeek = moment().startOf('week');
+                prefix = this.unix() < startOfWeek.unix()  ? '[上]' : '[本]';
+                return this.minutes() === 0 ? prefix + "dddAh点整" : prefix + "dddAh点mm";
+            },
+            sameElse : 'LL'
+        },
+        ordinal : function (number, period) {
+            switch (period) {
+            case "d":
+            case "D":
+            case "DDD":
+                return number + "日";
+            case "M":
+                return number + "月";
+            case "w":
+            case "W":
+                return number + "周";
+            default:
+                return number;
+            }
+        },
+        relativeTime : {
+            future : "%s内",
+            past : "%s前",
+            s : "几秒",
+            m : "1分钟",
+            mm : "%d分钟",
+            h : "1小时",
+            hh : "%d小时",
+            d : "1天",
+            dd : "%d天",
+            M : "1个月",
+            MM : "%d个月",
+            y : "1年",
+            yy : "%d年"
+        },
+        week : {
+            // GB/T 7408-1994《数据元和交换格式·信息交换·日期和时间表示法》与ISO 8601:1988等效
+            dow : 1, // Monday is the first day of the week.
+            doy : 4  // The week that contains Jan 4th is the first week of the year.
+        }
+    });
+}));
 
 /*!
  * Bootstrap v3.0.3 (http://getbootstrap.com)
@@ -44595,7 +44521,7 @@ angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCac
 }));
 
 /*
- AngularJS v1.2.27
+ AngularJS v1.2.26
  (c) 2010-2014 Google, Inc. http://angularjs.org
  License: MIT
 */
