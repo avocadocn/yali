@@ -71,7 +71,14 @@ define(['app'], function (app) {
         .state('manager.createCampaign', {
           url: '/campaigns/create',
           templateUrl: templateUrl('/views/create_campaign.html'),
-          controller: 'campaign.createCampaignCtrl'
+          controller: 'campaign.createCampaignCtrl',
+          resolve: {
+            teamList: ['teamService', 'initData', function(teamService, initData) {
+              return teamService.getList(initData.company._id).then(function(res) {
+                return res.data;
+              });
+            }]
+          }
         })
         .state('manager.campaigns', {
           url: '/campaigns',

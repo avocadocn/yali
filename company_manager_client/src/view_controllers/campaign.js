@@ -357,21 +357,55 @@ define(['angular', 'moment'], function (angular, moment) {
     '$scope',
     'initData',
     'campaignService',
-    'teamService',
-    function($scope, initData, campaignService, teamService) {
+    'teamList',
+    function($scope, initData, campaignService, teamList) {
+      $scope.teamList = teamList.map(function(team) {
+        return {
+          _id: team._id,
+          name: team.name,
+          selected: false
+        };
+      });
+      var teamIds = [];
+
+      var refreshTeamIds = function() {
+        if ($scope.formData.tid) {
+          $scope.formData.tid = $scope.teamList.filter(function(team) {
+            return team.selected;
+          });
+        }
+      };
+
+      $scope.toggleSelectTeam = function(team) {
+        team.selected = !team.selected;
+        refreshTeamIds();
+      };
 
       $scope.campaignType = 'company'; // 'company' or 'team';
-      $scope.formData = {};
+      $scope.formData = {
+        cid: [''],
+        campaign_type: 'company',
+        theme: '',
+        location: {}, // todo
+        start_time: '',
+        end_time: '',
+        deadline: '',
+        campaign_mold: '',
+        member_max: 0,
+        member_min: 0,
+        content: ''
+      };
 
       $scope.selectType = function(type) {
         switch (type) {
         case 'company':
           $scope.campaignType = 'company';
+          delete $scope.formData.tid;
           // todo
           break;
         case 'team':
           $scope.campaignType = 'team';
-          // todo
+          $scope.formData.tid = teamIds;
         }
       };
 

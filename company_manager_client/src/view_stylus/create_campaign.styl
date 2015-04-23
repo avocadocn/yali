@@ -1,5 +1,7 @@
 @require tools
 
+col_donlerBlue = #3498db;
+
 .create_campaign_page
   .cp_tabs
     displayFlex()
@@ -30,3 +32,25 @@
     border none
     font-size 14px
     line-height 14px
+
+  // special form item
+  .cp_team_list
+    position relative
+  .cp_team
+    float left
+    width 50%
+    font-size 14px
+    line-height 18px
+    cursor pointer
+    transition(color 0.1s)
+    &.selected
+      color col_donlerBlue
+      .cp_team_name
+        font-weight bold
+    &:hover
+      .cp_team_name
+        color col_donlerBlue
+    .fa
+      margin-right 5px
+  .cp_team_name
+    transition(font-weight 0.2s)
