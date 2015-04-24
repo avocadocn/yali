@@ -7,34 +7,62 @@
     padding 10px 0
 
 .team_create_page
+  .create_team_label
+    width 650px
+    margin 0 auto
+    font-size 20px
+  .team_page
+    width 650px
+    margin 0 auto
+    .team_header
+      width 400px
+      font-size 16px
+      margin 20px auto
   .box
     padding-bottom 10px
   .groups
-    margin-left auto
-    margin-right auto
+    margin 0px auto
+    width 400px
     position relative
-    max-width (70 * 17)px
+    // max-width (70 * 17)px
+    border-bottom 1px solid #f4f4f4
     .group
       float left
       width 80px
       text-align center
       padding 10px
       .img_contain
-        width 50px
-        height 50px
+        width 51px
+        height 51px
         margin-left 5px
         background-image url('/img/icons/groups_new.png')
         background-repeat no-repeat
-        background-size 600px 1500px
+        background-size 480px 1200px
+        border-radius 50%
+        border 1px solid #ccc
       for i in 0..16
         .group_{i+1}
-          background-position i%6 * -100px floor(i/6) * -100px
+          background-position i%6 * -80px +4px floor(i/6) * -80px  + 4px
+        .group_17
+          background-position -312px -158px
       &.active
-        color #3ca2e0
+        color #94cd3e
+        .img_contain
+          border-color #94cd3e
+          box-shadow 0 1px 1px rgba(0,0,0,0.1)
   .team_name_group
-    width 320px
-    margin-left auto
-    margin-right auto
+    margin 10px auto
+    width 400px
+    height 300px
+    .team_name
+      font-size 14px
+    .team_input
+      border-color #ccc
+    .team_button
+      margin-top 5px
+      padding 2px 16px
+      background-color #94cd3e
+      color white
 .team_list_page
   .content
     .team
