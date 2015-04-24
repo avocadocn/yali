@@ -1,58 +1,66 @@
 @require tools
 
-col_donlerBlue = #3498db;
+col_createCpPage_donlerBlue = #3498db
+col_createCpPage_formBackground = #f7f8fa
+col_createCpPage_formBorder = #dcdcdc
 
 .create_campaign_page
-  .center_wrap
-    centerWrap()
+  .create_cp_form
+    margin-top 30px
+    @media (min-width 768px)
+      margin-left auto
+      margin-right auto
+      max-width 320px
+  .form-control
+    border-radius 4px !important
+    background-color col_createCpPage_formBackground
+    border-color col_createCpPage_formBorder !important
+    &:focus
+      border-color col_createCpPage_formBorder !important
+  .input-group
+    .form-control
+      border-top-right-radius 0 !important
+      border-bottom-right-radius 0 !important
+    .input-group-addon
+      background-color col_createCpPage_formBackground
+      border-radius 4px !important
+      border-top-left-radius 0 !important
+      border-bottom-left-radius 0 !important
+      cursor pointer
   .cp_tabs
     displayFlex()
-    border-bottom 1px solid #f4f4f4
+    margin-bottom 10px
+    border-radius 4px
+    border 1px solid col_createCpPage_formBorder
+    background-color col_createCpPage_formBackground
   .cp_tab
     flexValue(1)
     padding 5px
     text-align center
     cursor pointer
-    border-bottom 2px solid white
     &.active
       border-bottom 2px solid #f39c12
   .cp_tab_divider
-    margin 5px 0
-    border-left 1px solid #f4f4f4
-  .cp_form_group, .cp_form_group_no_flex
-    padding 10px
-    border-bottom 1px solid #f4f4f4
-  .cp_form_group
-    displayFlex()
-  .cp_form_label
-    margin 0
-    width 120px
-    font-size 14px
-    line-height 18px
-  .cp_form_control
-    flexValue(1)
-    border none
-    font-size 14px
-    line-height 14px
-    padding 0
+    border-left 1px solid col_createCpPage_formBorder
 
   // special form item
-    
+
   // team list
   .cp_team_list
     position relative
+    height auto
   .cp_team
     font-size 14px
     line-height 18px
     cursor pointer
     transition(color 0.1s)
     &.selected
-      color col_donlerBlue
+      color col_createCpPage_donlerBlue
       .cp_team_name
         font-weight bold
     &:hover
       .cp_team_name
-        color col_donlerBlue
+        color col_createCpPage_donlerBlue
     .fa
       margin-right 5px
     @media (min-width 768px)
@@ -63,32 +71,11 @@ col_donlerBlue = #3498db;
 
   // date picker
   .time_group
-    padding-top 0
-    padding-bottom 0
-    .cp_form_label
-      padding-top 10px
-      padding-bottom 10px
     .form-control
-      padding 10px 0
-      font-size 14px
-      line-height 18px
-      height auto
-      background-color white
-      background-image none
-      border none
-      border-radius 0
       cursor pointer
-    .input-group-addon
-      padding-left 22px
-      padding-right 2px
-      cursor pointer
-      border none
 
   // map
-  .cp_marker_icon
-    font-size 16px
-    cursor pointer
   .dl_map
     width 100%
-    height 100px
+    height 200px
 

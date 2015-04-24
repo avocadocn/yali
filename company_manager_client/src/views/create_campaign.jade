@@ -1,65 +1,61 @@
 .create_campaign_page
   section.content
-    .center_wrap
-      .row
-        .col-sm-offset-2.col-sm-8.col-lg-offset-3.col-lg-6
-          .box.box-warning
-            .box-header.with-border
-              h3.box-title 发活动
-            .box-body.no-padding
+    .row
+      .col-sm-offset-1.col-sm-10.col-lg-offset-2.col-lg-8
+        h3.page_title 发活动
+        .box.box-warning
+          .box-body
+            form.create_cp_form(name="createCampaignForm")
               .cp_tabs
                 .cp_tab(ng-click="selectType('company')" ng-class="{'active': campaignType === 'company'}") 公司活动
                 .cp_tab_divider
                 .cp_tab(ng-click="selectType('team')" ng-class="{'active': campaignType === 'team'}") 小队活动
-              form.create_cp_form(name="createCampaignForm")
-                .cp_form_group(ng-if="campaignType === 'team'")
-                  label.cp_form_label 选择小队
-                  .cp_form_control
-                    .cp_team_list.clearfix
-                      .cp_team(ng-repeat="team in teamList" ng-click="toggleSelectTeam(team)" ng-class="{'selected': team.selected}")
-                        i.fa.fa-fw(ng-class="{'fa-square-o': !team.selected, 'fa-check-square-o': team.selected}")
-                        span.cp_team_name(ng-bind="team.name")
-                .cp_form_group
-                  label.cp_form_label 活动名称
-                  input.cp_form_control(type="text" name="theme" placeholder="请填写活动名称" ng-model="formData.theme" required)
-                .cp_form_group
-                  label.cp_form_label 活动类型
-                  select.cp_form_control(name='campaignMold' ng-options="mold.name as mold.name for mold in molds" ng-model="formData.campaign_mold" required)
-                .cp_form_group.time_group
-                  label.cp_form_label 开始时间
-                  .cp_form_control
-                    .input-group.date#start_time
-                      input.form-control(type="text" ng-model="formData.start_time" name="endTime" placeholder="请选择活动开始时间" data-date-format="YYYY-MM-DD HH:mm" readonly required)
-                      .input-group-addon
-                        span.glyphicon.glyphicon-calendar
-                .cp_form_group.time_group
-                  label.cp_form_label 结束时间
-                  .cp_form_control
-                    .input-group.date.form_datetime#end_time
-                      input.form-control(type="text" ng-model="formData.end_time" name="endTime" placeholder="请选择活动结束时间" data-date-format="YYYY-MM-DD HH:mm" readonly required)
-                      span.input-group-addon
-                        span.glyphicon.glyphicon-calendar
-                .cp_form_group
-                  label.cp_form_label 地点
-                  input.cp_form_control(type="text" name="location" ng-model="formData.location.name" placeholder="请填写活动地点" required)
-                  i.fa.fa-fw.fa-map-marker.cp_marker_icon(title="设置地图标记" ng-click="search()")
-                .cp_form_group(ng-show="hasSearch")
-                  map-search(ctrl="mapCtrl")
-                .cp_form_group.time_group
-                  label.cp_form_label 报名截止时间
-                  .cp_form_control
-                    .input-group.date.form_datetime#deadline
-                      input.form-control(type="text" ng-model="formData.deadline" name="deadline" placeholder="请选择报名截止时间" data-date-format="YYYY-MM-DD HH:mm" readonly)
-                      span.input-group-addon
-                        span.glyphicon.glyphicon-calendar
-                .cp_form_group
-                  label.cp_form_label 报名人数上限
-                  input.cp_form_control(type="number" name="memberMax" ng-model="formData.member_max")
-                .cp_form_group
-                  label.cp_form_label 最少人数
-                  input.cp_form_control(type="number" name="memberMin" ng-model="formData.member_min")
-                .cp_form_group
-                  label.cp_form_label 简介
-                  textarea.cp_form_control(type="text" name="content" placeholder="请填写活动简介" ng-model="formData.content")
-                .cp_form_group_no_flex.clearfix
-                  button.btn.btn-flat.pull-right(ng-class="{'btn-primary': createCampaignForm.$valid, 'btn-default': createCampaignForm.$invalid}" ng-disabled="createCampaignForm.$invalid" ng-click="publish()") 发布
+              .form-group(ng-if="campaignType === 'team'")
+                label.cp_form_label 选择小队
+                .form-control.cp_team_list.clearfix
+                  .cp_team(ng-repeat="team in teamList" ng-click="toggleSelectTeam(team)" ng-class="{'selected': team.selected}")
+                    i.fa.fa-fw(ng-class="{'fa-square-o': !team.selected, 'fa-check-square-o': team.selected}")
+                    span.cp_team_name(ng-bind="team.name")
+              .form-group
+                label.cp_form_label 活动名称
+                input.form-control(type="text" name="theme" placeholder="请填写活动名称" ng-model="formData.theme" required)
+              .form-group
+                label.cp_form_label 活动类型
+                select.form-control(name='campaignMold' ng-options="mold.name as mold.name for mold in molds" ng-model="formData.campaign_mold" required)
+              .form-group.time_group
+                label.cp_form_label 开始时间
+                .input-group.date#start_time
+                  input.form-control(type="text" ng-model="formData.start_time" name="endTime" placeholder="请选择活动开始时间" data-date-format="YYYY-MM-DD HH:mm" readonly required)
+                  .input-group-addon
+                    span.glyphicon.glyphicon-calendar
+              .form-group.time_group
+                label.cp_form_label 结束时间
+                .input-group.date.form_datetime#end_time
+                  input.form-control(type="text" ng-model="formData.end_time" name="endTime" placeholder="请选择活动结束时间" data-date-format="YYYY-MM-DD HH:mm" readonly required)
+                  .input-group-addon
+                    span.glyphicon.glyphicon-calendar
+              .form-group
+                label.cp_form_label 地点
+                .input-group
+                  input.form-control(type="text" name="location" ng-model="formData.location.name" placeholder="请填写活动地点" required)
+                  .input-group-addon(title="设置地图标记" ng-click="search()")
+                    span.glyphicon.glyphicon-map-marker
+              .form-group(ng-show="hasSearch")
+                map-search(ctrl="mapCtrl")
+              .form-group.time_group
+                label.cp_form_label 报名截止时间
+                .input-group.date.form_datetime#deadline
+                  input.form-control(type="text" ng-model="formData.deadline" name="deadline" placeholder="请选择报名截止时间" data-date-format="YYYY-MM-DD HH:mm" readonly)
+                  .input-group-addon
+                    span.glyphicon.glyphicon-calendar
+              .form-group
+                label.cp_form_label 报名人数上限
+                input.form-control(type="number" name="memberMax" ng-model="formData.member_max")
+              .form-group
+                label.cp_form_label 最少人数
+                input.form-control(type="number" name="memberMin" ng-model="formData.member_min")
+              .form-group
+                label.cp_form_label 简介
+                textarea.form-control(type="text" name="content" placeholder="请填写活动简介" ng-model="formData.content")
+              .form-group.clearfix
+                button.btn.pull-right(ng-class="{'btn-primary': createCampaignForm.$valid, 'btn-default': createCampaignForm.$invalid}" ng-disabled="createCampaignForm.$invalid" ng-click="publish()") 发布
