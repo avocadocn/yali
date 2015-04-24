@@ -4,7 +4,7 @@
       | 发活动
   section.content
     .row
-      .col-sm-6
+      .col-sm-offset-2.col-sm-8.col-lg-offset-3.col-lg-6
         .box.box-warning
           .box-header.with-border
             h3.box-title 发活动
@@ -61,4 +61,4 @@
                 label.cp_form_label 简介
                 textarea.cp_form_control(type="text" name="content" placeholder="请填写活动简介" ng-model="formData.content")
               .cp_form_group_no_flex.clearfix
-                button.btn.btn-default.btn-flat.pull-right(ng-disabled="createCampaignForm.$invalid" ng-click="publish()") 发布
+                button.btn.btn-flat.pull-right(ng-class="{'btn-primary': createCampaignForm.$valid, 'btn-default': createCampaignForm.$invalid}" ng-disabled="createCampaignForm.$invalid" ng-click="publish()") 发布
