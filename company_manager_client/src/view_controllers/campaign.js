@@ -310,6 +310,25 @@ define(['angular', 'moment', 'map/map'], function (angular, moment) {
         content: ''
       };
 
+      var clearFormData = function() {
+        $scope.formData = {
+          cid: [initData.company._id],
+          campaign_type: 1,
+          theme: '',
+          location: {
+            name: '',
+            coordinates: []
+          },
+          start_time: null,
+          end_time: null,
+          deadline: null,
+          campaign_mold: molds[0].name,
+          member_max: 0,
+          member_min: 0,
+          content: ''
+        };
+      };
+
       $scope.selectType = function(type) {
         switch (type) {
         case 'company':
@@ -376,12 +395,18 @@ define(['angular', 'moment', 'map/map'], function (angular, moment) {
         });
       };
 
+      // 发布相关
+      $scope.sending = false;
       $scope.publish = function() {
+        $scope.sending = true;
         campaignService.sponsor($scope.formData)
           .success(function() {
             alert('活动发布成功');
+            $scope.sending = false;
+            clearFormData();
           })
           .error(function(data) {
+            $scope.sending = false;
             alert(data.msg || '发布失败');
           });
       };

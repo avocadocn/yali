@@ -58,4 +58,6 @@
                 label.cp_form_label 简介
                 textarea.form-control(type="text" name="content" placeholder="请填写活动简介" ng-model="formData.content")
               .form-group.clearfix
-                button.btn.pull-right(ng-class="{'btn-primary': createCampaignForm.$valid, 'btn-default': createCampaignForm.$invalid}" ng-disabled="createCampaignForm.$invalid" ng-click="publish()") 发布
+                button.btn.pull-right(ng-class="{'btn-primary': createCampaignForm.$valid, 'btn-default': createCampaignForm.$invalid}" ng-disabled="createCampaignForm.$invalid || sending" ng-click="publish()")
+                  span(ng-if="!sending") 发布
+                  i.fa.fa-spinner.fa-pulse(ng-if="sending")
