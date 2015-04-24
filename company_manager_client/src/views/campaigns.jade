@@ -10,7 +10,7 @@
           .box-header.with-border
             h3.box-title 选择小队
           .box-body.clearfix.team-list
-            .team-card(ng-repeat="team in data.teams" ng-class="{'selected':currentTeamId===team._id}" ng-click="selectTeam(team._id)")
+            .team_card(ng-repeat="team in data.teams" ng-class="{'selected':currentTeamId===team._id}" ng-click="selectTeam(team._id)")
               .info-box
                 .info-box-icon
                   img(ng-src="{{team.logo}}/40/40")

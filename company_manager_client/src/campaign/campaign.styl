@@ -308,36 +308,38 @@
 .no_radius
   border-radius 0
 
+.modal-sm
+  width 500px
 
 .modal-dialog
   .box
     .box-body
       border-top none
       max-height 650px
-      overflow-y auto
-      .modal-container
+      padding 0
+      .modal_container
         width 100%
         float left
         clear left
         min-height 30px
         border-bottom 1px solid #f4f4f4
-        .campaign-label
-          margin 5px 15px
+        padding 10px 0
+        .campaign_label
+          margin 0 15px
           float left
           width 100px
-        .campaign-content
-          margin 5px 15px
+        .campaign_content
           float left
-          color #ccc
-        .campaign-team
+          color #B2B2B2
+        .campaign_team
           float left
-          .campaign-logo
+          .campaign_logo
             border-radius 5px
             height 60px
             width 60px
             margin-left 15px
             float left
-          .campaign-theme
+          .campaign_theme, .campaign_company
             margin-top 10px
             font-size 14px
             padding 0px 10px
@@ -345,40 +347,35 @@
             overflow hidden
             text-overflow ellipsis
             white-space nowrap
-          .campaign-company
-            font-size 14px
-            padding 0px 10px
-            width 90px
-            overflow hidden
-            text-overflow ellipsis
-            white-space nowrap
-            color #ccc
-        .campaign-member
+            line-height 1
+          .campaign_company
+            color #666
+        .campaign_member
           margin-left 20px
-          img
+          .member
             height 60px
             width 60px
-            margin-right 10px
-            margin-bottom 5px
-        .campaign-member-more
+            border-radius 5px
+            margin-left 10px
+            margin-top 5px
+        .campaign_member_more,.no_campaign_member
           text-align center
           font-size 14px
           color #00a65a
+        .campaign_member_more
           cursor pointer
-        .non-float
+        .non_float
           float none
-      .modal-container.modal-padding-bottom
-        padding-bottom 10px
-      .campaign-inroduce, .campaign-announce
+      .campaign_inroduce, .campaign_announce
         min-height 100px
         height auto
-        .campaign-intro-content, .campaign-announce-content
+        .campaign_intro_content, .campaign_announce_content
           position relative
           margin-left 130px
           width 300px
           color #ccc
           word-wrap break-word
           
-      .campaign-footer
+      .campaign_footer
         border-bottom 0
         min-height 50px

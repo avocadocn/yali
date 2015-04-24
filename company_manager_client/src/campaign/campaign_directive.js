@@ -561,6 +561,7 @@ define(['./campaign', 'echarts', 'alertify', 'moment', 'echarts/chart/bar', 'ech
           scope.getCampaign = function() {
             scope.modalInstance = $modal.open({
               templateUrl: '/company/manager/templates/campaign/editCampaign.html',
+              size:'sm',
               scope: scope
             });
             scope.close = function() {
@@ -570,7 +571,13 @@ define(['./campaign', 'echarts', 'alertify', 'moment', 'echarts/chart/bar', 'ech
               .success(function (data, status) {
                 scope.campaignOfTeams = true;
                 scope.campaign = data;
-                // console.log(data.campaign_type);
+                scope.campaign.members = [];
+                var units = scope.campaign.campaign_unit;
+                for(var i=units.length-1; i>=0; i--) {
+                  for(var j=units[i].member.length-1; j>=0; j--) {
+                    scope.campaign.members.push(units[i].member[j]);
+                  }
+                }
                 if(data.campaign_type === 1 || data.campaign_type > 5) {
                   scope.campaignOfTeams = true;
                 }
