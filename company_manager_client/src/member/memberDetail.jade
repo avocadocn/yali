@@ -1,35 +1,62 @@
-.modal-header
-  h3.modal-title  详情
-.modal-body
-  .info_detail
-    .form-group
-      span.col-sm-2.control-label 昵称
-      span.detail {{nowUser.nickname}}
-    .form-group
-      span.col-sm-2.control-label 真实姓名
-      span.detail {{nowUser.realname || '-'}}
-    .form-group
-      span.col-sm-2.control-label 邮箱
-      span.detail {{nowUser.username}}
-    .form-group
-      span.col-sm-2.control-label 部门
-      span.detail {{nowUser.department.name || '-'}}
-    .form-group
-      span.col-sm-2.control-label 参加小队
-      span.detail {{nowUser.team.length}}
-    .form-group
-      span.col-sm-2.control-label 参加活动
-      span.detail {{nowUser.campaignCount}}
-    .form-group
-      span.col-sm-2.control-label 活跃度
-      span {{nowUser.score.total}}
-    .form-group
-      span.col-sm-2.control-label 状态
-      span.detail {{nowUser.active? '正常' : nowUser.mail_active ? '屏蔽中' : '未激活'}}
-      
-    //- .tree.select_tree(ng-show="showDepartment")
-    //-   ul
-    //-     li(ng-include="'node.html'" ng-class="hasChild(node)")
-.modal-footer
-  //- button.btn.btn-primary(ng-click="save()") 保存
-  button.btn.btn-default(ng-click="close()") 关闭
+.box.box-success
+  .box-header.with-border
+    h3.box-title 成员详情
+    .box-tools.pull-right
+      .btn.btn-box-tool(ng-click="close()")
+        i.fa.fa-times
+  .box-body.clearfix
+    .info_detail.form-horizontal
+      .form-group
+        label.col-sm-2.control-label 昵称
+        .col-sm-10.detail
+          p.form-control-static {{nowUser.nickname}}
+      .form-group
+        label.col-sm-2.control-label  头像
+        .col-sm-10.detail
+          img.form-control-static.user_logo.img-circle(ng-src="{{nowUser.photo}}/40/40")
+      .form-group
+        label.col-sm-2.control-label 真实姓名
+        .col-sm-10.detail
+          p.form-control-static {{nowUser.realname || '-'}}
+      .form-group
+        label.col-sm-2.control-label 邮箱
+        .col-sm-10.detail
+          p.form-control-static {{nowUser.email}}
+      .form-group
+        label.col-sm-2.control-label 部门
+        .col-sm-10.detail
+          p.form-control-static {{nowUser.department.name || '-'}}
+      .form-group
+        label.col-sm-2.control-label 性别
+        .col-sm-10.detail
+          p.form-control-static {{nowUser.sex}}
+      .form-group
+        label.col-sm-2.control-label qq
+        .col-sm-10.detail
+          p.form-control-static {{nowUser.qq || '-'}}
+      .form-group
+        label.col-sm-2.control-label 手机号
+        .col-sm-10.detail
+          p.form-control-static {{nowUser.phone || '-'}}
+      .form-group
+        label.col-sm-2.control-label 简介
+        .col-sm-10.detail
+          p.form-control-static {{nowUser.introduce || '-'}}
+      .form-group
+        label.col-sm-2.control-label 参加小队
+        .col-sm-10.detail
+          .team(ng-repeat="team in nowUser.team" ng-if="team.gid!='0'")
+            img.team_logo(ng-src="{{team.logo}}/40/40" title="{{team.name}}")
+            .team_name {{team.name}}
+      .form-group
+        label.col-sm-2.control-label 参加活动
+        .col-sm-10.detail
+          p.form-control-static {{nowUser.campaignCount}}
+      .form-group
+        label.col-sm-2.control-label 活跃度
+        .col-sm-10.detail
+          p.form-control-static {{nowUser.score}}
+      .form-group
+        label.col-sm-2.control-label 状态
+        .col-sm-10.detail
+          p.form-control-static {{nowUser.active? '正常' : nowUser.mail_active ? '屏蔽中' : '未激活'}}

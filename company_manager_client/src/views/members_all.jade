@@ -42,7 +42,7 @@
               th.center 参加小队
               th.center 参加活动
               th.center 活跃度
-              //- td 查看详情
+              td.center 查看详情
               th.center 状态
               th.center 编辑
           tbody
@@ -55,18 +55,11 @@
               td.center {{member.team.length}}
               td.center {{member.campaignCount}}
               td.center {{member.score.total}}
-              //- td
-              //-   button 查看详情
+              td.center
+                button.btn.btn-link(member-detail now-user-id="member._id") 查看详情
               td.center
                 {{member.active? '正常' : member.mail_active ? '屏蔽中' : '未激活'}}
               td.center
-                i.fa.fa-edit(edit-member now-user="member")
-script(type="text/ng-template" id="editUserModal.html")
-  include ../member/editMember
-//- script(type="text/ng-template" id="node.html")
-//-     .self.inline
-//-       span(ng-click="selectNode(node)" ng-class="{'selected': node.selected}")
-//-         .inline &nbsp;{{node.name}}
-//-     ul(ng-if="!node.hideChild")
-//-       li(ng-repeat="node in node.department" ng-include="'node.html'" ng-class="hasChild(node)")
+                i.fa.fa-edit(member-edit now-user-id="member._id")
+
 

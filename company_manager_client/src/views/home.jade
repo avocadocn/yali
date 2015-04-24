@@ -53,7 +53,7 @@
               .users-list.clearfix(ng-if="latestUserList.length > 0")
                 li(ng-repeat="user in latestUserList")
                   img(ng-src="{{user.photo}}/64/64")
-                  a.users-list-name(href="#" ng-bind="user.nickname")
+                  a.users-list-name(member-detail now-user-id="user._id" ng-bind="user.nickname")
                   span.users-list-date(ng-bind-template="{{user.register_date | date:'yyyy-MM-dd'}}")
               p.description_text(ng-if="!latestUserList || latestUserList.length === 0" ng-cloak) 还没有成员
             .box-footer.text-center(ng-if="latestUserList.length > 0")

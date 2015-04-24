@@ -11,6 +11,14 @@ define(['./member'], function (member) {
        return $http.get(apiBaseUrl + '/users/list/' + id,{params:params});
       },
       /**
+       * 获取成员
+       * @param  {String} 成员id
+       * @return {HttpPromise}    
+       */
+      getMember: function (id) {
+       return $http.get(apiBaseUrl + '/users/' + id);
+      },
+      /**
        * 获取公司被举报的员工
        * @param  {String} id     公司id
        * @return {HttpPromise}    
@@ -76,8 +84,29 @@ define(['./member'], function (member) {
       },
       edit: function (uid,user) {
         return $http.put(apiBaseUrl + '/users/'+uid, user);
-      }
-
+      },
+      editLogo: function (id, fd, callback) {
+        $.ajax({
+          url: apiBaseUrl + '/users/' + id,
+          type: 'PUT',
+          data: fd,
+          processData: false,  // 告诉jQuery不要去处理发送的数据
+          contentType: false,  // 告诉jQuery不要去设置Content-Type请求头
+          headers: {
+            'x-access-token': $http.defaults.headers.common['x-access-token']
+          },
+          success: function (data, status) {
+            if (data.result === 1) {
+              callback();
+            } else {
+              callback(data.msg);
+            }
+          },
+          error: function (data, status) {
+            callback(data.msg || 'error');
+          }
+        });
+      },
     };
   }]);
 });
