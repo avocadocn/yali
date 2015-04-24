@@ -2,19 +2,21 @@
   section.content-header
     h1
       | 新建小队
-      small 请选择要增加的企业兴趣小队类型
+      //- small 请选择要增加的企业兴趣小队类型
     ol.breadcrumb
       li: a(ui-sref="manager.teamList") 小队管理
       li.active 新建小队
   section.content
-    form(name="newgroup_form")
-      .groups.clearfix
-        .group(ng-repeat='group in groups' ng-class="{'active':newTeam._id==group._id}" ng-click="changeType($index)")
-          .img_contain(class='group_'+'{{group._id}}' )
-          input.hidden(type='radio' name='group' id='{{group._id}}' value='{{group._id}}' ng-model='newTeam._id' required)
-          label(for='{{group._id}}') {{group.groupType}}
-      .input-group.team_name_group
-        span.input-group-addon 队名
-        input.form-control(type='text' name='name' ng-model='newTeam.teamName' ng-maxlength=20)
-        span.input-group-btn
-          button.btn.btn-primary.btn-flat(ng-disabled="newgroup_form.$invalid" ng-click="save()") 确定
+    .box.box-success.box-solid
+      .box-header.with-border 请选择要增加的企业兴趣小队类型
+      form(name="newgroup_form")
+        .groups.clearfix
+          .group(ng-repeat='group in groups' ng-class="{'active':newTeam._id==group._id}" ng-click="changeType($index)")
+            .img_contain(class='group_'+'{{group._id}}' )
+            input.hidden(type='radio' name='group' id='{{group._id}}' value='{{group._id}}' ng-model='newTeam._id' required)
+            label(for='{{group._id}}') {{group.groupType}}
+        .input-group.team_name_group
+          span.input-group-addon 队名
+          input.form-control(type='text' name='name' ng-model='newTeam.teamName' ng-maxlength=20)
+          span.input-group-btn
+            button.btn.btn-primary.btn-flat(ng-disabled="newgroup_form.$invalid" ng-click="save()") 确定
