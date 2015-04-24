@@ -93,7 +93,7 @@ define(['app'], function (app) {
         .state('manager.campaignsCanlendar', {
           url: '/campaignsCanlendar',
           templateUrl: templateUrl('/views/campaigns-canlendar.html'),
-          controller: 'campaign.campaignCtrl'
+          controller: 'campaign.campaignCalendarCtrl'
         })
         .state('manager.inviteMembers', {
           url: '/members/invite',
