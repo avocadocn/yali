@@ -37,3 +37,10 @@ centerWrap()
   align-items center
   -webkit-justify-content center
   justify-content center
+
+clearfix()
+  &:before, &:after
+    display table
+    content " "
+  &:after
+    clear both

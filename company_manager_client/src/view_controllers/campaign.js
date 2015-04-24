@@ -1,4 +1,4 @@
-define(['angular', 'moment', 'map/map'], function (angular, moment) {
+define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
   return angular.module('campaignCtrls', ['AMap']).controller('campaign.campaignCtrl', [
     '$scope', '$rootScope', 'storageService', 'teamService', 'campaignService', 'apiBaseUrl',
     function ($scope, $rootScope, storageService, teamService, campaignService, apiBaseUrl) {
@@ -394,6 +394,17 @@ define(['angular', 'moment', 'map/map'], function (angular, moment) {
           $scope.formData.location.coordinates = [lnglat.getLng(), lnglat.getLat()];
         });
       };
+
+      // 编辑器
+      var options = {
+        editor: document.getElementById('create_cp_page_pen_content'), // {DOM Element} [required]
+        textarea: '<textarea name="content" ng-model="formData.content"></textarea>', // fallback for old browsers
+        list: ['h5', 'p', 'insertorderedlist','insertunorderedlist', 'indent', 'outdent', 'bold', 'italic', 'underline'], // editor menu list
+        stay: false,
+        toolBarId: 'create_cp_page_pen_toolbar'
+      };
+
+      var editor = new Pen(options);
 
       // 发布相关
       $scope.sending = false;
