@@ -1,5 +1,5 @@
-define(['angular', 'moment'], function (angular, moment) {
-  return angular.module('campaignCtrls', []).controller('campaign.campaignCtrl', [
+define(['angular', 'moment', 'map/map'], function (angular, moment) {
+  return angular.module('campaignCtrls', ['AMap']).controller('campaign.campaignCtrl', [
     '$scope', '$rootScope', 'storageService', 'teamService', 'campaignService', 'apiBaseUrl',
     function ($scope, $rootScope, storageService, teamService, campaignService, apiBaseUrl) {
       var cid = $rootScope.company._id;
@@ -357,6 +357,18 @@ define(['angular', 'moment'], function (angular, moment) {
           $scope.formData.deadline = moment(dateUTC).format("YYYY-MM-DD HH:mm");
           $('#end_time').datetimepicker('setStartDate', dateUTC); //截至时间应小于结束时间
       });
+
+      // 地图
+      $scope.mapCtrl = {};
+
+      $scope.search = function() {
+        $scope.mapCtrl.search($scope.formData.location.name).then(function(res) {
+          console.log(res);
+        }, function(err) {
+          console.log(err);
+        });
+      }
+
 
       $scope.publish = function() {
         campaignService.sponsor($scope.formData)

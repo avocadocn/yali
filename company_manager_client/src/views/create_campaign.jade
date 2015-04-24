@@ -42,6 +42,9 @@
                 .cp_form_group
                   label.cp_form_label 地点
                   input.cp_form_control(type="text" name="location" ng-model="formData.location.name" placeholder="请填写活动地点" required)
+                  i.fa.fa-fw.fa-map-marker.cp_marker_icon(title="设置地图标记" ng-click="search()")
+                .cp_form_group
+                  map-search(ctrl="mapCtrl")
                 .cp_form_group.time_group
                   label.cp_form_label 报名截止时间
                   .cp_form_control
