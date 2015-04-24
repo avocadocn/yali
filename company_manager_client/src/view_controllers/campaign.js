@@ -200,7 +200,6 @@ define(['angular', 'moment'], function (angular, moment) {
         $scope.selectedType = 2;
         getCampaigns();
         var events_source = apiBaseUrl + '/campaigns?result=calendar&limit=200&attrs=closeShow&cid='+ cid + '&tid=' + tid;
-        initCalendar(events_source);
       };
 
       $scope.recoverDate = function() {
