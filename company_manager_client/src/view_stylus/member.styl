@@ -15,7 +15,41 @@
           font-size 16px
           color #3c8dbc
           cursor pointer
+.member_import_page
+  form#importForm
+    margin-bottom 20px
+    .form-group
+      input[type=file]
+        position relative
+        width 80%
+        &::-webkit-file-upload-button
+          visibility hidden
+        &:before
+          content '选择文件'
+          position absolute
+          height 33px
+          width 70px
+          left 0
+          top 0
+          line-height 33px
+          padding 0 5px
+          border-right 1px solid #CCC
+          color black
+      .btn
+        margin-left 10px
+  .member_list
+    clear both
+    padding 0 15px
+    border-top 1px solid #ccc
+  .show_img
+    max-width 100%
+  .table_container
+    max-height 200px
+    overflow-y scroll
+  .operator
+    padding 10px
 .member_invite_page
+
   .content
     padding-top 50px
   .qrCodeContainer
