@@ -177,37 +177,44 @@ define(['angular', 'moment'], function (angular, moment) {
           getCampaigns();
         }
       })
-      $scope.selectType = function(type) {
-        $scope.selectedType = type;
-        if(type!=2) {
-          $scope.currentTeamId = '';
-          getCampaigns();
-        }
-        switch(type) {
-          case 1:
-            var events_source = apiBaseUrl + '/campaigns?result=calendar&attrs=allCampaign&attrs=closeShow&limit=200&cid='+ cid;
-            initCalendar(events_source);
-            break;
-          case 3:
-            var events_source = apiBaseUrl + '/campaigns?result=calendar&attrs=closeShow&limit=200&cid='+ cid;
-            initCalendar(events_source);
-            break;
-        }
-      };
+      // $scope.selectType = function(type) {
+      //   $scope.selectedType = type;
+      //   if(type!=2) {
+      //     $scope.currentTeamId = '';
+      //     getCampaigns();
+      //   }
+      //   switch(type) {
+      //     case 1:
+      //       var events_source = apiBaseUrl + '/campaigns?result=calendar&attrs=allCampaign&attrs=closeShow&limit=200&cid='+ cid;
+      //       initCalendar(events_source);
+      //       break;
+      //     case 3:
+      //       var events_source = apiBaseUrl + '/campaigns?result=calendar&attrs=closeShow&limit=200&cid='+ cid;
+      //       initCalendar(events_source);
+      //       break;
+      //   }
+      // };
 
       $scope.selectTeam = function(tid) {
         $scope.currentTeamId = tid;
         $scope.selectedType = 2;
         getCampaigns();
-        var events_source = apiBaseUrl + '/campaigns?result=calendar&limit=200&attrs=closeShow&cid='+ cid + '&tid=' + tid;
+        // var events_source = apiBaseUrl + '/campaigns?result=calendar&limit=200&attrs=closeShow&cid='+ cid + '&tid=' + tid;
       };
 
-      $scope.recoverDate = function() {
-        $scope.nowDay = null;
-        $scope.startTime = null;
-        $scope.endTime = null;
+      $scope.quitTeam = function() {
+        $scope.currentTeamId = null;
+        $scope.selectedType = 1;
         getCampaigns();
-      };
+      }
+
+      // $scope.recoverDate = function() {
+      //   $scope.nowDay = null;
+      //   $scope.startTime = null;
+      //   $scope.endTime = null;
+      //   getCampaigns();
+      // };
+
       $scope.selectNumOfPage = function() {
         $scope.nowDay = null;
         $scope.startTime = null;
