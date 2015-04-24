@@ -360,15 +360,21 @@ define(['angular', 'moment', 'map/map'], function (angular, moment) {
 
       // 地图
       $scope.mapCtrl = {};
+      $scope.hasSearch = false;
 
       $scope.search = function() {
         $scope.mapCtrl.search($scope.formData.location.name).then(function(res) {
-          console.log(res);
+          $scope.hasSearch = true;
+          var lnglat = res.location;
+          $scope.formData.location.coordinates = [lnglat.getLng(), lnglat.getLat()];
         }, function(err) {
           console.log(err);
         });
-      }
-
+        $scope.mapCtrl.onRemark(function(e) {
+          var lnglat = e.lnglat;
+          $scope.formData.location.coordinates = [lnglat.getLng(), lnglat.getLat()];
+        });
+      };
 
       $scope.publish = function() {
         campaignService.sponsor($scope.formData)

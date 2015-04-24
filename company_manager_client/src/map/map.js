@@ -107,6 +107,7 @@ define(['angular'], function(angular) {
     var link = function(scope, ele, attrs, ctrl) {
       var controller = {};
       var map;
+      var remarkCallback;
 
       /**
        * 搜索城市，在页面元素中显示，并且在回调中返回搜索结果
@@ -115,20 +116,16 @@ define(['angular'], function(angular) {
        */
       controller.search = function(locationName) {
         var deferred = $q.defer();
-        if (!map) {
-          mapSevice.work().then(function(AMap) {
-            var mapEle = ele[0];
-            if (scope.width) {
-              mapEle.style.width = scope.width;
-            }
-            if (scope.height) {
-              mapEle.style.height = scope.height;
-            }
-            map = new AMap.Map(mapEle);
-          }, deferred.reject);
-        }
 
         mapSevice.work().then(function(AMap) {
+          if (!map) {
+            var mapEle = ele[0];
+            map = new AMap.Map(mapEle, {
+              resizeEnable: true
+            });
+            map.setFitView();
+          }
+
           AMap.service(["AMap.PlaceSearch"], function() {
             var placeSearch;
             mapSevice.getLocalCity().then(function(res) {
@@ -139,28 +136,44 @@ define(['angular'], function(angular) {
               placeSearch = new AMap.PlaceSearch();
               doSearch(placeSearch);
             });
-
-            function doSearch(placeSearch) {
-              placeSearch.search(locationName, function(status, result) {
-                switch(status) {
-                case 'complete':
-                  deferred.resolve(result);
-                  break;
-                case 'error':
-                  deferred.reject(result);
-                  break;
-                case 'no_data':
-                  deferred.resolve(null);
-                  break;
-                default:
-                  deferred.resolve(null);
-                }
-              });
-            }
           });
+
+          function doSearch(placeSearch) {
+            placeSearch.search(locationName, function(status, result) {
+              switch(status) {
+              case 'complete':
+                var point = result.poiList.pois[0].location;
+                var lnglat = new AMap.LngLat(point.getLng(), point.getLat());
+                map.setCenter(lnglat);
+
+                var marker = new AMap.Marker({
+                  map: map,
+                  position: lnglat,
+                  draggable: true
+                });
+                AMap.event.addListener(marker, 'dragend', remarkCallback);
+
+                map.setFitView();
+                deferred.resolve(result.poiList.pois[0]);
+                break;
+              case 'error':
+                deferred.reject(result);
+                break;
+              case 'no_data':
+                deferred.resolve(null);
+                break;
+              default:
+                deferred.resolve(null);
+              }
+            });
+          }
         }, deferred.reject);
 
         return deferred.promise;
+      };
+
+      controller.onRemark = function(callback) {
+        remarkCallback = callback;
       };
 
       scope.$watch('ctrl', function(ctrl) {
@@ -180,9 +193,7 @@ define(['angular'], function(angular) {
       replace: true,
       template: '<div class="dl_map"></div>',
       scope: {
-        ctrl: '=',
-        width: '@',
-        height: '@'
+        ctrl: '='
       },
       link: link
     };
