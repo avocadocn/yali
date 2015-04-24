@@ -336,11 +336,9 @@ define(['angular', 'moment'], function (angular, moment) {
           });
           if ($scope.formData.tid.length === 0) {
             $scope.createCampaignForm.$setValidity('tid', false);
-            console.log('set false in refresh');
           }
           else {
             $scope.createCampaignForm.$setValidity('tid', true);
-            console.log('set true in refresh');
           }
         }
       };
@@ -376,7 +374,6 @@ define(['angular', 'moment'], function (angular, moment) {
           $scope.campaignType = 'company';
           $scope.formData.campaign_type = 1;
           $scope.createCampaignForm.$setValidity('tid', true);
-          console.log('set true');
           delete $scope.formData.tid;
           // todo
           break;
