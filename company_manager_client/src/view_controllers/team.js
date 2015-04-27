@@ -261,7 +261,6 @@ define(['angular'], function (angular) {
           var fd = new FormData();
           var blob = imageService.dataURItoBlob(dataURI);
           fd.append('photo', blob);
-          console.log(dataURI,blob);
           teamService.uploadFamilyPhotos($scope.team._id, fd, function (err) {
             if (err) {
               alert(err);

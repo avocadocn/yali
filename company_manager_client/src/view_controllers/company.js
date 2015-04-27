@@ -68,7 +68,42 @@ define(['angular', 'jQuery', 'cropit'], function (angular, $) {
         });
 
       };
+      var cropperFamily = $('#image_cropper_family').cropit({
+        onFileChange: function () {
+          $scope.familyIsUploading = true;
+          $scope.$digest();
+        },
+        imageBackground: true
+      });
 
+      $scope.familyIsUploading = false;
+      var cropitImageInputFamily = $('#cropit_image_input_family');
+      $scope.selectFamily = function () {
+        cropitImageInputFamily.click();
+      };
+
+      $scope.editFamily = function () {
+        var dataURI = cropperFamily.cropit('export', {
+          type: 'image/jpeg',
+          quality: 1
+        });
+        if (!dataURI || dataURI === '') {
+          return;
+        }
+        var fd = new FormData();
+        var blob = imageService.dataURItoBlob(dataURI);
+        fd.append('cover', blob);
+        companyService.editCover(company._id, fd, function (err) {
+          if (err) {
+            alert(err);
+          } else {
+            $scope.familyIsUploading = false;
+            alert('上传成功');
+            window.location.reload();
+          }
+        });
+
+      };
     }
   ])
   .controller('company.homeCtrl', ['$scope', '$rootScope', 'companyService', 'campaignService', 'initData',
