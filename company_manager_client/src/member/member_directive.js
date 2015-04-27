@@ -160,6 +160,7 @@ define(['./member', 'jQuery', 'cropit'], function (member, $) {
           scope.getMember = function() {
             memberService.getMember(scope.nowUserId).success(function (data) {
               scope.nowUser = data;
+              console.log(data);
             })
             .error(function (data) {
               alert(data.msg);
@@ -173,6 +174,10 @@ define(['./member', 'jQuery', 'cropit'], function (member, $) {
             }
           }
           ele.on('click', scope.getMember);
+          scope.showAll = false;
+          scope.showAllMember = function() {
+            scope.showAll = true;
+          }
         }
       }
     }])
