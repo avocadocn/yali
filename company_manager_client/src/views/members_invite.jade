@@ -1,20 +1,19 @@
 .member_invite_page
   section.content
     .row
-      .col-sm-offset-2.col-sm-8.col-lg-offset-3.col-lg-6.qrCodeContainer
+      .qrCodeContainer
         #inviteKeyQrCode
         a#saveInviteKeyQrCode 下载邀请专用二维码
     .row
-      .col-sm-offset-2.col-sm-8.col-lg-offset-3.col-lg-6.inviteContainer
+      .inviteContainer
         .row
-          .col-sm-offset-2.col-sm-8.col-lg-offset-2.col-lg-6
-            span.invite_method 邀请方式
-            hr
-            form.form-inline
-              span.tip(for="email") 1.输入邮箱
-              .form-group
-                input.form-control#email(type="email" name="email" ng-model="email" required)
-                button.btn.btn_invite(ng-click="invite()") 发送邀请信
-            p.invite_link 2.邀请链接:
-            p.text-primary: a(ng-href="company.inviteUrl") {{company.inviteUrl}}
-            p.invite_link 3.扫描上方二维码
+          span.invite_method 邀请方式
+          hr
+          form.form-inline
+            span.tip(for="email") 1.输入邮箱
+            .form-group
+              input.form-control#email(type="email" name="email" ng-model="email" required)
+              button.btn.btn_invite(ng-click="invite()") 发送邀请信
+          p.invite_link 2.邀请链接:
+          p.text-primary: a(ng-href="company.inviteUrl") {{company.inviteUrl}}
+          p.invite_link 3.扫描上方二维码
