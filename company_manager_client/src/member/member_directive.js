@@ -160,7 +160,6 @@ define(['./member', 'jQuery', 'cropit'], function (member, $) {
           scope.getMember = function() {
             memberService.getMember(scope.nowUserId).success(function (data) {
               scope.nowUser = data;
-              console.log(data);
             })
             .error(function (data) {
               alert(data.msg);
