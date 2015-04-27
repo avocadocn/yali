@@ -18,7 +18,7 @@
                     span.cp_team_name(ng-bind="team.name")
               .form-group
                 label.cp_form_label 活动名称
-                input.form-control(type="text" name="theme" placeholder="请填写活动名称" ng-model="formData.theme" required)
+                input.form-control(type="text" name="theme" placeholder="请填写活动名称" ng-model="formData.theme" maxlength=20 required)
               .form-group
                 label.cp_form_label 活动类型
                 select.form-control(name='campaignMold' ng-options="mold.name as mold.name for mold in molds" ng-model="formData.campaign_mold" required)
