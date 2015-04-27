@@ -1,62 +1,54 @@
-.box.box-success
-  .box-header.with-border
-    h3.box-title 成员详情
+.box.box-warning
+  .box-header.with-border(ng-style="{'background-image': 'url(' + nowUser.photo + '/256/256)'}")
+    h2.box-title 用户详情
     .box-tools.pull-right
       .btn.btn-box-tool(ng-click="close()")
         i.fa.fa-times
+    .row
+      .info_user
+        img.user_logo.img-circle(ng-src="{{nowUser.photo}}/80/80")
+      .user_name {{nowUser.nickname}}
   .box-body.clearfix
-    .info_detail.form-horizontal
-      .form-group
-        label.col-sm-2.control-label 昵称
-        .col-sm-10.detail
-          p.form-control-static {{nowUser.nickname}}
-      .form-group
-        label.col-sm-2.control-label  头像
-        .col-sm-10.detail
-          img.form-control-static.user_logo.img-circle(ng-src="{{nowUser.photo}}/40/40")
-      .form-group
-        label.col-sm-2.control-label 真实姓名
-        .col-sm-10.detail
-          p.form-control-static {{nowUser.realname || '-'}}
-      .form-group
-        label.col-sm-2.control-label 邮箱
-        .col-sm-10.detail
-          p.form-control-static {{nowUser.email}}
-      .form-group
-        label.col-sm-2.control-label 部门
-        .col-sm-10.detail
-          p.form-control-static {{nowUser.department.name || '-'}}
-      .form-group
-        label.col-sm-2.control-label 性别
-        .col-sm-10.detail
-          p.form-control-static {{nowUser.sex}}
-      .form-group
-        label.col-sm-2.control-label qq
-        .col-sm-10.detail
-          p.form-control-static {{nowUser.qq || '-'}}
-      .form-group
-        label.col-sm-2.control-label 手机号
-        .col-sm-10.detail
-          p.form-control-static {{nowUser.phone || '-'}}
-      .form-group
-        label.col-sm-2.control-label 简介
-        .col-sm-10.detail
-          p.form-control-static {{nowUser.introduce || '-'}}
-      .form-group
-        label.col-sm-2.control-label 参加小队
-        .col-sm-10.detail
-          .team(ng-repeat="team in nowUser.team" ng-if="team.gid!='0'")
-            img.team_logo(ng-src="{{team.logo}}/40/40" title="{{team.name}}")
-            .team_name {{team.name}}
-      .form-group
-        label.col-sm-2.control-label 参加活动
-        .col-sm-10.detail
-          p.form-control-static {{nowUser.campaignCount}}
-      .form-group
-        label.col-sm-2.control-label 活跃度
-        .col-sm-10.detail
-          p.form-control-static {{nowUser.score}}
-      .form-group
-        label.col-sm-2.control-label 状态
-        .col-sm-10.detail
-          p.form-control-static {{nowUser.active? '正常' : nowUser.mail_active ? '屏蔽中' : '未激活'}}
+    .info.form-horizontal
+      .info_header 基本信息
+      .info-border
+      .info_container
+        .info_label 昵称
+        .info_content {{nowUser.nickname}}
+      .info_container
+        .info_label 真实姓名
+        .info_content {{nowUser.realname || '-'}}
+      .info_container
+        .info_label 手机号
+        .info_content {{nowUser.phone || '-'}}
+      .info_container
+        .info_label 邮箱
+        .info_content {{nowUser.email || '-'}}
+      .info_container
+        .info_label QQ
+        .info_content {{nowUser.qq || '-'}}
+      .info_container
+        .info_label 部门
+        .info_content {{nowUser.department.name || '-'}}
+      .info_container
+        .info_label 性别
+        .info_content {{nowUser.sex}}
+      .info_container.info_inroduce
+        .info_label 简介
+        p.info_intro_content {{nowUser.introduce || '-'}}
+      .info_container
+        .info_label 参加活动
+        .info_content {{nowUser.campaignCount}}
+      .info_container
+        .info_label 活跃度
+        .info_content {{nowUser.score}}
+      .info_container
+        .info_label 状态
+        .info_content {{nowUser.active? '正常' : nowUser.mail_active ? '屏蔽中' : '未激活'}}
+      .info_container
+        .info_label.non_float 参加小队
+        .team(ng-repeat="team in nowUser.team" ng-if="team.gid!='0' && ($index<6 || showAll)")
+          img.team_logo(ng-src="{{team.logo}}/40/40" title="{{team.name}}")
+          .team_name {{team.name}}
+        .team_more(ng-if="nowUser.team.length > 6 && !showAll" ng-click="showAllMember()") 查看更多成员
+        .no_team(ng-if="!nowUser.team.length") 无小队加入

@@ -942,17 +942,26 @@
   padding: 8px 15px;
   font-size: 14px;
 }
-.signup_row .signup_block .dl_sm_group .input_right.select_right .select_box {
+.signup_row .signup_block .dl_sm_group .input_right.select_right .select_box,
+.signup_row .signup_block .dl_sm_group .select_right_2 .select_box {
   width: 90px;
   float: left;
   margin-right: 10px;
 }
-.signup_row .signup_block .dl_sm_group .input_right.select_right .select_box select {
+.signup_row .signup_block .dl_sm_group .input_right.select_right .select_box select,
+.signup_row .signup_block .dl_sm_group .select_right_2 .select_box select {
   width: 90px;
   outline: 0;
 }
-.signup_row .signup_block .dl_sm_group .input_right.select_right .select_box[last_child] {
+.signup_row .signup_block .dl_sm_group .input_right.select_right .select_box[last_child],
+.signup_row .signup_block .dl_sm_group .select_right_2 .select_box[last_child] {
   margin-right: 0;
+}
+.signup_row .signup_block .dl_sm_group .select_right_2 .select_box {
+  width: 140px;
+}
+.signup_row .signup_block .dl_sm_group .select_right_2 .select_box select {
+  width: 140px;
 }
 .signup_row .signup_block .dl_sm_group .service_tip {
   margin-left: 15px;
@@ -7955,6 +7964,7 @@ input.ng-invalid.ng-dirty {
   margin-top: 10px;
 }
 .teampage .member_card .header {
+  background-color: #fff;
   height: 30px;
   padding: 8px 10px;
 }
@@ -10090,6 +10100,9 @@ Timeline UI Base
 }
 .user_page .dl_container .side .infobox .info .info_right .score {
   color: #ccc;
+}
+.user_page .dl_container .side .infobox .info .info_right .info_row {
+  margin-top: 5px;
 }
 .user_page .dl_container .side .infobox .info .info_right .info_row a {
   color: #999;

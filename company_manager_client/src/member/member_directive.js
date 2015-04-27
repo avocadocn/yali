@@ -173,6 +173,10 @@ define(['./member', 'jQuery', 'cropit'], function (member, $) {
             }
           }
           ele.on('click', scope.getMember);
+          scope.showAll = false;
+          scope.showAllMember = function() {
+            scope.showAll = true;
+          }
         }
       }
     }])

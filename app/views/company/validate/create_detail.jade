@@ -23,6 +23,15 @@
           .input_right
             input#username.dl-form-control(type="text" name="username" ng-model="detail.username" placeholder="公司登录时的账号" ng-blur="detail.usernameCheck()" ng-minlength=4 tooltip-placement="right" tooltip="{{createForm.username.$invalid && createForm.username.$dirty ? '请使用4-20位英文和数字组合及“_”' : ''}}" required)
             span.dl_tip(ng-if="!detail.check_username") {{detail.check_username_value}}
+      .form-group.dl_sm_group
+        .dl_row
+          .label_left
+            label.control-label(for="industry") *行业：
+          .input_right.select_right_2
+            .select_box
+              select.dl-form-control(type="text" ng-options="industry.name for industry in industries" ng-model="parent_industry" ng-change="changeIndustry()")
+            .select_box(last_child)
+              select.dl-form-control(type="text" ng-options="industry.name for industry in parent_industry.child_industry" ng-model="child_industry")
       .form-group.dl_sm_group(ng-class="{'has-error':createForm.password.$invalid && createForm.password.$dirty}")
         .dl_row
           .label_left

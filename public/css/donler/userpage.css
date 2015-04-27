@@ -1038,6 +1038,9 @@
 .user_page .dl_container .side .infobox .info .info_right .score {
   color: #ccc;
 }
+.user_page .dl_container .side .infobox .info .info_right .info_row {
+  margin-top: 5px;
+}
 .user_page .dl_container .side .infobox .info .info_right .info_row a {
   color: #999;
 }

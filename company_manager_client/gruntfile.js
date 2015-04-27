@@ -62,8 +62,21 @@ module.exports = function(grunt) {
             expand: true,
             flatten: true,
             filter: 'isFile',
-            src: ['bower-lib/bootstrap/dist/fonts/**', 'bower-lib/font-awesome/fonts/**'],
+            src: [
+              'bower-lib/bootstrap/dist/fonts/**',
+              'bower-lib/font-awesome/fonts/**'
+            ],
             dest: '../public/company_client/fonts/'
+          },
+          {
+            expand: true,
+            flatten: true,
+            filter: 'isFile',
+            src: [
+              'bower-lib/pen/src/font/**'
+            ],
+            // pen也太特殊了吧。。。
+            dest: '../public/company_client/css/font/'
           },
           {
             expand: true,

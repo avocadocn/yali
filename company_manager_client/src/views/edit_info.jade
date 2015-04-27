@@ -8,7 +8,7 @@
         .row
           .col-sm-6.col-sm-offset-3.edit_logo
             .cropper#image_cropper
-              .cropit-image-preview-container.img-circle(ng-style="{'background-image': 'url(' + company.logo + '/256/256)'}")
+              .cropit-image-preview-container(ng-style="{'background-image': 'url(' + company.logo + '/256/256)'}")
                 .cropit-image-preview
               .operator_slider(ng-show="isUploading")
                 span.glyphicon.glyphicon-picture.icon_small

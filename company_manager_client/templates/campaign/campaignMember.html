@@ -1,1 +1,1 @@
-<img ng-repeat="member in members" ng-src="{{member.photo}}/60/60" ng-if="$index&lt;8 || showAll" class="member"/><div ng-if="members.length &gt; 8" ng-click="showAllMember()" class="campaign_member_more">查看更多成员</div>
+<img ng-repeat="member in members" ng-src="{{member.photo}}/60/60" ng-if="$index&lt;6 || showAll" class="member"/><div ng-if="members.length &gt; 6 &amp;&amp; !showAll" ng-click="showAllMember()" class="campaign_member_more">查看更多成员</div>

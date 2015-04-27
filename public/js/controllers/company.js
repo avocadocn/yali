@@ -44,7 +44,9 @@ companyApp.controller('DetailController', ['$http','$scope','$rootScope', functi
         data:{
           official_name : _this.official_name,
           username : _this.username,
-          password : _this.password
+          password : _this.password,
+          child_industry: $scope.child_industry,
+          parent_industry: {'_id':$scope.parent_industry._id, 'name':$scope.parent_industry.name}
         }
       }).success(function(data, status) {
         window.location.href = '#/groupSelect';
@@ -57,6 +59,16 @@ companyApp.controller('DetailController', ['$http','$scope','$rootScope', functi
     catch(e){
       console.log(e);
     }
+  };
+
+  $http.get('/industries').success(function(data, status) {
+    $scope.industries = data;
+    $scope.parent_industry = data[0];
+    $scope.child_industry = data[0].child_industry[0];
+  });
+
+  $scope.changeIndustry = function() {
+    $scope.child_industry = $scope.parent_industry.child_industry[0];
   };
 
   var check_name = false;

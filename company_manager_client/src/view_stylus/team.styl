@@ -18,6 +18,9 @@
       width 400px
       font-size 16px
       margin 20px auto
+      padding 10px 0px 10px
+    .box-success
+      border-top-color #94cd3e
   .box
     padding-bottom 10px
   .groups
@@ -38,8 +41,8 @@
         background-image url('/img/icons/groups_new.png')
         background-repeat no-repeat
         background-size 480px 1200px
-        border-radius 50%
-        border 1px solid #ccc
+        // border-radius 50%
+        // border 1px solid #ccc
       for i in 0..16
         .group_{i+1}
           background-position i%6 * -80px +4px floor(i/6) * -80px  + 4px
@@ -47,9 +50,9 @@
           background-position -312px -158px
       &.active
         color #94cd3e
-        .img_contain
-          border-color #94cd3e
-          box-shadow 0 1px 1px rgba(0,0,0,0.1)
+        // .img_contain
+        //   border-color #94cd3e
+        //   box-shadow 0 1px 1px rgba(0,0,0,0.1)
   .team_name_group
     margin 10px auto
     width 400px
@@ -57,9 +60,12 @@
     .team_name
       font-size 14px
     .team_input
-      border-color #ccc
+      border-color #dcdcdc !important
+      border-radius 4px !important
+      margin-top 8px
+      background-color #f7f8fa
     .team_button
-      margin-top 5px
+      margin-top 8px
       padding 2px 16px
       background-color #94cd3e
       color white
