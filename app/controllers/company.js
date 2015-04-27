@@ -828,7 +828,13 @@ exports.createDetail = function(req, res) {
       company.password = req.body.password;
       company.status.active = true;
       company.status.mail_active = true;
-
+      company.info.industry = {
+        child_industry: {
+          _id: req.body.child_industry._id,
+          name: req.body.child_industry.name
+        },
+        parent_industry: req.body.parent_industry
+      };
       company.save(function(err) {
         if (err) {
           res.send({

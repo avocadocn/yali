@@ -14,6 +14,11 @@
       input.form-control#username(type="text" name="username" ng-model="detail.username" placeholder="公司登录时的账号" ng-blur="detail.usernameCheck()" ng-minlength=4 tooltip-placement="right" tooltip="{{createForm.username.$invalid && createForm.username.$dirty ? '请使用4-20位英文和数字组合及“_”' : ''}}" required)
       p(ng-if="!detail.check_username") {{detail.check_username_value}}
     .form-group
+      label(for="industry") *行业：
+      select.form-control(type="text" ng-options="industry.name for industry in industries" ng-model="parent_industry" ng-change="changeIndustry()")
+    .form-group
+      select.form-control(type="text" ng-options="industry.name for industry in parent_industry.child_industry" ng-model="child_industry")
+    .form-group
       label(for="password") *密码：
       input.form-control#password(type="password" name="password" ng-model="detail.password" ng-minlength=6  tooltip-placement="right" tooltip="{{createForm.password.$invalid && createForm.password.$dirty ? '密码不得少于6位' : ''}}" required)
     .form-group

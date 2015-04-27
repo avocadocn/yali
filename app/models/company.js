@@ -39,6 +39,12 @@ var _device = new Schema({
     }
 });
 
+//行业
+var industry = {
+    _id: Schema.Types.ObjectId,
+    name: String
+};
+
 /**
  * Company Schema
  */
@@ -97,6 +103,11 @@ var CompanySchema = new Schema({
         logo:{
             type:String,
             default: '/img/icons/default_company_logo.png'
+        },
+
+        industry: {
+            child_industry: industry, //子行业(level2)
+            parent_industry: industry //父行业(lelel1)
         },
 
         membernumber: {
