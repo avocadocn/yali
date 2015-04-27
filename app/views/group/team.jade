@@ -27,8 +27,8 @@ block contentExt
                   p.error(ng-if="infoForm.brief.$invalid" ng-cloak) 小队简介不能超过140个字。
               .operator(ng-class="{'one_button': is_one_button===true}")
                 button.op_button.button_blue(ng-if="allow.sponsorCampaign" data-toggle="modal" data-target="#sponsorCampaignModel" ng-cloak) 发起活动
-                a.op_button.button_red(ng-if="allow.sponsorProvoke" ng-href="/users/searchOpponents#/sameCity/{{teamId}}" ng-cloak) 找对手
-                button.op_button.button_red(ng-if="allow.dongIt" data-toggle="modal" data-target="#sponsorProvokeModel" ng-cloak) 发起挑战
+                //- a.op_button.button_red(ng-if="allow.sponsorProvoke" ng-href="/users/searchOpponents#/sameCity/{{teamId}}" ng-cloak) 找对手
+                //- button.op_button.button_red(ng-if="allow.dongIt" data-toggle="modal" data-target="#sponsorProvokeModel" ng-cloak) 发起挑战
                 a.op_button.button_blue(ng-if="allow.publishTeamMessage" ng-href="/message/home/{{team._id}}#/send" ng-cloak) 发站内信
                 button.op_button.button_gray(ng-if="allow.quitTeam" ng-click="quitTeam()" ng-cloak) 退出小队
                 button.op_button.button_blue(ng-if="allow.joinTeam" ng-click="joinTeam()" ng-cloak) 加入小队
@@ -40,13 +40,13 @@ block contentExt
                 h3.title 队员
                 span.count(ng-click="openMemberModal()" ng-cloak title="查看全部队员") {{team.memberCount}}
                   i.fa.fa-angle-right
-              .members(bs-popover ng-if="allow.belongToCompany")
+              .members(bs-popover ng-if="allow.belongToCompany" ng-cloak)
                 .leader_box(ng-if="team.leaders.length > 0")
                   img.member(ng-repeat="leader in team.leaders" ng-src="{{leader.photo}}/50/50" ng-Mouseenter="showUserCard(leader._id, leader._id + 'member_card')" id="pop{{leader._id}}member_card" rel="popover")
                 .member_box
                   img.member(ng-repeat="member in team.members" ng-src="{{member.photo}}/50/50" ng-Mouseenter="showUserCard(member._id, member._id + 'member_card')" id="pop{{member._id}}member_card" rel="popover")
-              .members(ng-if="!allow.belongToCompany")
-                .leader_box(ng-if="team.leaders.length > 0")
+              .members(ng-if="!allow.belongToCompany" ng-cloak)
+                .leader_box(ng-if="team.leaders.length > 0" ng-cloak)
                   img.member(ng-repeat="leader in team.leaders" ng-src="{{leader.photo}}/50/50")
                 .member_box
                   img.member(ng-repeat="member in team.members" ng-src="{{member.photo}}/50/50")
