@@ -25,32 +25,30 @@
         .box.box-primary
           .box-header
             h3.box-title 活动
+            .date_range_select
+              .date_range_start
+                .input-group.date#startTime
+                  span.input-group-addon.date_range_label 开始
+                  input.date_form_control(type="text" ng-model="start_time" name="startTime" placeholder="开始时间" data-date-format="YYYY-MM-DD" readonly required)
+                  span.input-group-addon.date_range_label
+                    span.glyphicon.glyphicon-calendar
+              .date_range_end
+                .input-group.date#endTime
+                  span.input-group-addon.date_range_label 结束
+                  input.date_form_control(type="text" ng-model="end_time" name="endTime" placeholder="结束时间" data-date-format="YYYY-MM-DD" readonly required)
+                  span.input-group-addon.date_range_label
+                    span.glyphicon.glyphicon-calendar
+              .search_time_button
+                button.btn.btn-sm.bg-olive(ng-click="searchCampaignByTime()") 查询
+                button.btn.btn-sm.bg-maroon(ng-click="quitSearchCampaignByTime()") 清除
+            .num_of_page
+              select.form-control.input-sm(ng-model="number" ng-options="number.num for number in numbers" ng-change="selectNumOfPage()")
           .box-body
             .table-content
-              .row
-                .col-xs-12
-                  .date-range-select
-                    .date-range-start
-                      .input-group.date#startTime
-                        span.input-group-addon.date-range-label 开始
-                        input.date-form-control(type="text" ng-model="start_time" name="startTime" placeholder="开始时间" data-date-format="YYYY-MM-DD" readonly required)
-                        span.input-group-addon.date-range-label
-                          span.glyphicon.glyphicon-calendar
-                    .date-range-end
-                      .input-group.date#endTime
-                        span.input-group-addon.date-range-label 结束
-                        input.date-form-control(type="text" ng-model="end_time" name="endTime" placeholder="结束时间" data-date-format="YYYY-MM-DD" readonly required)
-                        span.input-group-addon.date-range-label
-                          span.glyphicon.glyphicon-calendar
-                    .search-time-button
-                      button.btn.bg-olive(ng-click="searchCampaignByTime()") 查询
-                      button.btn.bg-maroon(ng-click="quitSearchCampaignByTime()") 清除
-                  .num-of-page
-                    select.form-control.input-sm(ng-model="number" ng-options="number.num for number in numbers" ng-change="selectNumOfPage()")
               table.table.table-striped.dl_table
                 thead
                   tr
-                    th.center 序号
+                    //- th.center 序号
                     th.center Logo
                     th.center 主题
                     th.center 开始时间
@@ -61,7 +59,7 @@
                     th.center 操作
                 tbody
                   tr(ng-repeat="campaign in campaigns")
-                    td.center(ng-cloak) {{$index+1}}
+                    //- td.center(ng-cloak) {{$index+1}}
                     td.center(ng-cloak)
                       img(ng-src="{{campaign.logo}}/40/40")
                     td.center.theme(ng-cloak) {{campaign.theme}}

@@ -74,9 +74,11 @@
       .pagination
         margin 0 0 10px
   .row
+    .box-title
+      float left
     .num_of_page
       float right
-      width 60px
+      width 50px
       select
         height 20px
     .box-success
@@ -89,36 +91,38 @@
       min-height 150px
       max-height 210px
       overflow-y auto
+    .date_range_select
+      float left
+      margin-top -4px
+      .date_range_start, .date_range_end
+        width 145px
+        float left
+        margin-left 10px
+        .date_form_control
+          display block
+          width 100%
+          min-height 25px
+          height auto
+          padding 3px 5px
+          font-size 12px
+          line-height 1.42857143
+          color #fff
+          background-color #fff
+          background-image none
+          border: 1px solid #ccc
+          border-radius 0
+          color #999
+          float left
+        .date_range_label
+          padding 3px 5px
+      .search_time_button
+        float left
+        margin-left 10px
+        button
+          margin-right 10px
+          padding 2px 6px
     .table-content
       .row
-        .date-range-select
-          float left
-          .date-range-start, .date-range-end
-            width 155px
-            float left
-            .date-form-control
-              display block
-              width 100%
-              min-height: 30px
-              height auto
-              padding 6px 5px
-              font-size 12px
-              line-height 1.42857143
-              color #fff
-              background-color #fff
-              background-image none
-              border: 1px solid #ccc
-              border-radius 0
-              color #999
-              float left
-            .date-range-label
-              padding 6px 6px
-          .search-time-button
-            width 145px
-            float left
-            button
-              margin 0px 5px
-              padding 4px 12px    
         .data-table-paginate
           float right
           margin 0
