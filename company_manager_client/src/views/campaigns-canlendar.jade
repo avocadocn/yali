@@ -16,11 +16,11 @@
                   i.fa.fa-chevron-right
                 button.btn.btn-default(data-calendar-nav="today" href="javascript:void(0)") 今天
             .fc-center
-              h2#calendar_title
-            .campaign-type.pull-right
+              span#calendar_title
+            .campaign_type.pull-right
               .circle.team 
               .type-label 小队活动
-            .campaign-type.pull-right
+            .campaign_type.pull-right
               .circle.company 
               .type-label 公司活动
           .fc-view-container#calendar
@@ -28,20 +28,20 @@
     .row
       .col-xs-12
         .box.box-primary
-          .box-header
+          .box-header.with-border
             h3.box-title 活动
+            .num_of_page
+              select.form-control.input-sm(ng-model="number" ng-options="number.num for number in numbers" ng-change="selectNumOfPage()")
           .box-body
             .table-content
               .row
                 .col-xs-12
-                  .num-of-page
-                    select.form-control.input-sm(ng-model="number" ng-options="number.num for number in numbers" ng-change="selectNumOfPage()")
               table.table.table-striped.dl_table
                 thead
                   tr
-                    th.center 序号
+                    //- th.center 序号
                     th.center Logo
-                    th.center 主题
+                    th.center 活动主题
                     th.center 开始时间
                     th.center 结束时间
                     th.center 人数
@@ -49,16 +49,14 @@
                     th.center 操作
                 tbody
                   tr(ng-repeat="campaign in campaigns")
-                    td.center(ng-cloak) {{$index+1}}
+                    //- td.center(ng-cloak) {{$index+1}}
                     td.center(ng-cloak)
                       img(ng-src="{{campaign.logo}}/40/40")
                     td.center.theme(ng-cloak) {{campaign.theme}}
                     td.center(ng-cloak) 
-                      p {{campaign.startTime | date:'yyyy-MM-dd'}}
-                      p {{campaign.startTime | date:'HH:mm'}}
+                      span {{campaign.startTime | date:'MM-dd'}} {{campaign.startTime | date:'HH:mm'}}
                     td.center(ng-cloak)
-                      p {{campaign.endTime | date:'yyyy-MM-dd'}}
-                      p {{campaign.endTime | date:'HH:mm'}}
+                      span {{campaign.endTime | date:'MM-dd'}} {{campaign.endTime | date:'HH:mm'}}
                     td.center(ng-cloak) {{campaign.memberNumber}}
                     td.center(ng-cloak) {{campaign.status}}
                     td.center(ng-cloak) 

@@ -1,7 +1,7 @@
 <div class="cal-month-day cal-month-day-small <%= cls %>">
   <% if (cls.search('cal-day-inmonth')>-1) {%>
     <% var campaigns = _.countBy(events, function(event) { %>
-       <% return (event.campaiginType == 1 || event.campaiginType > 5)  ? 'company' : 'team' %>
+       <% return (event.campaignType == 1)  ? 'company' : 'team' %>
     <% }) %>
     <% if (campaigns.company > 0) {%>
       <div class="campaigin-company"><%= campaigns.company %></div>
