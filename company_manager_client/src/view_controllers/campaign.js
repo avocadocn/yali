@@ -327,6 +327,9 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
           member_min: 0,
           content: ''
         };
+        $('#start_time').datetimepicker('setEndDate', null);
+        $('#end_time').datetimepicker('setStartDate', null);
+        $('#deadline').datetimepicker('setEndDate', null);
       };
 
       $scope.selectType = function(type) {
