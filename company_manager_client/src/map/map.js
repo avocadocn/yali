@@ -126,6 +126,11 @@ define(['angular'], function(angular) {
             map.setFitView();
           }
 
+          map.plugin(["AMap.ToolBar"],function(){
+            var toolBar = new AMap.ToolBar();
+            map.addControl(toolBar);
+          });
+
           AMap.service(["AMap.PlaceSearch"], function() {
             var placeSearch;
             mapSevice.getLocalCity().then(function(res) {
