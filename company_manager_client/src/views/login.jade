@@ -1,37 +1,42 @@
 .login_page
   .wrap
-    nav.main-navbar.navbar.navbar-inverse.dl_nav(data-role="navigation")
-      .header_container
-        a.navbar-brand(href="/"): img.logo(src="/img/dl_logol.png")
+    header.main-header
+      a.logo
+        img.dl_logo(src="/img/dl_logol.png")
+      nav.navbar.navbar-static-top(role="navigation")
+        .navbar-custom-menu
+          ul.nav.navbar-nav
+            li: a(href="/") 返回主页
+            li: a(href="/users/signin") 个人登陆
     .dl_container
-        .row.login_row
-          .col-xs-4.col-sm-4.col-md-5.col-lg-5.text-right
-            div
-              h1.text-right
-                small 进入
-                | 动梨
-              p 您的真实可靠的同事圈,遇到更多的伙伴
-              p 更多活动,展示自我,发现伙伴们工作之余的多才多艺
-              p 记录分享开心的每一个瞬间
-          .col-xs-4.col-sm-5.col-md-6.col-lg-7
-            form.signin.form-horizontal.center-block
-              .form-group
-                .col-md-6.col-sm-6.col-xs-6.col-xs-offset-4
-                  label #{msg}
-              .form-group
-                label.col-md-4.col-sm-4.col-xs-4.control-label(for="username") 用户名
-                .col-md-6.col-sm-8.col-xs-8
-                  input#username.dl-form-control(type="text" name="username" ng-model="loginData.username" placeholder="用户名")
-              .form-group
-                label.col-md-4.col-sm-4.col-xs-4.control-label(for="password") 密码
-                .col-md-6.col-sm-8.col-xs-8
-                  input#password.dl-form-control(type="password" name="password" ng-model="loginData.password" placeholder="密码")
-              .form-group
-                .col-xs-offset-4.col-md-8.col-sm-8.col-xs-8
-                  button.btn.btn-primary(type="submit" ng-click="login()") 登录
-                  | &nbsp;or&nbsp;
-                  a.show-signup(href="/company/signup") 注册
-                  a.reset-pwd(href="/company/forgetPwd")  忘记密码
+      .row.login_row
+        .col-xs-10.col-sm-6.col-md-5.col-lg-5.text-right
+          div
+            h1.text-right
+              small 进入
+              | 动梨
+            p 您的真实可靠的同事圈,遇到更多的伙伴
+            p 更多活动,展示自我,发现伙伴们工作之余的多才多艺
+            p 记录分享开心的每一个瞬间
+        .col-xs-8.col-sm-6.col-md-6.col-lg-7.col-xs-offset-2.col-sm-offset-0
+          form.signin.form-horizontal.center-block
+            .form-group
+              .col-md-6.col-sm-6.col-xs-6.col-xs-offset-4
+                label #{msg}
+            .form-group
+              label.col-md-4.col-sm-4.col-xs-4.control-label(for="username") 用户名
+              .col-md-6.col-sm-6.col-xs-6
+                input#username.dl-form-control(type="text" name="username" ng-model="loginData.username" placeholder="用户名")
+            .form-group
+              label.col-md-4.col-sm-4.col-xs-4.control-label(for="password") 密码
+              .col-md-6.col-sm-6.col-xs-6
+                input#password.dl-form-control(type="password" name="password" ng-model="loginData.password" placeholder="密码")
+            .form-group
+              .col-xs-offset-4.col-md-8.col-sm-8.col-xs-8
+                button.btn.btn-primary(type="submit" ng-click="login()") 登录
+                | &nbsp;or&nbsp;
+                a.show-signup(href="/company/signup") 注册
+                a.reset-pwd(href="/company/forgetPwd")  忘记密码
   footer.dl_footer
     .dl_container
       .dl_row
