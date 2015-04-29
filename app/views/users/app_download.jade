@@ -4,6 +4,8 @@ block content
   .header
     img.logo(src="/img/dl_logol.png")
   .app_download
+    if weixin
+      img.weixin_tip(src="/img/weixin_tip.png")
     p.download_title.text-center 动梨活动助理下载
     p.download_filter 按操作系统下载
     ul.download_list

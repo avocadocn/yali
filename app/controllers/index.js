@@ -77,7 +77,23 @@ exports.contact = function(req, res) {
   res.render('contact');
 };
 exports.appdownload = function(req, res) {
-  return res.render('users/app_download');
+  var deviceAgent = req.headers["user-agent"].toLowerCase();
+  var weixin = deviceAgent.match(/micromessenger/);
+  var iosAgentID = deviceAgent.match(/(iphone|ipod|ipad)/);
+  var androidAgentID = deviceAgent.match(/android/);
+  console.log(deviceAgent,iosAgentID,androidAgentID);
+  if (weixin) {
+    return res.render('users/app_download',{weixin:true});
+  }
+  else if (iosAgentID) {
+    return res.redirect('https://itunes.apple.com/cn/app/id916162839?mt=8');
+  }
+  else if(androidAgentID) {
+    return res.redirect('/Donler.apk');
+  }
+  else{
+    return res.render('users/app_download');
+  }
 };
 exports.feedback = function(req, res) {
   var sendByWebpower = function () {
