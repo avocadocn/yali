@@ -107,6 +107,7 @@ define(['angular'], function(angular) {
     var link = function(scope, ele, attrs, ctrl) {
       var controller = {};
       var map;
+      var marker;
       var remarkCallback;
 
       /**
@@ -151,12 +152,17 @@ define(['angular'], function(angular) {
                 var lnglat = new AMap.LngLat(point.getLng(), point.getLat());
                 map.setCenter(lnglat);
 
-                var marker = new AMap.Marker({
-                  map: map,
-                  position: lnglat,
-                  draggable: true
-                });
-                AMap.event.addListener(marker, 'dragend', remarkCallback);
+                if (!marker) {
+                  marker = new AMap.Marker({
+                    map: map,
+                    position: lnglat,
+                    draggable: true
+                  });
+                  AMap.event.addListener(marker, 'dragend', remarkCallback);
+                }
+                else {
+                  marker.setPosition(lnglat);
+                }
 
                 map.setFitView();
                 deferred.resolve(result.poiList.pois[0]);

@@ -327,6 +327,10 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
           member_min: 0,
           content: ''
         };
+        $scope.teamList.forEach(function(team) {
+          team.selected = false;
+        });
+        $scope.hasSearch = false;
         $('#start_time').datetimepicker('setEndDate', null);
         $('#end_time').datetimepicker('setStartDate', null);
         $('#deadline').datetimepicker('setEndDate', null);
