@@ -17,6 +17,8 @@
     "admin-lte": "~2.0.3",
     "js-xlsx": "~0.8.0",
     "jszip": "Stuk/jszip#~2.5.0",
+    "datatables": "latest",
+    "angular-datatables": "~0.4.2",
     "font-awesome": "~4.3.0"
   }
 }

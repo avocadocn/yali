@@ -88,6 +88,13 @@ module.exports = function(grunt) {
           {
             expand: true,
             flatten: true,
+            filter: 'isFile',
+            src: ['bower-lib/datatables/media/images/**'],
+            dest: '../public/company_client/images/'
+          },
+          {
+            expand: true,
+            flatten: true,
             src: ['custom-lib/require.js'],
             dest: '../public/company_client/js/'
           }
@@ -104,6 +111,7 @@ module.exports = function(grunt) {
           'bower-lib/bootstrap-calendar/css/calendar.min.css',
           'bower-lib/admin-lte/dist/css/AdminLTE.min.css',
           'bower-lib/admin-lte/dist/css/skins/skin-blue.min.css',
+          'bower-lib/datatables/media/css/jquery.dataTables.min.css',
           'dist/donler.min.css'
         ],
         dest: '../public/company_client/css/donler.min.css'

@@ -1,7 +1,11 @@
 <div class="cal-month-day cal-month-day-small <%= cls %>">
   <% if (cls.search('cal-day-inmonth')>-1) {%>
     <% var campaigns = _.countBy(events, function(event) { %>
+<<<<<<< HEAD
        <% return (event.campaignType == 1)  ? 'company' : 'team' %>
+=======
+       <% return (event.campaignType == 1 || event.campaignType > 5)  ? 'company' : 'team' %>
+>>>>>>> 修改所有成员页面，增加排序功能
     <% }) %>
     <% if (campaigns.company > 0) {%>
       <div class="campaigin-company"><%= campaigns.company %></div>

@@ -22,16 +22,16 @@
     .box.box-primary
       .box-header.with-border
         h3.box-title 所有成员
-        .box-tools.pull-right
-          ul.pagination.pagination-sm.inline
-            li(ng-class="{disabled:nowPage<=1}" ng-click="lastPage()" ng-cloak)
-              a.page(href="") 上一页
-            li(ng-repeat="page in AllcompanyMembers track by $index" ng-if="$index>nowPage-7 &&$index<nowPage+5" ng-click="getPage($index+1)" ng-class="{active:$index+1===nowPage}" ng-cloak)
-              a.page(href="") {{$index+1}}
-            li(ng-class="{disabled:maxPage<=nowPage}" ng-click="nextPage()" ng-cloak)
-              a.page(href="") 下一页
+        //- .box-tools.pull-right
+        //-   ul.pagination.pagination-sm.inline
+        //-     li(ng-class="{disabled:nowPage<=1}" ng-click="lastPage()" ng-cloak)
+        //-       a.page(href="") 上一页
+        //-     li(ng-repeat="page in AllcompanyMembers track by $index" ng-if="$index>nowPage-7 &&$index<nowPage+5" ng-click="getPage($index+1)" ng-class="{active:$index+1===nowPage}" ng-cloak)
+        //-       a.page(href="") {{$index+1}}
+        //-     li(ng-class="{disabled:maxPage<=nowPage}" ng-click="nextPage()" ng-cloak)
+        //-       a.page(href="") 下一页
       .box-body.no-padding
-        table.table.table-striped
+        table(datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs").table.table-striped
           thead
             tr
               th
@@ -44,6 +44,19 @@
               th.center 活跃度
               td.center 查看详情
               th.center 状态
+                //- select.form-control.input-sm(ng-model="" ng-options="" ng-change="selectNumOfPage()")
+                .btn-group
+                  .btn.btn-mini.dropdown-toggle(data-toggle="dropdown")
+                    span.caret
+                  ul.dropdown-menu
+                    li 
+                      a(ng-click="showStatus(0)") 无
+                    li 
+                      a(ng-click="showStatus(1)") 正常
+                    li 
+                      a(ng-click="showStatus(2)") 屏蔽中
+                    li 
+                      a(ng-click="showStatus(3)") 未激活
               th.center 编辑
           tbody
             tr(ng-repeat="member in companyMembers" ng-cloak)
@@ -61,5 +74,6 @@
                 {{member.active? '正常' : member.mail_active ? '屏蔽中' : '未激活'}}
               td.center
                 i.fa.fa-edit(member-edit now-user-id="member._id")
+
 
 

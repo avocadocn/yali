@@ -10,6 +10,8 @@ requirejs.config({
     angularBootstrap:'../bower-lib/angular-bootstrap/ui-bootstrap-tpls',
     qrcode: '../src/utils/qrcode',
     bootstrap: '../bower-lib/bootstrap/dist/js/bootstrap',
+    datatables: '../bower-lib/datatables/media/js/jquery.dataTables',
+    angulardatatables: '../bower-lib/angular-datatables/dist/angular-datatables',
     datetimepicker: '../bower-lib/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker',
     datetimepickerLang: '../bower-lib/smalot-bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN',
     pen: '../bower-lib/pen/src/pen',
@@ -36,7 +38,8 @@ requirejs.config({
   ],
   shim: {
     angular: {
-      exports: 'angular'
+      exports: 'angular',
+      deps: ['jQuery']
     },
     uiRouter: {
       deps: ['angular']
@@ -55,6 +58,12 @@ requirejs.config({
     },
     bootstrap: {
       deps: ['jQuery']
+    },
+    datatables: {
+      deps: ['jQuery']
+    },
+    angulardatatables: {
+      deps: ['jQuery', 'angular', 'datatables']
     },
     datetimepicker: {
       deps: ['jQuery']

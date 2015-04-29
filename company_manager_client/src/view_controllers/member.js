@@ -1,5 +1,5 @@
-define(['angular', 'qrcode'], function (angular, qrcode) {
-  return angular.module('memberCtrls', []).controller('member.inviteCtrl', [
+define(['angular', 'qrcode', 'angulardatatables'], function (angular, qrcode, angulardatatables) {
+  return angular.module('memberCtrls', ['datatables']).controller('member.inviteCtrl', [
     '$rootScope',
     '$scope',
     '$timeout',
@@ -147,30 +147,68 @@ define(['angular', 'qrcode'], function (angular, qrcode) {
       '$rootScope',
       '$scope',
       '$state',
+      '$timeout',
       'memberService',
       'departmentService',
       '$modal',
-      function ($rootScope, $scope, $state, memberService, departmentService, $modal) {
-        memberService.getMembers($rootScope.company._id,{resultType:4}).success(function (data) {
-          $scope.inactiveMemberLength = data.length;
+      'DTOptionsBuilder',
+      'DTColumnDefBuilder',
+      function ($rootScope, $scope, $state, $timeout, memberService, departmentService, $modal, DTOptionsBuilder, DTColumnDefBuilder) {
+        $scope.dtOptions = DTOptionsBuilder.newOptions()
+        .withOption('searching', false)
+        // .withOption('paging', false)
+        .withLanguage({
+          'lengthMenu': '_MENU_',
+          'zeroRecords': '无数据',
+          'paginate': {
+            'previous': '上一页',
+            'next': '下一页'
+          }
         })
-        .error(function (data) {
-          console.log(data.msg);
-        });
+        .withOption('info', false);
 
-        $scope.pageNum =10;
-        $scope.nowPage = 1;
-        $scope.AllcompanyMembers =[];
-        memberService.getMembers($rootScope.company._id,{resultType:2,page:$scope.nowPage}).success(function (data) {
-          $scope.companyMembers = data.users;
-          $scope.AllcompanyMembers = new Array(data.maxPage);
-          $scope.AllcompanyMembers[0] =data.users;
-          $scope.maxPage = data.maxPage;
+        $scope.dtColumnDefs =[
+          DTColumnDefBuilder.newColumnDef(0).notSortable(),
+          DTColumnDefBuilder.newColumnDef(1).notSortable(),
+          DTColumnDefBuilder.newColumnDef(2),
+          DTColumnDefBuilder.newColumnDef(3).notSortable(),
+          DTColumnDefBuilder.newColumnDef(4).notSortable(),
+          DTColumnDefBuilder.newColumnDef(5),
+          DTColumnDefBuilder.newColumnDef(6),
+          DTColumnDefBuilder.newColumnDef(7),
+          DTColumnDefBuilder.newColumnDef(8).notSortable(),
+          DTColumnDefBuilder.newColumnDef(9).notSortable(),
+          DTColumnDefBuilder.newColumnDef(10).notSortable()
+        ];
+        memberService.getMembers($rootScope.company._id, {
+            resultType: 2
+          }).success(function(data) {
+            $scope.companyMembers = data;
+            $scope.oldCompanyMembers = data;
+          })
+          .error(function(data) {
+            alert(data.msg);
+          });
+        // memberService.getMembers($rootScope.company._id,{resultType:4}).success(function (data) {
+        //   $scope.inactiveMemberLength = data.length;
+        // })
+        // .error(function (data) {
+        //   console.log(data.msg);
+        // });
 
-        })
-        .error(function (data) {
-          alert(data.msg);
-        });
+        // $scope.pageNum =10;
+        // $scope.nowPage = 1;
+        // $scope.AllcompanyMembers =[];
+        // memberService.getMembers($rootScope.company._id,{resultType:2,page:$scope.nowPage}).success(function (data) {
+        //   $scope.companyMembers = data.users;
+        //   $scope.AllcompanyMembers = new Array(data.maxPage);
+        //   $scope.AllcompanyMembers[0] =data.users;
+        //   $scope.maxPage = data.maxPage;
+
+        // })
+        // .error(function (data) {
+        //   alert(data.msg);
+        // });
         $scope.nextPage = function () {
           if($scope.maxPage<=$scope.nowPage){
             return;
@@ -222,6 +260,35 @@ define(['angular', 'qrcode'], function (angular, qrcode) {
             });
           }
           
+        }
+        $scope.showStatus = function(type) {
+          $scope.companyMembers = [];
+          switch(type) {
+            case 0:
+              $scope.companyMembers = $scope.oldCompanyMembers;
+              break;
+            case 1:
+              $scope.oldCompanyMembers.forEach(function(member) {
+                if(member.active) {
+                  $scope.companyMembers.push(member);
+                }
+              });
+              break;
+            case 2:
+              $scope.oldCompanyMembers.forEach(function(member) {
+                if(!member.active && member.mail_active) {
+                  $scope.companyMembers.push(member);
+                }
+              });
+              break;
+            case 3:
+              $scope.oldCompanyMembers.forEach(function(member) {
+                if(!member.active && !member.mail_active) {
+                  $scope.companyMembers.push(member);
+                }
+              });
+              break;
+          }
         }
 
       }
