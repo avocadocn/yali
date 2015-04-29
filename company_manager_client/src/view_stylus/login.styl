@@ -5,34 +5,27 @@
     position relative
     background-color #f4f4f4
     padding-bottom 60px
-  // navbar 样式
-  .header_container
-    width 960px
-    margin auto
-  .navbar-brand
-    float left
-    padding 15px 15px
-    font-size 18px
-    line-height 20px
   .logo
     background-color #3c8dbc !important
   // content 样式
   .login_row
     margin-top 123px
-  .dl-form-control
-    display block
-    width 100%
-    min-height 34px
-    height auto
-    padding 6px 5px
-    font-size 12px
-    line-height 1.42857143
-    background-color #fff
-    background-image none
-    border 1px solid #ccc
-    border-radius 5px
-    color #999
-    float left
+    .dl-form-control
+      display block
+      width 100%
+      min-height 34px
+      height auto
+      padding 6px 5px
+      font-size 12px
+      line-height 1.42857143
+      background-color #fff
+      background-image none
+      border 1px solid #ccc
+      border-radius 5px
+      color #999
+      float left
+    .show_signup, .reset_pwd
+      margin-left 10px
   .text-right
     text-align right
   // footer 样式
@@ -46,10 +39,13 @@
     background-color #f0f0f0
     height 60px
     color #999
-    a
-      color #999
-      margin-left 50px
-      font-size 12px
+    .text_icp
+      a
+        color #999
+        margin-left 25px
+        font-size 12px
+        &:first-child
+          margin-left 0
     .dl_container
       padding-top 0
     .dl_row
@@ -57,3 +53,6 @@
       padding 0
     .text_icp
       line-height 60px
+      height 60px
+      text-align center
+      overflow hidden

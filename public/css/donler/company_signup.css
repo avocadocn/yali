@@ -293,3 +293,10 @@
 .signup_row .block.activation .invite_key_container .invite_button:hover {
   box-shadow: 0 0 0 0;
 }
+.signup_row .signin .control-label {
+  text-align: right;
+}
+.signup_row .signin .show_signup,
+.signup_row .signin .reset_pwd {
+  margin-left: 5px;
+}
