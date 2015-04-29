@@ -81,7 +81,6 @@ exports.appdownload = function(req, res) {
   var weixin = deviceAgent.match(/micromessenger/);
   var iosAgentID = deviceAgent.match(/(iphone|ipod|ipad)/);
   var androidAgentID = deviceAgent.match(/android/);
-  console.log(deviceAgent,iosAgentID,androidAgentID);
   if (weixin) {
     return res.render('users/app_download',{weixin:true});
   }

@@ -3686,12 +3686,6 @@ input.ng-invalid.ng-dirty {
 .icon_backtop.affix {
   bottom: 70px;
 }
-.weixin_tip {
-  width: 100%;
-  position: absolute;
-  top: 0;
-  opacity: 0.9;
-}
 @-moz-keyframes scaleFade {
   50% {
     opacity: 1;
