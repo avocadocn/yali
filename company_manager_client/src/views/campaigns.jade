@@ -6,20 +6,20 @@
   section.content
     .row
       .col-xs-12
-        .box.box-success.box-solid
+        .box.box_success.box-solid
           .box-header.with-border
             h3.box-title 选择小队
             .box-tools.pull-right
               button.btn.btn-box-tool(ng-click="quitTeam()")
                 i.fa.fa-trash-o
           .box-body.clearfix.team-list
+
             .team_card(ng-repeat="team in data.teams" ng-class="{'selected':currentTeamId===team._id}" ng-click="selectTeam(team._id)")
-              .info-box
-                .info-box-icon
-                  img(ng-src="{{team.logo}}/40/40")
-                .info-box-content
-                  .info-box-text(ng-cloak) {{team.name}}
-                  .info-box-text(ng-cloak) {{team.groupType}}
+              .dl_info_box
+                .info_box_icon
+                  img(ng-src="{{team.logo}}/90/90")
+                .info_box_content
+                  .info_box_text(ng-cloak) {{team.name}}
     .row
       .col-xs-12
         .box.box-primary
@@ -87,5 +87,5 @@
                         a.page(href="") {{$index+1}}
                       li(ng-if="hasNext" ng-class="{disabled:!hasNext}" ng-click="getPage('next')" ng-cloak)
                         a.page(href="") 下一页
-sponsor-campaign(data="data")
+//- sponsor-campaign(data="data")
 //- edit-campaign(campaign-id="campaignId")

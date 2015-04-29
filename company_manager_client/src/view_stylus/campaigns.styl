@@ -91,6 +91,14 @@
       min-height 150px
       max-height 210px
       overflow-y auto
+    .input-group-addon
+      border-radius 4px
+      &:first-child
+        border-top-right-radius 0
+        border-bottom-right-radius 0
+      &:last-child
+        border-top-left-radius 0
+        border-bottom-left-radius 0
     .date_range_select
       float left
       margin-top -4px
@@ -135,30 +143,32 @@
   
   .team_card
     position relative
-    width 160px
+    width 110px
     float left
     margin-top 10px
-    margin-right 10px
+    margin-right 15px
     cursor pointer
-    .info-box
-      min-height 45px
-      margin-bottom 0px
-      border 1px solid white
-      .info-box-icon
-        width 50px
-        height 50px
+    height 145px
+    padding 10px 10px 0
+    border 1px solid #efefef
+    box-shadow 0 2px 1px rgba(204, 204, 204, 0.5)
+    .dl_info_box
+      .info_box_icon
+        width 90px
+        height 90px
         background-color #fff
         img
-          position absolute
-          width 40px
-          height 40px
-          top 5px
-          left 5px
-      .info-box-content
-        margin-left 15px
+          width 90px
+          height 90px
+      .info_box_content
+        .info_box_text
+          margin-top 2px
+          width 100%
     &.selected
-      .info-box
-        border 1px solid #3c8dbc
+      border 1px solid #f48361
+      box-shadow inset -1px -2px 1px rgba(244,131,97,0.5)
+      .dl_info_box>.info_box_content>.info_box_text
+        color #f48361
 //- @media (min-width: 1315px)
 //-   .select_team
 //-     width 720px !important
