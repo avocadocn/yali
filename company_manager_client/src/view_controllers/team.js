@@ -1,10 +1,61 @@
-define(['angular'], function (angular) {
-  return angular.module('teamCtrls', []).controller('team.listCtrl', [
+define(['angular', 'angulardatatables'], function (angular) {
+  return angular.module('teamCtrls', ['datatables']).controller('team.listCtrl', [
     '$rootScope',
     '$scope',
     'teamService',
     '$modal',
-    function ($rootScope, $scope, teamService, $modal) {
+    'DTOptionsBuilder',
+    'DTColumnDefBuilder',
+    function ($rootScope, $scope, teamService, $modal, DTOptionsBuilder, DTColumnDefBuilder) {
+      $scope.dtOptions = DTOptionsBuilder.newOptions()
+        .withOption('searching', false)
+        // .withOption('paging', false)
+        .withLanguage({
+          'lengthMenu': '_MENU_',
+          'zeroRecords': '无数据',
+          'paginate': {
+            'previous': '上一页',
+            'next': '下一页'
+          }
+        })
+        .withOption('info', false);
+
+      $scope.dtColumnDefs = [
+        DTColumnDefBuilder.newColumnDef(0).notSortable(),
+        DTColumnDefBuilder.newColumnDef(1).notSortable(),
+        DTColumnDefBuilder.newColumnDef(2),
+        DTColumnDefBuilder.newColumnDef(3),
+        DTColumnDefBuilder.newColumnDef(4),
+        DTColumnDefBuilder.newColumnDef(5),
+        DTColumnDefBuilder.newColumnDef(6),
+        DTColumnDefBuilder.newColumnDef(7).notSortable(),
+        DTColumnDefBuilder.newColumnDef(8).notSortable(),
+        DTColumnDefBuilder.newColumnDef(9).notSortable()
+      ];
+      $scope.Options = DTOptionsBuilder.newOptions()
+        .withOption('searching', false)
+        // .withOption('paging', false)
+        .withLanguage({
+          'lengthMenu': '_MENU_',
+          'zeroRecords': '无数据',
+          'paginate': {
+            'previous': '上一页',
+            'next': '下一页'
+          }
+        })
+        .withOption('info', false);
+
+      $scope.ColumnDefs = [
+        DTColumnDefBuilder.newColumnDef(0).notSortable(),
+        DTColumnDefBuilder.newColumnDef(1).notSortable(),
+        DTColumnDefBuilder.newColumnDef(2),
+        DTColumnDefBuilder.newColumnDef(3),
+        DTColumnDefBuilder.newColumnDef(4),
+        DTColumnDefBuilder.newColumnDef(5),
+        DTColumnDefBuilder.newColumnDef(6),
+        DTColumnDefBuilder.newColumnDef(7).notSortable(),
+        DTColumnDefBuilder.newColumnDef(8).notSortable()
+      ];
       var noLeaderFilter = function(team) {
         if((!team.leaders || team.leaders.length==0)&&team.active === true) {
           return true;

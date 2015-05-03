@@ -18,7 +18,7 @@
           .box-header
             h3.box-title 有队长的小队
           .box-body.no-padding
-            table.table.table-striped
+            table(datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs").table.table-striped
               thead
                 tr
                   th 名称
@@ -52,7 +52,7 @@
           .box-header
             h3.box-title 被关闭的小队
           .box-body.no-padding
-            table.table.table-striped
+            table(datatable="ng" dt-options="Options" dt-column-defs="ColumnDefs").table.table-striped
               thead
                 tr
                   th 名称
