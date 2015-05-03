@@ -207,10 +207,20 @@ exports.signup = function(req, res) {
         if (config) {
           is_need_invite = config.company_register_need_invite;
         }
-        res.render('signup/company_signup', {
-          title: '注册',
-          is_need_invite: is_need_invite
-        });
+        var deviceAgent = req.headers["user-agent"].toLowerCase();
+        var agentID = deviceAgent.match(/(iphone|ipod|ipad|android)/);
+        if(agentID) {
+          res.render('signup/signup_phone', {
+            title: '注册',
+            is_need_invite: is_need_invite
+          });
+        }else {
+          res.render('signup/company_signup', {
+            title: '注册',
+            is_need_invite: is_need_invite
+          });
+        }
+          
       }
     });
 };

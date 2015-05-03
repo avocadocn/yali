@@ -391,7 +391,7 @@ exports.inviteQR = function(req, res) {
     req.logout();
     res.locals.global_user = null;
   }
-  console.log('1');
+  // console.log('1');
   var key = decodeURIComponent(req.query.key);
   var cid = req.query.cid;
   var uid = req.query.uid;

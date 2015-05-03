@@ -101,7 +101,20 @@ companySignUpApp.controller('signupController',['$http','$scope','$rootScope',fu
   }
 }]);
 
-companySignUpApp.controller('userSignupController',['$http','$scope','$rootScope','$timeout',function ($http,$scope,$rootScope) {
+companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$rootScope',function ($http,$scope,$rootScope) {
+  $scope.mailCheck = function() {
+    if($scope.email){
+      $scope.loading = true;
+      $http.post('/users/mailCheck',{login_email: $scope.email})
+        .success(function(data, status) {
+          $scope.loading = false;
+          // $scope.active=data.active;
+        });
+    }
+  };
+}]);
+
+companySignUpApp.controller('userSignupController',['$http','$scope','$rootScope',function ($http,$scope,$rootScope) {
   //-验证个人邮箱
   var mailCheck = function(callback) {
     if($scope.email){

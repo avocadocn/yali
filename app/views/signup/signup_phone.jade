@@ -1,0 +1,32 @@
+extends ../layouts/base
+
+block content
+  //- .header
+  //-   img.logo(src="/img/dl_logol.png")
+  .signup_phone(ng-controller="userSignupMobileController")
+    .signup_step_one(ng-show="step===1")
+      //- check邮箱
+      include partials/personal_step_one_phone
+    .signup_step_two(ng-show="step===2")
+      //- 选择公司或选择自己注册
+      include partials/personal_step_two_phone
+    .signup_step_three(ng-show="step===3")
+      //- 填入公司资料及密码
+      include partials/personal_step_three_phone
+    .signup_step_four(ng-show="step===4")
+      //- 新建小队
+      include partials/personal_step_four_phone
+
+block footExt
+  script(src='/js/controllers/companySignUp.js')
+  script.
+    window.location.hash='';
+    var $buoop = {vs:{i:10,f:15,o:12.1,s:5.1}}; 
+    $buoop.ol = window.onload; 
+    window.onload=function(){ 
+      try {if ($buoop.ol) {$buoop.ol();} }catch (e) {} 
+      var e = document.createElement("script"); 
+      e.setAttribute("type", "text/javascript"); 
+      e.setAttribute("src", "/js/notice/update.js"); 
+      document.body.appendChild(e);
+    }
