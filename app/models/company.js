@@ -5,7 +5,8 @@
  */
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
-    crypto = require('crypto');
+    crypto = require('crypto'),
+    mongoosePaginate = require('mongoose-paginate');
 
 
 //小队信息
@@ -136,6 +137,7 @@ var CompanySchema = new Schema({
     device: [_device]
 });
 
+CompanySchema.plugin(mongoosePaginate);
 /**
  * Virtuals
  */

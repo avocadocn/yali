@@ -11,26 +11,30 @@ var mongoose = require('mongoose'),
 
 
 //TODO
-//根据公司名搜索公司
+//根据email搜索公司
 exports.getCompany = function (req, res) {
   var options = {};
   var companies_rst = [];
-  if(req.body.regx){
-    var regx = new RegExp(req.body.regx);
-    options = {'info.name': regx, 'status.active': true};
-  }
-  else if(req.body.email) {
+  // if(req.body.regx){
+  //   var regx = new RegExp(req.body.regx);
+  //   options = {'info.name': regx, 'status.active': true};
+  // }
+  if(req.body.email) {
     var email = req.body.email;
     var domain = email.split('@')[1];
-    options = {'email.domain': domain, 'status.active':true}
+    options = {'email.domain': domain, 'status.active':true};
+    var page = req.body.page || 1;
+    var limit = req.body.limit || 10;
   }
   else{
     return res.send([]);
   }
-  Company.find(options, function (err, companies) {
+  Company.paginate(options, page, limit, function(err, pageCount, companies, itemCount) {
     if(err) {
-      return res.send([]);
-    } else {
+      console.log(err);
+      return res.status(500);
+    }
+    else {
       if(companies) {
         for(var i = 0; i < companies.length; i ++) {
           companies_rst.push({
@@ -40,7 +44,7 @@ exports.getCompany = function (req, res) {
             'mail_active': companies[i].status.mail_active
           });
         }
-        return res.send(companies_rst);
+        return res.status(200).send({companies:companies_rst, pageCount:pageCount});
       } else {
         return res.send([]);
       }

@@ -102,6 +102,7 @@ companySignUpApp.controller('signupController',['$http','$scope','$rootScope',fu
 }]);
 
 companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$rootScope',function ($http,$scope,$rootScope) {
+  $scope.step = 1;
   $scope.mailCheck = function() {
     if($scope.email){
       $scope.loading = true;
@@ -136,10 +137,34 @@ companySignUpApp.controller('userSignupController',['$http','$scope','$rootScope
       mailCheck(function(active){
         if(active===1){
           $http.post('/search/company',{email:$scope.email}).success(function (data,status){
-            $scope.companies=data;
+            $scope.page = 1;
+            $scope.companies=data.companies;
             $rootScope.step=2;
+            if($scope.page===data.pageCount) {$scope.hasNext = false;}
+            $scope.hasPrevious = false;
           });
         }
+      });
+    }
+  };
+
+  $scope.nextPage = function() {
+    if($scope.hasNext) {
+      $http.post('/search/company',{email:$scope.email, page:$scope.page+1}).success(function (data,status){
+        $scope.companies=data.companies;
+        $scope.page++;
+        if($scope.page===data.pageCount) {$scope.hasNext = false;}
+        $scope.hasPrevious = true;
+      });
+    }
+  };
+
+  $scope.prePage = function() {
+    if($scoe.page>1) {
+      $http.post('/search/company',{email:$scope.email, page:$scope.page-1}).success(function (data,status){
+        $scope.companies=data.companies;
+        $scope.page--;
+        if($scope.page===1) {$scope.hasPrevious = false;}
       });
     }
   };

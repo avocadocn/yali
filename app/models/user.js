@@ -38,13 +38,19 @@ var _team = new Schema({
     logo: String
 });
 
-var latestCommentCampaign = new Schema({
-    _id: Schema.Types.ObjectId,
-    unread: {
-        type: Number,
-        default: 0
-    }
+
+var chatroom = new Schema({
+  _id: Schema.Types.ObjectId,
+  join_time:{
+    type: Date,
+    default: Date.now
+  },
+  read_time: {
+    type: Date,
+    default: Date.now
+  }
 });
+
 /**
  * User Schema
  */
@@ -144,8 +150,7 @@ var UserSchema = new Schema({
         ref: 'Campaign'
     },
     last_comment_time: Date,
-    commentCampaigns: [latestCommentCampaign], //参加小队的讨论列表
-    unjoinedCommentCampaigns: [latestCommentCampaign], //未参加小队但讨论过的讨论列表
+    chatrooms: [chatroom],
     score: {
         // 积分总数
         total: {
@@ -177,6 +182,7 @@ var UserSchema = new Schema({
             default: 0
         }
     },
+    campaignCount: Number,
     invite_person: Schema.Types.ObjectId
 });
 

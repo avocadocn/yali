@@ -1,12 +1,18 @@
 extends ../layouts/base
 
 block content
-  //- .header
-  //-   img.logo(src="/img/dl_logol.png")
-  .signup_phone(ng-controller="userSignupMobileController")
+  .signup_phone(ng-controller="userSignupMobileController" class="step_{{step}}")
+    .header
+      img.logo(src="/img/signup/dl_logo_signup.png")
     .signup_step_one(ng-show="step===1")
       //- check邮箱
-      include partials/personal_step_one_phone
+      .input_box
+        .board
+          input(ng-model="email" required)
+          button.next_step(ng-click="checkMail()")
+      .signup_bottom
+        //- img.signup_man(src="/img/signup/dl_signup_man.png")
+        img.signup_cloud(src="/img/signup/dl_signup_cloud.png")
     .signup_step_two(ng-show="step===2")
       //- 选择公司或选择自己注册
       include partials/personal_step_two_phone
@@ -16,6 +22,13 @@ block content
     .signup_step_four(ng-show="step===4")
       //- 新建小队
       include partials/personal_step_four_phone
+    .signup_step_five(ng-show="step===5")
+      //- 注册成功
+    //- 支线系列
+    .signup_step_six(ng-show="step===6")
+      //- 已经注册过
+    .signup_step_seven(ng-show="step===7")
+      //- 只是个人注册，不用公司注册
 
 block footExt
   script(src='/js/controllers/companySignUp.js')

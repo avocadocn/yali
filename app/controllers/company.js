@@ -815,6 +815,174 @@ exports.create = function(req, res) {
 };
 
 /**
+ * 快速注册
+ * req.body: {
+ *   name: String,      //公司名
+ *   password: String,  //密码
+ *   email: String,     //邮箱
+ *   province: String,  //省
+ *   city: String,      //市
+ *   district: String,  //区
+ *   groups: array      //要建的小队
+ * }
+ */
+exports.quickCreate =function(req, res) {
+  var email = req.body.email;
+  //再次验证，此邮箱未注册过的才能注册
+  Company.findOne({login_email:email})
+  .exec()
+  .then(function(company) {
+    if(company) {
+      return res.status(400).send({msg:'此邮箱已注册'});
+    }
+    else {
+      //创建company
+      return Company.create({
+        username: email,
+        login_email: email,
+        password: req.body.password
+      })
+    }
+  })
+  .then(function(company) {
+    //补充company的资料
+    if(company) {
+      company.status= {
+        mail_active :false,
+        active: false,
+        verification: 1
+      };
+      company.info.name = req.body.name;
+      company.info.official_name = req.body.name;
+      company.info.city.province = req.body.province;
+      company.info.city.city = req.body.city;
+      company.info.city.district = req.body.district;
+      company.info.email = email;
+      company.email = {domain: email.split('@')[1]};
+
+      async.waterfall([
+        //创建用户
+        function(w_callback) {
+          User.create({
+            username: email,
+            password: req.body.password,
+            nickname: email.split('@')[0],
+            email: email,
+            role: 'EMPLOYEE',
+            cid: company._id,
+            cname: req.body.name,
+            company_official_name: req.body.name
+          }, function(err, user) {
+            if(err) {
+              w_callback(err);
+            }
+            else {
+              w_callback(null,user);
+            }
+          });
+        },
+        //创建队长为此用户的小队
+        function(user, w_callback) {
+          var groups = req.body.groups;
+          if(groups.length) {
+            async.map(groups,function(group, m_callback) {
+              CompanyGroup.create({
+                cid: company._id,
+                gid: group._id,
+                poster: {role:'HR'},
+                group_type: group.group_type,
+                cname: req.body.name,
+                name: req.body.name+'-'+group.group_type+'队',
+                entity_type: group.entity_type,
+                city: {
+                  province: req.body.province,
+                  city: req.body.city,
+                  district: req.body.district
+                },
+                member:[{
+                  _id: uesr._id,
+                  nickname: user.nickname,
+                  photo: user.photo,
+                }],
+                leader:[{
+                  _id: uesr._id,
+                  nickname: user.nickname,
+                  photo: user.photo,
+                }]
+              }, function(err, team) {
+                if(err) {
+                  m_callback(err);
+                }
+                else {
+                  m_callback(null, team);
+                }
+              })
+            }, function(err,teams) {
+              if(err) {
+                w_callback(err);
+              }
+              else {
+                w_callback(null, {user: user, teams:teams});
+              }
+            })
+          }
+          else {
+            w_callback(null,null);
+          }
+        },
+        /**
+         * 把人加到小队并变成队长,并把小队加到公司
+         * @param  {Object} data : {user:Object, teams:array}
+         * @param  {[type]} w_callback [description]
+         */
+        function(data, w_callback) {
+          var user = data.user;
+          var teams = data.teams;
+          user.team = [];
+          company.team = [];
+          for(var i=0; i<teams.length; i++) {
+            user.team.push({
+              gid: teams[i].gid,
+              _id: teams[i]._id,
+              group_type: teams[i].group_type,
+              entity_type: teams[i].entity_type,
+              name: teams[i].name,
+              leader: true,
+              logo: teams[i].logo
+            });
+            company.team.push({
+              gid : teams[i].gid,
+              group_type: teams[i].group_type,
+              name: teams[i].name,
+              id: teams[i]._id
+            })
+          }
+          user.save(function(err) {
+            if(err) {
+              w_callback(err);
+            }
+            else {
+              w_callback(null);
+            }
+          })
+        }
+      ],
+      function(err,results) {
+        if(err) {
+          console.log(err);
+          return res.status(500).send({msg:'服务器错误'});
+        }
+        return res.status(200).send({msg:'注册成功'});
+      })
+    }
+  })
+  .then(null, function(err) {
+    console.log(err);
+    return res.status(500).send({msg:'服务器错误'});
+  });
+}
+
+/**
  * 验证通过后创建公司进一步的信息(用户名\密码等)
  */
 exports.createDetail = function(req, res) {
