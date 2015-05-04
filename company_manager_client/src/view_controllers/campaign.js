@@ -105,6 +105,11 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
         if(nextTime || $scope.endTime) params.to = nextTime || $scope.endTime;
         if($scope.startTime) params.from = $scope.startTime;
         if(nextId) params.nextId = nextId;
+        if($scope.isSort) params.sort = $scope.sortParam;
+        if ($scope.status) {
+          params.status = $scope.status;
+          params.statusType = 1; // 区分活动日程的状态
+        }
 
         if($scope.selectedType===1) {//获取公司&小队活动
           params.attrs.push('allCampaign');
@@ -194,7 +199,72 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
       //       break;
       //   }
       // };
-
+      $scope.sortStatus = [{
+        sort_asc: false,
+        sort_desc: false
+      }, {
+        sort_asc: false,
+        sort_desc: false
+      }, {
+        sort_asc: false,
+        sort_desc: false
+      }];
+      var resetSortStatus = function(index) {
+        for(var i = 0; i < 3; i++) {
+          if(i != index) {
+            $scope.sortStatus[i].sort_asc = false;
+            $scope.sortStatus[i].sort_desc = false;
+          }
+        }
+      };
+      $scope.isSort = false;
+      var reloadData = function(index, status) {
+        $scope.isSort = true;
+        switch(index) {
+          case 0:
+            if(status.sort_asc) {
+              $scope.sortParam = 'start_time';
+            } else  {
+              $scope.sortParam = '-start_time';
+            }
+            break;
+          case 1:
+            if(status.sort_asc) {
+              $scope.sortParam = 'end_time';
+            } else  {
+              $scope.sortParam = '-end_time';
+            }
+            break;
+          case 2:
+            if(status.sort_asc) {
+              $scope.sortParam = 'number_of_members';
+            } else  {
+              $scope.sortParam = '-number_of_members';
+            }
+            break;
+        }
+        getCampaigns();
+      };
+      $scope.changeColumnClass = function(type) {
+        resetSortStatus(type);
+        if($scope.sortStatus[type].sort_asc || $scope.sortStatus[type].sort_desc) {
+          if($scope.sortStatus[type].sort_asc) {
+            $scope.sortStatus[type].sort_asc = false;
+            $scope.sortStatus[type].sort_desc = true;
+          } else {
+            $scope.sortStatus[type].sort_asc = true;
+            $scope.sortStatus[type].sort_desc = false;
+          }
+        } else {
+          $scope.sortStatus[type].sort_asc = true;
+        }
+        reloadData(type, $scope.sortStatus[type]);
+      };
+      $scope.status = 0;
+      $scope.showStatus = function(type) {
+        $scope.status = type;
+        getCampaigns();
+      };
       $scope.selectTeam = function(tid) {
         $scope.currentTeamId = tid;
         $scope.selectedType = 2;
@@ -522,12 +592,9 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
         if(nextTime || $scope.endTime) params.to = nextTime || $scope.endTime;
         if($scope.startTime) params.from = $scope.startTime;
         if(nextId) params.nextId = nextId;
-        if($scope.isSort) {
-          params.sort = $scope.sortParam;
-        }
-        if($scope.status) {
-          params.status = $scope.status;
-        }
+        if($scope.isSort) params.sort = $scope.sortParam;
+        if($scope.status) {params.status = $scope.status; params.statusType = 0;}
+        
         params.attrs.push('allCampaign');
         campaignService.getCampaigns(params)
           .success(function(data, status) {
