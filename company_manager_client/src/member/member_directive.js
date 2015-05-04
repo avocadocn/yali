@@ -9,7 +9,7 @@ define(['./member', 'jQuery', 'cropit'], function (member, $) {
         },
         link: function (scope, ele, attrs, ctrl) {
           var markUserDepartment = function(user, department) {
-            if (department && user.department) {
+            if (department && user.department._id) {
               for (var i = 0; i < department.length; i++) {
                 if (department[i]._id.toString() === user.department._id.toString()) {
                   department[i].selected = true;
