@@ -25,7 +25,7 @@ define(['./account', 'app'], function (account) {
          * @returns {HttpPromise}
          */
         login: function (postData) {
-          return $http.post(apiBaseUrl + '/companies/login', postData);
+          return $http.post(apiBaseUrl + '/companies/login', postData, {withCredentials: true});
         },
 
         /**
@@ -33,7 +33,7 @@ define(['./account', 'app'], function (account) {
          * @returns {HttpPromise}
          */
         logout: function () {
-          return $http.post(apiBaseUrl + '/companies/logout');
+          return $http.post(apiBaseUrl + '/companies/logout', null, {withCredentials: true});
         },
 
         /**

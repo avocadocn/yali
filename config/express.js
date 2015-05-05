@@ -6,8 +6,6 @@
 var express = require('express'),
   consolidate = require('consolidate'),
   mongoose = require('mongoose'),
-  mongoStore = require('connect-mongo')(express),
-  RedisStore = require('connect-redis')(express.session),
   flash = require('connect-flash'),   //session operate
   helpers = require('view-helpers'),
   config = require('./config'),
@@ -16,6 +14,10 @@ var express = require('express'),
   tokenService = require('../app/services/token'),
   i18n = require('i18n'),
   fs = require('fs');
+
+var session = require('express-session'),
+  RedisStore = require('connect-redis')(session);
+
 
 module.exports = function (app, passport, db) {
   i18n.configure({
@@ -62,8 +64,7 @@ module.exports = function (app, passport, db) {
   app.enable('jsonp callback');
 
   app.configure(function () {
-    // The cookieParser should be above session
-    app.use(express.cookieParser());
+
     app.use(i18n.init);
     // Request body parsing middleware should be above methodOverride
     app.use(express.urlencoded());
@@ -72,9 +73,11 @@ module.exports = function (app, passport, db) {
 
     var hour = 3600000;
     // Express/Redis session storage
-    app.use(express.session({
+    app.use(session({
       secret: config.sessionSecret,
       store: new RedisStore(),
+      resave: false,
+      saveUninitialized: true,
       cookie: {
         maxAge: hour * 24 * 7
       }
@@ -101,8 +104,8 @@ module.exports = function (app, passport, db) {
     });
 
     // Use passport sessions
-    app.use(passport.initialize());
-    app.use(passport.session());
+    // app.use(passport.initialize());
+    // app.use(passport.session());
 
     app.use(function (req, res, next) {
 

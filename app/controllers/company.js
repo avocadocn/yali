@@ -2069,6 +2069,17 @@ exports.renderTeamInfo = function(req, res) {
 exports.renderManager = function(req, res) {
   res.render('partials/company_manager');
 };
+
 exports.getCompanyInviteQrcode = function(req, res) {
   res.render('partials/company_manager');
+};
+
+exports.renderLoginOrManagerPage = function(req, res) {
+  var rootPath = meanConfig.root;
+  if (req.session.mgcid) {
+    res.sendfile(path.join(rootPath, 'company_manager_client/index.html'));
+  }
+  else {
+    res.sendfile(path.join(rootPath, 'company_manager_client/login.html'));
+  }
 };

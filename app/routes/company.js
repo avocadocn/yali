@@ -76,4 +76,6 @@ module.exports = function(app, passport) {
 
     app.get('/company/view/manager', company.renderManager);
 
+    app.get('/company/manager', company.renderLoginOrManagerPage);
+
 };
