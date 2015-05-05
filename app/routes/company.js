@@ -26,7 +26,7 @@ module.exports = function(app, passport) {
     app.post('/company/officialNameCheck', company.officialNameCheck);
     app.post('/company/usernameCheck', company.usernameCheck);
 
-
+    app.get('/company/quickvalidate', company.quickvalidate);//点击公司激活链接
     app.get('/company/validate', company.validate);//点击公司激活链接
 
     app.get('/company/validate/error', company.validateError);

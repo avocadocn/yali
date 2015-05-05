@@ -15,5 +15,5 @@
               input.form-control#email(type="email" name="email" ng-model="email" required)
               button.btn.btn_invite(ng-click="invite()") 发送邀请信
           p.invite_link 2.邀请链接:
-          p.text-primary: a(ng-href="company.inviteUrl") {{company.inviteUrl}}
+          p.text-primary: a(ng-href="{{company.inviteUrl}}") {{company.inviteUrl}}
           p.invite_link 3.扫描上方二维码

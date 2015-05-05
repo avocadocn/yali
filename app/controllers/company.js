@@ -575,7 +575,93 @@ exports.validate = function(req, res) {
       }
     });
 };
+//快速注册进入验证，已经填好公司信息和个人信息，只需要将两者激活
+exports.quickvalidate = function(req, res) {
 
+  var key = req.query.key;
+  var _id = req.query.id;
+  Company.findOne({
+      _id: _id
+    },
+    function(err, company) {
+      if (company) {
+        if (!company.status.active) {
+          if (encrypt.encrypt(_id, config.SECRET) === key) {
+            company.acitve = true;
+            company.mail_active = true;
+            company.save(function(err) {
+              if (err) {
+                res.render('company/company_validate_error', {
+                  title: '验证失败',
+                  message: '未知错误!'
+                });
+              } else {
+                User.findOne({username:company.info.email}).exec(function (user) {
+                  if(user){
+                    user.acitve = true;
+                    user.mail_active = true;
+                    user.save(function (err) {
+                      if(!err){
+                        Config.findOne({ name: config.CONFIG_NAME }, function (err, config) {
+                          if (err || !config || !config.smtp || config.smtp === 'webpower') {
+                            webpower.sendInviteColleageMail(company.email, company.invite_key, company._id.toString(), req.headers.host, function(err) {
+                              if (err) {
+                                // TO DO: 发送失败待处理
+                                console.log(err);
+                              }
+                            });
+                          } else if (config.smtp === '163') {
+                            mail.sendInviteColleageMail(company.email, company.invite_key, company._id.toString(), req.headers.host);
+                          } else if (config.smtp === 'sendcloud') {
+                            sendcloud.sendInviteColleageMail(company.email, company.invite_key, company._id.toString(), req.headers.host);
+                          }
+                        });
+                        res.render('/company/validate/active_success');
+                      }
+                      else{
+                        res.render('company/company_validate_error', {
+                          title: '验证失败',
+                          message: '未知错误!'
+                        });
+                      }
+                    })
+                  }
+                  else{
+                    res.render('company/company_validate_error', {
+                      title: '验证失败',
+                      message: '该公司激活成功，但对应的个人不存在!'
+                    });
+                  }
+                })
+                .then(null,function (err) {
+                  res.render('company/company_validate_error', {
+                    title: '验证失败',
+                    message: '未知错误!'
+                  });
+                })
+                
+              }
+            });
+          } else {
+            res.render('company/company_validate_error', {
+              title: '验证失败',
+              message: '验证码不正确!'
+            });
+          }
+        } else {
+          res.render('company/company_validate_error', {
+            title: '验证失败',
+            message: '您的公司已经激活!'
+          });
+        }
+      } else {
+        res.render('company/company_validate_error', {
+          title: '验证失败',
+          message: '该公司不存在!'
+        });
+      }
+    });
+};
 
 ///邀请码唯一性
 exports.codeCheck = function(req, res) {
@@ -973,6 +1059,21 @@ exports.quickCreate =function(req, res) {
           console.log(err);
           return res.status(500).send({msg:'服务器错误'});
         }
+        Config.findOne({ name: config.CONFIG_NAME }, function (err, config) {
+          if (err || !config || !config.smtp || config.smtp === 'webpower') {
+            webpower.sendQuickRegisterActiveMail(email, req.body.name, company._id.toString(), req.headers.host, function(err) {
+              if (err) {
+                // TO DO: 发送失败待处理
+                console.log(err);
+              }
+            });
+          } else if (config.smtp === '163') {
+            mail.sendQuickRegisterActiveMail(email, req.body.name, company._id.toString(), req.headers.host);
+          } else if (config.smtp === 'sendcloud') {
+            sendcloud.sendQuickRegisterActiveMail(email, req.body.name, company._id.toString(), req.headers.host);
+          }
+        });
+        
         return res.status(200).send({msg:'注册成功'});
       })
     }
@@ -1047,7 +1148,6 @@ exports.home = function(req, res) {
       role: req.role
     });
   };
-
   if (!req.params.companyId) {
     if (req.user.provider === 'company') {
       return render(req.user);
@@ -1075,7 +1175,7 @@ exports.Info = function(req, res) {
   res.render('company/company_info', {
     title: '企业信息管理',
     role: req.role
-  });
+  });  
 };
 
 exports.saveGroupInfo = function(req, res) {

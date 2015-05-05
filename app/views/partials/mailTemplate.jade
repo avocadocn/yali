@@ -105,7 +105,11 @@ html
         .solid.xs_hidden(style="border-top: 2px solid #DCDCDC;")
         div(style="font-size: 14px; line-height: 20px;")
           p= description
-          p: a(style="text-decoration: none; word-break: break-all;" href="#{link}") #{link}
+          if link
+            p: a(style="text-decoration: none; word-break: break-all;" href="#{link}") #{link}
+          if qrcodeURI
+            img(src="#{qrcodeURI}")
+            p 扫二维码快速注册
         .dashed.sm_hidden(style="display: none;")
         div(style="margin-top: 40px;")
           p(style="color: #3bbee8;height:40px; line-height:40px; padding-left:40px; background:url(http://donlercom.qiniudn.com/img/icons/1_03.png) no-repeat left center; background-size: 40px;")

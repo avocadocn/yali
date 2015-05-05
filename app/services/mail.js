@@ -211,3 +211,106 @@ exports.sendFeedBackMail = function(email, content) {
     html: content
   });
 };
+/**
+ * 快速注册邮箱验证
+ * @param {String} who 接收人的邮件地址
+ * @param {String} name 公司名
+ * @param {String} id HR的公司id
+ */
+exports.sendQuickRegisterActiveMail = function(who, name, id, host) {
+  var from = '动梨<service@donler.com>';
+  var to = who;
+  var subject = name + '快速注册激活';
+  var description = '我们收到您在动梨的注册申请信息，请点击下面的链接来激活帐户：';
+  var link = 'http://' + host + '/company/quickvalidate?key=' + encrypt.encrypt(id,config.SECRET) + '&id=' + id;
+  fs.readFile(rootConfig.root+'/app/views/partials/mailTemplate.jade', 'utf8', function (err, data) {
+    if (err) {
+      console.log(err);
+      console.log(err.stack);
+      return;
+    }
+    var fn = jade.compile(data);
+    var html = fn({
+      'title': '快速注册激活',
+      'host': siteProtocol + host,
+      'who': who,
+      'description': description,
+      'link': link
+    });
+    sendMail({
+      from: from,
+
+      to: to,
+      subject: subject,
+      html: html
+    });
+  });
+};
+/**
+ * 公司操作指南
+ * @param {String} who 接收人的邮件地址
+ * @param {String} id HR的公司id
+ */
+exports.sendCompanyOperationGuideMail = function(who, id, host) {
+  var from = '动梨<service@donler.com>';
+  var to = who;
+  var subject = '公司操作指南';
+  var description = '公司操作指南';
+  fs.readFile(rootConfig.root+'/app/views/partials/mailTemplate.jade', 'utf8', function (err, data) {
+    if (err) {
+      console.log(err);
+      console.log(err.stack);
+      return;
+    }
+    var fn = jade.compile(data);
+    var html = fn({
+      'title': '公司操作指南',
+      'host': siteProtocol + host,
+      'who': who,
+      'description': description
+    });
+    sendMail({
+      from: from,
+
+      to: to,
+      subject: subject,
+      html: html
+    });
+  });
+};
+/**
+ * 邀请同事提示邮件
+ * @param {String} who 接收人的邮件地址
+ * @param {String} id HR的公司id
+ */
+exports.sendInviteColleageMail = function(who, key, id, host) {
+  var from = '动梨<service@donler.com>';
+  var to = who;
+  var subject = '邀请同事提示邮件';
+  var description = '快去邀请您的同事来注册吧';
+  var qrcodeURI = 'http://' + host +'/img/qrcode/'+id+'.png';
+  var link = 'http://' + host + '/users/invite?key=' + key + '&cid=' + id;
+  fs.readFile(rootConfig.root+'/app/views/partials/mailTemplate.jade', 'utf8', function (err, data) {
+    if (err) {
+      console.log(err);
+      console.log(err.stack);
+      return;
+    }
+    var fn = jade.compile(data);
+    var html = fn({
+      'title': '邀请邮件',
+      'host': siteProtocol + host,
+      'who': who,
+      'description': description,
+      'link': link,
+      'qrcodeURI':qrcodeURI
+    });
+    sendMail({
+      from: from,
+
+      to: to,
+      subject: subject,
+      html: html
+    });
+  });
+};
