@@ -21,7 +21,7 @@
     "bower": "~1.2.8",
     "connect-flash": "~0.1.1",
     "connect-mongo": "~0.4.0",
-    "connect-redis": "1.4.7",
+    "connect-redis": "~2.3.0",
     "consolidate": "~0.10.0",
     "express": "~3.4.7",
     "forever": "~0.10.11",

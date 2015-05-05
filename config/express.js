@@ -7,6 +7,7 @@ var express = require('express'),
   consolidate = require('consolidate'),
   mongoose = require('mongoose'),
   mongoStore = require('connect-mongo')(express),
+  RedisStore = require('connect-redis')(express.session),
   flash = require('connect-flash'),   //session operate
   helpers = require('view-helpers'),
   config = require('./config'),
@@ -69,19 +70,14 @@ module.exports = function (app, passport, db) {
     app.use(express.json());
     app.use(express.methodOverride());
 
-    // Express/Mongo session storage
+    var hour = 3600000;
+    // Express/Redis session storage
     app.use(express.session({
       secret: config.sessionSecret,
-      /*
-       store: new RedisStore({
-       db: db.connection.db,
-       port: config.port
-       })
-       */
-      store: new mongoStore({
-        db: db.connection.db,
-        collection: config.sessionCollection
-      })
+      store: new RedisStore(),
+      cookie: {
+        maxAge: hour * 24 * 7
+      }
     }));
 
 
