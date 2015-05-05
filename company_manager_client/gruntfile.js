@@ -2,6 +2,42 @@
 
 module.exports = function(grunt) {
 
+  require('load-grunt-tasks')(grunt);
+
+  var createRequireJSOptions = function(isProduct) {
+    var opts = {
+      mainConfigFile: 'src/main.js',
+      out: '../public/company_client/js/donler.js',
+      urlArgs: '',
+      uglify: {
+        toplevel: true,
+        ascii_only: true,
+        beautify: true,
+        max_line_length: 1000,
+
+        //How to pass uglifyjs defined symbols for AST symbol replacement,
+        //see "defines" options for ast_mangle in the uglifys docs.
+        defines: {
+          DEBUG: ['name', 'false']
+        },
+
+        //Custom value supported by r.js but done differently
+        //in uglifyjs directly:
+        //Skip the processor.ast_mangle() part of the uglify call (r.js 2.0.5+)
+        no_mangle: true
+      },
+      optimize: 'uglify2',
+      generateSourceMaps: true,
+      preserveLicenseComments: false
+    };
+
+    if (isProduct) {
+      opts.generateSourceMaps = false;
+    }
+
+    return opts;
+  };
+
   grunt.initConfig({
     watch: {
       jade: {
@@ -38,9 +74,10 @@ module.exports = function(grunt) {
     },
     requirejs: {
       compile: {
-        options: {
-          mainConfigFile: 'src/main.js'
-        }
+        options: createRequireJSOptions()
+      },
+      publish: {
+        options: createRequireJSOptions(true)
       }
     },
     stylus: {
@@ -119,17 +156,10 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.loadNpmTasks('grunt-contrib-jade');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-requirejs');
-  grunt.loadNpmTasks('grunt-contrib-stylus');
-  grunt.loadNpmTasks('grunt-contrib-copy');
-  grunt.loadNpmTasks('grunt-contrib-concat');
-
-  grunt.registerTask('default', ['product', 'develop']);
+  grunt.registerTask('default', ['compile', 'develop']);
   grunt.registerTask('develop', ['watch']);
-  grunt.registerTask('product', ['jade', 'stylus', 'requirejs', 'copy', 'concat']);
-
+  grunt.registerTask('compile', ['jade', 'stylus', 'requirejs:compile', 'copy', 'concat']);
+  grunt.registerTask('publish', ['jade', 'stylus', 'requirejs:publish', 'copy', 'concat']);
 };
 
 

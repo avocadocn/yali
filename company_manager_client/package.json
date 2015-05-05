@@ -9,6 +9,7 @@
     "grunt-contrib-watch": "~0.6.1",
     "grunt-contrib-stylus": "~0.20.0",
     "grunt-contrib-copy": "~0.8.0",
-    "grunt-contrib-concat": "~0.5.1"
+    "grunt-contrib-concat": "~0.5.1",
+    "load-grunt-tasks": "~3.1.0"
   }
 }
