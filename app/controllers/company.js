@@ -613,9 +613,9 @@ exports.officialNameCheck = function(req, res) {
     'info.name': name
   }, function(err, company) {
     if (err || company) {
-      res.send(true);
+      res.send({result: 1, cid:company._id, cname:company.info.name});
     } else {
-      res.send(false);
+      res.send({result:0});
     }
   });
 }
@@ -858,6 +858,7 @@ exports.quickCreate =function(req, res) {
       company.info.city.city = req.body.city;
       company.info.city.district = req.body.district;
       company.info.email = email;
+      company.info.membernumber = 1;
       company.email = {domain: email.split('@')[1]};
 
       async.waterfall([
@@ -900,12 +901,12 @@ exports.quickCreate =function(req, res) {
                   district: req.body.district
                 },
                 member:[{
-                  _id: uesr._id,
+                  _id: user._id,
                   nickname: user.nickname,
                   photo: user.photo,
                 }],
                 leader:[{
-                  _id: uesr._id,
+                  _id: user._id,
                   nickname: user.nickname,
                   photo: user.photo,
                 }]

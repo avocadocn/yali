@@ -59,7 +59,7 @@ companySignUpApp.controller('signupController',['$http','$scope','$rootScope',fu
           name: $scope.name,
         }
       }).success(function(data, status) {
-        if(data === "false") {
+        if(data.result === 0) {
           $scope.nameCheckValue = "";
           $scope.nameCheck = true;
         } else {
@@ -160,7 +160,7 @@ companySignUpApp.controller('userSignupController',['$http','$scope','$rootScope
   };
 
   $scope.prePage = function() {
-    if($scoe.page>1) {
+    if($scope.hasPrevious) {
       $http.post('/search/company',{email:$scope.email, page:$scope.page-1}).success(function (data,status){
         $scope.companies=data.companies;
         $scope.page--;

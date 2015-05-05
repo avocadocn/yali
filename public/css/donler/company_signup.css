@@ -247,16 +247,24 @@
 .signup_row .personal_signup .select_companies .companies {
   margin: 20px 0 30px;
 }
-.signup_row .personal_signup .select_companies .companies .select_company {
+.signup_row .personal_signup .select_companies .select_company,
+.signup_row .personal_signup .select_companies .change_page {
   border-radius: 5px;
   padding: 8px 10px;
   border: 1px solid #3ca2e0;
   color: #3ca2e0;
   background-color: #fff;
 }
-.signup_row .personal_signup .select_companies .companies .select_company:hover {
+.signup_row .personal_signup .select_companies .select_company:hover,
+.signup_row .personal_signup .select_companies .change_page:hover {
   background-color: #3ca2e0;
   color: #fff;
+}
+.signup_row .personal_signup .select_companies .select_company {
+  margin-right: 2px;
+}
+.signup_row .personal_signup .select_companies .change_page {
+  margin-bottom: 10px;
 }
 .signup_row .personal_signup .dl_sm_group .btn_submit {
   background-color: #3ca2e0;

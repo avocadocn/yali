@@ -70,7 +70,6 @@ companyApp.controller('DetailController', ['$http','$scope','$rootScope', functi
   $scope.changeIndustry = function() {
     $scope.child_industry = $scope.parent_industry.child_industry[0];
   };
-
   var check_name = false;
   var check_username = false;
   var check_name_value = '正在检查公司名是否存在';
@@ -84,7 +83,7 @@ companyApp.controller('DetailController', ['$http','$scope','$rootScope', functi
           official_name: _this.official_name
         }
       }).success(function(data, status) {
-        if(data === "false") {
+        if(data.result === 0) {
           _this.check_name_value = "";
           _this.check_name = true;
         } else {

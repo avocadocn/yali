@@ -10,7 +10,9 @@
   .select_companies
     p(ng-show="companies.length") 选择您的公司:
     .companies
-      button.select_company(ng-repeat="company in companies" ng-click="select($index)") {{company.name}}
+      button.select_company(ng-repeat="company in companies" ng-click="select($index)" ng-cloak) {{company.name}}
+    button.change_page(ng-if="hasPrevious" ng-click="prePage()") 上一页
+    button.change_page.pull-right(ng-if="hasNext" ng-click="nextPage()") 下一页
     p 若没有您的公司:
     p 
       span 邀请贵公司HR进行注册 或
