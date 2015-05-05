@@ -103,16 +103,68 @@ companySignUpApp.controller('signupController',['$http','$scope','$rootScope',fu
 
 companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$rootScope',function ($http,$scope,$rootScope) {
   $scope.step = 1;
-  $scope.mailCheck = function() {
+  var pattern =  /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
+  $scope.checkMail = function() {
     if($scope.email){
-      $scope.loading = true;
-      $http.post('/users/mailCheck',{login_email: $scope.email})
-        .success(function(data, status) {
-          $scope.loading = false;
-          // $scope.active=data.active;
-        });
+      var reg = (pattern.test($scope.email))
+      if(reg) {
+        $scope.loading = true;
+        $http.post('/users/mailCheck',{login_email: $scope.email})
+          .success(function(data, status) {
+            $scope.loading = false;
+            if(data.active===1) {//未注册过
+              $scope.step = 2;
+              searchCompany();
+            }
+            else {
+              //暂时没有重发邮件就直接告知已注册过
+              $scope.step = 6;
+            }
+          });
+      }
+      else {
+        $scope.email = '';
+      }
     }
   };
+  var searchCompany = function() {
+    $http.post('/search/company', {email:$scope.email})
+    .success(function(data, status) {
+      $scope.page = 1;
+      $scope.companies=data.companies;
+      if($scope.page===data.pageCount) {$scope.hasNext = false;}
+      $scope.hasPrevious = false;
+    })
+  };
+  $scope.nextPage = function() {
+    if($scope.hasNext) {
+      $http.post('/search/company',{email:$scope.email, page:$scope.page+1}).success(function (data,status){
+        $scope.companies=data.companies;
+        $scope.page++;
+        if($scope.page===data.pageCount) {$scope.hasNext = false;}
+        $scope.hasPrevious = true;
+      });
+    }
+  };
+
+  $scope.prePage = function() {
+    if($scope.hasPrevious) {
+      $http.post('/search/company',{email:$scope.email, page:$scope.page-1}).success(function (data,status){
+        $scope.companies=data.companies;
+        $scope.page--;
+        if($scope.page===1) {$scope.hasPrevious = false;}
+      });
+    }
+  };
+
+  $scope.select = function(company) {
+    $scope.selectedCompany = company;
+    $scope.step = 7;
+  };
+
+  $scope.organize = function() {
+    $scope.step = 3;
+  }
 }]);
 
 companySignUpApp.controller('userSignupController',['$http','$scope','$rootScope',function ($http,$scope,$rootScope) {

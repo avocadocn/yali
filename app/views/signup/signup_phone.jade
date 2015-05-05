@@ -2,20 +2,33 @@ extends ../layouts/base
 
 block content
   .signup_phone(ng-controller="userSignupMobileController" class="step_{{step}}")
-    .header
+    .signup_header
       img.logo(src="/img/signup/dl_logo_signup.png")
+    
     .signup_step_one(ng-show="step===1")
       //- check邮箱
       .input_box
         .board
           input(ng-model="email" required)
-          button.next_step(ng-click="checkMail()")
+          button.next_step(ng-click="checkMail()" ng-disabled="loading")
       .signup_bottom
         //- img.signup_man(src="/img/signup/dl_signup_man.png")
         img.signup_cloud(src="/img/signup/dl_signup_cloud.png")
+
     .signup_step_two(ng-show="step===2")
       //- 选择公司或选择自己注册
-      include partials/personal_step_two_phone
+      .board
+        img.search_title(src="/img/signup/dl_signup_search_title.png")
+        .companies
+          .company(ng-repeat="company in companies" ng-click="select(company)")
+            span {{company.name}}
+            i.fa.fa-chevron-right.pull-right
+          span.prePage(ng-click="prePage()" ng-if="hasPrevious") 上一页
+          span.nextPage(ng-click="nextPage()" ng-if="hasNext") 下一页
+      .signup_bottom_2
+        img.notfound(src="/img/signup/dl_signup_notfound.png")
+        button.organize(ng-click="organize()")
+    
     .signup_step_three(ng-show="step===3")
       //- 填入公司资料及密码
       include partials/personal_step_three_phone
@@ -24,22 +37,14 @@ block content
       include partials/personal_step_four_phone
     .signup_step_five(ng-show="step===5")
       //- 注册成功
+      span 注册成功
     //- 支线系列
     .signup_step_six(ng-show="step===6")
       //- 已经注册过
+      span 已注册过.
     .signup_step_seven(ng-show="step===7")
       //- 只是个人注册，不用公司注册
+      span 已有公司注册.
 
 block footExt
   script(src='/js/controllers/companySignUp.js')
-  script.
-    window.location.hash='';
-    var $buoop = {vs:{i:10,f:15,o:12.1,s:5.1}}; 
-    $buoop.ol = window.onload; 
-    window.onload=function(){ 
-      try {if ($buoop.ol) {$buoop.ol();} }catch (e) {} 
-      var e = document.createElement("script"); 
-      e.setAttribute("type", "text/javascript"); 
-      e.setAttribute("src", "/js/notice/update.js"); 
-      document.body.appendChild(e);
-    }
