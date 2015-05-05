@@ -1197,6 +1197,12 @@
 .signup_phone .signup_step_two .board .search_title {
   width: 121.5px;
 }
+.signup_phone .signup_step_two .board .fa-reply {
+  margin-left: 30px;
+  position: absolute;
+  color: #fff;
+  font-size: 20px;
+}
 .signup_phone .signup_step_two .board .companies {
   margin-top: 30px;
   height: 200px;
@@ -1243,6 +1249,9 @@
   height: 40px;
   float: right;
   background-color: transparent;
+}
+.signup_phone。step_3 {
+  background-color: #ef6767;
 }
 
 .dl_detail_main {

@@ -102,10 +102,11 @@ companySignUpApp.controller('signupController',['$http','$scope','$rootScope',fu
 }]);
 
 companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$rootScope',function ($http,$scope,$rootScope) {
+  //- step 1
   $scope.step = 1;
   var pattern =  /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
-  $scope.checkMail = function() {
-    if($scope.email){
+  $scope.checkMail = function(keyEvent) {
+    if((!keyEvent || keyEvent.which===13) && $scope.email){
       var reg = (pattern.test($scope.email))
       if(reg) {
         $scope.loading = true;
@@ -136,6 +137,8 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
       $scope.hasPrevious = false;
     })
   };
+
+  //-step 2
   $scope.nextPage = function() {
     if($scope.hasNext) {
       $http.post('/search/company',{email:$scope.email, page:$scope.page+1}).success(function (data,status){
@@ -146,7 +149,6 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
       });
     }
   };
-
   $scope.prePage = function() {
     if($scope.hasPrevious) {
       $http.post('/search/company',{email:$scope.email, page:$scope.page-1}).success(function (data,status){
@@ -156,15 +158,57 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
       });
     }
   };
-
+  $scope.preStep = function() {
+    $scope.step -- ;
+  }
   $scope.select = function(company) {
     $scope.selectedCompany = company;
     $scope.step = 7;
   };
-
   $scope.organize = function() {
     $scope.step = 3;
-  }
+    getRegions();
+  };
+
+  //- step 3
+  var getRegions = function() {
+    if(!$scope.provinces) {
+      $http.get('/region').success(function(data, status) {
+        $scope.provinces = data.data;
+        $scope.province = $scope.provinces[0];
+        $scope.cities = $scope.province.data;
+        $scope.city = $scope.cities[0];
+        $scope.districts = $scope.city.data;
+        $scope.district = $scope.districts[0];
+      });
+    }
+  };
+  $scope.selcetProvince = function() {
+    $scope.cities = $scope.province.data;
+    $scope.city = $scope.cities[0];
+  };
+  $scope.selectCity = function() {
+    $scope.districts = $scope.city.data;
+    $scope.district = $scope.districts[0];
+  };
+  $scope.checkOfficeName = function() {
+    if($scope.companyName) {
+      $http.post('/company/officialNameCheck',{
+        name: $scope.companyName,
+        domain: $scope.email.split('@')[1]
+      }).success(function(data, status) {
+        if(data.result) {
+          $scope.recommandCompany = {
+            _id: data.cid,
+            name: $scope.companyName
+          };
+          $scope.domain = data.domain;
+        }
+      });
+    }
+  };
+
+
 }]);
 
 companySignUpApp.controller('userSignupController',['$http','$scope','$rootScope',function ($http,$scope,$rootScope) {

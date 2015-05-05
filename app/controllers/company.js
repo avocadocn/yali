@@ -696,10 +696,13 @@ exports.mailCheck = function(req, res) {
 exports.officialNameCheck = function(req, res) {
   var name = req.body.name;
   Company.findOne({
-    'info.name': name
+    'info.name': name,
+    'status.active':true
   }, function(err, company) {
     if (err || company) {
-      res.send({result: 1, cid:company._id, cname:company.info.name});
+      var domain = false;
+      if(req.body.domain && company.email.domain.indexOf(req.body.domain)>-1) {domain = true;}
+      res.send({result: 1, cid:company._id, domain: domain});
     } else {
       res.send({result:0});
     }

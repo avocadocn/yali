@@ -9,7 +9,7 @@ block content
       //- check邮箱
       .input_box
         .board
-          input(ng-model="email" required)
+          input(ng-model="email" ng-keypress="checkMail($event)" required)
           button.next_step(ng-click="checkMail()" ng-disabled="loading")
       .signup_bottom
         //- img.signup_man(src="/img/signup/dl_signup_man.png")
@@ -19,6 +19,7 @@ block content
       //- 选择公司或选择自己注册
       .board
         img.search_title(src="/img/signup/dl_signup_search_title.png")
+        i.fa.fa-reply(ng-click="preStep()")
         .companies
           .company(ng-repeat="company in companies" ng-click="select(company)")
             span {{company.name}}
