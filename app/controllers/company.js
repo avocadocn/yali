@@ -1273,6 +1273,9 @@ exports.quickCreateTeams = function(req, res, next) {
       userDoc.team = [];
       companyDoc.team = [];
 
+      // 添加chatroom
+      userDoc.chatrooms = [{_id: companyDoc._id}];
+
       // 把人加到小队并变成队长, 并把小队加到公司
       for(var i = 0, len = teams.length; i < len; i++) {
         var team = teams[i];
@@ -1285,6 +1288,7 @@ exports.quickCreateTeams = function(req, res, next) {
           leader: true,
           logo: team.logo
         });
+        userDoc.chatrooms.push({_id: team._id});
         companyDoc.team.push({
           gid : team.gid,
           group_type: team.group_type,
