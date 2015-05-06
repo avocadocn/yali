@@ -313,6 +313,7 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
         $scope.selectedType = 2;
         $scope.sortCampaigns = false;
         $scope.campaignStatus = false;
+        resetSortJson(-1);
         $scope.sortJson[0].desc = true;
         getCampaigns();
         // var events_source = apiBaseUrl + '/campaigns?result=calendar&limit=200&attrs=closeShow&cid='+ cid + '&tid=' + tid;
@@ -321,6 +322,10 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
       $scope.quitTeam = function() {
         $scope.currentTeamId = null;
         $scope.selectedType = 1;
+        $scope.sortCampaigns = false;
+        $scope.campaignStatus = false;
+        resetSortJson(-1);
+        $scope.sortJson[0].desc = true;
         getCampaigns();
       }
 
