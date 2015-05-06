@@ -123,24 +123,11 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
           }else {
             params.numOfMem = numOfMem;
           }
-          // if ($scope.sortInfoOfParams == 'start_time' || $scope.sortInfoOfParams == '-start_time') {
-          //   params.queryBy = 'start_time';
-          //   params.queryDirection = $scope.sortInfoOfParams == 'start_time' ? 'asc' : 'desc';
-          //   params.queryNextPageTime = lastStartTime;
-          //   console.log('1');
-          // } else if ($scope.sortInfoOfParams == 'end_time' || $scope.sortInfoOfParams == '-end_time') {
-          //   params.queryBy = 'end_time';
-          //   params.queryDirection = $scope.sortInfoOfParams == 'end_time' ? 'asc' : 'desc';
-          //   params.queryNextPageTime = lastEndTime;
-          // } else {
-          //   params.num = num;
-          // }
         }
 
         if($scope.sortCampaigns) params.sort = $scope.sortInfoOfParams;
 
         if($scope.campaignStatus) {params.status = $scope.campaignStatus; params.statusType = 1;}
-        console.log(params);
 
         if($scope.selectedType===1) {//获取公司&小队活动
           params.attrs.push('allCampaign');
@@ -596,7 +583,7 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
       //  1、日期变更时
       //  2、翻页
       //  3、每页数目变更
-      var getSuccessProcess = function(data, nextId) {
+      var getSuccessProcess = function(data) {
         //logo
         var campaignsLength = data.campaigns.length;
         for(var i=0; i<campaignsLength; i++) {
@@ -616,17 +603,16 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
         //翻页所需逻辑
         $scope.campaigns = data.campaigns;
         $scope.hasNext = data.hasNext;
-        if($scope.nowPage===0 && !nextId) { //第一次请求
-          var page = {campaigns: data.campaigns};
-          if(data.hasNext) page.nextId = data.nextId;
+        if($scope.nowPage===0) { //第一次请求
+          var page = {campaigns: data.campaigns, hasNext: false};
+          if(data.hasNext) page.hasNext = true;
           $scope.pages.push(page);
         }else {//下一页
-          var page = {campaigns: data.campaigns, thisId: $scope.nextId};
-          if(data.hasNext) page.nextId = data.nextId;
+          var page = {campaigns: data.campaigns, hasNext: false};
+          if(data.hasNext) page.hasNext = true;
           $scope.pages.push(page);
-          // $scope.campaigns = data.campaigns;
         }
-        $scope.nextId = data.hasNext ? data.nextId : '';
+        // $scope.nextId = data.hasNext ? data.nextId : '';
       };
 
       /**
@@ -634,22 +620,44 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
        * @param  {date} nextTime  获取下一页所用标记
        * @param  {string} nextId  获取下一页所用标记
        */
-      var getCampaigns = function(nextTime,nextId) {
-        if(!nextId) {
+      var getCampaigns = function(lastStartTime, lastEndTime, numOfMem, lastCampaignId) {
+        if(!lastCampaignId) {
           $scope.pages = [];
           $scope.nowPage = 0;
         }
-        var params =  {'cid':cid, 'result':'managerList', 'attrs':['showClose'], 'sort':'-start_time', 'limit':$scope.numOfPage};
-        if(nextTime || $scope.endTime) params.to = nextTime || $scope.endTime;
+        var params = {
+          'cid': cid,
+          'result': 'managerList',
+          'attrs': ['showClose'],
+          'limit': $scope.numOfPage,
+          'sort': '-start_time',
+          'requestType': 'HR'
+        };
+        // if(lastStartTime || $scope.endTime) params.to = lastStartTime || $scope.endTime;
+        
+        // The endTime and startTime are used for range of time
+        if($scope.endTime) params.to = $scope.endTime;
         if($scope.startTime) params.from = $scope.startTime;
-        if(nextId) params.nextId = nextId;
+
+        if (lastCampaignId) {
+          params.lastCampaignId = lastCampaignId;
+          if($scope.sortInfoOfParams.indexOf('start_time') !== -1) {
+            params.queryNextPageTime = lastStartTime;
+          } else if($scope.sortInfoOfParams.indexOf('end_time') !== -1) {
+            params.queryNextPageTime = lastEndTime;
+          }else {
+            params.numOfMem = numOfMem;
+          }
+        }
+
         if($scope.sortCampaigns) params.sort = $scope.sortInfoOfParams;
-        if($scope.campaignStatus) {params.status = $scope.campaignStatus; params.statusType = 0;}
+
+        if($scope.campaignStatus) {params.status = $scope.campaignStatus; params.statusType = 1;}
         
         params.attrs.push('allCampaign');
         campaignService.getCampaigns(params)
           .success(function(data, status) {
-            getSuccessProcess(data, nextId);
+            getSuccessProcess(data);
           })
           .error(function(data, status) {
             //todo
@@ -661,30 +669,37 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
         if(!gettingPage) {
           gettingPage = true;
           if(action === 'next') {//下一页
-            if($scope.hasNext) {
-              if($scope.pages[$scope.nowPage+1]) {
+            if ($scope.hasNext) {
+              if ($scope.pages[$scope.nowPage + 1]) {
                 $scope.nowPage++;
                 $scope.campaigns = $scope.pages[$scope.nowPage].campaigns;
-                $scope.hasNext = $scope.pages[$scope.nowPage].nextId? true: false;
-                $scope.nextId = $scope.pages[$scope.nowPage].nextId;
-              }
-              else {
-                var lastTime = new Date($scope.campaigns[$scope.campaigns.length-1].startTime).valueOf();
-                getCampaigns(lastTime,$scope.nextId);
+                $scope.hasNext = $scope.pages[$scope.nowPage].hasNext;
+                // $scope.nextId = $scope.pages[$scope.nowPage].nextId;
+              } else {
+                var lastCampaignOfPage = $scope.campaigns[$scope.campaigns.length - 1];
+
+                var lastStartTime = new Date(lastCampaignOfPage.startTime).valueOf();
+                var lastEndTime = new Date(lastCampaignOfPage.endTime).valueOf();
+                var lastCampaignId = lastCampaignOfPage._id.toString();
+                var numOfMem = lastCampaignOfPage.memberNumber;
+
+                getCampaigns(lastStartTime, lastEndTime, numOfMem, lastCampaignId);
+
                 $scope.nowPage++;
-              }          }
+              }
+            }
           }else if(action === 'pre') {//上一页
             if($scope.nowPage>0) {
               $scope.nowPage--;
               $scope.campaigns = $scope.pages[$scope.nowPage].campaigns;
               $scope.hasNext = true;
-              $scope.nextId = $scope.pages[$scope.nowPage].nextId;
+              // $scope.nextId = $scope.pages[$scope.nowPage].nextId;
             }
           }else if(number>-1) {
             if($scope.pages[number]) {
               $scope.campaigns = $scope.pages[number].campaigns;
-              $scope.hasNext = $scope.pages[number].nextId? true: false;
-              $scope.nextId = $scope.pages[number].nextId;
+              $scope.hasNext = $scope.pages[number].hasNext;
+              // $scope.nextId = $scope.pages[number].nextId;
               $scope.nowPage = number;
             }
           }
@@ -724,9 +739,10 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
               $scope.startTime = day.valueOf();
               day.setHours(23,59,59,999);
               $scope.endTime = day.valueOf();
-              $scope.isSort = false;
-              resetSortStatus(-1);
-              $scope.status = 0;
+              $scope.sortCampaigns = false;
+              $scope.campaignStatus = false;
+              resetSortJson(-1);
+              $scope.sortJson[0].desc = true;
               getCampaigns();
             });
             $('#calendar').find('span[data-cal-date]').click(function(e){
@@ -736,10 +752,10 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
               $scope.startTime = day.valueOf();
               day.setHours(23,59,59,999);
               $scope.endTime = day.valueOf();
-              $scope.show = false;
-              $scope.isSort = false;
-              resetSortStatus(-1);
-              $scope.status = 0;
+              $scope.sortCampaigns = false;
+              $scope.campaignStatus = false;
+              resetSortJson(-1);
+              $scope.sortJson[0].desc = true;
               getCampaigns();
             });
           },
@@ -756,7 +772,7 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
 
         var calendar = $('#calendar').calendar(options);
       };
-      var events_source = apiBaseUrl + '/campaigns?result=calendar&attrs=allCampaign&attrs=showClose&limit=200&sort=-start&cid='+ cid;
+      var events_source = apiBaseUrl + '/campaigns?result=calendar&attrs=allCampaign&attrs=showClose&limit=200&sort=-start_time&requestType=HR&cid='+ cid;
       initCalendar(events_source);
 
       $scope.selectNumOfPage = function() {
@@ -773,6 +789,9 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
           }
         }
       };
+
+      $scope.sortInfoOfParams = '-start_time';
+
       var setSortInfoOfParams = function(b, info) {
         $scope.sortInfoOfParams = '';
         if(!b) {
@@ -799,7 +818,7 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
 
       $scope.sortJson = [{
         asc: false,
-        desc: false
+        desc: true
       }, {
         asc: false,
         desc: false
