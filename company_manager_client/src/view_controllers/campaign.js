@@ -58,7 +58,7 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
       //  3、小队变更
       //  4、翻页
       //  5、每页数目变更
-      var getSuccessProcess = function(data, nextId) {
+      var getSuccessProcess = function(data) {
         //logo
         var campaignsLength = data.campaigns.length;
         for(var i=0; i<campaignsLength; i++) {
@@ -78,44 +78,75 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
         //翻页所需逻辑
         $scope.campaigns = data.campaigns;
         $scope.hasNext = data.hasNext;
-        if($scope.nowPage===0 && !nextId) { //第一次请求
-          var page = {campaigns: data.campaigns};
-          if(data.hasNext) page.nextId = data.nextId;
+        if($scope.nowPage===0) { //第一次请求
+          var page = {campaigns: data.campaigns, hasNext: false};
+          if(data.hasNext) page.hasNext = true;
           $scope.pages.push(page);
         }else {//下一页
-          var page = {campaigns: data.campaigns, thisId: $scope.nextId};
-          if(data.hasNext) page.nextId = data.nextId;
+          var page = {campaigns: data.campaigns, hasNext: false};
+          if(data.hasNext) page.hasNext = true;
           $scope.pages.push(page);
-          // $scope.campaigns = data.campaigns;
         }
-        $scope.nextId = data.hasNext ? data.nextId : '';
+        // $scope.nextId = data.hasNext ? data.nextId : '';
       };
-
       /**
        * [getCampaigns description]
        * @param  {date} nextTime  获取下一页所用标记
        * @param  {string} nextId  获取下一页所用标记
        */
-      var getCampaigns = function(nextTime,nextId) {
-        if(!nextId) {
+      var getCampaigns = function(lastStartTime, lastEndTime, numOfMem, lastCampaignId) {
+        if(!lastCampaignId) {
           $scope.pages = [];
           $scope.nowPage = 0;
         }
-        var params =  {'cid':cid, 'result':'managerList', 'attrs':['showClose'], 'sort':'-start_time', 'limit':$scope.numOfPage};
-        if(nextTime || $scope.endTime) params.to = nextTime || $scope.endTime;
+
+        var params = {
+          'cid': cid,
+          'result': 'managerList',
+          'attrs': ['showClose'],
+          'limit': $scope.numOfPage,
+          'sort': '-start_time',
+          'requestType': 'HR'
+        };
+        // if(lastStartTime || $scope.endTime) params.to = lastStartTime || $scope.endTime;
+        
+        // The endTime and startTime are used for range of time
+        if($scope.endTime) params.to = $scope.endTime;
         if($scope.startTime) params.from = $scope.startTime;
-        if(nextId) params.nextId = nextId;
-        if($scope.isSort) params.sort = $scope.sortParam;
-        if ($scope.status) {
-          params.status = $scope.status;
-          params.statusType = 1; // 区分活动日程的状态
+
+        if (lastCampaignId) {
+          params.lastCampaignId = lastCampaignId;
+          if($scope.sortInfoOfParams.indexOf('start_time') !== -1) {
+            params.queryNextPageTime = lastStartTime;
+          } else if($scope.sortInfoOfParams.indexOf('end_time') !== -1) {
+            params.queryNextPageTime = lastEndTime;
+          }else {
+            params.numOfMem = numOfMem;
+          }
+          // if ($scope.sortInfoOfParams == 'start_time' || $scope.sortInfoOfParams == '-start_time') {
+          //   params.queryBy = 'start_time';
+          //   params.queryDirection = $scope.sortInfoOfParams == 'start_time' ? 'asc' : 'desc';
+          //   params.queryNextPageTime = lastStartTime;
+          //   console.log('1');
+          // } else if ($scope.sortInfoOfParams == 'end_time' || $scope.sortInfoOfParams == '-end_time') {
+          //   params.queryBy = 'end_time';
+          //   params.queryDirection = $scope.sortInfoOfParams == 'end_time' ? 'asc' : 'desc';
+          //   params.queryNextPageTime = lastEndTime;
+          // } else {
+          //   params.num = num;
+          // }
         }
+
+        if($scope.sortCampaigns) params.sort = $scope.sortInfoOfParams;
+
+        if($scope.campaignStatus) {params.status = $scope.campaignStatus; params.statusType = 1;}
+        console.log(params);
 
         if($scope.selectedType===1) {//获取公司&小队活动
           params.attrs.push('allCampaign');
           campaignService.getCampaigns(params)
           .success(function (data, status) {
-            getSuccessProcess(data, nextId);
+            getSuccessProcess(data);
           })
           .error(function (data, status) {
             //todo
@@ -124,7 +155,7 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
           params.tids = $scope.currentTeamId;
           campaignService.getCampaigns(params)
           .success(function (data, status) {
-            getSuccessProcess(data, nextId);
+            getSuccessProcess(data);
           })
           .error(function (data, status) {
             //todo
@@ -132,7 +163,7 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
         }else {//获取公司活动
           campaignService.getCampaigns(params)
           .success(function (data, status) {
-            getSuccessProcess(data, nextId);
+            getSuccessProcess(data);
           })
           .error(function (data, status) {
             //todo
@@ -145,30 +176,37 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
         if(!gettingPage) {
           gettingPage = true;
           if(action === 'next') {//下一页
-            if($scope.hasNext) {
-              if($scope.pages[$scope.nowPage+1]) {
+            if ($scope.hasNext) {
+              if ($scope.pages[$scope.nowPage + 1]) {
                 $scope.nowPage++;
                 $scope.campaigns = $scope.pages[$scope.nowPage].campaigns;
-                $scope.hasNext = $scope.pages[$scope.nowPage].nextId? true: false;
-                $scope.nextId = $scope.pages[$scope.nowPage].nextId;
-              }
-              else {
-                var lastTime = new Date($scope.campaigns[$scope.campaigns.length-1].startTime).valueOf();
-                getCampaigns(lastTime,$scope.nextId);
+                $scope.hasNext = $scope.pages[$scope.nowPage].hasNext;
+                // $scope.nextId = $scope.pages[$scope.nowPage].nextId;
+              } else {
+                var lastCampaignOfPage = $scope.campaigns[$scope.campaigns.length - 1];
+
+                var lastStartTime = new Date(lastCampaignOfPage.startTime).valueOf();
+                var lastEndTime = new Date(lastCampaignOfPage.endTime).valueOf();
+                var lastCampaignId = lastCampaignOfPage._id.toString();
+                var numOfMem = lastCampaignOfPage.memberNumber;
+
+                getCampaigns(lastStartTime, lastEndTime, numOfMem, lastCampaignId);
+
                 $scope.nowPage++;
-              }          }
+              }
+            }
           }else if(action === 'pre') {//上一页
             if($scope.nowPage>0) {
               $scope.nowPage--;
               $scope.campaigns = $scope.pages[$scope.nowPage].campaigns;
               $scope.hasNext = true;
-              $scope.nextId = $scope.pages[$scope.nowPage].nextId;
+              // $scope.nextId = $scope.pages[$scope.nowPage].nextId;
             }
           }else if(number>-1) {
             if($scope.pages[number]) {
               $scope.campaigns = $scope.pages[number].campaigns;
-              $scope.hasNext = $scope.pages[number].nextId? true: false;
-              $scope.nextId = $scope.pages[number].nextId;
+              $scope.hasNext = $scope.pages[number].hasNext;
+              // $scope.nextId = $scope.pages[number].nextId;
               $scope.nowPage = number;
             }
           }
@@ -199,75 +237,83 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
       //       break;
       //   }
       // };
-      $scope.sortStatus = [{
-        sort_asc: false,
-        sort_desc: false
-      }, {
-        sort_asc: false,
-        sort_desc: false
-      }, {
-        sort_asc: false,
-        sort_desc: false
-      }];
-      var resetSortStatus = function(index) {
-        for(var i = 0; i < 3; i++) {
-          if(i != index) {
-            $scope.sortStatus[i].sort_asc = false;
-            $scope.sortStatus[i].sort_desc = false;
+      var resetSortJson = function(i) {
+        var length = $scope.sortJson.length;
+        for (var j = 0; j < length; j++) {
+          if (j != i) {
+            $scope.sortJson[j].asc = false;
+            $scope.sortJson[j].desc = false;
           }
         }
       };
-      $scope.isSort = false;
-      var reloadData = function(index, status) {
-        $scope.isSort = true;
-        switch(index) {
+
+      $scope.sortInfoOfParams = '-start_time';
+
+      var setSortInfoOfParams = function(b, info) {
+        $scope.sortInfoOfParams = '';
+        if(!b) {
+          $scope.sortInfoOfParams += '-';
+        }
+        $scope.sortInfoOfParams += info;
+      };
+
+      var sortCampaignData = function(i, sort) {
+        $scope.sortCampaigns = true;
+        switch(i) {
           case 0:
-            if(status.sort_asc) {
-              $scope.sortParam = 'start_time';
-            } else  {
-              $scope.sortParam = '-start_time';
-            }
+            setSortInfoOfParams(sort.asc, 'start_time');
             break;
           case 1:
-            if(status.sort_asc) {
-              $scope.sortParam = 'end_time';
-            } else  {
-              $scope.sortParam = '-end_time';
-            }
+            setSortInfoOfParams(sort.asc, 'end_time');
             break;
           case 2:
-            if(status.sort_asc) {
-              $scope.sortParam = 'number_of_members';
-            } else  {
-              $scope.sortParam = '-number_of_members';
-            }
+            setSortInfoOfParams(sort.asc, 'number_of_members');
             break;
         }
         getCampaigns();
       };
-      $scope.changeColumnClass = function(type) {
-        resetSortStatus(type);
-        if($scope.sortStatus[type].sort_asc || $scope.sortStatus[type].sort_desc) {
-          if($scope.sortStatus[type].sort_asc) {
-            $scope.sortStatus[type].sort_asc = false;
-            $scope.sortStatus[type].sort_desc = true;
+
+      $scope.sortJson = [{
+        asc: false,
+        desc: true
+      }, {
+        asc: false,
+        desc: false
+      }, {
+        asc: false,
+        desc: false
+      }];
+
+      $scope.sortCampaigns = false;
+
+      $scope.onColumnHeaderClick = function(i) {
+        resetSortJson(i);
+        if($scope.sortJson[i].asc || $scope.sortJson[i].desc) {
+          if($scope.sortJson[i].asc) {
+            $scope.sortJson[i].asc = false;
+            $scope.sortJson[i].desc = true;
           } else {
-            $scope.sortStatus[type].sort_asc = true;
-            $scope.sortStatus[type].sort_desc = false;
+            $scope.sortJson[i].asc = true;
+            $scope.sortJson[i].desc = false;
           }
         } else {
-          $scope.sortStatus[type].sort_asc = true;
+          $scope.sortJson[i].asc = true;
         }
-        reloadData(type, $scope.sortStatus[type]);
+        sortCampaignData(i, $scope.sortJson[i]);
       };
-      $scope.status = 0;
-      $scope.showStatus = function(type) {
-        $scope.status = type;
+
+      $scope.campaignStatus = 0;
+      $scope.onCampaignStatusChange = function(i) {
+        $scope.campaignStatus = i;
         getCampaigns();
       };
+
       $scope.selectTeam = function(tid) {
         $scope.currentTeamId = tid;
         $scope.selectedType = 2;
+        $scope.sortCampaigns = false;
+        $scope.campaignStatus = false;
+        $scope.sortJson[0].desc = true;
         getCampaigns();
         // var events_source = apiBaseUrl + '/campaigns?result=calendar&limit=200&attrs=closeShow&cid='+ cid + '&tid=' + tid;
       };
@@ -592,8 +638,8 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
         if(nextTime || $scope.endTime) params.to = nextTime || $scope.endTime;
         if($scope.startTime) params.from = $scope.startTime;
         if(nextId) params.nextId = nextId;
-        if($scope.isSort) params.sort = $scope.sortParam;
-        if($scope.status) {params.status = $scope.status; params.statusType = 0;}
+        if($scope.sortCampaigns) params.sort = $scope.sortInfoOfParams;
+        if($scope.campaignStatus) {params.status = $scope.campaignStatus; params.statusType = 0;}
         
         params.attrs.push('allCampaign');
         campaignService.getCampaigns(params)
@@ -712,73 +758,75 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
         $scope.numOfPage = $scope.number.num;
         getCampaigns();
       };
-
-      $scope.sortStatus = [{
-        sort_asc: false,
-        sort_desc: false
-      }, {
-        sort_asc: false,
-        sort_desc: false
-      }, {
-        sort_asc: false,
-        sort_desc: false
-      }];
-      var resetSortStatus = function(index) {
-        for(var i = 0; i < 3; i++) {
-          if(i != index) {
-            $scope.sortStatus[i].sort_asc = false;
-            $scope.sortStatus[i].sort_desc = false;
+      
+      var resetSortJson = function(i) {
+        var length = $scope.sortJson.length;
+        for (var j = 0; j < length; j++) {
+          if (j != i) {
+            $scope.sortJson[j].asc = false;
+            $scope.sortJson[j].desc = false;
           }
         }
       };
-      $scope.isSort = false;
-      var reloadData = function(index, status) {
-        $scope.isSort = true;
-        switch(index) {
+      var setSortInfoOfParams = function(b, info) {
+        $scope.sortInfoOfParams = '';
+        if(!b) {
+          $scope.sortInfoOfParams += '-';
+        }
+        $scope.sortInfoOfParams += info;
+      };
+
+      var sortCampaignData = function(i, sort) {
+        $scope.sortCampaigns = true;
+        switch(i) {
           case 0:
-            if(status.sort_asc) {
-              $scope.sortParam = 'start_time';
-            } else  {
-              $scope.sortParam = '-start_time';
-            }
+            setSortInfoOfParams(sort.asc, 'start_time');
             break;
           case 1:
-            if(status.sort_asc) {
-              $scope.sortParam = 'end_time';
-            } else  {
-              $scope.sortParam = '-end_time';
-            }
+            setSortInfoOfParams(sort.asc, 'end_time');
             break;
           case 2:
-            if(status.sort_asc) {
-              $scope.sortParam = 'number_of_members';
-            } else  {
-              $scope.sortParam = '-number_of_members';
-            }
+            setSortInfoOfParams(sort.asc, 'number_of_members');
             break;
         }
         getCampaigns();
       };
-      $scope.changeColumnClass = function(type) {
-        resetSortStatus(type);
-        if($scope.sortStatus[type].sort_asc || $scope.sortStatus[type].sort_desc) {
-          if($scope.sortStatus[type].sort_asc) {
-            $scope.sortStatus[type].sort_asc = false;
-            $scope.sortStatus[type].sort_desc = true;
+
+      $scope.sortJson = [{
+        asc: false,
+        desc: false
+      }, {
+        asc: false,
+        desc: false
+      }, {
+        asc: false,
+        desc: false
+      }];
+
+      $scope.sortCampaigns = false;
+
+      $scope.onColumnHeaderClick = function(i) {
+        resetSortJson(i);
+        if($scope.sortJson[i].asc || $scope.sortJson[i].desc) {
+          if($scope.sortJson[i].asc) {
+            $scope.sortJson[i].asc = false;
+            $scope.sortJson[i].desc = true;
           } else {
-            $scope.sortStatus[type].sort_asc = true;
-            $scope.sortStatus[type].sort_desc = false;
+            $scope.sortJson[i].asc = true;
+            $scope.sortJson[i].desc = false;
           }
         } else {
-          $scope.sortStatus[type].sort_asc = true;
+          $scope.sortJson[i].asc = true;
         }
-        reloadData(type, $scope.sortStatus[type]);
+        sortCampaignData(i, $scope.sortJson[i]);
       };
-      $scope.status = 0;
-      $scope.showStatus = function(type) {
-        $scope.status = type;
+
+      $scope.campaignStatus = 0;
+      $scope.onCampaignStatusChange = function(i) {
+        $scope.campaignStatus = i;
         getCampaigns();
       };
+
       $scope.goDetail = function (campaignId) {
         $scope.campaignId = campaignId;
         $('#editCampaignModal').modal('show');

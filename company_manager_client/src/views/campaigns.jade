@@ -51,22 +51,22 @@
                     //- th.center 序号
                     th.center Logo
                     th.center 主题
-                    th.center(ng-class="{sorting: true, sorting_asc: sortStatus[0].sort_asc, sorting_desc: sortStatus[0].sort_desc}" ng-click="changeColumnClass(0)") 开始时间
-                    th.center(ng-class="{sorting: true, sorting_asc: sortStatus[1].sort_asc, sorting_desc: sortStatus[1].sort_desc}" ng-click="changeColumnClass(1)") 结束时间
-                    th.center(ng-class="{sorting: true, sorting_asc: sortStatus[2].sort_asc, sorting_desc: sortStatus[2].sort_desc}" ng-click="changeColumnClass(2)") 人数
+                    th.center(ng-class="{sorting: true, sorting_asc: sortJson[0].asc, sorting_desc: sortJson[0].desc}" ng-click="onColumnHeaderClick(0)") 开始时间
+                    th.center(ng-class="{sorting: true, sorting_asc: sortJson[1].asc, sorting_desc: sortJson[1].desc}" ng-click="onColumnHeaderClick(1)") 结束时间
+                    th.center(ng-class="{sorting: true, sorting_asc: sortJson[2].asc, sorting_desc: sortJson[2].desc}" ng-click="onColumnHeaderClick(2)") 人数
                     th.center 状态
                       .btn-group
                         .btn.btn-mini.dropdown-toggle(data-toggle="dropdown")
                           span.caret
                         ul.dropdown-menu
                           li 
-                            a(ng-click="showStatus(0)") 无
+                            a(ng-click="onCampaignStatusChange(0)") 全部
                           li 
-                            a(ng-click="showStatus(1)") 未开始
+                            a(ng-click="onCampaignStatusChange(1)") 未开始
                           li 
-                            a(ng-click="showStatus(2)") 进行中
+                            a(ng-click="onCampaignStatusChange(2)") 进行中
                           li 
-                            a(ng-click="showStatus(3)") 已结束
+                            a(ng-click="onCampaignStatusChange(3)") 已结束
                     th.center 详情
                     th.center 操作
                 tbody
