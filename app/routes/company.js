@@ -42,6 +42,9 @@ module.exports = function(app, passport) {
     app.post('/company/createDetail', company.createDetail);// 验证通过后进一步提交公司注册信息
     app.post('/company/quickCreate', company.quickCreate);//快速注册
 
+    app.post('/company/quickCreateUserAndCompany', company.quickCreateUserAndCompany); // 快速注册 - 创建公司和用户
+    app.post('/company/quickCreateTeams', company.quickCreateTeams); // 快速注册 - 创建小队
+
     //公司信息查看和修改
     app.get('/company/add_group', company.add_company_group);//增加小队
     app.post('/company/saveGroup/:companyId', authorization.companyAuthorize, company.saveGroup);//保存新增小队信息

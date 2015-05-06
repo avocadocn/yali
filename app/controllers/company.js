@@ -32,6 +32,7 @@ var mongoose = require('mongoose'),
   cache = require('../services/cache/Cache'),
   campaign_controller =require('../controllers/campaign'),
   logController =require('../controllers/log'),
+  Q = require('q'),
   validator = require('validator');
 
 var mail = require('../services/mail');
@@ -1186,9 +1187,9 @@ exports.quickCreateUserAndCompany = function(req, res, next) {
       });
     })
     .then(function(user) {
-      // TODO 再返回一个登录标记，以便下一步
       res.send({
-        msg: '注册成功'
+        msg: '注册成功',
+        uid: user._id
       });
     })
     .then(null, function(err) {
@@ -1202,11 +1203,124 @@ exports.quickCreateUserAndCompany = function(req, res, next) {
 /**
  * 快速注册 - 创建小队
  * req.body:
- *   
+ *   uid: String, // 用户id
+ *   groups: Array // 要建的小队
  */
 exports.quickCreateTeams = function(req, res, next) {
+  var companyDoc, userDoc;
 
+  if (!mongoose.Types.ObjectId.isValid(req.body.uid)) {
+    res.status(400).send({msg: 'uid不是一个有效的id'});
+    return;
+  }
 
+  // 采取抛出异常的方式中断Promise链
+  var BreakError = function(msg) {
+    Error.call(this, msg);
+  };
+  BreakError.prototype = Object.create(Error.prototype);
+
+  User.findById(req.body.uid).exec()
+    .then(function(user) {
+      if (!user) {
+        res.status(400).send({msg: 'uid无效'});
+        throw new BreakError();
+      }
+
+      userDoc = user;
+      return Company.findById(user.cid).exec();
+    })
+    .then(function(company) {
+      if (!company) {
+        res.status(400).send({msg: 'uid无效'});
+        throw new BreakError();
+      }
+
+      companyDoc = company;
+
+      var teams = [];
+      req.body.groups.forEach(function(group) {
+        var team = new CompanyGroup({
+          cid: companyDoc._id,
+          gid: group._id,
+          poster: {role:'HR'},
+          group_type: group.group_type,
+          cname: companyDoc.info.name,
+          name: companyDoc.info.name + '-' + group.group_type + '队',
+          entity_type: group.entity_type,
+          city: {
+            province: companyDoc.info.city.province,
+            city: companyDoc.info.city.city,
+            district: companyDoc.info.city.district
+          },
+          member:[{
+            _id: userDoc._id,
+            nickname: userDoc.nickname,
+            photo: userDoc.photo,
+          }],
+          leader:[{
+            _id: userDoc._id,
+            nickname: userDoc.nickname,
+            photo: userDoc.photo,
+          }]
+        });
+        teams.push(team);
+      });
+
+      return CompanyGroup.create(teams);
+    })
+    .then(function(teams) {
+      userDoc.team = [];
+      companyDoc.team = [];
+
+      // 把人加到小队并变成队长, 并把小队加到公司
+      for(var i = 0, len = teams.length; i < len; i++) {
+        var team = teams[i];
+        userDoc.team.push({
+          gid: team.gid,
+          _id: team._id,
+          group_type: team.group_type,
+          entity_type: team.entity_type,
+          name: team.name,
+          leader: true,
+          logo: team.logo
+        });
+        companyDoc.team.push({
+          gid : team.gid,
+          group_type: team.group_type,
+          name: team.name,
+          id: team._id
+        });
+      }
+
+      var saveUserPromise = Q.nfcall(userDoc.save);
+      var saveCompanyPromise = Q.nfcall(companyDoc.save);
+      return Q.all([saveUserPromise, saveCompanyPromise]);
+    })
+    .then(function() {
+      return Config.findOne({ name: config.CONFIG_NAME }).exec();
+    })
+    .then(function(config) {
+      res.send({msg: '注册成功'});
+
+      switch (config.smtp) {
+      case 'webpower':
+        webpower.sendQuickRegisterActiveMail(userDoc.email, companyDoc.info.name, companyDoc.id, req.headers.host);
+      case '163':
+        mail.sendQuickRegisterActiveMail(userDoc.email, companyDoc.info.name, companyDoc.id, req.headers.host);
+        break;
+      case 'sendcloud':
+        // 默认使用sendcloud发送
+        // waterfall
+      default:
+        sendcloud.sendQuickRegisterActiveMail(userDoc.email, companyDoc.info.name, companyDoc.id, req.headers.host);
+      }
+    })
+    .then(null, function(err) {
+      if (!err instanceof BreakError) {
+        next(err);
+      }
+    });
 
 };
 
