@@ -171,6 +171,18 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
   };
 
   //- step 3
+  //
+  var arrayObjectIndexOf = function (myArray, searchTerm, property) {
+    var _property = property.split('.');
+    for(var i = 0, len = myArray.length; i < len; i++) {
+      var item = myArray[i];
+      _property.forEach( function (_pro) {
+        item = item[_pro];
+      });
+      if (item.toString() === searchTerm.toString()) return i;
+    }
+    return -1;
+  }
   var getRegions = function() {
     if(!$scope.provinces) {
       $http.get('/region').success(function(data, status) {
@@ -179,14 +191,30 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
         changeProvince();
         $http.jsonp('http://api.map.baidu.com/location/ip?ak=krPnXlL3wNORRa1KYN1RAx3c&callback=JSON_CALLBACK')
         .success(function(data, status) {
-          console.log(data);
+          // console.log(data);
           var detail = data.content.address_detail;
           var province = detail.province;
           var city = detail.city;
           var district = detail.district;
-          // if(province && province.indexOf())
+          if(province) {
+            var provinceIndex =  arrayObjectIndexOf($scope.provinces, province, 'value');
+            if(provinceIndex>-1) {
+              $scope.province = $scope.provinces[provinceIndex];
+              changeProvince();
+              if(city) {
+                var cityIndex =  arrayObjectIndexOf($scope.cities, city, 'value');
+                if(cityIndex>-1) {
+                  $scope.city = $scope.cities[cityIndex];
+                  changeCity();
+                  if(district) {
+                    var districtIndex =  arrayObjectIndexOf($scope.districts, district, 'value');
+                    $scope.district = $scope.districts[districtIndex];
+                  }
+                }
+              }
+            }
+          }
         });
-
       });
     }
   };
@@ -226,7 +254,19 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
     $scope.email = '';
   };
   $scope.selectPage = function() {
+    //此处要注册 注册的后台需改.
+    // $http.post('/company/quickCreate', {
+    //   email: $scope.email,
+    //   name: $scope.companyName,
+    //   province: $scope.province.value,
+    //   city: $scope.city.value,
+    //   district: $scope.district.value
+    // }).success(function(data, status){
+    //   console.log('...');
+
+    // });
     $scope.step = 4;
+    
   };
   $scope.ignoreRecommand = function() {
     $scope.recommandCompany = null;
