@@ -260,18 +260,20 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
     $scope.step = 1;
     $scope.email = '';
   };
+  var uid = '';
   $scope.selectPage = function() {
     //此处要注册 注册的后台需改.
-    // $http.post('/company/quickCreate', {
-    //   email: $scope.email,
-    //   name: $scope.companyName,
-    //   province: $scope.province.value,
-    //   city: $scope.city.value,
-    //   district: $scope.district.value
-    // }).success(function(data, status){
-    //   console.log('...');
-
-    // });
+    $http.post('/company/quickCreateUserAndCompany', {
+      email: $scope.email,
+      name: $scope.companyName,
+      password: $scope.password,
+      province: $scope.province.value,
+      city: $scope.city.value,
+      district: $scope.district.value
+    }).success(function(data, status){
+      console.log(data);
+      uid = data.uid;
+    });
     $scope.step = 4;
     getGroups();
   };
@@ -280,19 +282,31 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
   };
 
   //- step 4
-  $scope.newTeam = {
-    _id: '',
-    teamName: ''
-  }
   var getGroups = function() {
-    $http.get('/group/getgroups').success(function(data, status) {
-      $scope.groups = data.splice(0, 16);
+    if(!$scope.groups) {
+      $http.get('/group/getgroups').success(function(data, status) {
+        $scope.groups = data.splice(0, 16);
+      });
+    }
+  };
+  $scope.selectType = function(index) {
+    $scope.groups[index].selected = !$scope.groups[index].selected;
+  };
+
+  $scope.createTeams = function() {
+    console.log('???');
+    var selectedGroups = $scope.groups.filter(function(group) {
+      return group.selected = true;
     });
-  };
-  // getGroups();
-  $scope.changeType = function(index) {
-    $scope.newTeam._id = $scope.groups[index]._id;
-  };
+    $http.post('/company/quickCreateTeams',{
+      groups: selectedGroups,
+      uid: uid
+    }).success(function(data, status) {
+      console.log(data);
+      $scope.step = 5;
+    })
+  }
+
 }]);
 
 companySignUpApp.controller('userSignupController',['$http','$scope','$rootScope',function ($http,$scope,$rootScope) {

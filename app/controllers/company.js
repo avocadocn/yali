@@ -928,14 +928,14 @@ exports.quickCreateUserAndCompany = function(req, res, next) {
     return sendInvalidMsg('请填写有效的Email');
   }
 
-  if (req.password) {
-    if (!validator.isAlphanumeric(req.password)) {
+  if (req.body.password) {
+    if (!validator.isAlphanumeric(req.body.password)) {
       return sendInvalidMsg('密码长度不可以小于6个字符');
     }
-    if (req.password.length < 6) {
+    if (req.body.password.length < 6) {
       return sendInvalidMsg('密码长度不可以小于6个字符');
     }
-    if (req.password.length > 20) {
+    if (req.body.password.length > 20) {
       return sendInvalidMsg('密码长度不可以超过20个字符');
     }
   }

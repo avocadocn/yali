@@ -40,12 +40,13 @@ block content
         .select_label 选择您感兴趣的项目
         .select_line
         .groups.clearfix
-          .group(ng-repeat='group in groups' ng-class="{'active':newTeam._id==group._id}" ng-click="changeType($index)")
+          .group(ng-repeat='group in groups' ng-class="{'active':group.selected}" ng-click="selectType($index)")
             .img_contain(class='group_'+'{{group._id}}' )
             //- input.hidden(type='radio' name='group' id='{{group._id}}' value='{{group._id}}' ng-model='newTeam._id' required)
             label(for='{{group._id}}') {{group.groupType}}
         .select_line
-      include partials/personal_step_four_phone
+        button.btn-success(ng-click="createTeams()") 选好啦
+      //- include partials/personal_step_four_phone
     .signup_step_five(ng-show="step===5")
       //- 注册成功
       span 注册成功
