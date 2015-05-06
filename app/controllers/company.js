@@ -37,6 +37,7 @@ var mail = require('../services/mail');
 var sendcloud = require('../services/sendcloud');
 var webpower = require('../services/webpower');
 var encrypt = require('../middlewares/encrypt');
+var qrcodeService = require('../services/qrcode');
 
 var isMobile = function(req) {
   var deviceAgent = req.headers["user-agent"].toLowerCase();
@@ -589,6 +590,13 @@ exports.quickvalidate = function(req, res) {
           if (encrypt.encrypt(_id, config.SECRET) === key) {
             company.acitve = true;
             company.mail_active = true;
+            if(!company.invite_qrcode){
+              var qrDir = '/img/qrcode/companyinvite/';
+              var fileName = company._id.toString()+'.png';
+              var inviteUrl = req.headers.host+'/users/invite?key='+company.invite_key+'&cid=' + company._id;
+
+              company.invite_qrcode = qrcodeService(qrDir, fileName, inviteUrl);
+            }
             company.save(function(err) {
               if (err) {
                 res.render('company/company_validate_error', {
@@ -604,16 +612,16 @@ exports.quickvalidate = function(req, res) {
                       if(!err){
                         Config.findOne({ name: config.CONFIG_NAME }, function (err, config) {
                           if (err || !config || !config.smtp || config.smtp === 'webpower') {
-                            webpower.sendInviteColleageMail(company.email, company.invite_key, company._id.toString(), req.headers.host, function(err) {
+                            webpower.sendInviteColleageMail(company.email, company.invite_key, company._id.toString(), company.invite_qrcode, req.headers.host, function(err) {
                               if (err) {
                                 // TO DO: 发送失败待处理
                                 console.log(err);
                               }
                             });
                           } else if (config.smtp === '163') {
-                            mail.sendInviteColleageMail(company.email, company.invite_key, company._id.toString(), req.headers.host);
+                            mail.sendInviteColleageMail(company.email, company.invite_key, company._id.toString(), company.invite_qrcode, req.headers.host);
                           } else if (config.smtp === 'sendcloud') {
-                            sendcloud.sendInviteColleageMail(company.email, company.invite_key, company._id.toString(), req.headers.host);
+                            sendcloud.sendInviteColleageMail(company.email, company.invite_key, company._id.toString(), company.invite_qrcode, req.headers.host);
                           }
                         });
                         res.render('/company/validate/active_success');
@@ -2059,5 +2067,8 @@ exports.renderTeamInfo = function(req, res) {
 };
 
 exports.renderManager = function(req, res) {
+  res.render('partials/company_manager');
+};
+exports.getCompanyInviteQrcode = function(req, res) {
   res.render('partials/company_manager');
 };

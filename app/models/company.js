@@ -134,6 +134,7 @@ var CompanySchema = new Schema({
     register_invite_code: [String],
     // 企业给用户的邀请码
     invite_key: String,
+    invite_qrcode: String,
     device: [_device]
 });
 

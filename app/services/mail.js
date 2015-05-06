@@ -283,12 +283,12 @@ exports.sendCompanyOperationGuideMail = function(who, id, host) {
  * @param {String} who 接收人的邮件地址
  * @param {String} id HR的公司id
  */
-exports.sendInviteColleageMail = function(who, key, id, host) {
+exports.sendInviteColleageMail = function(who, key, id, qrcodeUri, host) {
   var from = '动梨<service@donler.com>';
   var to = who;
   var subject = '邀请同事提示邮件';
   var description = '快去邀请您的同事来注册吧';
-  var qrcodeURI = 'http://' + host +'/img/qrcode/'+id+'.png';
+  var qrcodeURI = 'http://' + host +qrcodeUri;
   var link = 'http://' + host + '/users/invite?key=' + key + '&cid=' + id;
   fs.readFile(rootConfig.root+'/app/views/partials/mailTemplate.jade', 'utf8', function (err, data) {
     if (err) {
