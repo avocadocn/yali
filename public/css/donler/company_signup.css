@@ -1,0 +1,532 @@
+.signup_row {
+  padding-top: 95px;
+}
+.signup_row .center {
+  width: 775px;
+  margin: auto;
+}
+.signup_row .center .invite_block {
+  width: 480px;
+  padding-top: 50px;
+}
+.signup_row .center .invite_block .add_domain {
+  margin-top: 50px;
+}
+.signup_row .center .invite_block .add_domain .add_domain_div {
+  margin: 5px;
+}
+.signup_row .center .invite_block .index_link {
+  margin-top: 15px;
+}
+.signup_row .block {
+  width: 455px;
+  float: left;
+}
+.signup_row .block .signup_title {
+  font-size: 28px;
+  font-size: 28px;
+  margin-bottom: 43px;
+  line-height: 1;
+}
+.signup_row .block .signup_tips {
+  font-size: 16px;
+  margin-bottom: 40px;
+  line-height: 1;
+}
+.signup_row .block .signup_tips .tip_number {
+  font-size: 24px;
+}
+.signup_row .block .signup_tips .tip_large {
+  font-size: 20px;
+  color: #3498db;
+}
+.signup_row .block .signup_tips a {
+  color: #3ca2e0;
+  text-decoration: underline;
+}
+.signup_row .block .personal_title {
+  color: #3ca2e0;
+}
+.signup_row .block .company_title {
+  color: #f48361;
+}
+.signup_row .block .dl_tip {
+  float: left;
+  margin-left: 10px;
+  margin-top: 8px;
+  width: 400px;
+  color: #f00;
+}
+.signup_row .block_left {
+  margin-right: 50px;
+}
+.signup_row .notification_block {
+  width: 270px;
+}
+.signup_row .signup_block {
+  border-radius: 8px;
+  border: 2px solid #f48361;
+  padding: 38px;
+}
+.signup_row .signup_block .form-group.has-error input.ng-invalid {
+  box-shadow: 0 0px 1px 1px #ffc0cb;
+}
+.signup_row .signup_block .dl_sm_group .dl_row {
+  min-height: 45px;
+  padding: 5px 0;
+}
+.signup_row .signup_block .dl_sm_group .label_left {
+  width: 84px;
+  float: left;
+  text-align: right;
+  min-height: 20px;
+  color: #a1a1a1;
+}
+.signup_row .signup_block .dl_sm_group .input_right {
+  width: 290px;
+  float: left;
+  margin-left: 15px;
+}
+.signup_row .signup_block .dl_sm_group .input_right .dl-form-control {
+  border: 0;
+  border-radius: 2px 2px 0 0;
+  box-shadow: 0 -1px 1px #d9d9d9;
+}
+.signup_row .signup_block .dl_sm_group .input_right .department_select_width {
+  width: 127px;
+}
+.signup_row .signup_block .dl_sm_group .input_right .input_email {
+  width: 45%;
+  float: left;
+}
+.signup_row .signup_block .dl_sm_group .input_right .select_domain {
+  width: 45%;
+  float: right;
+}
+.signup_row .signup_block .dl_sm_group .input_right .at {
+  padding: 9px 5px;
+  font-size: 14px;
+  float: left;
+}
+.signup_row .signup_block .dl_sm_group .input_right .arecode_container {
+  width: 60px;
+  float: left;
+  margin-right: 10px;
+}
+.signup_row .signup_block .dl_sm_group .input_right .number_container {
+  width: 140px;
+  float: left;
+  margin-right: 10px;
+}
+.signup_row .signup_block .dl_sm_group .input_right .extention_container {
+  width: 70px;
+  float: left;
+}
+.signup_row .signup_block .dl_sm_group .email_check {
+  width: 250px;
+}
+.signup_row .signup_block .dl_sm_group .email_check .pass {
+  border: 1px solid #3ca2e0;
+}
+.signup_row .signup_block .dl_sm_group .email_check .error {
+  border: 1px solid #f48361;
+}
+.signup_row .signup_block .dl_sm_group .email_tips {
+  float: left;
+  width: 50px;
+}
+.signup_row .signup_block .dl_sm_group .email_tips .inactive {
+  color: #f48361;
+  padding: 8px 15px;
+  font-size: 14px;
+}
+.signup_row .signup_block .dl_sm_group .email_tips .active {
+  color: #3ca2e0;
+  padding: 8px 15px;
+  font-size: 14px;
+}
+.signup_row .signup_block .dl_sm_group .input_right.select_right .select_box,
+.signup_row .signup_block .dl_sm_group .select_right_2 .select_box {
+  width: 90px;
+  float: left;
+  margin-right: 10px;
+}
+.signup_row .signup_block .dl_sm_group .input_right.select_right .select_box select,
+.signup_row .signup_block .dl_sm_group .select_right_2 .select_box select {
+  width: 90px;
+  outline: 0;
+}
+.signup_row .signup_block .dl_sm_group .input_right.select_right .select_box[last_child],
+.signup_row .signup_block .dl_sm_group .select_right_2 .select_box[last_child] {
+  margin-right: 0;
+}
+.signup_row .signup_block .dl_sm_group .select_right_2 .select_box {
+  width: 140px;
+}
+.signup_row .signup_block .dl_sm_group .select_right_2 .select_box select {
+  width: 140px;
+}
+.signup_row .signup_block .dl_sm_group .service_tip {
+  margin-left: 15px;
+  float: left;
+  height: 62px;
+  padding: 25px 0 15px;
+  font-size: 14px;
+}
+.signup_row .signup_block .dl_sm_group .service_tip a {
+  color: #f48361;
+}
+.signup_row .signup_block .dl_sm_group .btn_submit {
+  width: 100%;
+  height: 40px !important;
+  background-color: #f48361;
+}
+.signup_row .signup_block .dl_sm_group .center_container {
+  width: 350px;
+  text-align: center;
+}
+.signup_row .signup_block .dl_sm_group .center_container .center_content {
+  margin: 0 auto;
+  width: 150px;
+}
+.signup_row .signup_block .dl_sm_group .email_tip {
+  float: right;
+  text-align: right;
+}
+.signup_row .signup_block .dl_sm_group #email_host {
+  width: 142px;
+}
+.signup_row .signup_block .dl_sm_group #email_domain {
+  width: 100px;
+}
+.signup_row .signup_block .dl_sm_group .apply_info h2 {
+  font-weight: normal;
+}
+.signup_row .signup_block .dl_sm_group .apply_info p {
+  color: #808080;
+}
+.signup_row .signup_block .dl_sm_group .btn_return {
+  margin-top: 30px;
+  width: 140px;
+  border: none;
+  padding: 10px;
+}
+.signup_row .personal_signup {
+  border: 2px solid #3ca2e0;
+}
+.signup_row .personal_signup .signup_tips {
+  margin-top: -7px;
+}
+.signup_row .personal_signup .search_companies {
+  position: relative;
+}
+.signup_row .personal_signup .search_companies .search_input {
+  border: 1px solid #3ca2e0;
+  border-radius: 5px !important;
+}
+.signup_row .personal_signup .search_companies .search_button {
+  position: absolute;
+  right: 0;
+  top: 4px;
+  color: #3ca2e0;
+  font-size: 20px;
+  background-color: transparent;
+}
+.signup_row .personal_signup .search_companies .dl_tip {
+  margin-left: 0;
+  color: #999;
+}
+.signup_row .personal_signup .select_companies {
+  line-height: 1;
+  margin-top: 30px;
+  color: #a1a1a1;
+}
+.signup_row .personal_signup .select_companies a {
+  color: #f48361;
+}
+.signup_row .personal_signup .select_companies .companies {
+  margin: 20px 0 30px;
+}
+.signup_row .personal_signup .select_companies .select_company,
+.signup_row .personal_signup .select_companies .change_page {
+  border-radius: 5px;
+  padding: 8px 10px;
+  border: 1px solid #3ca2e0;
+  color: #3ca2e0;
+  background-color: #fff;
+}
+.signup_row .personal_signup .select_companies .select_company:hover,
+.signup_row .personal_signup .select_companies .change_page:hover {
+  background-color: #3ca2e0;
+  color: #fff;
+}
+.signup_row .personal_signup .select_companies .select_company {
+  margin-right: 2px;
+}
+.signup_row .personal_signup .select_companies .change_page {
+  margin-bottom: 10px;
+}
+.signup_row .personal_signup .dl_sm_group .btn_submit {
+  background-color: #3ca2e0;
+}
+.signup_row .personal_signup a {
+  color: #3ca2e0;
+}
+.signup_row .block.activation {
+  width: 700px;
+}
+.signup_row .block.activation .invite_key_container {
+  margin-top: 160px;
+  width: 300px;
+}
+.signup_row .block.activation .invite_key_container .invite_key {
+  height: 50px;
+  width: 270px;
+  border: 0;
+  border-radius: 3px 3px 0 0;
+  box-shadow: 0 -1px 1px #d9d9d9;
+  text-align: center;
+  font-size: 18px;
+}
+.signup_row .block.activation .invite_key_container .invite_button {
+  width: 270px;
+  height: 50px;
+  margin-top: 25px;
+  border-radius: 3px;
+  background-color: #3ca2e0;
+  color: #fff;
+  box-shadow: 0px 3px 3px 3px #e0e0e0;
+  font-size: 20px;
+}
+.signup_row .block.activation .invite_key_container .invite_button:hover {
+  box-shadow: 0 0 0 0;
+}
+.signup_row .signin .control-label {
+  text-align: right;
+}
+.signup_row .signin .show_signup,
+.signup_row .signin .reset_pwd {
+  margin-left: 5px;
+}
+.signup_phone {
+  min-height: 100%;
+  background-color: #46aaf5;
+}
+.signup_phone .signup_header {
+  width: 100%;
+  padding: 5px 10px;
+}
+.signup_phone .signup_header .logo {
+  width: 70%;
+  margin-left: 10%;
+  margin-top: 20px;
+  max-width: 337px;
+}
+.signup_phone .signup_step_one,
+.signup_phone .signup_step_three {
+  width: 100%;
+  min-height: 80%;
+}
+.signup_phone .signup_step_one .input_box,
+.signup_phone .signup_step_three .input_box {
+  width: 100%;
+  margin: 10% auto 5%;
+  padding: 0 10%;
+}
+.signup_phone .signup_step_one .input_box .board,
+.signup_phone .signup_step_three .input_box .board {
+  background-image: url("/img/signup/dl_signup_board.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  padding: 32% 10%;
+}
+.signup_phone .signup_step_one .input_box .board input,
+.signup_phone .signup_step_three .input_box .board input {
+  border-radius: 5px;
+  width: 90%;
+  height: 34px;
+  display: block;
+  margin: auto;
+  border: 1px solid #eee;
+  font-size: 14px;
+  padding: 2px 10px;
+  color: #b2b2b2;
+}
+.signup_phone .signup_step_one .input_box .board .search,
+.signup_phone .signup_step_three .input_box .board .search {
+  width: 75px;
+  height: 30px;
+  float: right;
+  margin-right: 5%;
+  background-image: url("/img/signup/dl_signup_search.png");
+  background-size: contain;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  margin-top: 7%;
+}
+.signup_phone .signup_step_one .signup_bottom,
+.signup_phone .signup_step_three .signup_bottom {
+  width: 100%;
+  min-height: 265px;
+  margin-top: 5%;
+  background-image: url("/img/signup/dl_signup_man.png");
+  background-size: 128px 234.5px;
+  background-repeat: no-repeat;
+  background-position: bottom left;
+}
+.signup_phone .signup_step_one .signup_bottom .signup_cloud,
+.signup_phone .signup_step_three .signup_bottom .signup_cloud {
+  width: 55%;
+  max-width: 367px;
+  float: right;
+  margin-right: 5%;
+}
+.signup_phone .signup_step_one .input_box input {
+  background-image: url("/img/signup/dl_signup_input.png");
+  background-repeat: no-repeat;
+  background-size: 132px 13px;
+  background-position: 10px 10px;
+}
+.signup_phone .signup_step_one .input_box input.ng-dirty.ng-valid {
+  background-image: none;
+}
+.signup_phone.step_2 {
+  background-color: #ffd54b;
+}
+.signup_phone .signup_step_two {
+  width: 100%;
+  min-height: 450px;
+  background-image: url("/img/signup/dl_signup_paper.png");
+  background-size: 241.5px 338.5px;
+  background-repeat: no-repeat;
+  background-position-y: 25px;
+  background-position-x: center;
+}
+.signup_phone .signup_step_two .board {
+  width: 241.5px;
+  padding: 50px 15px 0;
+  margin: auto;
+}
+.signup_phone .signup_step_two .board .search_title {
+  width: 121.5px;
+}
+.signup_phone .signup_step_two .board .fa-reply {
+  margin-left: 30px;
+  position: absolute;
+  color: #fff;
+  font-size: 20px;
+}
+.signup_phone .signup_step_two .board .companies {
+  margin-top: 30px;
+  height: 200px;
+  position: relative;
+}
+.signup_phone .signup_step_two .board .companies .company {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 8px 5px;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #666;
+  font-size: 14px;
+}
+.signup_phone .signup_step_two .board .companies .company .fa {
+  color: #ccc;
+  margin-top: 3px;
+}
+.signup_phone .signup_step_two .board .companies .prePage,
+.signup_phone .signup_step_two .board .companies .nextPage {
+  color: #fff;
+  position: absolute;
+  bottom: 0;
+}
+.signup_phone .signup_step_two .board .companies .nextPage {
+  right: 0;
+}
+.signup_phone .signup_step_two .signup_bottom_2 {
+  background-image: url("/img/signup/dl_signup_bg_2.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 161px;
+  width: 293.5px;
+  margin: auto;
+  padding-top: 10px;
+}
+.signup_phone .signup_step_two .signup_bottom_2 .notfound {
+  width: 116px;
+  margin-left: 53px;
+  margin-top: 13px;
+}
+.signup_phone .signup_step_two .signup_bottom_2 .organize {
+  width: 120px;
+  height: 40px;
+  float: right;
+  background-color: transparent;
+}
+.signup_phone.step_3 {
+  background-color: #ef6767;
+  background-image: url("/img/signup/dl_signup_bg_3.png");
+  background-size: 320px 568px;
+  background-repeat: repeat;
+}
+.signup_phone.step_3 .signup_step_three .input_box {
+  margin: auto;
+  padding: 0 8%;
+}
+.signup_phone.step_3 .signup_step_three .input_box .board {
+  background-image: url("/img/signup/dl_signup_board_2.png");
+  padding: 40% 10%;
+}
+.signup_phone.step_3 .signup_step_three .input_box .board input {
+  background-image: none;
+  margin-bottom: 6%;
+}
+.signup_phone.step_3 .signup_step_three .input_box .board p {
+  width: 90%;
+  margin: auto;
+}
+.signup_phone.step_3 .signup_step_three .input_box .board .email {
+  background-color: #eee;
+}
+.signup_phone.step_3 .signup_step_three .input_box .board .form-group {
+  width: 90%;
+  margin: 0 auto 6%;
+}
+.signup_phone.step_3 .signup_step_three .input_box .board .form-group .select_cover {
+  width: 33%;
+  background-image: url("/img/signup/dl_select_triangle.png");
+  background-size: 10.5px 9px;
+  background-position-x: 93%;
+  background-position-y: 12px;
+  background-repeat: no-repeat;
+  margin-right: 0.5%;
+  overflow: hidden;
+  border-radius: 5px;
+  border: 1px solid #eee;
+  float: left;
+}
+.signup_phone.step_3 .signup_step_three .input_box .board .form-group .select_cover select {
+  width: 120%;
+  height: 34px;
+  border: 0;
+  background-color: transparent;
+}
+.signup_phone.step_3 .signup_step_three .input_box .board .form-group .select_cover[last-child] {
+  margin-right: 0;
+}
+.signup_phone.step_3 .signup_step_three .input_box .board .form-group button {
+  border-radius: 5px;
+  padding: 7px 10px;
+}
+.signup_phone.step_3 .signup_step_three .input_box .board .next_step {
+  float: right;
+  margin-right: 5%;
+  width: 85px;
+  height: 34px;
+  border-radius: 5px;
+}
+.signup_phone.step_3 .signup_step_three .signup_bottom {
+  background-image: url("/img/signup/dl_signup_woman.png");
+  background-size: 200.5px 208.5px;
+  margin-top: -10%;
+}

@@ -615,9 +615,9 @@ exports.quickvalidate = function(req, res) {
                       if(!err){
                         Config.findOne({ name: config.CONFIG_NAME }, function (err, config) {
                           if (err || !config || !config.smtp || config.smtp === 'sendcloud') {
-                            sendcloud.sendInviteColleageMail(company.email, company.invite_key, company._id.toString(), req.headers.host);
+                            sendcloud.sendInviteColleageMail(company.info.email, company.invite_key, company._id.toString(), req.headers.host);
                           } else if (config.smtp === '163') {
-                            mail.sendInviteColleageMail(company.email, company.invite_key, company._id.toString(), req.headers.host);
+                            mail.sendInviteColleageMail(company.info.email, company.invite_key, company._id.toString(), req.headers.host);
                           }
                         });
                         res.render('/company/validate/active_success');
@@ -1067,17 +1067,10 @@ exports.quickCreate =function(req, res) {
           return res.status(500).send({msg:'服务器错误'});
         }
         Config.findOne({ name: config.CONFIG_NAME }, function (err, config) {
-          if (err || !config || !config.smtp || config.smtp === 'webpower') {
-            webpower.sendQuickRegisterActiveMail(email, req.body.name, company._id.toString(), req.headers.host, function(err) {
-              if (err) {
-                // TO DO: 发送失败待处理
-                console.log(err);
-              }
-            });
-          } else if (config.smtp === '163') {
-            mail.sendQuickRegisterActiveMail(email, req.body.name, company._id.toString(), req.headers.host);
-          } else if (config.smtp === 'sendcloud') {
+          if (err || !config || !config.smtp || config.smtp === 'sendcloud') {
             sendcloud.sendQuickRegisterActiveMail(email, req.body.name, company._id.toString(), req.headers.host);
+          } else {
+            mail.sendQuickRegisterActiveMail(email, req.body.name, company._id.toString(), req.headers.host);
           }
         });
         

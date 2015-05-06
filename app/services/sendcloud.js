@@ -308,8 +308,7 @@ exports.sendInviteColleageMail = function(who, key, id, host) {
       'host': siteProtocol + host,
       'who': who,
       'description': description,
-      'link': link,
-      'qrcodeURI':qrcodeURI
+      'link': link
     });
     sendMail({
       from: from,
