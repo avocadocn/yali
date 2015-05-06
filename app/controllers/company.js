@@ -1133,6 +1133,8 @@ exports.quickCreateUserAndCompany = function(req, res, next) {
   };
   BreakError.prototype = Object.create(Error.prototype);
 
+  var userDoc, companyDoc;
+
   Company.findOne({login_email: email}, {_id: 1}).exec()
     .then(function(company) {
       if (company) {
@@ -1168,6 +1170,8 @@ exports.quickCreateUserAndCompany = function(req, res, next) {
       return Company.create(newCompany);
     })
     .then(function(company) {
+      companyDoc = company;
+
       // 创建完公司，开始创建用户
       return User.create({
         username: email,
@@ -1181,10 +1185,27 @@ exports.quickCreateUserAndCompany = function(req, res, next) {
       });
     })
     .then(function(user) {
+      userDoc = user;
       res.send({
         msg: '注册成功',
         uid: user._id
       });
+
+      return Config.findOne({ name: config.CONFIG_NAME }).exec();
+    })
+    .then(function(config) {
+      switch (config.smtp) {
+      case 'webpower':
+        webpower.sendQuickRegisterActiveMail(userDoc.email, companyDoc.info.name, companyDoc.id, req.headers.host);
+      case '163':
+        mail.sendQuickRegisterActiveMail(userDoc.email, companyDoc.info.name, companyDoc.id, req.headers.host);
+        break;
+      case 'sendcloud':
+        // 默认使用sendcloud发送
+        // waterfall
+      default:
+        sendcloud.sendQuickRegisterActiveMail(userDoc.email, companyDoc.info.name, companyDoc.id, req.headers.host);
+      }
     })
     .then(null, function(err) {
       if (!err instanceof BreakError) {
@@ -1296,23 +1317,7 @@ exports.quickCreateTeams = function(req, res, next) {
       return Q.all([saveUserPromise, saveCompanyPromise]);
     })
     .then(function() {
-      return Config.findOne({ name: config.CONFIG_NAME }).exec();
-    })
-    .then(function(config) {
       res.send({msg: '注册成功'});
-
-      switch (config.smtp) {
-      case 'webpower':
-        webpower.sendQuickRegisterActiveMail(userDoc.email, companyDoc.info.name, companyDoc.id, req.headers.host);
-      case '163':
-        mail.sendQuickRegisterActiveMail(userDoc.email, companyDoc.info.name, companyDoc.id, req.headers.host);
-        break;
-      case 'sendcloud':
-        // 默认使用sendcloud发送
-        // waterfall
-      default:
-        sendcloud.sendQuickRegisterActiveMail(userDoc.email, companyDoc.info.name, companyDoc.id, req.headers.host);
-      }
     })
     .then(null, function(err) {
       if (!err instanceof BreakError) {
