@@ -287,10 +287,6 @@
       width 100%
       min-height 265px
       margin-top 5%
-      background-image url('/img/signup/dl_signup_man.png')
-      background-size 128px 234.5px
-      background-repeat no-repeat
-      background-position bottom left
       .signup_cloud
         width 55%
         max-width 367px
@@ -305,7 +301,11 @@
         background-position 10px 10px
       input.ng-dirty.ng-valid
           background-image none
-
+  &.step_1
+    background-image url('/img/signup/dl_signup_man.png')
+    background-size 128px 234.5px
+    background-repeat no-repeat
+    background-position bottom left
   &.step_2
     background-color #FFD54B
   .signup_step_two
@@ -337,11 +337,17 @@
           padding 8px 5px
           border-radius 5px
           background-color #fff
+          display flex
           color #666
           font-size 14px
           .fa
             color #ccc
             margin-top 3px
+          .text
+            width 95%
+            overflow hidden
+            text-overflow ellipsis
+            white-space nowrap
         .prePage, .nextPage
           color #fff
           position absolute
@@ -420,6 +426,8 @@
       .signup_bottom
         background-image url('/img/signup/dl_signup_woman.png')
         background-size 200.5px 208.5px
+        background-repeat no-repeat
+        background-position bottom left
         margin-top -10%
   .signup_step_four
     width 100%

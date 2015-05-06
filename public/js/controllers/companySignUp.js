@@ -120,6 +120,9 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
             else {
               //暂时没有重发邮件就直接告知已注册过
               $scope.step = 6;
+              if(data.active===2) {
+                $scope.notVerified = true;
+              }
             }
           });
       }
@@ -143,6 +146,10 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
     if($scope.hasNext) {
       $http.post('/search/company',{email:$scope.email, page:$scope.page+1}).success(function (data,status){
         $scope.companies=data.companies;
+        if($scope.companies.length===0) {
+          $scope.page = 8;
+        }
+        else
         $scope.page++;
         if($scope.page===data.pageCount) {$scope.hasNext = false;}
         $scope.hasPrevious = true;
@@ -266,7 +273,7 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
 
     // });
     $scope.step = 4;
-    
+    getGroups();
   };
   $scope.ignoreRecommand = function() {
     $scope.recommandCompany = null;
@@ -282,7 +289,7 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
       $scope.groups = data.splice(0, 16);
     });
   };
-  getGroups();
+  // getGroups();
   $scope.changeType = function(index) {
     $scope.newTeam._id = $scope.groups[index]._id;
   };

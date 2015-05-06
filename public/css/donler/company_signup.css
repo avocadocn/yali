@@ -369,10 +369,6 @@
   width: 100%;
   min-height: 265px;
   margin-top: 5%;
-  background-image: url("/img/signup/dl_signup_man.png");
-  background-size: 128px 234.5px;
-  background-repeat: no-repeat;
-  background-position: bottom left;
 }
 .signup_phone .signup_step_one .signup_bottom .signup_cloud,
 .signup_phone .signup_step_three .signup_bottom .signup_cloud {
@@ -389,6 +385,12 @@
 }
 .signup_phone .signup_step_one .input_box input.ng-dirty.ng-valid {
   background-image: none;
+}
+.signup_phone.step_1 {
+  background-image: url("/img/signup/dl_signup_man.png");
+  background-size: 128px 234.5px;
+  background-repeat: no-repeat;
+  background-position: bottom left;
 }
 .signup_phone.step_2 {
   background-color: #ffd54b;
@@ -427,12 +429,19 @@
   padding: 8px 5px;
   border-radius: 5px;
   background-color: #fff;
+  display: flex;
   color: #666;
   font-size: 14px;
 }
 .signup_phone .signup_step_two .board .companies .company .fa {
   color: #ccc;
   margin-top: 3px;
+}
+.signup_phone .signup_step_two .board .companies .company .text {
+  width: 95%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .signup_phone .signup_step_two .board .companies .prePage,
 .signup_phone .signup_step_two .board .companies .nextPage {
@@ -528,6 +537,8 @@
 .signup_phone.step_3 .signup_step_three .signup_bottom {
   background-image: url("/img/signup/dl_signup_woman.png");
   background-size: 200.5px 208.5px;
+  background-repeat: no-repeat;
+  background-position: bottom left;
   margin-top: -10%;
 }
 .signup_phone .signup_step_four {

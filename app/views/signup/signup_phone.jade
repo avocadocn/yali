@@ -1,5 +1,6 @@
 extends ../layouts/base
-
+block headExt
+  meta(name="viewport" content="width=device-width,initial-scale=1, user-scalable=no")
 block content
   .signup_phone(ng-controller="userSignupMobileController" class="step_{{step}}")
     .signup_header
@@ -55,6 +56,8 @@ block content
     .signup_step_seven(ng-show="step===7")
       //- 只是个人注册，不用公司注册
       span 已有公司注册.
+    .signup_step_eight(ng-show="step===8")
+      span 没找到公司
 
 block footExt
   script(src='/js/controllers/companySignUp.js')
