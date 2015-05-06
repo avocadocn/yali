@@ -242,7 +242,8 @@ exports.sendQuickRegisterActiveMail = function(who, name, id, host) {
       'host': siteProtocol + host,
       'who': who,
       'description': description,
-      'link': link
+      'link': link,
+      'linkTitle':'激活账号'
     });
     sendMail({
       from: from,
@@ -308,7 +309,8 @@ exports.sendInviteColleageMail = function(who, key, id, host) {
       'host': siteProtocol + host,
       'who': who,
       'description': description,
-      'link': link
+      'link': link,
+      'linkTitle':'点击注册'
     });
     sendMail({
       from: from,
