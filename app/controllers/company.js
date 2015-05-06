@@ -31,7 +31,8 @@ var mongoose = require('mongoose'),
   tools = require('../helpers/tools'),
   cache = require('../services/cache/Cache'),
   campaign_controller =require('../controllers/campaign'),
-  logController =require('../controllers/log');
+  logController =require('../controllers/log'),
+  validator = require('validator');
 
 var mail = require('../services/mail');
 var sendcloud = require('../services/sendcloud');
@@ -1094,6 +1095,121 @@ exports.quickCreate =function(req, res) {
     return res.status(500).send({msg:'服务器错误'});
   });
 }
+
+/**
+ * 快速注册 - 创建公司和用户
+ * req.body: {
+ *   name: String,      //公司名
+ *   password: String,  //密码
+ *   email: String,     //邮箱
+ *   province: String,  //省
+ *   city: String,      //市
+ *   district: String  //区
+ * }
+ */
+exports.quickCreateUserAndCompany = function(req, res, next) {
+  var sendInvalidMsg = function(msg) {
+    res.status(400).send({msg: msg});
+  };
+
+  var email = req.body.email;
+  if (!validator.isEmail(email)) {
+    return sendInvalidMsg('请填写有效的Email');
+  }
+
+  if (req.password) {
+    if (!validator.isAlphanumeric(req.password)) {
+      return sendInvalidMsg('密码长度不可以小于6个字符');
+    }
+    if (req.password.length < 6) {
+      return sendInvalidMsg('密码长度不可以小于6个字符');
+    }
+    if (req.password.length > 20) {
+      return sendInvalidMsg('密码长度不可以超过20个字符');
+    }
+  }
+  else {
+    return sendInvalidMsg('请填写密码');
+  }
+
+  // 采取抛出异常的方式中断Promise链
+  var BreakError = function(msg) {
+    Error.call(this, msg);
+  };
+  BreakError.prototype = Object.create(Error.prototype);
+
+  Company.findOne({login_email: email}, {_id: 1}).exec()
+    .then(function(company) {
+      if (company) {
+        sendInvalidMsg('此邮箱已注册');
+        throw new BreakError();
+      }
+
+      var newCompany = new Company({
+        username: email,
+        login_email: email,
+        password: req.body.password,
+        status: {
+          mail_active :false,
+          active: false,
+          verification: 1
+        },
+        info: {
+          name: req.body.name,
+          official_name: req.body.name,
+          city: {
+            province: req.body.province,
+            city: req.body.city,
+            district: req.body.district
+          },
+          email: email,
+          membernumber: 1
+        },
+        email: {
+          domain: email.split('@')[1]
+        }
+      });
+
+      return Company.create(newCompany);
+    })
+    .then(function(company) {
+      // 创建完公司，开始创建用户
+      return User.create({
+        username: email,
+        password: req.body.password,
+        nickname: email.split('@')[0],
+        email: email,
+        role: 'EMPLOYEE',
+        cid: company._id,
+        cname: req.body.name,
+        company_official_name: req.body.name
+      });
+    })
+    .then(function(user) {
+      // TODO 再返回一个登录标记，以便下一步
+      res.send({
+        msg: '注册成功'
+      });
+    })
+    .then(null, function(err) {
+      if (!err instanceof BreakError) {
+        next(err);
+      }
+    });
+
+};
+
+/**
+ * 快速注册 - 创建小队
+ * req.body:
+ *   
+ */
+exports.quickCreateTeams = function(req, res, next) {
+
+
+
+};
+
 
 /**
  * 验证通过后创建公司进一步的信息(用户名\密码等)
