@@ -7,8 +7,8 @@ define(['angular', 'app', 'init_data', 'routes'], function(angular, app, initDat
   var apiBaseUrl = 'http://' + window.location.hostname + ':3002';
   app.constant('apiBaseUrl', apiBaseUrl);
 
-  var token = sessionStorage.getItem('x-access-token');
-  var cid = sessionStorage.getItem('cid');
+  var token = localStorage.getItem('x-access-token');
+  var cid = localStorage.getItem('cid');
 
   if (cid && token) {
     $http.defaults.headers.common['x-access-token'] = token;
@@ -32,7 +32,7 @@ define(['angular', 'app', 'init_data', 'routes'], function(angular, app, initDat
           hasLeader: null
         });
         angular.bootstrap(document, ['app']);
-        location.hash = '#/login';
+        location.pathname = '/company/manager/login';
       }
       else {
         alert('获取公司数据失败，请刷新页面重试');

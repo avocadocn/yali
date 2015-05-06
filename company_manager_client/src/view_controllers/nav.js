@@ -3,16 +3,15 @@ define(['angular'], function (angular) {
     '$rootScope',
     '$scope',
     '$http',
-    '$state',
     'accountService',
     'storageService',
-    function ($rootScope, $scope, $http, $state, accountService, storageService) {
+    function ($rootScope, $scope, $http, accountService, storageService) {
       $scope.logout = function () {
         accountService.logout().success(function () {
-          storageService.session.remove('cid');
-          storageService.session.remove('x-access-token');
+          storageService.local.remove('cid');
+          storageService.local.remove('x-access-token');
           $rootScope.company = null;
-          $state.go('login');
+          location.pathname = '/company/manager/login';
         });
       };
 

@@ -2074,12 +2074,17 @@ exports.getCompanyInviteQrcode = function(req, res) {
   res.render('partials/company_manager');
 };
 
-exports.renderLoginOrManagerPage = function(req, res) {
+exports.renderHrManagerPage = function(req, res) {
   var rootPath = meanConfig.root;
   if (req.session.mgcid) {
     res.sendfile(path.join(rootPath, 'company_manager_client/index.html'));
   }
   else {
-    res.sendfile(path.join(rootPath, 'company_manager_client/login.html'));
+    res.redirect('/company/manager/login');
   }
+};
+
+exports.renderLoginPage = function(req, res) {
+  var rootPath = meanConfig.root;
+  res.sendfile(path.join(rootPath, 'company_manager_client/login.html'));
 };

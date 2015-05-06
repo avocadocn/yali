@@ -17,8 +17,8 @@ define(['angular', 'init_data'], function (angular, initDataModule) {
         accountService.login($scope.loginData)
           .success(function (data) {
             $http.defaults.headers.common['x-access-token'] = data.token;
-            storageService.session.set('x-access-token', data.token);
-            storageService.session.set('cid', data.id);
+            storageService.login.set('x-access-token', data.token);
+            storageService.login.set('cid', data.id);
 
             initDataModule.get({
               company: accountService.get(data.id),

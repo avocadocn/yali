@@ -24,11 +24,6 @@ define(['app'], function (app) {
           templateUrl: templateUrl('/views/home.html'),
           controller: 'company.homeCtrl'
         })
-        .state('login', {
-          url: '/login',
-          templateUrl: '/company/manager/login.html',
-          controller: 'account.loginCtrl'
-        })
         // .state('statistics', {
         //   url: '/statistics',
         //   views: {

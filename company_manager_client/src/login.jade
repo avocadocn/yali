@@ -1,0 +1,69 @@
+doctype html
+html
+  head
+    meta(charset="UTF-8")
+    meta(content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport')
+    title Donler动梨： 员工活动管理平台
+    link(rel="stylesheet" href="/company_client/css/login.min.css")
+    link(href="/img/icons/favicon.ico" rel="shortcut icon" type="image/x-icon")
+  body.skin-blue.layout-boxed
+    .dl_wrapper
+      .login_page
+        .wrap
+          header.main-header
+            a.logo
+              img.dl_logo(src="/img/dl_logol.png")
+            nav.navbar.navbar-static-top(role="navigation")
+              .navbar-custom-menu
+                ul.nav.navbar-nav
+                  li: a(href="/") 返回主页
+                  li: a(href="/users/signin") 个人登陆
+          .dl_container
+            .row.login_row
+              .col-xs-10.col-sm-6.col-md-5.col-lg-5.text-right
+                div
+                  h1.text-right
+                    small 进入
+                    | 动梨
+                  p 您的真实可靠的同事圈,遇到更多的伙伴
+                  p 更多活动,展示自我,发现伙伴们工作之余的多才多艺
+                  p 记录分享开心的每一个瞬间
+              .col-xs-9.col-sm-6.col-md-6.col-lg-7.col-xs-offset-2.col-sm-offset-0
+                form.signin.form-horizontal.center-block
+                  .form-group
+                    .col-md-6.col-sm-6.col-xs-6.col-xs-offset-4
+                      label #{msg}
+                  .form-group
+                    label.col-md-4.col-sm-4.col-xs-3.control-label(for="username") 用户名
+                    .col-md-6.col-sm-6.col-xs-7
+                      input.dl-form-control#username(type="text" name="username" placeholder="用户名" required)
+                  .form-group
+                    label.col-md-4.col-sm-4.col-xs-3.control-label(for="password") 密码
+                    .col-md-6.col-sm-6.col-xs-7
+                      input.dl-form-control#password(type="password" name="password" placeholder="密码" required)
+                  .row.hidden#error_msg_row
+                    .col-sm-6.col-xs-7.col-sm-offset-4.col-xs-offset-3
+                      p.text-danger#error_msg_p
+                  .form-group
+                    .col-xs-offset-3.col-sm-offset-4.col-md-8.col-sm-8.col-xs-8
+                      button.btn.btn-primary#login_button(type="button") 登录
+                      //- | &nbsp;or&nbsp;
+                      //- todo
+                      a.show_signup(href="/company/signup") 注册
+                      a.reset_pwd(href="/company/forgetPwd")  忘记密码
+        footer.dl_footer
+          .dl_container
+            .dl_row
+              .text_icp
+                a(href="http://www.miitbeian.gov.cn/" title="沪ICP备14016548号" target="_blank") 沪ICP备14016548号
+                span  Copyright &copy; Donler 2014. All Rights Reserved&nbsp;
+                a(href="/about#about") 关于我们
+                a(href="/about#law") 法律声明
+                a(href="/about#privacy") 隐私政策
+                a(href="/about#question") 问题反馈
+                //-li: a(href="/plan") 商务合作
+                a(href="/about#contact") 联系我们
+                span.yun_icon
+
+    script(src="/company_client/js/login.js")
+

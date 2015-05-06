@@ -52,9 +52,9 @@ define([
 
       $rootScope.isAppLoaded = true;
 
-      var token = storageService.session.get('x-access-token');
+      var token = storageService.local.get('x-access-token');
       if (!token) {
-        $state.go('login');
+        location.pathname = '/company/manager/login';
         return;
       } else {
         $http.defaults.headers.common['x-access-token'] = token;
@@ -64,9 +64,9 @@ define([
             xhr.setRequestHeader("x-access-token", token);
           }
         });
-        var cid = storageService.session.get('cid');
+        var cid = storageService.local.get('cid');
         if (!cid) {
-          $state.go('login');
+          location.pathname = '/company/manager/login';
           return;
         }
 

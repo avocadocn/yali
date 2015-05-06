@@ -45,12 +45,20 @@ module.exports = function(grunt) {
         tasks: ['jade']
       },
       js: {
-        files: ['src/**/*.js'],
+        files: ['src/**/*.js', '!src/login.js'],
         tasks: ['requirejs']
       },
+      loginJs: {
+        files: ['src/login.js'],
+        tasks: ['copy:loginJs']
+      },
       stylus: {
-        files: ['src/**/*.styl'],
-        tasks: ['stylus', 'concat']
+        files: ['src/view_stylus/*.styl', 'donler.styl'],
+        tasks: ['stylus', 'concat:css']
+      },
+      loginStylus: {
+        files: ['src/login.styl'],
+        tasks: ['stylus', 'concat:loginCss']
       }
     },
     jade: {
@@ -63,12 +71,12 @@ module.exports = function(grunt) {
         files: [{
           expand: true,
           cwd: 'src',
-          src: ['**/*.jade', '!index.jade', '!views/login.jade'],
+          src: ['**/*.jade', '!index.jade', '!login.jade'],
           dest: 'templates/',
           ext: '.html'
         }, {
           'index.html': 'src/index.jade',
-          'login.html': 'src/views/login.jade'
+          'login.html': 'src/login.jade'
         }]
       }
     },
@@ -87,9 +95,10 @@ module.exports = function(grunt) {
           compress: true,
           cache: false
         },
-        files: [{
-          'dist/donler.min.css': 'src/donler.styl'
-        }]
+        files: [
+          {'dist/donler.min.css': 'src/donler.styl'},
+          {'dist/login.min.css': 'src/login.styl'}
+        ]
       }
     },
     copy: {
@@ -136,6 +145,16 @@ module.exports = function(grunt) {
             dest: '../public/company_client/js/'
           }
         ]
+      },
+      loginJs: {
+        files: [
+          {
+            expand: true,
+            flatten: true,
+            src: ['src/login.js'],
+            dest: '../public/company_client/js/'
+          }
+        ]
       }
     },
     concat: {
@@ -152,6 +171,15 @@ module.exports = function(grunt) {
           'dist/donler.min.css'
         ],
         dest: '../public/company_client/css/donler.min.css'
+      },
+      loginCss: {
+        src: [
+          'bower-lib/bootstrap/dist/css/bootstrap.min.css',
+          'bower-lib/admin-lte/dist/css/AdminLTE.min.css',
+          'bower-lib/admin-lte/dist/css/skins/skin-blue.min.css',
+          'dist/login.min.css'
+        ],
+        dest: '../public/company_client/css/login.min.css'
       }
     }
   });
