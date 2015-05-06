@@ -10,7 +10,7 @@ block content
       .input_box
         .board
           input(ng-model="email" ng-keypress="checkMail($event)" required)
-          button.next_step(ng-click="checkMail()" ng-disabled="loading")
+          button.search(ng-click="checkMail()" ng-disabled="loading")
       .signup_bottom
         //- img.signup_man(src="/img/signup/dl_signup_man.png")
         img.signup_cloud(src="/img/signup/dl_signup_cloud.png")

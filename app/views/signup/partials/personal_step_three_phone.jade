@@ -1,17 +1,26 @@
 .input_box
   .board
     form(name="companyForm" novalidate)
-      input(ng-model="email" required readonly)
-      input(ng-model="companyName" ng-blur="checkOfficeName()" required)
+      input.email(ng-model="email" required readonly)
+      input(ng-model="companyName" placeholder="公司名称" ng-blur="checkOfficeName()" required)
       //- 同名&&email后缀正确
-      p(ng-if="recommandCompany && domain") 检测到同名公司，不过你的邮箱后缀与它不同，换公司邮箱搜索试试?
+      p(ng-if="recommandCompany && !domain") 
+        span 检测到同名公司，不过您的邮箱后缀不对哦，换公司邮箱搜索试试?
+      .form-group(ng-if="recommandCompany && !domain") 
+        button.btn-success(ng-click="changeEmail()") 换邮箱
+        button.btn-info(ng-click="ignoreRecommand()") 继续注册
       //- 同名&&email不正确 提示换邮箱
-      p(ng-if="recommandCompany && !domain")
+      p(ng-if="recommandCompany && domain")
         span 检测到同名公司
-        a(ng-click="select(recommandCompany)") 点击加入
-      .form-group
-        select(ng-model="province" ng-options="province.value for province in provinces" ng-change="selcetProvince()")
-        select(ng-model="city" ng-options="city.value for city in cities" ng-change="selectCity()")
-        select(ng-model="district" ng-options="district.value for district in districts" )
-      button.next_step(ng-click="selectPage()" ng-disabled="companyForm.$invalid") 下一步
+      .form-group(ng-if="recommandCompany && domain") 
+        button.btn-success(ng-click="select(recommandCompany)") 点击加入
+        button.btn-info(ng-click="ignoreRecommand()") 继续注册
+      .form-group.clearfix(ng-if="!recommandCompany")
+        .select_cover
+          select(ng-model="province" ng-options="province.value for province in provinces" ng-change="selcetProvince()")
+        .select_cover
+          select(ng-model="city" ng-options="city.value for city in cities" ng-change="selectCity()")
+        .select_cover(last-child)
+          select(ng-model="district" ng-options="district.value for district in districts")
+      button.next_step.btn-success(ng-if="!recommandCompany" ng-click="selectPage()" ng-disabled="companyForm.$invalid") 下一步
 .signup_bottom

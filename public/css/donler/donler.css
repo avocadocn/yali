@@ -673,6 +673,9 @@ textarea {
 textarea {
   resize: none;
 }
+select {
+  outline: none;
+}
 ::-webkit-input-placeholder {
   color: #ccc;
 }

@@ -176,20 +176,34 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
       $http.get('/region').success(function(data, status) {
         $scope.provinces = data.data;
         $scope.province = $scope.provinces[0];
-        $scope.cities = $scope.province.data;
-        $scope.city = $scope.cities[0];
-        $scope.districts = $scope.city.data;
-        $scope.district = $scope.districts[0];
+        changeProvince();
+        $http.jsonp('http://api.map.baidu.com/location/ip?ak=krPnXlL3wNORRa1KYN1RAx3c&callback=JSON_CALLBACK')
+        .success(function(data, status) {
+          console.log(data);
+          var detail = data.content.address_detail;
+          var province = detail.province;
+          var city = detail.city;
+          var district = detail.district;
+          // if(province && province.indexOf())
+        });
+
       });
     }
   };
-  $scope.selcetProvince = function() {
+  var changeProvince = function() {
     $scope.cities = $scope.province.data;
     $scope.city = $scope.cities[0];
-  };
-  $scope.selectCity = function() {
+    changeCity();
+  }
+  var changeCity = function() {
     $scope.districts = $scope.city.data;
     $scope.district = $scope.districts[0];
+  }
+  $scope.selcetProvince = function() {
+    changeProvince();
+  };
+  $scope.selectCity = function() {
+    changeCity();
   };
   $scope.checkOfficeName = function() {
     if($scope.companyName) {
@@ -206,6 +220,16 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
         }
       });
     }
+  };
+  $scope.changeEmail = function() {
+    $scope.step = 1;
+    $scope.email = '';
+  };
+  $scope.selectPage = function() {
+    $scope.step = 4;
+  };
+  $scope.ignoreRecommand = function() {
+    $scope.recommandCompany = null;
   };
 
 
