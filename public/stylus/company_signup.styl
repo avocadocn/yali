@@ -421,5 +421,58 @@
         background-image url('/img/signup/dl_signup_woman.png')
         background-size 200.5px 208.5px
         margin-top -10%
-
-
+  .signup_step_four
+    width 100%
+    // background-position-y 25px
+    // background-position-x center
+    .board
+      margin 30px 10%
+      .fa-hand-o-right
+        color #fff
+        float left
+        font-size 16px
+        margin-right 5px
+      .select_label
+        color #fff
+        font-size 16px
+      .select_line
+        margin-top 5px
+        border-bottom 1px solid white
+      .groups
+        width 100%
+        // position relative
+        .group
+          float left
+          // width 80px
+          text-align center
+          // padding 10px
+          cursor pointer
+          .img_contain
+            width 50px
+            height 50px
+            margin-left 5px
+            background-image url('/img/signup/dl_signup_groups.png')
+            background-repeat no-repeat
+            background-size 200px 200px
+            margin 10px 3px
+            padding 0px
+            // border 1px solid #ccc
+          for i in 0..16
+            .group_{i+1}
+              background-position i%4 * -50px floor(i/4) * -50px + 1px
+          .group_15
+            background-position -98px -149px
+          label
+            color white
+            font-size 14px
+          &.active
+            color #94cd3e
+            .img_contain
+              border-color #94cd3e
+              box-shadow  0 1px 1px rgba(0,0,0,0.1)
+  &.step_4
+    background-image url('/img/signup/dl_signup_paper_plane.png')
+    background-size 118.5px 77.5px
+    background-repeat no-repeat
+    background-position-x 95%
+    background-position-y 10px

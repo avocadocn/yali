@@ -272,7 +272,20 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
     $scope.recommandCompany = null;
   };
 
-
+  //- step 4
+  $scope.newTeam = {
+    _id: '',
+    teamName: ''
+  }
+  var getGroups = function() {
+    $http.get('/group/getgroups').success(function(data, status) {
+      $scope.groups = data.splice(0, 16);
+    });
+  };
+  getGroups();
+  $scope.changeType = function(index) {
+    $scope.newTeam._id = $scope.groups[index]._id;
+  };
 }]);
 
 companySignUpApp.controller('userSignupController',['$http','$scope','$rootScope',function ($http,$scope,$rootScope) {
