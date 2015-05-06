@@ -258,12 +258,11 @@ exports.sendQuickRegisterActiveMail = function(who, name, id, host) {
  * @param {String} who 接收人的邮件地址
  * @param {String} id HR的公司id
  */
-exports.sendCompanyOperationGuideMail = function(who, id, host) {
+exports.sendCompanyOperationGuideMail = function(who, name, email, host) {
   var from = '动梨<service@donler.com>';
   var to = who;
   var subject = '公司操作指南';
-  var description = '公司操作指南';
-  fs.readFile(rootConfig.root+'/app/views/partials/mailTemplate.jade', 'utf8', function (err, data) {
+  fs.readFile(rootConfig.root+'/app/views/partials/mail_template_company_guide.jade', 'utf8', function (err, data) {
     if (err) {
       console.log(err);
       console.log(err.stack);
@@ -274,7 +273,8 @@ exports.sendCompanyOperationGuideMail = function(who, id, host) {
       'title': '公司操作指南',
       'host': siteProtocol + host,
       'who': who,
-      'description': description
+      'name': name,
+      'email':email
     });
     sendMail({
       from: from,
@@ -290,12 +290,11 @@ exports.sendCompanyOperationGuideMail = function(who, id, host) {
  * @param {String} who 接收人的邮件地址
  * @param {String} id HR的公司id
  */
-exports.sendInviteColleageMail = function(who, key, id, qrcodeUri, host) {
+exports.sendInviteColleageMail = function(who, key, id, host) {
   var from = '动梨<service@donler.com>';
   var to = who;
   var subject = '邀请同事提示邮件';
-  var description = '快去邀请您的同事来注册吧';
-  var qrcodeURI = 'http://' + host +qrcodeUri;
+  var description = '快去邀请您的同事来注册吧，点击下面链接进行快速注册：';
   var link = 'http://' + host + '/users/invite?key=' + key + '&cid=' + id;
   fs.readFile(rootConfig.root+'/app/views/partials/mailTemplate.jade', 'utf8', function (err, data) {
     if (err) {

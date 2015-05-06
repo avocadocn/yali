@@ -7,11 +7,15 @@ var mongoose = require('mongoose'),
     GroupMessage = mongoose.model('GroupMessage'),
     Campaign = mongoose.model('Campaign'),
     Department = mongoose.model('Department'),
+    Config = mongoose.model('Config'),
     async = require('async'),
     schedule = require('node-schedule');
 
 var userScore = require('./user_score.js');
-
+var mail = require('../services/mail');
+var sendcloud = require('../services/sendcloud');
+var webpower = require('../services/webpower');
+var encrypt = require('../middlewares/encrypt');
 /**
  * 活动结束更新成员积分
  * @param {Function} callback [description]
@@ -219,7 +223,42 @@ var teamPoint = function(){
     }
   });
 }
+var sendCompanyGuideJob = function () {
+  var _nowTime=new Date();
+  var startTime=new Date();
+  startTime.setDate(_nowTime.getDate()-2);
+  var endTime = new Date();
+  endTime.setDate(_nowTime.getDate()-1);
+  Company.find({'status.verification':1,mail_active:true,active:true,date:{$gte:startTime,$lt:endTime}})
+  .exec()
+  .then(function (companies) {
+    Config.findOne({ name: 'admin' }, function (err, config) {
+      var mailSet;
+      if (config && config.smtp === '163') {
+        mailSet = mail;
+      }
+      else {
+        mailSet = sendcloud;
+      }
+      async.each(companies, function (company, callback) {
+        mailSet.sendCompanyOperationGuideMail(req.body.email, company._id.toString(), req.headers.host);
+        callback();
+      }, function(err){
+        if( err ) {
+          console.log('发送操作指南：',err);
+        }
+        else{
+          console.log('发送操作指南：',companies.length);
+        }
+      });
+    });
+    
 
+  })
+  .then(null, function (err) {
+    console.log('发送操作指南错误:', err);
+  });
+}
 
 var countCampaign = function (startTime,endTime,type,newWeek){
   CompanyGroup.find({'active':true},function(err,teams){
@@ -335,6 +374,14 @@ exports.init = function(){
   lastMonthCampaignRule.hour = 0;
   lastMonthCampaignRule.minute = 0;
   var lastMonthCampaignSchedule = schedule.scheduleJob(lastMonthCampaignRule,lastMonthCampaignCount);
+  //发送邮件给刚刚激活的公司
+  var sendCompanyGuideRule = new schedule.RecurrenceRule();
+  sendCompanyGuideRule.hour = 0;
+  sendCompanyGuideRule.minute = 0;
+  var sendCompanyGuideSchedule = schedule.scheduleJob(sendCompanyGuideRule, function(){
+    sendCompanyGuideJob();
+  });
+  // sendCompanyGuideJob();
 };
 //统计活动数
 exports.countCampaign = function(){
