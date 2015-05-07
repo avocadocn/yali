@@ -1192,19 +1192,46 @@
 .signup_phone.step_2 {
   background-color: #ffd54b;
 }
-.signup_phone .signup_step_two {
+.signup_phone .signup_step_two,
+.signup_phone .signup_step_eight {
   width: 100%;
   min-height: 450px;
+}
+.signup_phone .signup_step_two .board,
+.signup_phone .signup_step_eight .board {
+  width: 241.5px;
+  padding: 50px 15px 0;
+  margin: auto;
+}
+.signup_phone .signup_step_two .signup_bottom_2,
+.signup_phone .signup_step_eight .signup_bottom_2 {
+  background-image: url("/img/signup/dl_signup_bg_2.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 161px;
+  width: 293.5px;
+  margin: auto;
+  padding-top: 10px;
+}
+.signup_phone .signup_step_two .signup_bottom_2 .notfound,
+.signup_phone .signup_step_eight .signup_bottom_2 .notfound {
+  width: 116px;
+  margin-left: 53px;
+  margin-top: 13px;
+}
+.signup_phone .signup_step_two .signup_bottom_2 .organize,
+.signup_phone .signup_step_eight .signup_bottom_2 .organize {
+  width: 120px;
+  height: 40px;
+  float: right;
+  background-color: transparent;
+}
+.signup_phone .signup_step_two {
   background-image: url("/img/signup/dl_signup_paper.png");
   background-size: 241.5px 338.5px;
   background-repeat: no-repeat;
   background-position-y: 25px;
   background-position-x: center;
-}
-.signup_phone .signup_step_two .board {
-  width: 241.5px;
-  padding: 50px 15px 0;
-  margin: auto;
 }
 .signup_phone .signup_step_two .board .search_title {
   width: 121.5px;
@@ -1248,26 +1275,6 @@
 }
 .signup_phone .signup_step_two .board .companies .nextPage {
   right: 0;
-}
-.signup_phone .signup_step_two .signup_bottom_2 {
-  background-image: url("/img/signup/dl_signup_bg_2.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-  height: 161px;
-  width: 293.5px;
-  margin: auto;
-  padding-top: 10px;
-}
-.signup_phone .signup_step_two .signup_bottom_2 .notfound {
-  width: 116px;
-  margin-left: 53px;
-  margin-top: 13px;
-}
-.signup_phone .signup_step_two .signup_bottom_2 .organize {
-  width: 120px;
-  height: 40px;
-  float: right;
-  background-color: transparent;
 }
 .signup_phone.step_3 {
   background-color: #ef6767;
