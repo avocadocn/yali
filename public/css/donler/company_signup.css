@@ -783,11 +783,12 @@
   width: 100%;
 }
 .signup_phone.step_5 .signup_step_five .board {
-  margin: 30px 10%;
-  width: 80%;
+  margin: 45px auto;
+  width: 240px;
   height: 280px;
   background-image: url("/img/signup/dl_signup_box_5.png");
-  background-size: cover;
+  background-size: 240px 280px;
+  background-repeat: no-repeat;
 }
 .signup_phone.step_5 .signup_step_five .board .board_content {
   width: 100%;
@@ -799,7 +800,7 @@
 .signup_phone.step_5 .signup_step_five .board .board_content .email_tip {
   text-align: center;
   color: #666;
-  padding: 15px 0;
+  padding: 10px 0;
   margin: 0;
 }
 .signup_phone.step_5 .signup_step_five .board .board_content .signup_success {

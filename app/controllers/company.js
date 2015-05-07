@@ -590,8 +590,8 @@ exports.quickvalidate = function(req, res) {
       if (company) {
         if (!company.status.active) {
           if (encrypt.encrypt(_id, config.SECRET) === key) {
-            company.acitve = true;
-            company.mail_active = true;
+            company.status.active = true;
+            company.status.mail_active = true;
             company.status.date = new Date();
             var saveCompany = function () {
               company.save(function(err) {
@@ -605,7 +605,7 @@ exports.quickvalidate = function(req, res) {
                   User.findOne({username:company.info.email}).exec()
                   .then(function (user) {
                     if(user){
-                      user.acitve = true;
+                      user.active = true;
                       user.mail_active = true;
                       user.save(function (err) {
                         if(!err){
