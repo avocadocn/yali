@@ -17,9 +17,9 @@
         button.btn-info(ng-click="ignoreRecommand()") 继续注册
       .form-group.clearfix(ng-if="!recommandCompany")
         .select_cover
-          select(ng-model="province" ng-options="province.value for province in provinces" ng-change="selcetProvince()")
+          select(ng-model="province" ng-options="province.value for province in provinces" ng-change="selcetProvince(province)")
         .select_cover
-          select(ng-model="city" ng-options="city.value for city in cities" ng-change="selectCity()")
+          select(ng-model="city" ng-options="city.value for city in cities" ng-change="selectCity(city)")
         .select_cover(last-child)
           select(ng-model="district" ng-options="district.value for district in districts")
       input(type="password" ng-model="password" placeholder="密码" ng-show="!recommandCompany" ng-minlength=6)

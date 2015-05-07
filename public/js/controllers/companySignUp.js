@@ -235,10 +235,12 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
     $scope.districts = $scope.city.data;
     $scope.district = $scope.districts[0];
   }
-  $scope.selcetProvince = function() {
+  $scope.selcetProvince = function(province) {
+    $scope.province = province;
     changeProvince();
   };
-  $scope.selectCity = function() {
+  $scope.selectCity = function(city) {
+    $scope.city = city;
     changeCity();
   };
   $scope.checkOfficeName = function() {
