@@ -6,26 +6,28 @@ var formatTimeDir = function () {
   var now = new Date()
   return now.getFullYear()+'-'+now.getMonth()+'/';
 }
-exports.generateCompanyQrcode = function (qrDir, fileName, qrText) {
+exports.generateCompanyQrcode = function (qrDir, fileName, qrText,callback) {
   var _formatDir = formatTimeDir();
+
   var finalSaveDir = qrDir +_formatDir;
+  var finalRealDir = 'public'+ finalSaveDir;
   var createQr = function () {
     var qrImg = qr.image(qrText, { type: 'png' });
-    var fileName = filenam+'.png';
-    var finalDir =finalSaveDir+fileName;
+    var finalDir =finalRealDir+fileName;
     var stream = fs.createWriteStream(finalDir)
     stream.on('error', function (error) {
       console.log("Caught", error);
+      callback(error)
     });
     qrImg.pipe(stream);
-    return finalDir;
+    callback(null,finalSaveDir+fileName)
   }
-  fs.exists(finalSaveDir, function (isExists) {
+  fs.exists(finalRealDir, function (isExists) {
     if (isExists) {
       createQr();
     }
     else {
-      mkdirp(finalSaveDir, createQr);
+      mkdirp(finalRealDir, createQr);
     }
   });
   

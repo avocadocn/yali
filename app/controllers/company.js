@@ -593,59 +593,72 @@ exports.quickvalidate = function(req, res) {
             company.acitve = true;
             company.mail_active = true;
             company.status.date = new Date();
+            var saveCompany = function () {
+              company.save(function(err) {
+                if (err) {
+                  console.log(err);
+                  res.render('company/company_validate_error', {
+                    title: '验证失败',
+                    message: '未知错误!'
+                  });
+                } else {
+                  User.findOne({username:company.info.email}).exec()
+                  .then(function (user) {
+                    if(user){
+                      user.acitve = true;
+                      user.mail_active = true;
+                      user.save(function (err) {
+                        if(!err){
+                          Config.findOne({ name: config.CONFIG_NAME }, function (err, config) {
+                            if (err || !config || !config.smtp || config.smtp === 'sendcloud') {
+                              sendcloud.sendInviteColleageMail(company.info.email, company.invite_key, company._id.toString(), company.invite_qrcode, req.headers.host);
+                            } else if (config.smtp === '163') {
+                              mail.sendInviteColleageMail(company.info.email, company.invite_key, company._id.toString(), company.invite_qrcode, req.headers.host);
+                            }
+                          });
+                          res.render('company/validate/active_success');
+                        }
+                        else{
+                          res.render('company/company_validate_error', {
+                            title: '验证失败',
+                            message: '未知错误!'
+                          });
+                        }
+                      })
+                    }
+                    else{
+                      res.render('company/company_validate_error', {
+                        title: '验证失败',
+                        message: '该公司激活成功，但对应的个人不存在!'
+                      });
+                    }
+                  })
+                  .then(null,function (err) {
+                    console.log(err)
+                    res.render('company/company_validate_error', {
+                      title: '验证失败',
+                      message: '未知错误!'
+                    });
+                  })
+                  
+                }
+              })
+            };
             if(!company.invite_qrcode){
               var qrDir = '/img/qrcode/companyinvite/';
               var fileName = company._id.toString()+'.png';
               var inviteUrl = req.headers.host+'/users/invite?key='+company.invite_key+'&cid=' + company._id;
 
-              company.invite_qrcode = qrcodeService(qrDir, fileName, inviteUrl);
+              qrcodeService.generateCompanyQrcode(qrDir, fileName, inviteUrl,function (err,qrcodeUrl) {
+                if(!err){
+                  company.invite_qrcode =qrcodeUrl;
+                }
+                saveCompany();
+              });
             }
-            company.save(function(err) {
-              if (err) {
-                res.render('company/company_validate_error', {
-                  title: '验证失败',
-                  message: '未知错误!'
-                });
-              } else {
-                User.findOne({username:company.info.email}).exec(function (user) {
-                  if(user){
-                    user.acitve = true;
-                    user.mail_active = true;
-                    user.save(function (err) {
-                      if(!err){
-                        Config.findOne({ name: config.CONFIG_NAME }, function (err, config) {
-                          if (err || !config || !config.smtp || config.smtp === 'sendcloud') {
-                            sendcloud.sendInviteColleageMail(company.info.email, company.invite_key, company._id.toString(), company.invite_qrcode, req.headers.host);
-                          } else if (config.smtp === '163') {
-                            mail.sendInviteColleageMail(company.info.email, company.invite_key, company._id.toString(), company.invite_qrcode, req.headers.host);
-                          }
-                        });
-                        res.render('/company/validate/active_success');
-                      }
-                      else{
-                        res.render('company/company_validate_error', {
-                          title: '验证失败',
-                          message: '未知错误!'
-                        });
-                      }
-                    })
-                  }
-                  else{
-                    res.render('company/company_validate_error', {
-                      title: '验证失败',
-                      message: '该公司激活成功，但对应的个人不存在!'
-                    });
-                  }
-                })
-                .then(null,function (err) {
-                  res.render('company/company_validate_error', {
-                    title: '验证失败',
-                    message: '未知错误!'
-                  });
-                })
-                
-              }
-            });
+            else{
+              saveCompany();
+            }
           } else {
             res.render('company/company_validate_error', {
               title: '验证失败',
