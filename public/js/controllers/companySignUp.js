@@ -349,7 +349,11 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
   $scope.signupUser = function() {
     $http.post('/users/dealActive?notinvited=true', $scope.userInfo)
       .success(function(data, status) {
-        $scope.step = 5;
+        if(data.result === 1) {
+          $scope.step = 5;
+        } else {
+          alert('注册失败');
+        }
       })
   };
 }]);
