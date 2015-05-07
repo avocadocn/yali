@@ -30,6 +30,8 @@ module.exports = function(app, passport) {
     app.post('/users/dealActive', users.dealActive);
     // app.get('/users/mailActive', users.mailActive);
 
+    app.post('/users/resend/activeEmail', users.resendActiveEmail); // 重发激活邮件
+
     app.post('/users/inviteKeyCheck', users.inviteKeyCheck);
     // app.post('/users/lastStepActive', users.lastStepActive);
     app.get('/users/setProfile', users.setProfile);

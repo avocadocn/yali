@@ -17,6 +17,7 @@ var mongoose = require('mongoose'),
   CompanyGroup = mongoose.model('CompanyGroup'),
   GroupMessage = mongoose.model('GroupMessage'),
   Department = mongoose.model('Department'),
+  Config = mongoose.model('Config'),
   Campaign = mongoose.model('Campaign');
 
 // 3rd
@@ -2182,3 +2183,92 @@ exports.updateCommentTime =function(req, res) {
     res.send({result:0});
   }
 }
+
+/**
+ * 重发激活邮件
+ * req.body:
+ *   email: String // 公司邮箱
+ */
+exports.resendActiveEmail = function(req, res, next) {
+  var sendInvalidMsg = function(msg) {
+    res.status(400).send({msg: msg});
+  };
+  if (!req.body.email) {
+    return sendInvalidMsg('缺少email');
+  }
+  else if (!validator.isEmail(req.body.email)) {
+    return sendInvalidMsg('email无效');
+  }
+
+  Company.findOne({'info.email': req.body.email}).exec()
+    .then(function(company) {
+      // 是快速注册的公司
+      if (company && company.status.verification === 1) {
+        // 因为status.active默认为false，所以忽略
+        // 按理说，未激活的公司不应该是被管理员屏蔽的状态
+        if (company.status.mail_active) {
+          res.send({msg: '已经激活，请直接登录', isActive: true});
+        }
+        else {
+          resendCompanyActiveEmail(company);
+          res.send({msg: '已经重新发送激活邮件', hasResend: true});
+        }
+      }
+      else {
+        // 不是快速注册
+        return User.findOne({email: req.body.email}).exec().then(function(user) {
+          if (!user) {
+            res.status(400).send({msg: '该邮箱对应的用户不存在'});
+            return;
+          }
+
+          if (user.mail_active) {
+            res.send({msg: '已经激活，请直接登录', isActive: true});
+          }
+          else {
+            resendUserActiveEmail(user);
+            res.send({msg: '已经重新发送激活邮件', hasResend: true});
+          }
+        });
+      }
+    })
+    .then(null, next);
+
+  function resendCompanyActiveEmail(company) {
+    Config.findOne({name: config.CONFIG_NAME}).exec()
+      .then(function(config) {
+        switch (config.smtp) {
+        case '163':
+          mail.sendQuickRegisterActiveMail(company.info.email, company.info.name, company.id, req.headers.host);
+          break;
+        case 'sendcloud':
+          // 默认使用sendcloud发送
+          // waterfall
+        default:
+          sendcloud.sendQuickRegisterActiveMail(company.info.email, company.info.name, company.id, req.headers.host);
+        }
+      })
+      .then(null, function(err) {
+        console.log(err.stack || err);
+      });
+  }
+
+  function resendUserActiveEmail(user) {
+    Config.findOne({name: config.CONFIG_NAME}).exec()
+      .then(function(config) {
+        switch (config.smtp) {
+        case '163':
+          mail.sendStaffActiveMail(user.email, user.id, user.cid.toString(), req.headers.host);
+          break;
+        case 'sendcloud':
+          // 默认使用sendcloud发送
+          // waterfall
+        default:
+          sendcloud.sendStaffActiveMail(user.email, user.id, user.cid.toString(), req.headers.host);
+        }
+      })
+      .then(null, function(err) {
+        console.log(err.stack || err);
+      });
+  }
+};

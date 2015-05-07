@@ -907,58 +907,7 @@ exports.create = function(req, res) {
   });
 };
 
-/**
- * 重发激活邮件
- * req.body:
- *   email: String // 公司邮箱
- */
-exports.resendActiveEmail = function(req, res, next) {
-  var sendInvalidMsg = function(msg) {
-    res.status(400).send({msg: msg});
-  };
-  if (!req.body.email) {
-    return sendInvalidMsg('缺少email');
-  }
-  else if (!validator.isEmail(req.body.email)) {
-    return sendInvalidMsg('email无效');
-  }
 
-  Company.findOne({'info.email': req.body.email}).exec()
-    .then(function(company) {
-      if (company.status.active) {
-        if (company.status.mail_active) {
-          res.send({msg: '已经激活，请直接登录', isActive: true});
-        }
-        else {
-          res.send({msg: '已经重新发送激活邮件'});
-          resend();
-        }
-      }
-      else {
-        res.send({msg: '您的账号已经被管理员屏蔽'});
-      }
-    })
-    .then(null, next);
-
-  function resend() {
-    Config.findOne({name: config.CONFIG_NAME}).exec()
-      .then(function(config) {
-        switch (config.smtp) {
-        case '163':
-          mail.sendQuickRegisterActiveMail(userDoc.email, companyDoc.info.name, companyDoc.id, req.headers.host);
-          break;
-        case 'sendcloud':
-          // 默认使用sendcloud发送
-          // waterfall
-        default:
-          sendcloud.sendQuickRegisterActiveMail(userDoc.email, companyDoc.info.name, companyDoc.id, req.headers.host);
-        }
-      })
-      .then(null, function(err) {
-        console.log(err.stack || err);
-      });
-  }
-};
 
 /**
  * 快速注册 - 创建公司和用户
