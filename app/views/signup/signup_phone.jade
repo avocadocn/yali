@@ -49,17 +49,13 @@ block content
             //- input.hidden(type='radio' name='group' id='{{group._id}}' value='{{group._id}}' ng-model='newTeam._id' required)
             label(for='{{group._id}}') {{group.groupType}}
         .select_line
-<<<<<<< HEAD
-        button.btn-success(ng-click="createTeams()") 选好啦
-      //- include partials/personal_step_four_phone
-=======
           .left
           .middle
           .right
-        button.sinup_team_button(ng-click="" ng-disabled="") 下一步
+        button.sinup_team_button(ng-click="createTeams()" ng-disabled="") 完成
         .signup_blank
+      //- include partials/personal_step_four_phone
       include partials/personal_step_four_phone
->>>>>>> 修改快速注册选择小队页面样式
     .signup_step_five(ng-show="step===5")
       //- 注册成功
       span 注册成功
