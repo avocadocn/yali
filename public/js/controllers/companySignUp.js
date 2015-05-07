@@ -172,6 +172,16 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
   }
   $scope.select = function(company) {
     $scope.selectedCompany = company;
+    $scope.userInfo = {
+      cid: company._id,
+      email: $scope.email,
+      inviteKey: '',
+      nickname: '',
+      password: '',
+      passconf: '',
+      realname: '',
+      quick: true
+    };
     $scope.step = 7;
   };
   $scope.organize = function() {
@@ -327,15 +337,6 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
     })
   };
   //- step 7
-  $scope.userInfo = {
-    email: $scope.email,
-    inviteKey: '',
-    nickname: '',
-    password: '',
-    passconf: '',
-    realname: '',
-    quick: true
-  };
 
   $scope.checkInviteKey = function() {
     if($scope.userInfo.inviteKey&&$scope.userInfo.inviteKey.length===8 && $scope.selectedCompany) {
@@ -346,9 +347,10 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
     }
   };
   $scope.signupUser = function() {
-    $http.post('/users/dealActive', $scope.userInfo)
+    // console.log($scope.userInfo);
+    $http.post('/users/dealActive?notinvited=true', $scope.userInfo)
       .success(function(data, status) {
-        
+        $scope.step = 5;
       })
   };
 }]);

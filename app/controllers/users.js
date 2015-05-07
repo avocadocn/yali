@@ -477,6 +477,7 @@ exports.inviteQR = function(req, res) {
 };
 
 function userOperate(cid, key, res, req, index) {
+  console.log('1');
   Company
   .findOne({ _id: cid })
   .exec()
@@ -545,9 +546,11 @@ function userOperate(cid, key, res, req, index) {
                         sendcloud.sendStaffActiveMail(email, user._id.toString(), company._id.toString(), req.headers.host);
                       }
                     });
-                    delete req.session.key;
-                    delete req.session.key_id;
-                    delete req.session.cid;
+                    if(req.session) {
+                      delete req.session.key;
+                      delete req.session.key_id;
+                      delete req.session.cid;
+                    }
                     if(req.body.quick){
                       return res.send({'result':1,'msg':'注册成功'});
                     }
