@@ -134,11 +134,16 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
   var searchCompany = function() {
     $http.post('/search/company', {email:$scope.email})
     .success(function(data, status) {
-      $scope.page = 1;
-      $scope.companies=data.companies;
-      if($scope.page===data.pageCount) {$scope.hasNext = false;}
-      $scope.hasPrevious = false;
-    })
+      if(data.companies.length === 0) {
+        $scope.step = 8;
+      }
+      else {
+        $scope.page = 1;
+        $scope.companies=data.companies;
+        if($scope.page===data.pageCount) {$scope.hasNext = false;}
+        $scope.hasPrevious = false;
+      }
+    });
   };
 
   //-step 2
@@ -146,10 +151,6 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
     if($scope.hasNext) {
       $http.post('/search/company',{email:$scope.email, page:$scope.page+1}).success(function (data,status){
         $scope.companies=data.companies;
-        if($scope.companies.length===0) {
-          $scope.page = 8;
-        }
-        else
         $scope.page++;
         if($scope.page===data.pageCount) {$scope.hasNext = false;}
         $scope.hasPrevious = true;
@@ -160,6 +161,7 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
     if($scope.hasPrevious) {
       $http.post('/search/company',{email:$scope.email, page:$scope.page-1}).success(function (data,status){
         $scope.companies=data.companies;
+        $scope.hasNext = true;
         $scope.page--;
         if($scope.page===1) {$scope.hasPrevious = false;}
       });
@@ -198,7 +200,6 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
         changeProvince();
         $http.jsonp('http://api.map.baidu.com/location/ip?ak=krPnXlL3wNORRa1KYN1RAx3c&callback=JSON_CALLBACK')
         .success(function(data, status) {
-          // console.log(data);
           var detail = data.content.address_detail;
           var province = detail.province;
           var city = detail.city;
@@ -271,7 +272,6 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
       city: $scope.city.value,
       district: $scope.district.value
     }).success(function(data, status){
-      console.log(data);
       uid = data.uid;
     });
     $scope.step = 4;
@@ -294,7 +294,6 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
   };
 
   $scope.createTeams = function() {
-    console.log('???');
     var selectedGroups = $scope.groups.filter(function(group) {
       return group.selected = true;
     });
@@ -302,7 +301,7 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
       groups: selectedGroups,
       uid: uid
     }).success(function(data, status) {
-      console.log(data);
+      // console.log(data);
       $scope.step = 5;
     })
   }
@@ -357,6 +356,7 @@ companySignUpApp.controller('userSignupController',['$http','$scope','$rootScope
     if($scope.hasPrevious) {
       $http.post('/search/company',{email:$scope.email, page:$scope.page-1}).success(function (data,status){
         $scope.companies=data.companies;
+        $scope.hasNext = true;
         $scope.page--;
         if($scope.page===1) {$scope.hasPrevious = false;}
       });

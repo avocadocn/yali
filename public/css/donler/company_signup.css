@@ -526,6 +526,7 @@
 .signup_phone.step_3 .signup_step_three .input_box .board .form-group button {
   border-radius: 5px;
   padding: 7px 10px;
+  width: 48%;
 }
 .signup_phone.step_3 .signup_step_three .input_box .board .next_step {
   float: right;
