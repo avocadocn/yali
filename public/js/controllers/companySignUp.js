@@ -263,7 +263,6 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
   };
   var uid = '';
   $scope.selectPage = function() {
-    //此处要注册 注册的后台需改.
     $http.post('/company/quickCreateUserAndCompany', {
       email: $scope.email,
       name: $scope.companyName,
@@ -311,10 +310,13 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
 
   //- step 6
   $scope.resend = function() {
-    //
-    // $http.post('/users/???',{email:$scope.email}).success({
-    //   $scope.step = 5;
-    // })
+    $http.post('/users/resend/activeEmail',{email:$scope.email})
+    .success(function(data,status){
+      $scope.step = 5;
+    })
+    .error(function(data, status) {
+      alert(data.msg);
+    })
   };
 }]);
 
