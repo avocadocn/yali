@@ -45,15 +45,15 @@ block content
         .groups.clearfix
           .group(ng-repeat='group in groups' ng-class="{'active':group.selected}" ng-click="selectType($index)")
             .img_contain(class='group_'+'{{group._id}}' )
-            .shadow
+            .shadow(ng-class="{'active': group.selected}")
             //- input.hidden(type='radio' name='group' id='{{group._id}}' value='{{group._id}}' ng-model='newTeam._id' required)
             label(for='{{group._id}}') {{group.groupType}}
         .select_line
           .left
           .middle
           .right
-        button.sinup_team_button(ng-click="createTeams()" ng-disabled="") 完成
-        .signup_blank
+        .signup_button
+          button.sinup_team_button(ng-click="createTeams()" ng-disabled="") 完成
       //- include partials/personal_step_four_phone
     .signup_step_five(ng-show="step===5")
       //- 注册成功
