@@ -2177,7 +2177,7 @@ exports.getCompanyInviteQrcode = function(req, res) {
 
 exports.renderHrManagerPage = function(req, res) {
   var rootPath = meanConfig.root;
-  if (req.session.mgcid) {
+  if (req.session && req.session.mgcid) {
     res.sendfile(path.join(rootPath, 'company_manager_client/index.html'));
   }
   else {
