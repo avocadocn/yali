@@ -10,11 +10,11 @@ block content
       //- check邮箱
       .input_box
         .board
-          input(ng-model="email" ng-keypress="checkMail($event)" required)
+          input(ng-model="email" ng-keypress="checkMail($event)" placeholder="请输入您的企业邮箱" required)
           button.search(ng-click="checkMail()" ng-disabled="loading")
       .signup_bottom
         //- img.signup_man(src="/img/signup/dl_signup_man.png")
-        img.signup_cloud(src="/img/signup/dl_signup_cloud.png")
+        img.signup_cloud(src="/img/signup/dl_signup_cloud.gif")
 
     .signup_step_two(ng-show="step===2")
       //- 选择公司或选择自己注册
