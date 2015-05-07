@@ -432,6 +432,13 @@
         background-repeat no-repeat
         background-position bottom left
         margin-top -10%
+
+  &.step_4
+    background-image url('/img/signup/dl_signup_paper_plane.png')
+    background-size 118.5px 77.5px
+    background-repeat no-repeat
+    background-position-x 95%
+    background-position-y 10px
   .signup_step_four
     width 100%
     // background-position-y 25px
@@ -524,17 +531,48 @@
           label
             color white
             font-size 12px
-
           &.active
             color #94cd3e
             .img_contain
               border 1px solid white
               border-radius 100%
               box-shadow  0 1px 1px rgba(0,0,0,0.1)
-
-  &.step_4
-    background-image url('/img/signup/dl_signup_paper_plane.png')
-    background-size 118.5px 77.5px
-    background-repeat no-repeat
-    background-position-x 95%
-    background-position-y 10px
+      .sinup_team_button
+        float right
+        margin-top 8px
+        border-radius 3px
+        padding 2px 16px
+        background-color #94cd3e
+        color white
+      .signup_blank
+        height 20px
+  
+  &.step_6
+    background-color #fe8915
+    .signup_step_six
+      .board
+        width 100%
+        max-width 585px
+        //- min-height 656px
+        padding-bottom 75%
+        background-image url('/img/signup/dl_signup_graph.png')
+        background-repeat no-repeat
+        background-size contain
+        margin auto
+        margin-top 10%
+        padding-left 20%
+        .board_content
+          padding 26% 10px 30px 65px
+          text-align center
+          img
+            width 100%
+            display block
+            margin auto
+          .signin
+            max-width 345px
+          .nomail
+            max-width 220px
+          .resend
+            width 50%
+            max-width 80px
+            margin-top 10px

@@ -264,7 +264,6 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
   var uid = '';
   $scope.selectPage = function() {
     //此处要注册 注册的后台需改.
-    console.log($scope.password);
     $http.post('/company/quickCreateUserAndCompany', {
       email: $scope.email,
       name: $scope.companyName,
@@ -278,10 +277,8 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
       getGroups();
     }).error(function(data, status) {
       console.log(data);
-      alert('创建公司失败!');
-    })
-    
-    
+      alert('注册失败');
+    })    
   };
   $scope.ignoreRecommand = function() {
     $scope.recommandCompany = null;
@@ -312,6 +309,13 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
     })
   }
 
+  //- step 6
+  $scope.resend = function() {
+    //
+    // $http.post('/users/???',{email:$scope.email}).success({
+    //   $scope.step = 5;
+    // })
+  };
 }]);
 
 companySignUpApp.controller('userSignupController',['$http','$scope','$rootScope',function ($http,$scope,$rootScope) {

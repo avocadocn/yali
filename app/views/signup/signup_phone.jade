@@ -53,7 +53,7 @@ block content
           .middle
           .right
         .signup_button
-          button.sinup_team_button(ng-click="createTeams()" ng-disabled="") 完成
+          button.sinup_team_button(ng-click="createTeams()") 完成
       //- include partials/personal_step_four_phone
     .signup_step_five(ng-show="step===5")
       //- 注册成功
@@ -61,7 +61,12 @@ block content
     //- 支线系列
     .signup_step_six(ng-show="step===6")
       //- 已经注册过
-      span 已注册过.
+      .board
+        .board_content
+          a(href="/index/appdownload")
+            img.signin(src="/img/signup/dl_signup_signin.png" ng-if="!notVerified")
+          img.nomail(src="/img/signup/dl_signup_nomail.png" ng-if="notVerified")
+          img.resend(src="/img/signup/dl_signup_resend.png" ng-click="resend()" ng-if="notVerified")
     .signup_step_seven(ng-show="step===7")
       //- 只是个人注册，不用公司注册
       span 已有公司注册.
