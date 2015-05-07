@@ -973,7 +973,7 @@ exports.quickCreateUserAndCompany = function(req, res, next) {
         throw new BreakError();
       }
 
-      var newCompany = new Company({
+      companyDoc = new Company({
         username: email,
         login_email: email,
         password: req.body.password,
@@ -995,10 +995,24 @@ exports.quickCreateUserAndCompany = function(req, res, next) {
         },
         email: {
           domain: email.split('@')[1]
-        }
+        },
+        invite_key: tools.randomAlphaNumeric(8)
       });
 
-      return Company.create(newCompany);
+      var deferred = Q.defer();
+      var qrDir = '/img/qrcode/companyinvite/';
+      var fileName = companyDoc.id + '.png';
+      var inviteUrl = req.headers.host + '/users/invite?key=' + companyDoc.invite_key + '&cid=' + companyDoc.id;
+      qrcodeService.generateCompanyQrcode(qrDir, fileName, inviteUrl, function(err, qrcodeUrl) {
+        if (err) deferred.reject(err);
+        else deferred.resolve(qrcodeUrl);
+      });
+
+      return deferred.promise;
+    })
+    .then(function(qrcodeUrl) {
+      companyDoc.invite_qrcode = qrcodeUrl;
+      return Company.create(companyDoc);
     })
     .then(function(company) {
       companyDoc = company;
@@ -1019,7 +1033,9 @@ exports.quickCreateUserAndCompany = function(req, res, next) {
       userDoc = user;
       res.send({
         msg: '注册成功',
-        uid: user._id
+        uid: user._id,
+        inviteKey: companyDoc.invite_key,
+        qrcodeUrl: companyDoc.invite_qrcode
       });
 
       return Config.findOne({ name: config.CONFIG_NAME }).exec();
