@@ -47,7 +47,10 @@ var encrypt = require('../middlewares/encrypt'),
 
 
 var blockSize = 20;
-
+var isMobile = function(req) {
+  var deviceAgent = req.headers["user-agent"].toLowerCase();
+  return deviceAgent.match(/(iphone|ipod|ipad|android)/);
+};
 /**
  * Show login form
  */
@@ -346,9 +349,7 @@ exports.invite = function(req, res) {
             }
           },
           function (callback) {
-            var deviceAgent = req.headers["user-agent"].toLowerCase();
-            var agentID = deviceAgent.match(/(iphone|ipod|ipad|android)/);
-            if (agentID) {
+            if (isMobile(req)) {
               res.render('signup/invite_phone', {
                 title: '个人注册',
                 domains: company.email.domain,
@@ -547,9 +548,10 @@ function userOperate(cid, key, res, req, index) {
                     delete req.session.key;
                     delete req.session.key_id;
                     delete req.session.cid;
-                    var deviceAgent = req.headers["user-agent"].toLowerCase();
-                    var agentID = deviceAgent.match(/(iphone|ipod|ipad|android)/);
-                    if(agentID){
+                    if(req.body.quick){
+                      return res.send({'result':1,'msg':'注册成功'});
+                    }
+                    else if(isMobile(req)){
                       return res.render('users/app_download');
                     }else{
                       return res.render('users/message', message.wait);
@@ -613,16 +615,13 @@ function userOperate(cid, key, res, req, index) {
             delete req.session.key;
             delete req.session.key_id;
             delete req.session.cid;
-            var deviceAgent = req.headers["user-agent"].toLowerCase();
-            var agentID = deviceAgent.match(/(iphone|ipod|ipad|android)/);
-            if(agentID){
+            if(isMobile(req)){
               return res.render('users/app_download', message.wait);
             }else{
               return res.render('users/message', message.wait);
             }
           }
           else {
-            console.log(email);
             return res.render('users/message', message.invalid);
           }
         }
@@ -632,10 +631,16 @@ function userOperate(cid, key, res, req, index) {
         return res.render('users/message', message.invalid);
       });
     }else{
-      return res.render('users/message', {
-        title: '验证错误',
-        message: '激活码填写错误'
-      });
+      if(req.body.quick){
+        return res.send({'result':0,'msg':'激活码填写错误'});
+      }
+      else {
+        return res.render('users/message', {
+          title: '验证错误',
+          message: '激活码填写错误'
+        });
+      }
+
     }
   })
   .then(null, function(err) {
@@ -775,9 +780,7 @@ exports.dealActive = function(req, res, next) {
                           delete req.session.key;
                           delete req.session.key_id;
                           delete req.session.cid;
-                          var deviceAgent = req.headers["user-agent"].toLowerCase();
-                          var agentID = deviceAgent.match(/(iphone|ipod|ipad|android)/);
-                          if (agentID) {
+                          if (isMobile(req)) {
                             return res.render('users/app_download');
                           } else {
                             return res.render('users/message', message.wait);
@@ -871,10 +874,7 @@ exports.dealActive = function(req, res, next) {
         req.session.key = null;
         req.session.key_id = null;
         req.session.cid = null;
-
-        var deviceAgent = req.headers["user-agent"].toLowerCase();
-        var agentID = deviceAgent.match(/(iphone|ipod|ipad|android)/);
-        if (agentID) {
+        if (isMobile(req)) {
           res.render('users/app_download');
         } else {
           res.render('users/message', {title: '注册成功', message: '注册成功!'});
