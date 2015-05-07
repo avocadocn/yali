@@ -2207,7 +2207,7 @@ exports.resendActiveEmail = function(req, res, next) {
         // 因为status.active默认为false，所以忽略
         // 按理说，未激活的公司不应该是被管理员屏蔽的状态
         if (company.status.mail_active) {
-          res.send({msg: '已经激活，请直接登录', isActive: true});
+          res.status(400).send({msg: '已经激活，请直接登录', isActive: true});
         }
         else {
           resendCompanyActiveEmail(company);
@@ -2223,7 +2223,7 @@ exports.resendActiveEmail = function(req, res, next) {
           }
 
           if (user.mail_active) {
-            res.send({msg: '已经激活，请直接登录', isActive: true});
+            res.status(400).send({msg: '已经激活，请直接登录', isActive: true});
           }
           else {
             resendUserActiveEmail(user);
