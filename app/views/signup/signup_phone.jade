@@ -115,10 +115,17 @@ block content
               button 免费注册个人账号
       .signup_bottom
     .signup_step_eight(ng-show="step===8")
-      .board
-      .signup_bottom_2
-        //- img.notfound(src="/img/signup/dl_signup_notfound.png")
-        button.organize(ng-click="organize()")
+      .board.clearfix
+        i.fa.fa-reply(ng-click="preStep()")
+        .board_content
+          .not_found
+            p 很抱歉，没有找到您的公司
+          .select_line
+            .left
+            .middle
+            .right
+          button.organize_btn(ng-click="organize()") 我来组织吧
+      .signup_bottom_3
 
 block footExt
   script(src='/js/controllers/companySignUp.js')

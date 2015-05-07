@@ -306,16 +306,26 @@
     background-size 128px 234.5px
     background-repeat no-repeat
     background-position bottom left
-  &.step_2
+  &.step_2 ,&.step_8
     background-color #FFD54B
   .signup_step_two ,.signup_step_eight
     width 100%
     min-height 450px
+    background-image url('/img/signup/dl_signup_paper.png')
+    background-size 241.5px 338.5px
+    background-repeat no-repeat
+    background-position-y 25px
+    background-position-x center
     .board
       width 241.5px
       padding 50px 15px 0
       margin auto
-    .signup_bottom_2
+      .fa-reply
+        margin-left 30px
+        position absolute
+        color #fff
+        font-size 20px
+    .signup_bottom_2 ,.signup_bottom_3
       background-image url('/img/signup/dl_signup_bg_2.png')
       background-size cover
       background-repeat no-repeat
@@ -333,19 +343,9 @@
         float right
         background-color transparent
   .signup_step_two
-    background-image url('/img/signup/dl_signup_paper.png')
-    background-size 241.5px 338.5px
-    background-repeat no-repeat
-    background-position-y 25px
-    background-position-x center
     .board
       .search_title
         width 121.5px
-      .fa-reply
-        margin-left 30px
-        position absolute
-        color #fff
-        font-size 20px
       .companies
         margin-top 30px
         height 200px
@@ -439,6 +439,25 @@
     background-repeat no-repeat
     background-position-x 95%
     background-position-y 10px
+  .select_line
+    margin-top 5px
+    // border-bottom 1px solid #fff
+    .left
+      float left
+      width 5%
+      height 3px
+      background-color #fff
+    .middle
+      margin-top 1px
+      float left
+      width 90%
+      height 1px
+      background-color #fff
+    .right
+      float right
+      width 5%
+      height 3px
+      background-color #fff
   .signup_step_four
     width 100%
     // background-position-y 25px
@@ -454,26 +473,6 @@
         color #fff
         font-size 16px
         font-weight normal
-
-      .select_line
-        margin-top 5px
-        // border-bottom 1px solid #fff
-        .left
-          float left
-          width 5%
-          height 3px
-          background-color #fff
-        .middle
-          margin-top 1px
-          float left
-          width 90%
-          height 1px
-          background-color #fff
-        .right
-          float right
-          width 5%
-          height 3px
-          background-color #fff
       .signup_button
         clear both
         .sinup_team_button
@@ -545,12 +544,6 @@
         padding 2px 16px
         background-color #94cd3e
         color white
-  &.step_4
-    background-image url('/img/signup/dl_signup_paper_plane.png')
-    background-size 118.5px 77.5px
-    background-repeat no-repeat
-    background-position-x 95%
-    background-position-y 10px
   &.step_6
     background-color #fe8915
     .signup_step_six
@@ -645,3 +638,36 @@
     background-repeat no-repeat
     background-size 212.5px 78.5px
     background-position 90% 50px
+  .signup_step_eight
+    .board
+      text-align center
+      .fa-reply
+        float right
+        margin-right 40px
+        position initial
+      .board_content
+        height 140px
+        width 100%
+        margin-top 40px
+        float left
+        .not_found
+          color #fff
+          font-size 16px
+          margin auto
+          margin-bottom 15px
+        .select_line
+          margin auto
+        .organize_btn
+          border-radius 5px
+          width 80%
+          height 42px
+          margin auto
+          font-size 18px
+          margin-top 15px
+          color #fff
+          box-shadow 2px 2px 2px rgba(0, 0, 0, 0.3)
+          background-color #94cd3e
+    .signup_bottom_3
+      background-image url('/img/signup/dl_signup_bg_4.png')
+      width 299.5px
+      height 199.5px

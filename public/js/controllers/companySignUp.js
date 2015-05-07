@@ -168,7 +168,7 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
     }
   };
   $scope.preStep = function() {
-    $scope.step -- ;
+    $scope.step = 1 ;
   }
   $scope.select = function(company) {
     $scope.selectedCompany = company;
