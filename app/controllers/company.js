@@ -593,13 +593,13 @@ exports.quickvalidate = function(req, res) {
             company.acitve = true;
             company.mail_active = true;
             company.status.date = new Date();
-            // if(!company.invite_qrcode){
-            //   var qrDir = '/img/qrcode/companyinvite/';
-            //   var fileName = company._id.toString()+'.png';
-            //   var inviteUrl = req.headers.host+'/users/invite?key='+company.invite_key+'&cid=' + company._id;
+            if(!company.invite_qrcode){
+              var qrDir = '/img/qrcode/companyinvite/';
+              var fileName = company._id.toString()+'.png';
+              var inviteUrl = req.headers.host+'/users/invite?key='+company.invite_key+'&cid=' + company._id;
 
-            //   company.invite_qrcode = qrcodeService(qrDir, fileName, inviteUrl);
-            // }
+              company.invite_qrcode = qrcodeService(qrDir, fileName, inviteUrl);
+            }
             company.save(function(err) {
               if (err) {
                 res.render('company/company_validate_error', {
@@ -615,9 +615,9 @@ exports.quickvalidate = function(req, res) {
                       if(!err){
                         Config.findOne({ name: config.CONFIG_NAME }, function (err, config) {
                           if (err || !config || !config.smtp || config.smtp === 'sendcloud') {
-                            sendcloud.sendInviteColleageMail(company.info.email, company.invite_key, company._id.toString(), req.headers.host);
+                            sendcloud.sendInviteColleageMail(company.info.email, company.invite_key, company._id.toString(), company.invite_qrcode, req.headers.host);
                           } else if (config.smtp === '163') {
-                            mail.sendInviteColleageMail(company.info.email, company.invite_key, company._id.toString(), req.headers.host);
+                            mail.sendInviteColleageMail(company.info.email, company.invite_key, company._id.toString(), company.invite_qrcode, req.headers.host);
                           }
                         });
                         res.render('/company/validate/active_success');
@@ -1268,6 +1268,7 @@ exports.home = function(req, res) {
           if (!company) {
             throw 'not found company';
           }
+          // sendcloud.sendCompanyOperationGuideMail(company.info.email, company.info.name, req.headers.host);
           render(company);
         })
         .then(null, function(err) {

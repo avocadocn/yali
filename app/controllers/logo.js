@@ -21,7 +21,10 @@ var User = mongoose.model('User'),
 var schedule = require('../services/schedule'),
   config = require('../../config/config');
 
-
+var formatTimeDir = function () {
+  var now = new Date()
+  return now.getFullYear()+'-'+now.getMonth()+'/';
+}
 exports.updateLogo = function(req, res, next) {
 
   var target_model;
@@ -41,6 +44,7 @@ exports.updateLogo = function(req, res, next) {
 
   async.waterfall([
     function(callback) {
+      var _formatTimeDir =formatTimeDir();
       switch (req.body.target) {
       case 'u':
         target_model = req.user;
@@ -48,13 +52,13 @@ exports.updateLogo = function(req, res, next) {
         updateLogo = schedule.updateUlogo;
         logo_model = target_model;
         logo_property = 'photo';
-        target_dir = path.join(config.root, '/public/img/user/photo/');
-        uri_dir = '/img/user/photo/';
+        target_dir = path.join(config.root, '/public/img/user/photo/'+_formatTimeDir);
+        uri_dir = '/img/user/photo/'+_formatTimeDir;
         callback(null);
         break;
       case 'g':
-        target_dir = path.join(config.root, '/public/img/group/logo/');
-        uri_dir = '/img/group/logo/';
+        target_dir = path.join(config.root, '/public/img/group/logo/'+_formatTimeDir);
+        uri_dir = '/img/group/logo/'+_formatTimeDir;
         CompanyGroup
         .findOne({ _id: req.body.teamId })
         .exec()
@@ -77,8 +81,8 @@ exports.updateLogo = function(req, res, next) {
         this_id = req.user._id;
         updateLogo = schedule.updateCompanyLogo;
         logo_model = target_model.info;
-        target_dir = path.join(config.root, '/public/img/company/logo/');
-        uri_dir = '/img/company/logo/';
+        target_dir = path.join(config.root, '/public/img/company/logo/'+_formatTimeDir);
+        uri_dir = '/img/company/logo/'+_formatTimeDir;
         callback(null);
         break;
       default:

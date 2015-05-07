@@ -212,11 +212,14 @@ exports.sendFeedBackMail = function(email, content) {
     html: content
   });
 };
+
 /**
  * 快速注册邮箱验证
- * @param {String} who 接收人的邮件地址
- * @param {String} name 公司名
- * @param {String} id HR的公司id
+ * @param  {[type]} who  接收人的邮件地址
+ * @param  {[type]} name 接收人的公司名
+ * @param  {[type]} id   HR的公司id
+ * @param  {[type]} host 当前host
+ * @return {[type]}      
  */
 exports.sendQuickRegisterActiveMail = function(who, name, id, host) {
   var from = '动梨<service@donler.com>';
@@ -250,7 +253,8 @@ exports.sendQuickRegisterActiveMail = function(who, name, id, host) {
 /**
  * 公司操作指南
  * @param {String} who 接收人的邮件地址
- * @param {String} id HR的公司id
+ * @param  {[type]} name 接收人的公司名
+ * @param  {[type]} host 当前host
  */
 exports.sendCompanyOperationGuideMail = function(who, name, host) {
   var from = '动梨<service@donler.com>';
@@ -278,16 +282,22 @@ exports.sendCompanyOperationGuideMail = function(who, name, host) {
     });
   });
 };
+
 /**
  * 邀请同事提示邮件
- * @param {String} who 接收人的邮件地址
- * @param {String} id HR的公司id
+ * @param  {[type]} who       接收人的邮件地址
+ * @param  {[type]} key       邀请码
+ * @param  {[type]} id        HR的公司id
+ * @param  {[type]} qrcodeUri 邀请二维码地址
+ * @param  {[type]} host      当前host
+ * @return {[type]}           
  */
-exports.sendInviteColleageMail = function(who, key, id, host) {
+exports.sendInviteColleageMail = function(who, key, id, qrcodeUri, host) {
   var from = '动梨<service@donler.com>';
   var to = who;
   var subject = '邀请同事提示邮件';
   var description = '快去邀请您的同事来注册吧，点击下面链接进行快速注册：';
+  var qrcodeURI = 'http://' + host +qrcodeUri;
   var link = 'http://' + host + '/users/invite?key=' + key + '&cid=' + id;
   fs.readFile(rootConfig.root+'/app/views/partials/mailTemplate.jade', 'utf8', function (err, data) {
     if (err) {
@@ -301,6 +311,7 @@ exports.sendInviteColleageMail = function(who, key, id, host) {
       'host': siteProtocol + host,
       'who': who,
       'description': description,
+      'qrcodeURI':qrcodeURI,
       'link': link
     });
     sendMail({
