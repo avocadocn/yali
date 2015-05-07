@@ -311,7 +311,7 @@ exports.sendInviteColleageMail = function(who, key, id, qrcodeUri, host) {
       'host': siteProtocol + host,
       'who': who,
       'description': description,
-      'qrcodeURI':qrcodeURI,
+      // 'qrcodeURI':qrcodeURI,
       'link': link
     });
     sendMail({

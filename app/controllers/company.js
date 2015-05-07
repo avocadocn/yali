@@ -1184,7 +1184,7 @@ exports.quickCreateTeams = function(req, res, next) {
       return Q.all([saveUserDeferred.promise, saveCompanyDeferred.promise]);
     })
     .then(function() {
-      res.send({msg: '注册成功'});
+      res.send({result:1,msg: '注册成功','email':companyDoc.info.email.split('@')[1]});
     })
     .then(null, function(err) {
       if (!err instanceof BreakError) {

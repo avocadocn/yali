@@ -307,6 +307,12 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
     }).success(function(data, status) {
       // console.log(data);
       $scope.step = 5;
+      if(data.result){
+        $scope.emailDomain = data.email
+      }
+    })
+    .error(function(data, status) {
+      alert('创建失败');
     })
   }
 

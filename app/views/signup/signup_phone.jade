@@ -57,7 +57,13 @@ block content
       //- include partials/personal_step_four_phone
     .signup_step_five(ng-show="step===5")
       //- 注册成功
-      span 注册成功
+      .board
+        .board_content
+          img.signup_success(src="/img/signup/dl_signup_success.png")
+          p.email_tip 去邮箱查找激活邮件
+          a.email_link(target="_blank" ng-href="http://mail.{{emailDomain}}")
+            span 去邮箱
+            i.fa.fa-chevron-right
     //- 支线系列
     .signup_step_six(ng-show="step===6")
       //- 已经注册过
