@@ -1417,8 +1417,9 @@
   color: #fff;
 }
 .signup_phone .signup_step_four .board .groups {
-  width: 100%;
+  width: 256px;
   clear: both;
+  margin: 0px auto;
 }
 .signup_phone .signup_step_four .board .groups .group {
   float: left;
@@ -1630,11 +1631,11 @@
   width: 100%;
 }
 .signup_phone .signup_step_seven .board {
-  margin: 30px auto;
-  width: 294px;
+  margin: 27px auto;
+  width: 300px;
   height: 480px;
   background-image: url("/img/signup/dl_signup_input_box.png");
-  background-size: 294px 480px;
+  background-size: 300px 480px;
   background-repeat: no-repeat;
 }
 .signup_phone .signup_step_seven .board .company_input_box {
@@ -1656,7 +1657,8 @@
   color: #ccc;
   font-weight: 100;
 }
-.signup_phone .signup_step_seven .board .company_input_box .signup_container .sinup_company_name {
+.signup_phone .signup_step_seven .board .company_input_box .signup_container .sinup_company_name,
+.signup_phone .signup_step_seven .board .company_input_box .signup_container .sinup_company_email {
   margin-left: 78px;
   padding: 7px 0px;
   font-size: 14px;
@@ -1681,13 +1683,28 @@
 .signup_phone .signup_step_seven .board .company_input_box .signup_container .sinup_input a {
   color: #2cc3c7;
 }
-.signup_phone .signup_step_seven .board .company_input_box .signup_container .sinup_input button {
+.signup_phone .signup_step_seven .board .company_input_box .signup_container .sinup_input .signup_button {
   border-radius: 5px;
   width: 150px;
   height: 30px;
   font-size: 14px;
   color: #fff;
   background-color: #2cc3c7;
+}
+.signup_phone .signup_step_seven .board .company_input_box .signup_container .sinup_input .signup_button:disabled {
+  opacity: 0.65;
+}
+.signup_phone .signup_step_seven .board .company_input_box .signup_container .key_tips {
+  float: left;
+  position: relative;
+  margin-left: 232px;
+  margin-top: -25px;
+}
+.signup_phone .signup_step_seven .board .company_input_box .signup_container .key_tips .active {
+  color: #3ca2e0;
+}
+.signup_phone .signup_step_seven .board .company_input_box .signup_container .key_tips .inactive {
+  color: #f48361;
 }
 .signup_phone .signup_step_seven .signup_bottom {
   background-image: url("/img/signup/dl_signup_dog.png");

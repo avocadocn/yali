@@ -326,6 +326,31 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
       alert(data.msg);
     })
   };
+  //- step 7
+  $scope.userInfo = {
+    email: $scope.email,
+    inviteKey: '',
+    nickname: '',
+    password: '',
+    passconf: '',
+    realname: '',
+    quick: true
+  };
+
+  $scope.checkInviteKey = function() {
+    if($scope.userInfo.inviteKey&&$scope.userInfo.inviteKey.length===8 && $scope.selectedCompany) {
+      $http.post('/users/inviteKeyCheck',{cid:$scope.selectedCompany._id, inviteKey: $scope.userInfo.inviteKey})
+        .success(function(data, status) {
+          $scope.inviteKeyCorrect = data.invitekeyCheck;
+        })
+    }
+  };
+  $scope.signupUser = function() {
+    $http.post('/users/dealActive', $scope.userInfo)
+      .success(function(data, status) {
+        
+      })
+  };
 }]);
 
 companySignUpApp.controller('userSignupController',['$http','$scope','$rootScope',function ($http,$scope,$rootScope) {

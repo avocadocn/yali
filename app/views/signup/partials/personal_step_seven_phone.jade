@@ -1,0 +1,50 @@
+.board
+  .company_input_box
+    form(role="form" name='active_form')
+      .signup_container
+        .sinup_label 
+          label *企业名称:
+        .sinup_company_name {{selectedCompany.name}}
+      .signup_container(ng-hide="true")
+        .sinup_label 
+          label *企业邮箱:
+        .sinup_input
+          input(type="text" name="email" ng-model="userInfo.email" readonly)
+      .signup_container
+        .sinup_label 
+          label *邀请码:
+        .sinup_input
+          input(type="text" placeholder="请向您的公司管理员或同事索要8位邀请码" name="inviteKey" ng-model="userInfo.inviteKey" ng-minlength=8 ng-maxlength=8 ng-change="checkInviteKey()" required)
+        .key_tips
+          i.fa.fa-check.active(ng-if="inviteKeyCorrect===1")
+          i.fa.fa-close.inactive(ng-if="inviteKeyCorrect===2")
+      .signup_container
+        .sinup_label 
+          label *昵称:
+        .sinup_input
+          input(type="text" name="nickname" ng-model="userInfo.nickname" required)
+      .signup_container
+        .sinup_label 
+          label *密码:
+        .sinup_input
+          input(type="password" name="password" ng-model="userInfo.password" ng-minlength=6 required)
+      .signup_container
+        .sinup_label 
+          label *密码确认:
+        .sinup_input
+          input(type="password" name="passconf" ng-model="userInfo.passconf" ng-minlength=6 match="userInfo.password" required)
+      .signup_container
+        .sinup_label 
+          label *真实姓名:
+        .sinup_input
+          input(type="text" name="realname" ng-model="userInfo.realname" required)
+      .signup_container
+        .sinup_label 
+        .sinup_input
+          label 点击注册即代表同意
+          a 服务条款
+        .signup_container
+          .sinup_label 
+          .sinup_input
+            button.signup_button(ng-click="signupUser()" ng-disabled="active_form.$invalid && (inviteKeyCorrect === 2 || !inviteKeyCorrect)") 免费注册个人账号
+.signup_bottom

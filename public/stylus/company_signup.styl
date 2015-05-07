@@ -490,8 +490,9 @@
           background-color #94cd3e
           color white
       .groups
-        width 100%
+        width 256px
         clear both
+        margin 0px auto
         .group
           float left
           text-align center
@@ -625,11 +626,11 @@
   .signup_step_seven
     width 100%
     .board
-      margin 30px auto
-      width 294px
+      margin 27px auto
+      width 300px
       height 480px
       background-image url('/img/signup/dl_signup_input_box.png')
-      background-size 294px 480px
+      background-size 300px 480px
       background-repeat no-repeat
       .company_input_box
         padding-top 45px
@@ -646,7 +647,7 @@
               font-size 14px
               color #ccc
               font-weight 100
-          .sinup_company_name
+          .sinup_company_name, .sinup_company_email
             margin-left 78px
             padding 7px 0px
             font-size 14px
@@ -667,13 +668,24 @@
               padding 0px 5px
             a 
               color #2cc3c7
-            button
+            .signup_button
               border-radius 5px
               width 150px
               height 30px
               font-size 14px
               color #fff
               background-color #2cc3c7
+              &:disabled
+                opacity .65
+          .key_tips
+            float left
+            position relative
+            margin-left 232px
+            margin-top -25px
+            .active
+              color #3ca2e0
+            .inactive
+              color #f48361
     .signup_bottom
       background-image url('/img/signup/dl_signup_dog.png')
       height 100px
