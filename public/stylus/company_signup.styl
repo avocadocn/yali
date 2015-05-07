@@ -444,11 +444,31 @@
       .select_label
         color #fff
         font-size 16px
+        font-weight normal
+
       .select_line
         margin-top 5px
-        border-bottom 1px solid white
+        // border-bottom 1px solid #fff
+        .left
+          float left
+          width 5%
+          height 3px
+          background-color #fff
+        .middle
+          margin-top 1px
+          float left
+          width 90%
+          height 1px
+          background-color #fff
+        .right
+          float right
+          width 5%
+          height 3px
+          background-color #fff
       .groups
         width 100%
+        clear both
+        margin auto
         // position relative
         .group
           float left
@@ -462,23 +482,50 @@
             margin-left 5px
             background-image url('/img/signup/dl_signup_groups.png')
             background-repeat no-repeat
-            background-size 200px 200px
-            margin 10px 3px
+            background-size 240px 240px
+            margin 10px 12px
             padding 0px
             // border 1px solid #ccc
           for i in 0..16
             .group_{i+1}
-              background-position i%4 * -50px floor(i/4) * -50px + 1px
+              background-position i%4 * -60px + 9px floor(i/4) * -60px + 8px
+          .group_5
+            background-position 3px -52px
+          .group_4
+            background-position -177px 10px
+          .group_6
+            background-position -53px -52px
+          .group_8
+            background-position -168px -52px
+          .group_9
+            background-position 3px -108px
           .group_15
-            background-position -98px -149px
+            background-position -113px -172px
+          .shadow
+            margin -10px auto 0px
+            width 35px
+            height 5px
+            background #3788c7
+            border-radius 100%
           label
             color white
-            font-size 14px
+            font-size 12px
+
           &.active
             color #94cd3e
             .img_contain
-              border-color #94cd3e
+              border 1px solid white
+              border-radius 100%
               box-shadow  0 1px 1px rgba(0,0,0,0.1)
+      .sinup_team_button
+        float right
+        margin-top 8px
+        border-radius 3px
+        padding 2px 16px
+        background-color #94cd3e
+        color white
+      .signup_blank
+        height 20px
   &.step_4
     background-image url('/img/signup/dl_signup_paper_plane.png')
     background-size 118.5px 77.5px

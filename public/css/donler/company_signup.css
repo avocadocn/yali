@@ -557,13 +557,34 @@
 .signup_phone .signup_step_four .board .select_label {
   color: #fff;
   font-size: 16px;
+  font-weight: normal;
 }
 .signup_phone .signup_step_four .board .select_line {
   margin-top: 5px;
-  border-bottom: 1px solid #fff;
+}
+.signup_phone .signup_step_four .board .select_line .left {
+  float: left;
+  width: 5%;
+  height: 3px;
+  background-color: #fff;
+}
+.signup_phone .signup_step_four .board .select_line .middle {
+  margin-top: 1px;
+  float: left;
+  width: 90%;
+  height: 1px;
+  background-color: #fff;
+}
+.signup_phone .signup_step_four .board .select_line .right {
+  float: right;
+  width: 5%;
+  height: 3px;
+  background-color: #fff;
 }
 .signup_phone .signup_step_four .board .groups {
   width: 100%;
+  clear: both;
+  margin: auto;
 }
 .signup_phone .signup_step_four .board .groups .group {
   float: left;
@@ -576,74 +597,108 @@
   margin-left: 5px;
   background-image: url("/img/signup/dl_signup_groups.png");
   background-repeat: no-repeat;
-  background-size: 200px 200px;
-  margin: 10px 3px;
+  background-size: 240px 240px;
+  margin: 10px 12px;
   padding: 0px;
 }
 .signup_phone .signup_step_four .board .groups .group .group_1 {
-  background-position: 0px 1px;
+  background-position: 9px 8px;
 }
 .signup_phone .signup_step_four .board .groups .group .group_2 {
-  background-position: -50px 1px;
+  background-position: -51px 8px;
 }
 .signup_phone .signup_step_four .board .groups .group .group_3 {
-  background-position: -100px 1px;
+  background-position: -111px 8px;
 }
 .signup_phone .signup_step_four .board .groups .group .group_4 {
-  background-position: -150px 1px;
+  background-position: -171px 8px;
 }
 .signup_phone .signup_step_four .board .groups .group .group_5 {
-  background-position: 0px -49px;
+  background-position: 9px -52px;
 }
 .signup_phone .signup_step_four .board .groups .group .group_6 {
-  background-position: -50px -49px;
+  background-position: -51px -52px;
 }
 .signup_phone .signup_step_four .board .groups .group .group_7 {
-  background-position: -100px -49px;
+  background-position: -111px -52px;
 }
 .signup_phone .signup_step_four .board .groups .group .group_8 {
-  background-position: -150px -49px;
+  background-position: -171px -52px;
 }
 .signup_phone .signup_step_four .board .groups .group .group_9 {
-  background-position: 0px -99px;
+  background-position: 9px -112px;
 }
 .signup_phone .signup_step_four .board .groups .group .group_10 {
-  background-position: -50px -99px;
+  background-position: -51px -112px;
 }
 .signup_phone .signup_step_four .board .groups .group .group_11 {
-  background-position: -100px -99px;
+  background-position: -111px -112px;
 }
 .signup_phone .signup_step_four .board .groups .group .group_12 {
-  background-position: -150px -99px;
+  background-position: -171px -112px;
 }
 .signup_phone .signup_step_four .board .groups .group .group_13 {
-  background-position: 0px -149px;
+  background-position: 9px -172px;
 }
 .signup_phone .signup_step_four .board .groups .group .group_14 {
-  background-position: -50px -149px;
+  background-position: -51px -172px;
 }
 .signup_phone .signup_step_four .board .groups .group .group_15 {
-  background-position: -100px -149px;
+  background-position: -111px -172px;
 }
 .signup_phone .signup_step_four .board .groups .group .group_16 {
-  background-position: -150px -149px;
+  background-position: -171px -172px;
 }
 .signup_phone .signup_step_four .board .groups .group .group_17 {
-  background-position: 0px -199px;
+  background-position: 9px -232px;
+}
+.signup_phone .signup_step_four .board .groups .group .group_5 {
+  background-position: 3px -52px;
+}
+.signup_phone .signup_step_four .board .groups .group .group_4 {
+  background-position: -177px 10px;
+}
+.signup_phone .signup_step_four .board .groups .group .group_6 {
+  background-position: -53px -52px;
+}
+.signup_phone .signup_step_four .board .groups .group .group_8 {
+  background-position: -168px -52px;
+}
+.signup_phone .signup_step_four .board .groups .group .group_9 {
+  background-position: 3px -108px;
 }
 .signup_phone .signup_step_four .board .groups .group .group_15 {
-  background-position: -98px -149px;
+  background-position: -113px -172px;
+}
+.signup_phone .signup_step_four .board .groups .group .shadow {
+  margin: -10px auto 0px;
+  width: 35px;
+  height: 5px;
+  background: #3788c7;
+  border-radius: 100%;
 }
 .signup_phone .signup_step_four .board .groups .group label {
   color: #fff;
-  font-size: 14px;
+  font-size: 12px;
 }
 .signup_phone .signup_step_four .board .groups .group.active {
   color: #94cd3e;
 }
 .signup_phone .signup_step_four .board .groups .group.active .img_contain {
-  border-color: #94cd3e;
+  border: 1px solid #fff;
+  border-radius: 100%;
   box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+}
+.signup_phone .signup_step_four .board .sinup_team_button {
+  float: right;
+  margin-top: 8px;
+  border-radius: 3px;
+  padding: 2px 16px;
+  background-color: #94cd3e;
+  color: #fff;
+}
+.signup_phone .signup_step_four .board .signup_blank {
+  height: 20px;
 }
 .signup_phone.step_4 {
   background-image: url("/img/signup/dl_signup_paper_plane.png");
