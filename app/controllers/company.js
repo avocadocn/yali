@@ -1126,9 +1126,9 @@ exports.quickCreateTeams = function(req, res, next) {
           cid: companyDoc._id,
           gid: group._id,
           poster: {role:'HR'},
-          group_type: group.group_type,
+          group_type: group.groupType,
           cname: companyDoc.info.name,
-          name: companyDoc.info.name + '-' + group.group_type + '队',
+          name: companyDoc.info.name + '-' + group.groupType + '队',
           entity_type: group.entity_type,
           city: {
             province: companyDoc.info.city.province,
@@ -1149,7 +1149,19 @@ exports.quickCreateTeams = function(req, res, next) {
         teams.push(team);
       });
 
-      return CompanyGroup.create(teams);
+      var createTeamsDeferred = Q.defer();
+      // 文档和源码的注释都是骗人的吧，promise为啥只返回一个team，只能自己处理了
+      CompanyGroup.create(teams, function(err) {
+        if (err) createTeamsDeferred.reject(err);
+        else {
+          var result = [];
+          for (var i = 1, len = arguments.length; i < len; i++) {
+            result.push(arguments[i]);
+          }
+          createTeamsDeferred.resolve(result);
+        }
+      });
+      return createTeamsDeferred.promise;
     })
     .then(function(teams) {
       userDoc.team = [];
@@ -1179,9 +1191,19 @@ exports.quickCreateTeams = function(req, res, next) {
         });
       }
 
-      var saveUserPromise = Q.nfcall(userDoc.save);
-      var saveCompanyPromise = Q.nfcall(companyDoc.save);
-      return Q.all([saveUserPromise, saveCompanyPromise]);
+      var saveUserDeferred = Q.defer();
+      userDoc.save(function(err) {
+        if (err) saveUserDeferred.reject(err);
+        else saveUserDeferred.resolve();
+      });
+
+      var saveCompanyDeferred = Q.defer();
+      companyDoc.save(function(err) {
+        if (err) saveCompanyDeferred.reject(err);
+        else saveCompanyDeferred.resolve();
+      });
+
+      return Q.all([saveUserDeferred.promise, saveCompanyDeferred.promise]);
     })
     .then(function() {
       res.send({msg: '注册成功'});
