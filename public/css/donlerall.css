@@ -1522,13 +1522,18 @@
 .signup_phone .signup_step_four .board .sinup_team_button {
   float: right;
   margin-top: 8px;
+  margin-bottom: 20px;
   border-radius: 3px;
   padding: 2px 16px;
   background-color: #94cd3e;
   color: #fff;
 }
-.signup_phone .signup_step_four .board .signup_blank {
-  height: 20px;
+.signup_phone.step_4 {
+  background-image: url("/img/signup/dl_signup_paper_plane.png");
+  background-size: 118.5px 77.5px;
+  background-repeat: no-repeat;
+  background-position-x: 95%;
+  background-position-y: 10px;
 }
 .signup_phone.step_6 {
   background-color: #fe8915;
@@ -1563,6 +1568,83 @@
   width: 50%;
   max-width: 80px;
   margin-top: 10px;
+}
+.signup_phone .signup_step_seven {
+  width: 100%;
+}
+.signup_phone .signup_step_seven .board {
+  margin: 30px auto;
+  width: 294px;
+  height: 480px;
+  background-image: url("/img/signup/dl_signup_input_box.png");
+  background-size: 294px 480px;
+  background-repeat: no-repeat;
+}
+.signup_phone .signup_step_seven .board .company_input_box {
+  padding-top: 45px;
+  padding-left: 35px;
+}
+.signup_phone .signup_step_seven .board .company_input_box .signup_container {
+  margin-top: 5px;
+  clear: both;
+}
+.signup_phone .signup_step_seven .board .company_input_box .signup_container .sinup_label {
+  width: 78px;
+  padding: 6px;
+  float: left;
+}
+.signup_phone .signup_step_seven .board .company_input_box .signup_container .sinup_label label {
+  float: right;
+  font-size: 14px;
+  color: #ccc;
+  font-weight: 100;
+}
+.signup_phone .signup_step_seven .board .company_input_box .signup_container .sinup_company_name {
+  margin-left: 78px;
+  padding: 7px 0px;
+  font-size: 14px;
+  width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.signup_phone .signup_step_seven .board .company_input_box .signup_container .sinup_input {
+  margin-left: 78px;
+}
+.signup_phone .signup_step_seven .board .company_input_box .signup_container .sinup_input input {
+  border-radius: 5px;
+  width: 150px;
+  height: 34px;
+  display: block;
+  border: 1px solid #eee;
+  font-size: 14px;
+  background-color: #f3f7eb;
+  padding: 0px 5px;
+}
+.signup_phone .signup_step_seven .board .company_input_box .signup_container .sinup_input a {
+  color: #2cc3c7;
+}
+.signup_phone .signup_step_seven .board .company_input_box .signup_container .sinup_input button {
+  border-radius: 5px;
+  width: 150px;
+  height: 30px;
+  font-size: 14px;
+  color: #fff;
+  background-color: #2cc3c7;
+}
+.signup_phone .signup_step_seven .signup_bottom {
+  background-image: url("/img/signup/dl_signup_dog.png");
+  height: 100px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: bottom left;
+}
+.signup_phone.step_7 {
+  background-color: #2cc3c7;
+  background-image: url("/img/signup/dl_signup_sun.png");
+  background-repeat: no-repeat;
+  background-size: 212.5px 78.5px;
+  background-position: 90% 50px;
 }
 
 .dl_detail_main {

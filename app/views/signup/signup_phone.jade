@@ -68,8 +68,52 @@ block content
           img.nomail(src="/img/signup/dl_signup_nomail.png" ng-if="notVerified")
           img.resend(src="/img/signup/dl_signup_resend.png" ng-click="resend()" ng-if="notVerified")
     .signup_step_seven(ng-show="step===7")
-      //- 只是个人注册，不用公司注册
-      span 已有公司注册.
+      .board
+        .company_input_box
+          .signup_container
+            .sinup_label 
+              label *企业名称:
+            .sinup_company_name 上海动梨
+          .signup_container
+            .sinup_label 
+              label *企业邮箱:
+            .sinup_input
+              input
+          .signup_container
+            .sinup_label 
+              label *邀请码:
+            .sinup_input
+              input
+          .signup_container
+            .sinup_label 
+              label *昵称:
+            .sinup_input
+              input
+          .signup_container
+            .sinup_label 
+              label *密码:
+            .sinup_input
+              input
+          .signup_container
+            .sinup_label 
+              label *密码确认:
+            .sinup_input
+              input
+          .signup_container
+            .sinup_label 
+              label *真实姓名:
+            .sinup_input
+              input
+          .signup_container
+            .sinup_label 
+            .sinup_input
+              label 点击注册即代表同意
+              a 服务条款
+          .signup_container
+            .sinup_label 
+            .sinup_input
+              button 免费注册个人账号
+      .signup_bottom
     .signup_step_eight(ng-show="step===8")
       .board
       .signup_bottom_2
