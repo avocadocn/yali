@@ -309,7 +309,7 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
 
   $scope.createTeams = function() {
     var selectedGroups = $scope.groups.filter(function(group) {
-      return group.selected = true;
+      return group.selected === true;
     });
     $http.post('/company/quickCreateTeams',{
       groups: selectedGroups,
@@ -347,7 +347,6 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
     }
   };
   $scope.signupUser = function() {
-    // console.log($scope.userInfo);
     $http.post('/users/dealActive?notinvited=true', $scope.userInfo)
       .success(function(data, status) {
         $scope.step = 5;
