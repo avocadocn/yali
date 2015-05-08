@@ -4,7 +4,7 @@
       | 小队管理
       small(ng-bind-template="{{teams.length}}个小队")
   section.content
-    .row
+    .row.operate_row
       .col-md-2.col-sm-4.col-xs-12.text-center
         a.btn.btn-primary(ui-sref="manager.createTeam") 新建小队
       .col-md-10.col-sm-8.col-xs-12(ng-if="noLeaderTeams.length>0")

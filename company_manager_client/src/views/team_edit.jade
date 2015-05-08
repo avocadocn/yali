@@ -41,7 +41,7 @@
                 label 修改小队封面
                 .edit_family_container
                   .cropper#image_cropper_family
-                    .cropit-image-preview-container(ng-show="team.familyPhoto" ng-style="{'background-image': 'url(' + team.familyPhoto.uri + '/256/256)'}")
+                    .cropit-image-preview-container(ng-style="{'background-image': 'url(' + (team.familyPhoto.uri ?team.familyPhoto.uri:'/img/family.png')+ '/256/256)'}")
                       .cropit-image-preview
                     .operator_slider(ng-show="familyIsUploading")
                       span.glyphicon.glyphicon-picture.icon_small
