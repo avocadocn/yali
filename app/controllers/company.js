@@ -1029,7 +1029,7 @@ exports.quickCreateUserAndCompany = function(req, res, next) {
         password: req.body.password,
         nickname: email.split('@')[0],
         email: email,
-        role: 'EMPLOYEE',
+        role: 'LEADER',
         cid: company._id,
         cname: req.body.name,
         company_official_name: req.body.name
