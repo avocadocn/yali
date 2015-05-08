@@ -1774,6 +1774,44 @@
   width: 299.5px;
   height: 199.5px;
 }
+.active_success {
+  width: 556px;
+  height: 438px;
+  border: 3px solid #f5ab95;
+  border-radius: 10px;
+  margin: 90px auto;
+}
+.active_success .active_success_info {
+  position: relative;
+  margin-top: 81px;
+  margin-left: 41px;
+  font-size: 24px;
+}
+.active_success .active_success_info span {
+  float: left;
+}
+.active_success .active_success_info i {
+  position: absolute;
+  margin-left: 16px;
+  font-size: 80px;
+  color: #f5ab95;
+  top: -40px;
+}
+.active_success .active_success_operator {
+  height: 2px;
+  margin: 27px 41px;
+  background-color: #f5ab95;
+}
+.active_success .active_success_download_info {
+  position: relative;
+  margin-top: 17px;
+  margin-left: 41px;
+  font-size: 24px;
+}
+.active_success .active_success_download_qrcodes {
+  width: 120px;
+  margin: 30px auto;
+}
 
 .dl_detail_main {
   width: 660px;

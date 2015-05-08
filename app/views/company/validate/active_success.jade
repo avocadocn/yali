@@ -1,10 +1,19 @@
 extends ../../layouts/register
 
 block contentExt
-  .dl_container.clearfix
-    .signup_row
-      .block
-        .signup_title.company_title
-          span 企业注册
-        .signup_tips
-          p 激活成功
+  //- .dl_container.clearfix
+  //-   .signup_row
+  //-     .block
+  //-       .signup_title.company_title
+  //-         span 企业注册
+  //-       .signup_tips
+  //-         p 激活成功
+  .active_success
+    .active_success_info.clearfix
+      span 恭喜您，验证成功!
+      i.fa.fa-check
+    .active_success_operator
+    .active_success_download_info
+      span 扫描下方二维码，下载APP吧！
+    .active_success_download_qrcodes
+      img(ng-src="../img/app_download_barcodes.png/120/120")
