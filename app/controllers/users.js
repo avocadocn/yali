@@ -87,7 +87,7 @@ exports.renderChangePassword = function(req,res){
 
 
 exports.forgetPwd = function(req, res){
-  User.findOne({email: req.body.email}, function(err, user) {
+  User.findOne({email: req.body.email.toLowerCase()}, function(err, user) {
     if(err || !user) {
       return  res.render('users/forgetPwd',{
                 title:'忘记密码',
@@ -487,7 +487,7 @@ function userOperate(cid, key, res, req, index) {
     }
     //只有在不重填信息的重发时不需要验证key 其它都要
     if(index===2 || company.invite_key===key) {
-      var email = req.query.notinvited=='true'? req.body.email : req.body.host.toLowerCase() + '@' + req.body.domain;
+      var email = req.query.notinvited=='true'? req.body.email.toLowerCase() : req.body.host.toLowerCase() + '@' + req.body.domain;
       User.findOne({ username: email})
       .exec()
       .then(function(user) {
@@ -660,7 +660,7 @@ exports.dealActive = function(req, res, next) {
     if(req.body.cid)
       userOperate(req.body.cid, req.body.inviteKey, res, req, 1);//step3 填写
     else{
-      User.findOne({username:req.body.email}, function(err, user){
+      User.findOne({username:req.body.email.toLowerCase()}, function(err, user){
         if(err||!user){
           console.log(err);
           return res.render('users/message', message.invalid);
@@ -827,7 +827,7 @@ exports.dealActive = function(req, res, next) {
   }
 
   function activeInvitedUser() {
-    User.findOne({ email: req.body.email }).exec()
+    User.findOne({ email: req.body.email.toLowerCase() }).exec()
       .then(function (user) {
         if (!user) {
           // 如果找不到用户，极有可能是用户修改了表单数据，这在前端是不被允许的
@@ -900,7 +900,7 @@ exports.dealActive = function(req, res, next) {
  * 验证用户邮箱是否重复
  */
 exports.mailCheck = function(req, res) {
-  var email = req.body.login_email;
+  var email = req.body.login_email.toLowerCase();
   User.findOne({username:email},{active:1,mail_active:1},function(err,user){
     if(err){
       console.log(err);
@@ -2193,17 +2193,18 @@ exports.updateCommentTime =function(req, res) {
  *   email: String // 公司邮箱
  */
 exports.resendActiveEmail = function(req, res, next) {
+  var email = req.body.email.toLowerCase();
   var sendInvalidMsg = function(msg) {
     res.status(400).send({msg: msg});
   };
   if (!req.body.email) {
     return sendInvalidMsg('缺少email');
   }
-  else if (!validator.isEmail(req.body.email)) {
+  else if (!validator.isEmail(email)) {
     return sendInvalidMsg('email无效');
   }
 
-  Company.findOne({'info.email': req.body.email}).exec()
+  Company.findOne({'info.email': email}).exec()
     .then(function(company) {
       // 是快速注册的公司
       if (company && company.status.verification === 1) {
@@ -2219,7 +2220,7 @@ exports.resendActiveEmail = function(req, res, next) {
       }
       else {
         // 不是快速注册
-        return User.findOne({email: req.body.email}).exec().then(function(user) {
+        return User.findOne({email: email}).exec().then(function(user) {
           if (!user) {
             res.status(400).send({msg: '该邮箱对应的用户不存在'});
             return;

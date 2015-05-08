@@ -20,7 +20,7 @@ exports.getCompany = function (req, res) {
   //   options = {'info.name': regx, 'status.active': true};
   // }
   if(req.body.email) {
-    var email = req.body.email;
+    var email = req.body.email.toLowerCase();
     var domain = email.split('@')[1];
     options = {'email.domain': domain, 'status.active':true};
     var page = req.body.page || 1;

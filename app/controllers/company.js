@@ -62,8 +62,9 @@ exports.renderForgetPwd = function(req, res) {
   });
 }
 exports.forgetPwd = function(req, res) {
+  var email = req.body.email;
   Company.findOne({
-    login_email: req.body.email
+    login_email: email
   }, function(err, company) {
     if (err || !company) {
       return res.render('company/forgetPwd', {
@@ -73,7 +74,7 @@ exports.forgetPwd = function(req, res) {
     } else {
       Config.findOne({ name: config.CONFIG_NAME }, function (err, config) {
         if (err || !config || !config.smtp || config.smtp === 'webpower') {
-          webpower.sendCompanyResetPwdMail(req.body.email, company._id.toString(), req.headers.host, function(err) {
+          webpower.sendCompanyResetPwdMail(email, company._id.toString(), req.headers.host, function(err) {
             if (err) {
               // TO DO: 发送失败待处理
               console.log(err);
@@ -85,13 +86,13 @@ exports.forgetPwd = function(req, res) {
             }
           });
         } else if (config.smtp === '163') {
-          mail.sendCompanyResetPwdMail(req.body.email, company._id.toString(), req.headers.host);
+          mail.sendCompanyResetPwdMail(email, company._id.toString(), req.headers.host);
           res.render('company/forgetPwd', {
             title: '忘记密码',
             success: '1'
           });
         } else if (config.smtp === 'sendcloud') {
-          sendcloud.sendCompanyResetPwdMail(req.body.email, company._id.toString(), req.headers.host);
+          sendcloud.sendCompanyResetPwdMail(email, company._id.toString(), req.headers.host);
           res.render('company/forgetPwd', {
             title: '忘记密码',
             success: '1'
@@ -700,7 +701,7 @@ exports.codeCheck = function(req, res) {
 ///防止邮箱重复注册
 exports.mailCheck = function(req, res) {
   Company.findOne({
-    'login_email': req.body.login_email
+    'login_email': req.body.login_email.toLowerCase()
   }, {'status':1, 'info.name':1},function(err, company) {
     if(err) {
       console.log(err);
@@ -805,6 +806,7 @@ exports.create = function(req, res) {
     }
   })
   .then(function(company) {
+    var email = req.body.email.toLowerCase();
     company.info.name = req.body.name;
     company.info.city.province = req.body.province;
     company.info.city.city = req.body.city;
@@ -815,12 +817,12 @@ exports.create = function(req, res) {
     company.info.lindline.number = req.body.number;
     company.info.lindline.extension = req.body.extension;
     company.info.phone = req.body.phone;
-    company.info.email = req.body.email;
+    company.info.email = email;
     company.provider = 'company';
-    company.login_email = req.body.email;
+    company.login_email = ;
     //生成随机邀请码
     company.invite_key = tools.randomAlphaNumeric(8);
-    var _email = req.body.email.split('@');
+    var _email = emailsplit('@');
     if (_email[1])
       company.email.domain.push(_email[1]);
     else
@@ -942,7 +944,7 @@ exports.quickCreateUserAndCompany = function(req, res, next) {
     res.status(400).send({msg: msg});
   };
 
-  var email = req.body.email;
+  var email = req.body.email.toLowerCase();
   if (!validator.isEmail(email)) {
     return sendInvalidMsg('请填写有效的Email');
   }
