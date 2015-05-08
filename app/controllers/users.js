@@ -1720,7 +1720,7 @@ exports.saveAccount = function (req, res, next) {
       if (err) {
         return next(err);
       }
-      if(req.body.did && !user.department._id || user.department._id.toString()!= req.body.did) {
+      if(req.body.did && !user.department._id || (user.department._id && user.department._id.toString()!= req.body.did) ) {
         department.memberOperateByHand(user,req.body.did,function (err) {
           if (err) {
             log(err);
