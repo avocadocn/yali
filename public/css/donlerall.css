@@ -1628,13 +1628,8 @@
   margin: 27px auto;
   width: 300px;
   height: 480px;
-<<<<<<< HEAD
-  background-image: url("/img/signup/dl_signup_input_box.png");
-  background-size: 300px 480px;
-=======
   background-image: url("/img/signup/dl_signup_input_box.gif");
-  background-size: 294px 480px;
->>>>>>> png改gif
+  background-size: 300px 480px;
   background-repeat: no-repeat;
 }
 .signup_phone .signup_step_seven .board .company_input_box {
