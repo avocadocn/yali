@@ -87,7 +87,7 @@ exports.renderChangePassword = function(req,res){
 
 
 exports.forgetPwd = function(req, res){
-  User.findOne({email: req.body.email.toLowerCase()}, function(err, user) {
+  User.findOne({email: req.body.email?req.body.email.toLowerCase():req.body.email}, function(err, user) {
     if(err || !user) {
       return  res.render('users/forgetPwd',{
                 title:'忘记密码',
@@ -477,7 +477,6 @@ exports.inviteQR = function(req, res) {
 };
 
 function userOperate(cid, key, res, req, index) {
-  console.log('1');
   Company
   .findOne({ _id: cid })
   .exec()
@@ -660,7 +659,7 @@ exports.dealActive = function(req, res, next) {
     if(req.body.cid)
       userOperate(req.body.cid, req.body.inviteKey, res, req, 1);//step3 填写
     else{
-      User.findOne({username:req.body.email.toLowerCase()}, function(err, user){
+      User.findOne({username:req.body.email?req.body.email.toLowerCase():req.body.email}, function(err, user){
         if(err||!user){
           console.log(err);
           return res.render('users/message', message.invalid);
@@ -827,7 +826,7 @@ exports.dealActive = function(req, res, next) {
   }
 
   function activeInvitedUser() {
-    User.findOne({ email: req.body.email.toLowerCase() }).exec()
+    User.findOne({ email: req.body.email?req.body.email.toLowerCase():req.body.email }).exec()
       .then(function (user) {
         if (!user) {
           // 如果找不到用户，极有可能是用户修改了表单数据，这在前端是不被允许的
@@ -900,7 +899,7 @@ exports.dealActive = function(req, res, next) {
  * 验证用户邮箱是否重复
  */
 exports.mailCheck = function(req, res) {
-  var email = req.body.login_email.toLowerCase();
+  var email = req.body.login_email?req.body.login_email.toLowerCase():req.body.login_email;
   User.findOne({username:email},{active:1,mail_active:1},function(err,user){
     if(err){
       console.log(err);
@@ -2193,7 +2192,6 @@ exports.updateCommentTime =function(req, res) {
  *   email: String // 公司邮箱
  */
 exports.resendActiveEmail = function(req, res, next) {
-  var email = req.body.email.toLowerCase();
   var sendInvalidMsg = function(msg) {
     res.status(400).send({msg: msg});
   };
@@ -2203,7 +2201,7 @@ exports.resendActiveEmail = function(req, res, next) {
   else if (!validator.isEmail(email)) {
     return sendInvalidMsg('email无效');
   }
-
+  var email = req.body.email.toLowerCase();
   Company.findOne({'info.email': email}).exec()
     .then(function(company) {
       // 是快速注册的公司

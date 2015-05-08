@@ -62,7 +62,7 @@ exports.renderForgetPwd = function(req, res) {
   });
 }
 exports.forgetPwd = function(req, res) {
-  var email = req.body.email;
+  var email = req.body.email ?req.body.email.toLowerCase():req.body.email;
   Company.findOne({
     login_email: email
   }, function(err, company) {
@@ -701,7 +701,7 @@ exports.codeCheck = function(req, res) {
 ///防止邮箱重复注册
 exports.mailCheck = function(req, res) {
   Company.findOne({
-    'login_email': req.body.login_email.toLowerCase()
+    'login_email': req.body.login_email?req.body.login_email.toLowerCase():req.body.login_email
   }, {'status':1, 'info.name':1},function(err, company) {
     if(err) {
       console.log(err);
@@ -806,7 +806,7 @@ exports.create = function(req, res) {
     }
   })
   .then(function(company) {
-    var email = req.body.email.toLowerCase();
+    var email = req.body.email ?req.body.email.toLowerCase():req.body.email;
     company.info.name = req.body.name;
     company.info.city.province = req.body.province;
     company.info.city.city = req.body.city;
@@ -944,7 +944,7 @@ exports.quickCreateUserAndCompany = function(req, res, next) {
     res.status(400).send({msg: msg});
   };
 
-  var email = req.body.email.toLowerCase();
+  var email = req.body.email ?req.body.email.toLowerCase():req.body.email;
   if (!validator.isEmail(email)) {
     return sendInvalidMsg('请填写有效的Email');
   }
