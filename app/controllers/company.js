@@ -819,7 +819,7 @@ exports.create = function(req, res) {
     company.info.phone = req.body.phone;
     company.info.email = email;
     company.provider = 'company';
-    company.login_email = ;
+    company.login_email = email;
     //生成随机邀请码
     company.invite_key = tools.randomAlphaNumeric(8);
     var _email = emailsplit('@');
