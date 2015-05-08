@@ -1113,7 +1113,8 @@ exports.quickCreateTeams = function(req, res, next) {
           group_type: group.groupType,
           cname: companyDoc.info.name,
           name: companyDoc.info.name + '-' + group.groupType + '队',
-          entity_type: group.entity_type,
+          logo: '/img/icons/group/' + group.entityType.toLowerCase() + '_on.png',
+          entity_type: group.entityType,
           city: {
             province: companyDoc.info.city.province,
             city: companyDoc.info.city.city,
