@@ -7,6 +7,17 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
       $scope.teamsGot = false;
       teamService.getList(cid).success(function (data) {
         $scope.data = {cid: cid, teams: data};
+        $scope.cid = cid;
+        $scope.groups = {};
+        data.forEach(function(team, index){
+          if($scope.groups[team.gid]){
+            $scope.groups[team.gid].teams.push(team)
+          }
+          else{
+            $scope.groups[team.gid] ={gid:team.gid,groupType:team.groupType,teams:[team]}
+          }
+        });
+        $scope.nowGroup= $scope.groups[data[0].gid];
         $scope.teamsGot = true;
       })
       .error(function (data) {
@@ -157,7 +168,6 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
           });
         }
       };
-
       var gettingPage = false;
       $scope.getPage = function (action, number) {
         if(!gettingPage) {
@@ -294,28 +304,25 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
         $scope.campaignStatus = i;
         getCampaigns();
       };
-
-      $scope.selectTeam = function(tid) {
-        $scope.currentTeamId = tid;
-        $scope.selectedType = 2;
-        $scope.sortCampaigns = false;
-        $scope.campaignStatus = false;
-        resetSortJson(-1);
-        $scope.sortJson[0].desc = true;
-        getCampaigns();
-        // var events_source = apiBaseUrl + '/campaigns?result=calendar&limit=200&attrs=closeShow&cid='+ cid + '&tid=' + tid;
-      };
-
-      $scope.quitTeam = function() {
-        $scope.currentTeamId = null;
-        $scope.selectedType = 1;
-        $scope.sortCampaigns = false;
-        $scope.campaignStatus = false;
-        resetSortJson(-1);
-        $scope.sortJson[0].desc = true;
-        getCampaigns();
+      $scope.selectGroup = function (group) {
+        $scope.nowGroup =group;
       }
-
+      $scope.selectTeam = function(tid) {
+        if(tid==$scope.currentTeamId){
+          $scope.currentTeamId = null;
+          $scope.selectedType = 1;
+        }
+        else{
+          $scope.currentTeamId = tid;
+          $scope.selectedType = 2;
+          
+        }
+        $scope.sortCampaigns = false;
+        $scope.campaignStatus = false;
+        resetSortJson(-1);
+        $scope.sortJson[0].desc = true;
+        getCampaigns();
+      };
       // $scope.recoverDate = function() {
       //   $scope.nowDay = null;
       //   $scope.startTime = null;

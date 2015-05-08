@@ -97,10 +97,55 @@
         background #3c8dbc
         .fa-trash-o
           font-size 20px
-    .box-body.team-list
-      min-height 150px
-      max-height 210px
+    .box-body.team_filter_box
+      min-height 250px
+      max-height 300px
       overflow-y auto
+      width 60%
+      margin-left 20%
+      .group_filters
+        clear both
+        .group_filter
+          width 60px
+          height 25px
+          float left
+          text-align center
+          line-height 25px
+          &.selected
+            background-color #f79577
+            color white
+            border-radius 7px
+      .team_list
+        clear both
+        .team_card
+          position relative
+          width 110px
+          float left
+          margin-top 10px
+          margin-right 15px
+          cursor pointer
+          height 145px
+          padding 10px 10px 0
+          border 1px solid #efefef
+          box-shadow 0 2px 1px rgba(204, 204, 204, 0.5)
+          .dl_info_box
+            .info_box_icon
+              width 90px
+              height 90px
+              background-color #fff
+              img
+                width 90px
+                height 90px
+            .info_box_content
+              .info_box_text
+                margin-top 2px
+                width 100%
+                overflow hidden
+                max-height 40px
+          &.selected
+            box-shadow 0 4px 6px rgba(244,131,97,0.5)
+            .dl_info_box>.info_box_content>.info_box_text
+              color #f48361
     .input-group-addon
       border-radius 4px
       &:first-child
@@ -150,37 +195,6 @@
           .page
             font-size 12px
             padding 5px 10px
-  
-  .team_card
-    position relative
-    width 110px
-    float left
-    margin-top 10px
-    margin-right 15px
-    cursor pointer
-    height 145px
-    padding 10px 10px 0
-    border 1px solid #efefef
-    box-shadow 0 2px 1px rgba(204, 204, 204, 0.5)
-    .dl_info_box
-      .info_box_icon
-        width 90px
-        height 90px
-        background-color #fff
-        img
-          width 90px
-          height 90px
-      .info_box_content
-        .info_box_text
-          margin-top 2px
-          max-height 40px
-          width 100%
-          overflow hidden
-    &.selected
-      border 1px solid #f48361
-      box-shadow inset -1px -2px 1px rgba(244,131,97,0.5)
-      .dl_info_box>.info_box_content>.info_box_text
-        color #f48361
 //- @media (min-width: 1315px)
 //-   .select_team
 //-     width 720px !important
