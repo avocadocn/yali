@@ -15,6 +15,7 @@ var mongoose = require('mongoose'),
   Department = mongoose.model('Department'),
   Config = mongoose.model('Config'),
   Campaign = mongoose.model('Campaign'),
+  Group =mongoose.model('Group'),
   config = require('../config/config'),
   crypto = require('crypto'),
   path = require('path'),
@@ -481,47 +482,53 @@ exports.saveGroup = function(req, res) {
 
       companyGroup.cid = companyId;
       companyGroup.cname = company.info.name;
-      companyGroup.gid = selected_group._id;
-      companyGroup.group_type = selected_group.group_type;
-      // companyGroup.entity_type = selected_group.entity_type;
+
       companyGroup.name = req.body.tname;
       companyGroup.logo = '/img/icons/group/' + selected_group.entity_type.toLowerCase() + '_on.png';
       companyGroup.city = company.info.city;
-      companyGroup.save(function(err) {
-        if (err) {
-          console.log(err);
-        } else {;
-        }
-      });
+      Group.findOne({_id:selected_group._id}).exec().then(function(group){
+        companyGroup.gid = selected_group._id;
+        companyGroup.group_type = group.group_type;
+        companyGroup.entity_type = group.entity_type;
+        companyGroup.save(function(err) {
+          if (err) {
+            console.log(err);
+            return res.send({
+              'result': 0,
+              'msg': '创建小队失败！'
+            });
+          }
+        });
 
-      company.team.push({
-        'gid': selected_group._id,
-        'group_type': selected_group.group_type,
-        'name': req.body.tname,
-        'id': companyGroup._id
-      });
-      // var Entity = mongoose.model(companyGroup.entity_type); //将增强组件模型引进来
-      // var entity = new Entity();
+        company.team.push({
+          'gid': selected_group._id,
+          'group_type': group.group_type,
+          'name': req.body.tname,
+          'id': companyGroup._id
+        });
+        // var Entity = mongoose.model(companyGroup.entity_type); //将增强组件模型引进来
+        // var entity = new Entity();
 
-      // //增强组件目前只能存放这三个字段
-      // entity.tid = companyGroup._id; //小队id
-      // entity.cid = companyId; //组件类型id
-      // entity.gid = selected_group._id; //公司id
+        // //增强组件目前只能存放这三个字段
+        // entity.tid = companyGroup._id; //小队id
+        // entity.cid = companyId; //组件类型id
+        // entity.gid = selected_group._id; //公司id
 
-      // entity.save(function(err) {
-      //   if (err) {
-      //     console.log(err);
-      //   }
-      // });
+        // entity.save(function(err) {
+        //   if (err) {
+        //     console.log(err);
+        //   }
+        // });
 
-      company.save(function(s_err) {
-        if (s_err) {
-          console.log(s_err);
-        }
-      });
-      res.send({
-        'result': 1,
-        'msg': '组件添加成功！'
+        company.save(function(s_err) {
+          if (s_err) {
+            console.log(s_err);
+          }
+        });
+        res.send({
+          'result': 1,
+          'msg': '创建小队成功！'
+        });
       });
     } else {
       return res.send('err');
@@ -966,6 +973,7 @@ exports.quickCreateUserAndCompany = function(req, res, next) {
 
   // 采取抛出异常的方式中断Promise链
   var BreakError = function(msg) {
+    this.typeError = 'break';
     Error.call(this, msg);
   };
   BreakError.prototype = Object.create(Error.prototype);
@@ -1059,7 +1067,7 @@ exports.quickCreateUserAndCompany = function(req, res, next) {
       }
     })
     .then(null, function(err) {
-      if (!err instanceof BreakError) {
+      if (err.typeError !== 'break') {
         next(err);
       }
     });
@@ -1073,7 +1081,7 @@ exports.quickCreateUserAndCompany = function(req, res, next) {
  *   groups: Array // 要建的小队
  */
 exports.quickCreateTeams = function(req, res, next) {
-  var companyDoc, userDoc;
+  var companyDoc, userDoc,groupDoc;
 
   if (!mongoose.Types.ObjectId.isValid(req.body.uid)) {
     res.status(400).send({msg: 'uid不是一个有效的id'});
@@ -1082,10 +1090,10 @@ exports.quickCreateTeams = function(req, res, next) {
 
   // 采取抛出异常的方式中断Promise链
   var BreakError = function(msg) {
+    this.typeError = 'break';
     Error.call(this, msg);
   };
   BreakError.prototype = Object.create(Error.prototype);
-
   User.findById(req.body.uid).exec()
     .then(function(user) {
       if (!user) {
@@ -1094,7 +1102,12 @@ exports.quickCreateTeams = function(req, res, next) {
       }
 
       userDoc = user;
-      return Company.findById(user.cid).exec();
+      return Group.find().exec();
+      
+    })
+    .then(function(groups) {
+      groupDoc = groups;
+      return Company.findById(userDoc.cid).exec();
     })
     .then(function(company) {
       if (!company) {
@@ -1106,15 +1119,16 @@ exports.quickCreateTeams = function(req, res, next) {
 
       var teams = [];
       req.body.groups.forEach(function(group) {
+        var groupIndex = model_helper.arrayObjectIndexOf(groupDoc, group._id, '_id');
         var team = new CompanyGroup({
           cid: companyDoc._id,
           gid: group._id,
           poster: {role:'HR'},
-          group_type: group.groupType,
+          group_type: groupDoc[groupIndex].group_type,
           cname: companyDoc.info.name,
-          name: companyDoc.info.name + '-' + group.groupType + '队',
-          logo: '/img/icons/group/' + group.entityType.toLowerCase() + '_on.png',
-          entity_type: group.entityType,
+          name: companyDoc.info.name + '-' + groupDoc[groupIndex].group_type + '队',
+          logo: '/img/icons/group/' + groupDoc[groupIndex].entity_type.toLowerCase() + '_on.png',
+          entity_type: groupDoc[groupIndex].entity_type,
           city: {
             province: companyDoc.info.city.province,
             city: companyDoc.info.city.city,
@@ -1194,7 +1208,7 @@ exports.quickCreateTeams = function(req, res, next) {
       res.send({result:1,msg: '注册成功'});
     })
     .then(null, function(err) {
-      if (!err instanceof BreakError) {
+      if (err.typeError !== 'break') {
         next(err);
       }
     });

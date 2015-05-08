@@ -4,7 +4,6 @@ angular.module('donler', ['ngRoute','ui.bootstrap','pascalprecht.translate','wu.
 
 
 var app = angular.module('donler');
-
 app.directive('match', ['$parse', function ($parse) {
   return {
     require: 'ngModel',
@@ -328,7 +327,8 @@ app.directive('ngThumb', ['$window',
   }
 ]);
 
-app.run(['$rootScope', 'anchorSmoothScroll',function ($rootScope,anchorSmoothScroll) {
+app.run(['$rootScope', 'anchorSmoothScroll', '$http', function ($rootScope,anchorSmoothScroll,$http) {
+    $http.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
     alertify.set({
       buttonFocus: "none",
       labels: {
