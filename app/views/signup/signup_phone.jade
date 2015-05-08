@@ -31,7 +31,7 @@ block content
         img.notfound(src="/img/signup/dl_signup_notfound.png")
         button.organize(ng-click="organize()")
     
-    .signup_step_three(ng-show="step===3")
+    .signup_step_three(ng-class="{'isQQBrowser':isQQBrowser, 'isAndroid':isAndroidBrowser}" ng-show="step===3")
       //- 填入公司资料及密码
       include partials/personal_step_three_phone
     .signup_step_four(ng-show="step===4")

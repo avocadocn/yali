@@ -102,6 +102,18 @@ companySignUpApp.controller('signupController',['$http','$scope','$rootScope',fu
 }]);
 
 companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$rootScope',function ($http,$scope,$rootScope) {
+  //判断浏览器
+  var ua = navigator.userAgent.toLowerCase();
+  var isQQBrowser = function(){
+    return (/micromessenger/.test(ua)) ? true : (/mqqbrowser/.test(ua)) ;
+  }
+  var isAndroidBrowser = function() {
+    return (/android/.test(ua)) && (/safari/.test(ua));
+  }
+  $scope.isQQBrowser = isQQBrowser();
+  $scope.isAndroidBrowser = isAndroidBrowser();
+  // alert($scope.isAndroidBrowser);
+
   //- step 1
   $scope.step = 1;
   var pattern =  /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;

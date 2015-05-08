@@ -1319,11 +1319,13 @@
   border-radius: 5px;
   border: 1px solid #eee;
   float: left;
+  height: 34px;
 }
 .signup_phone.step_3 .signup_step_three .input_box .board .form-group .select_cover select {
   width: 120%;
   height: 34px;
   border: 0;
+  background-image: none;
   background-color: transparent;
   color: #b2b2b2;
 }
@@ -1348,6 +1350,16 @@
   background-repeat: no-repeat;
   background-position: bottom left;
   margin-top: -10%;
+}
+.signup_phone.step_3 .signup_step_three.isAndroid .input_box .board .form-group .select_cover {
+  padding: 8px 0 8px 8px;
+}
+.signup_phone.step_3 .signup_step_three.isQQBrowser .input_box .board .form-group .select_cover {
+  padding: 0;
+  border: 0;
+}
+.signup_phone.step_3 .signup_step_three.isQQBrowser .input_box .board .form-group .select_cover select {
+  width: 100%;
 }
 .signup_phone.step_4 {
   background-image: url("/img/signup/dl_signup_paper_plane.gif");
