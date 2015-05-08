@@ -381,6 +381,7 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
       .success(function(data, status) {
         if(data.result === 1) {
           $scope.step = 5;
+          $scope.emailDomain = $scope.email.split('@')[1];
         } else {
           alert('注册失败');
         }

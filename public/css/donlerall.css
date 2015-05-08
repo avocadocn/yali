@@ -1127,8 +1127,9 @@
 .signup_phone .signup_step_one .input_box,
 .signup_phone .signup_step_three .input_box {
   width: 100%;
-  margin: 10% auto 5%;
-  padding: 0 10%;
+  margin: 5% auto 0;
+  padding: 0 5%;
+  max-width: 539px;
 }
 .signup_phone .signup_step_one .input_box .board,
 .signup_phone .signup_step_three .input_box .board {
@@ -1323,6 +1324,7 @@
 }
 .signup_phone.step_3 .signup_step_three .input_box .board .form-group .select_cover select {
   width: 120%;
+  height: 34px;
   border: 0;
   background-image: none;
   background-color: transparent;
@@ -1352,6 +1354,7 @@
 }
 .signup_phone.step_3 .signup_step_three.isAndroid .input_box .board .form-group .select_cover {
   padding: 8px 0 8px 8px;
+  height: auto;
 }
 .signup_phone.step_3 .signup_step_three.isQQBrowser .input_box .board .form-group .select_cover {
   padding: 0;
@@ -1627,32 +1630,37 @@
 }
 .signup_phone.step_7 {
   background-color: #2cc3c7;
-  background-image: url("/img/signup/dl_signup_sun.png");
+  background-image: url("/img/signup/dl_signup_sun.gif");
   background-repeat: no-repeat;
   background-size: 212.5px 78.5px;
-  background-position: 90% 50px;
+  background-position: 90% 30px;
 }
 .signup_phone .signup_step_seven {
   width: 100%;
 }
 .signup_phone .signup_step_seven .board {
-  margin: 27px auto;
-  width: 300px;
-  height: 480px;
-  background-image: url("/img/signup/dl_signup_input_box.gif");
-  background-size: 300px 480px;
+  margin: 14px auto 0;
+  width: 95%;
+  min-width: 305px;
+  min-height: 430px;
+  padding: 10% 0 20%;
+  background-image: url("/img/signup/dl_signup_input_box.png");
+  background-size: contain;
+  background-position: center;
   background-repeat: no-repeat;
 }
 .signup_phone .signup_step_seven .board .company_input_box {
-  padding-top: 45px;
-  padding-left: 35px;
+  width: 50%;
+  min-width: 260px;
+  max-width: 370px;
+  margin: auto;
 }
 .signup_phone .signup_step_seven .board .company_input_box .signup_container {
-  margin-top: 5px;
+  margin-top: 3%;
   clear: both;
 }
 .signup_phone .signup_step_seven .board .company_input_box .signup_container .sinup_label {
-  width: 78px;
+  width: 30%;
   padding: 6px;
   float: left;
 }
@@ -1664,26 +1672,28 @@
 }
 .signup_phone .signup_step_seven .board .company_input_box .signup_container .sinup_company_name,
 .signup_phone .signup_step_seven .board .company_input_box .signup_container .sinup_company_email {
-  margin-left: 78px;
+  float: right;
   padding: 7px 0px;
   font-size: 14px;
-  width: 150px;
+  width: 70%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 .signup_phone .signup_step_seven .board .company_input_box .signup_container .sinup_input {
-  margin-left: 78px;
+  float: right;
+  width: 70%;
 }
 .signup_phone .signup_step_seven .board .company_input_box .signup_container .sinup_input input {
   border-radius: 5px;
-  width: 150px;
+  width: 90%;
   height: 34px;
   display: block;
   border: 1px solid #eee;
   font-size: 14px;
   background-color: #f3f7eb;
   padding: 0px 5px;
+  color: #b2b2b2;
 }
 .signup_phone .signup_step_seven .board .company_input_box .signup_container .sinup_input a {
   color: #2cc3c7;
@@ -1700,9 +1710,9 @@
   opacity: 0.65;
 }
 .signup_phone .signup_step_seven .board .company_input_box .signup_container .key_tips {
-  float: left;
+  float: right;
   position: relative;
-  margin-left: 232px;
+  margin-right: 25px;
   margin-top: -25px;
 }
 .signup_phone .signup_step_seven .board .company_input_box .signup_container .key_tips .active {
@@ -1711,19 +1721,19 @@
 .signup_phone .signup_step_seven .board .company_input_box .signup_container .key_tips .inactive {
   color: #f48361;
 }
+.signup_phone .signup_step_seven .board .company_input_box .signup_container.company_name {
+  margin-top: 5px;
+  line-height: 1;
+}
 .signup_phone .signup_step_seven .signup_bottom {
   background-image: url("/img/signup/dl_signup_dog.gif");
-  height: 100px;
-  background-size: cover;
+  min-height: 120px;
+  width: 60%;
+  min-width: 320px;
+  margin: auto;
+  background-size: contain;
   background-repeat: no-repeat;
-  background-position: bottom left;
-}
-.signup_phone.step_7 {
-  background-color: #2cc3c7;
-  background-image: url("/img/signup/dl_signup_sun.gif");
-  background-repeat: no-repeat;
-  background-size: 212.5px 78.5px;
-  background-position: 90% 50px;
+  background-position-x: center;
 }
 .signup_phone .signup_step_eight .board {
   text-align: center;
