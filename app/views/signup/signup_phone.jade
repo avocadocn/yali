@@ -69,10 +69,15 @@ block content
       //- 已经注册过
       .board
         .board_content
-          a(href="/index/appdownload")
-            img.signin(src="/img/signup/dl_signup_signin.png" ng-if="!notVerified")
-          img.nomail(src="/img/signup/dl_signup_nomail.png" ng-if="notVerified")
-          img.resend(src="/img/signup/dl_signup_resend.png" ng-click="resend()" ng-if="notVerified")
+          //- 邮箱已注册，直接登录
+          a(href="/index/appdownload" ng-if="!emailDomain && !notVerified")
+            img.signin(src="/img/signup/dl_signup_signin.png")
+          //- 重发激活信
+          img.nomail(src="/img/signup/dl_signup_nomail.png" ng-if="!emailDomain && notVerified")
+          img.resend(src="/img/signup/dl_signup_resend.png" ng-click="resend()" ng-if="!emailDomain && notVerified")
+          //- 公司已注册未激活，去邮箱收激活信
+          a(ng-href="http://mail.{{emailDomain}}" ng-if="emailDomain")
+            img.nomail(src="/img/signup/dl_signup_verimail.png")
     .signup_step_seven(ng-show="step===7")
       include partials/personal_step_seven_phone
     .signup_step_eight(ng-show="step===8")

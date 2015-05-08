@@ -701,11 +701,15 @@ exports.codeCheck = function(req, res) {
 exports.mailCheck = function(req, res) {
   Company.findOne({
     'login_email': req.body.login_email
-  }, function(err, company) {
-    if (err || company) {
-      res.send(true);
+  }, {'status':1, 'info.name':1},function(err, company) {
+    if(err) {
+      console.log(err);
+      res.status(500).send({msg:'error'});
+    }
+    else if (company) {
+      res.status(200).send({hasCompany:true, company:company});
     } else {
-      res.send(false);
+      res.status(200).send({hasCompany:false});
     }
   });
 }
@@ -1184,7 +1188,7 @@ exports.quickCreateTeams = function(req, res, next) {
       return Q.all([saveUserDeferred.promise, saveCompanyDeferred.promise]);
     })
     .then(function() {
-      res.send({result:1,msg: '注册成功','email':companyDoc.info.email.split('@')[1]});
+      res.send({result:1,msg: '注册成功'});
     })
     .then(null, function(err) {
       if (!err instanceof BreakError) {

@@ -36,7 +36,7 @@ companySignUpApp.controller('signupController',['$http','$scope','$rootScope',fu
           login_email: $scope.email,
         }
       }).success(function(data, status) {
-        if(data === "false") {
+        if(!data.hasCompany) {
           $scope.mail_check_value = "";
           $scope.mail_check = true;
         } else {
@@ -115,7 +115,8 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
             $scope.loading = false;
             if(data.active===1) {//未注册过
               $scope.step = 2;
-              searchCompany();
+              checkCompany();
+              // searchCompany();
             }
             else {
               //暂时没有重发邮件就直接告知已注册过
@@ -131,6 +132,23 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
       }
     }
   };
+  var checkCompany = function() {
+    $http.post('/company/mailCheck',{login_email:$scope.email})
+    .success(function(data,status) {
+      if(!data.hasCompany) {
+        searchCompany();
+      }else {
+        if(data.company.status.active===true) {
+          $scope.step = 2;
+          $scope.companies = [data.company];
+        }
+        else {
+          $scope.step = 6;
+          $scope.emailDomain = $scope.email.split('@')[1];
+        }
+      }
+    })
+  }
   var searchCompany = function() {
     $http.post('/search/company', {email:$scope.email})
     .success(function(data, status) {
@@ -318,7 +336,7 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
       // console.log(data);
       $scope.step = 5;
       if(data.result){
-        $scope.emailDomain = data.email
+        $scope.emailDomain = $scope.email.split('@')[1];
       }
     })
     .error(function(data, status) {
