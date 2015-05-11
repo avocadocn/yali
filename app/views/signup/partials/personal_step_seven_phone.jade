@@ -10,7 +10,7 @@
       //-     label *企业邮箱:
       //-   .sinup_input
       //-     input(type="text" name="email" ng-model="userInfo.email" readonly)
-      .signup_container.clearfix
+      .signup_container.clearfix(ng-if="!hideInviteKey")
         .sinup_label 
           label *邀请码:
         .sinup_input

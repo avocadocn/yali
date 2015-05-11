@@ -132,6 +132,7 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$lo
             $scope.loading = false;
             if(data.active===1) {//未注册过
               checkCompany();
+              $scope.hideInviteKey = data.hideInviteKey;
             }
             else {
               //暂时没有重发邮件就直接告知已注册过
@@ -154,15 +155,16 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$lo
       if(!data.hasCompany) {
         searchCompany();
       }else {
+
         if(data.company.status.active===true) {
           $scope.step = 2;
-          $location.hash('2');
           $scope.companies = [data.company];
+          $location.hash('2');
         }
         else {
           $scope.step = 6;
-          $location.hash('6');
           $scope.emailDomain = $scope.email.split('@')[1];
+          $location.hash('6');
         }
       }
     })
@@ -175,6 +177,8 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$lo
         $location.hash('8');
       }
       else {
+        $scope.step = 2;
+        $location.hash('2');
         $scope.page = 1;
         $scope.companies=data.companies;
         if($scope.page===data.pageCount) {$scope.hasNext = false;}
