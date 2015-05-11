@@ -345,7 +345,7 @@
 .signup_phone .signup_step_three .input_box .board input {
   border-radius: 5px;
   width: 90%;
-  height: 34px;
+  height: 40px;
   display: block;
   margin: auto;
   border: 1px solid #eee;
@@ -355,8 +355,8 @@
 }
 .signup_phone .signup_step_one .input_box .board .search,
 .signup_phone .signup_step_three .input_box .board .search {
-  width: 75px;
-  height: 30px;
+  width: 90px;
+  height: 34px;
   float: right;
   margin-right: 5%;
   background-image: url("/img/signup/dl_signup_search.png");
@@ -415,7 +415,7 @@
 .signup_phone .signup_step_eight .signup_bottom_2,
 .signup_phone .signup_step_two .signup_bottom_3,
 .signup_phone .signup_step_eight .signup_bottom_3 {
-  background-image: url("/img/signup/dl_signup_bg_2.gif");
+  background-image: url("/img/signup/dl_signup_bg_2.png");
   background-size: cover;
   background-repeat: no-repeat;
   height: 161px;

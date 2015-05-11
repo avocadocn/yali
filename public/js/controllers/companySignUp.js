@@ -101,7 +101,7 @@ companySignUpApp.controller('signupController',['$http','$scope','$rootScope',fu
   }
 }]);
 
-companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$rootScope',function ($http,$scope,$rootScope) {
+companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$location',function ($http,$scope,$location) {
   //判断浏览器
   var ua = navigator.userAgent.toLowerCase();
   var isQQBrowser = function(){
@@ -116,6 +116,11 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
 
   //- step 1
   $scope.step = 1;
+  $location.hash('1');
+
+  $scope.$on('$locationChangeSuccess', function(event) {
+    $scope.step = parseInt($location.$$hash);
+  });
   var pattern =  /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
   $scope.checkMail = function(keyEvent) {
     if((!keyEvent || keyEvent.which===13) && $scope.email){
@@ -126,13 +131,12 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
           .success(function(data, status) {
             $scope.loading = false;
             if(data.active===1) {//未注册过
-              $scope.step = 2;
               checkCompany();
-              // searchCompany();
             }
             else {
               //暂时没有重发邮件就直接告知已注册过
               $scope.step = 6;
+              $location.hash('6');
               if(data.active===2) {
                 $scope.notVerified = true;
               }
@@ -152,10 +156,12 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
       }else {
         if(data.company.status.active===true) {
           $scope.step = 2;
+          $location.hash('2');
           $scope.companies = [data.company];
         }
         else {
           $scope.step = 6;
+          $location.hash('6');
           $scope.emailDomain = $scope.email.split('@')[1];
         }
       }
@@ -166,6 +172,7 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
     .success(function(data, status) {
       if(data.companies.length === 0) {
         $scope.step = 8;
+        $location.hash('8');
       }
       else {
         $scope.page = 1;
@@ -199,6 +206,7 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
   };
   $scope.preStep = function() {
     $scope.step = 1 ;
+    $location.hash('1');
   }
   $scope.select = function(company) {
     $scope.selectedCompany = company;
@@ -213,9 +221,11 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
       quick: true
     };
     $scope.step = 7;
+    $location.hash('7');
   };
   $scope.organize = function() {
     $scope.step = 3;
+    $location.hash('3');
     getRegions();
   };
 
@@ -301,6 +311,7 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
   };
   $scope.changeEmail = function() {
     $scope.step = 1;
+    $location.hash('1');
     $scope.email = '';
   };
   var uid = '';
@@ -315,6 +326,7 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
     }).success(function(data, status){
       uid = data.uid;
       $scope.step = 4;
+      $location.hash('4');
       getGroups();
     }).error(function(data, status) {
       console.log(data);
@@ -347,6 +359,7 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
     }).success(function(data, status) {
       // console.log(data);
       $scope.step = 5;
+      $location.hash('5');
       if(data.result){
         $scope.emailDomain = $scope.email.split('@')[1];
       }
@@ -361,6 +374,7 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
     $http.post('/users/resend/activeEmail',{email:$scope.email})
     .success(function(data,status){
       $scope.step = 5;
+      $location.hash('5');
     })
     .error(function(data, status) {
       alert(data.msg);
@@ -381,6 +395,7 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
       .success(function(data, status) {
         if(data.result === 1) {
           $scope.step = 5;
+          $location.hash('5');
           $scope.emailDomain = $scope.email.split('@')[1];
         } else {
           alert('注册失败');
