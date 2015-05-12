@@ -256,8 +256,9 @@
     //- height 100%
     .input_box
       width 100%
-      margin 10% auto 5%
-      padding 0 10%
+      margin 5% auto 0
+      padding 0 5%
+      max-width 539px
       .board
         background-image url('/img/signup/dl_signup_board.gif')
         background-size contain
@@ -266,7 +267,7 @@
         input
           border-radius 5px
           width 90%
-          height 34px
+          height 40px
           display block
           margin auto
           border 1px solid #eee
@@ -274,8 +275,8 @@
           padding 2px 10px
           color #b2b2b2
         .search
-          width 75px
-          height 30px
+          width 90px
+          height 34px
           float right
           margin-right 5%
           background-image url('/img/signup/dl_signup_search.png')
@@ -326,7 +327,7 @@
         color #fff
         font-size 20px
     .signup_bottom_2 ,.signup_bottom_3
-      background-image url('/img/signup/dl_signup_bg_2.gif')
+      background-image url('/img/signup/dl_signup_bg_2.png')
       background-size cover
       background-repeat no-repeat
       height 161px
@@ -356,9 +357,14 @@
           padding 8px 5px
           border-radius 5px
           background-color #fff
-          display flex
           color #666
           font-size 14px
+          .cname
+            float left
+            width 92%
+            overflow hidden
+            white-space nowrap
+            text-overflow ellipsis
           .fa
             color #ccc
             margin-top 3px
@@ -415,7 +421,7 @@
               height 34px
               select
                 width 120%
-                //- height 34px
+                height 34px
                 border 0
                 background-image none
                 background-color transparent
@@ -441,6 +447,7 @@
         margin-top -10%
     .signup_step_three.isAndroid .input_box .board .form-group .select_cover
       padding 8px 0 8px 8px
+      height auto
     .signup_step_three.isQQBrowser .input_box .board .form-group .select_cover
       padding 0
       border 0
@@ -630,27 +637,32 @@
               padding-right 10px
   &.step_7
     background-color #2cc3c7
-    background-image url('/img/signup/dl_signup_sun.png')
+    background-image url('/img/signup/dl_signup_sun.gif')
     background-repeat no-repeat
     background-size 212.5px 78.5px
-    background-position 90% 50px
+    background-position 90% 30px
   .signup_step_seven
     width 100%
     .board
-      margin 27px auto
-      width 300px
-      height 480px
-      background-image url('/img/signup/dl_signup_input_box.gif')
-      background-size 300px 480px
+      margin 14px auto 0
+      width 95%
+      min-width 305px
+      min-height 430px
+      padding 10% 0 20%
+      background-image url('/img/signup/dl_signup_input_box.png')
+      background-size contain
+      background-position center
       background-repeat no-repeat
       .company_input_box
-        padding-top 45px
-        padding-left 35px
+        width 50%
+        min-width 260px
+        max-width 370px
+        margin auto
         .signup_container
-          margin-top 5px
+          margin-top 3%
           clear both
           .sinup_label
-            width 78px
+            width 30%
             padding 6px
             float left
             label
@@ -659,24 +671,26 @@
               color #ccc
               font-weight 100
           .sinup_company_name, .sinup_company_email
-            margin-left 78px
+            float right
             padding 7px 0px
             font-size 14px
-            width 150px
+            width 70%
             overflow hidden
             text-overflow ellipsis
             white-space nowrap
           .sinup_input
-            margin-left 78px
+            float right
+            width 70%
             input
               border-radius 5px
-              width 150px
+              width 90%
               height 34px
               display block
               border 1px solid #eee
               font-size 14px
               background-color #f3f7eb
               padding 0px 5px
+              color #b2b2b2
             a 
               color #2cc3c7
             .signup_button
@@ -689,26 +703,26 @@
               &:disabled
                 opacity .65
           .key_tips
-            float left
+            float right
             position relative
-            margin-left 232px
+            margin-right 25px
             margin-top -25px
             .active
               color #3ca2e0
             .inactive
               color #f48361
+        .signup_container.company_name
+          margin-top 5px
+          line-height 1
     .signup_bottom
       background-image url('/img/signup/dl_signup_dog.gif')
-      height 100px
-      background-size cover
+      min-height 120px
+      width 60%
+      min-width 320px
+      margin auto
+      background-size contain
       background-repeat no-repeat
-      background-position bottom left
-  &.step_7
-    background-color #2cc3c7
-    background-image url('/img/signup/dl_signup_sun.gif')
-    background-repeat no-repeat
-    background-size 212.5px 78.5px
-    background-position 90% 50px
+      background-position-x center
   .signup_step_eight
     .board
       text-align center
@@ -742,3 +756,35 @@
       background-image url('/img/signup/dl_signup_bg_4.png')
       width 299.5px
       height 199.5px
+.active_success
+  width 556px
+  height 438px
+  border 3px solid #f5ab95
+  border-radius 10px
+  margin 90px auto
+  .active_success_info
+    position relative
+    margin-top 81px
+    margin-left 41px
+    font-size 24px
+    span
+      float left
+    i
+      position absolute
+      margin-left 16px
+      font-size 80px
+      color #f5ab95
+      top -40px
+  .active_success_operator
+    height 2px
+    margin 27px 41px
+    background-color #f5ab95
+  .active_success_download_info
+    position relative
+    margin-top 17px
+    margin-left 41px
+    font-size 24px
+  .active_success_download_qrcodes
+    width 120px
+    margin 30px auto
+    

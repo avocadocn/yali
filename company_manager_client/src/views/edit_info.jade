@@ -48,7 +48,7 @@
                 label 修改公司封面
                 .edit_family_container
                   .cropper#image_cropper_family
-                    .cropit-image-preview-container(ng-show="company.cover" ng-style="{'background-image': 'url(' + company.cover + '/256/256)'}")
+                    .cropit-image-preview-container(ng-style="{'background-image': 'url(' + (company.cover ? company.cover:'/img/company_cover.png')+ '/256/256)'}")
                       .cropit-image-preview
                     .operator_slider(ng-show="familyIsUploading")
                       span.glyphicon.glyphicon-picture.icon_small

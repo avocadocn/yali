@@ -41,7 +41,8 @@ var encrypt = require('../middlewares/encrypt'),
   photo_album_controller = require('./photoAlbum'),
   auth = require('../services/auth'),
   userScore = require('../services/user_score.js'),
-  logController =require('../controllers/log');
+  logController =require('../controllers/log'),
+  publicDomain = require('../services/public_domain.js');
 
 
 
@@ -484,9 +485,12 @@ function userOperate(cid, key, res, req, index) {
     if (!company) {
       throw 'Not found company';
     }
+    var email = req.query.notinvited=='true'? req.body.email.toLowerCase() : req.body.host.toLowerCase() + '@' + req.body.domain;
+    var domain = email.split('@')[1];
     //只有在不重填信息的重发时不需要验证key 其它都要
-    if(index===2 || company.invite_key===key) {
-      var email = req.query.notinvited=='true'? req.body.email.toLowerCase() : req.body.host.toLowerCase() + '@' + req.body.domain;
+    //2015.5.11以后如果domain错误 也不用验证key了
+    if(index===2 || !publicDomain.isPublicDomain(domain) || company.invite_key===key) {
+      
       User.findOne({ username: email})
       .exec()
       .then(function(user) {
@@ -900,6 +904,9 @@ exports.dealActive = function(req, res, next) {
  */
 exports.mailCheck = function(req, res) {
   var email = req.body.login_email?req.body.login_email.toLowerCase():req.body.login_email;
+  var domain = email.split('@')[1];
+  // var domians = 
+  var hideInviteKey = !publicDomain.isPublicDomain(domain);
   User.findOne({username:email},{active:1,mail_active:1},function(err,user){
     if(err){
       console.log(err);
@@ -921,7 +928,7 @@ exports.mailCheck = function(req, res) {
       });
     }
     else if(!user){//这个邮箱没用过
-      return res.send({'active':1});
+      return res.send({'active':1, 'hideInviteKey':hideInviteKey});
     }
     else if(user.mail_active === false){//这个邮箱激活了没验证
       return res.send({'active':2});
@@ -1720,7 +1727,7 @@ exports.saveAccount = function (req, res, next) {
       if (err) {
         return next(err);
       }
-      if(req.body.did && !user.department._id || user.department._id.toString()!= req.body.did) {
+      if(req.body.did && !user.department._id || (user.department._id && user.department._id.toString()!= req.body.did) ) {
         department.memberOperateByHand(user,req.body.did,function (err) {
           if (err) {
             log(err);
