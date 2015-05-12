@@ -463,7 +463,6 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
           return checkCompanyEmail(email);
         }
         else {
-          // todo 已经注册
           $scope.go('hasRegister');
         }
       })
@@ -476,11 +475,9 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
     return $http.post('/company/mailCheck', {login_email: email}).then(function(res) {
       var data = res.data;
       if (data && data.hasCompany) {
-        // todo 已经注册
         $scope.go('hasRegister');
       }
       else {
-        // todo 没有注册，搜索公司
         searchCompany(email);
       }
     });
@@ -490,7 +487,6 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
     return $http.post('/search/company', {email: email}).then(function(res) {
       var data = res.data;
       if (data && data.companies.length > 0) {
-        // todo 找到公司
         $scope.go('select');
         $scope.searchResCompanies = data.companies;
         $scope.page = 1;
@@ -500,7 +496,6 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
         $scope.hasPrevious = false;
       }
       else {
-        // todo 没有找到公司
         $scope.go('notFound');
       }
       $scope.validEmail = email;
@@ -546,6 +541,7 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
     }
   };
 
+  // 在未搜索到公司进行快速注册时也用到
   $scope.select = function(company) {
     $scope.selectedCompany = company;
     $scope.go('personal');
@@ -564,7 +560,20 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
       realname: '',
       quick: true
     };
-  }
+  };
+
+  $scope.checkInviteKey = function() {
+    if ($scope.personalRegisterFormData.inviteKey && $scope.personalRegisterFormData.inviteKey.length === 8 && $scope.selectedCompany) {
+      $http.post('/users/inviteKeyCheck',{
+        cid: $scope.selectedCompany._id,
+        inviteKey: $scope.personalRegisterFormData.inviteKey
+      }).success(function(data) {
+        $scope.isInviteKeyCorrect = (data.invitekeyCheck === 1);
+      }).error(function(data) {
+        // todo
+      });
+    }
+  };
 
   $scope.registerUser = function() {
     $http.post('/users/dealActive?notinvited=true', $scope.personalRegisterFormData)
@@ -721,6 +730,27 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
     changeDistrict();
   };
 
+  $scope.checkOfficeName = function() {
+    if ($scope.companyRegisterFormData.name && $scope.companyRegisterFormData.name !== '') {
+      $http.post('/company/officialNameCheck',{
+        name: $scope.companyRegisterFormData.name,
+        domain: $scope.validEmail.split('@')[1]
+      }).success(function(data, status) {
+        if (data.result) {
+          $scope.recommandCompany = {
+            _id: data.cid,
+            name: $scope.companyRegisterFormData.name
+          };
+          $scope.domain = data.domain;
+        }
+      });
+    }
+  };
+
+  $scope.ignoreRecommand = function() {
+    $scope.recommandCompany = null;
+  };
+
   $scope.registerCompany = function() {
     $scope.post('/company/quickCreateUserAndCompany', {
       email: $scope.validEmail,
@@ -776,6 +806,19 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
     });
   };
   // the end of step selectGroup ===================================================
+
+
+  // step hasRegister
+  $scope.resend = function() {
+    $http.post('/users/resend/activeEmail',{email: $scope.validEmail})
+      .success(function(data,status){
+        $scope.go('success');
+      })
+      .error(function(data, status) {
+        // todo
+      });
+  };
+  // the end of step hasRegister
 
 }]);
 

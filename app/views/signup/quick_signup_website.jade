@@ -11,7 +11,7 @@ block contentExt
     .step_select(ng-if="step === 'select'" ng-cloak)
       h1 为您查找的公司（文字待定）
       ul
-        li(ng-repeat="company in searchResCompanies" ng-click="choose(company)" ng-bind="company.name")
+        li(ng-repeat="company in searchResCompanies" ng-click="select(company)" ng-bind="company.name")
       span(ng-click="prePage()" ng-if="hasPrevious") 上一页
       span(ng-click="nextPage()" ng-if="hasNext") 下一页
       button(ng-click="go('company')") 我来组织吧
@@ -31,7 +31,10 @@ block contentExt
           input(type="text" name="email" ng-model="personalRegisterFormData.email" readonly)
         div
           label *邀请码:
-          input(type="text" placeholder="请向您的公司管理员或同事索要8位邀请码" name="inviteKey" ng-model="personalRegisterFormData.inviteKey" ng-minlength=8 ng-maxlength=8 required)
+          input(type="text" placeholder="请向您的公司管理员或同事索要8位邀请码" name="inviteKey" ng-model="personalRegisterFormData.inviteKey" ng-change="checkInviteKey()" ng-minlength=8 ng-maxlength=8 required)
+          .key_tips
+            i.fa.fa-check.active(ng-if="isInviteKeyCorrect")
+            i.fa.fa-close.inactive(ng-if="!isInviteKeyCorrect")
         div
           label *昵称:
           input(type="text" name="nickname" ng-model="personalRegisterFormData.nickname" required)
@@ -44,18 +47,29 @@ block contentExt
         div
           label 点击注册即代表同意
           a 服务条款(todo)
-          button(ng-click="registerUser()" ng-disabled="personalRegisterForm.$invalid") 免费注册个人账号
+          button(ng-click="registerUser()" ng-disabled="personalRegisterForm.$invalid && isInviteKeyCorrect") 免费注册个人账号
 
     .step_company(ng-if="step === 'company'" ng-cloak)
       h1 快速注册
       form(name="companyRegisterForm")
-        input(ng-model="companyRegisterFormData.name" placeholder="公司名称" required)
-        div
+        input(ng-model="companyRegisterFormData.name" ng-blur="checkOfficeName()" placeholder="公司名称" required)
+        p(ng-if="recommandCompany && !domain")
+          span 检测到同名公司，不过您的邮箱后缀不对哦，换公司邮箱搜索试试?
+        div(ng-if="recommandCompany && !domain")
+          button(ng-click="go('search')") 换邮箱
+          button(ng-click="ignoreRecommand()") 继续注册
+        //- 同名&&email不正确 提示换邮箱
+        p(ng-if="recommandCompany && domain")
+          span 检测到同名公司
+        div(ng-if="recommandCompany && domain")
+          button(ng-click="select(recommandCompany)") 点击加入
+          button(ng-click="ignoreRecommand()") 继续注册
+        div(ng-if="!recommandCompany")
           select(name="province" ng-model="companyRegisterFormData.province" ng-options="province.value for province in provinces" ng-change="selcetProvince()")
           select(name="city" ng-model="companyRegisterFormData.city" ng-options="city.value for city in cities" ng-change="selectCity()")
           select(name="district" ng-model="companyRegisterFormData.district" ng-options="district.value for district in districts")
-        input(type="password" ng-model="companyRegisterFormData.password" placeholder="密码" ng-minlength=6 required)
-        button(ng-disabled="companyRegisterForm.$invalid" ng-click="registerCompany()") 下一步
+        input(type="password" ng-model="companyRegisterFormData.password" ng-if="!recommandCompany" placeholder="密码" ng-minlength=6 required)
+        button(ng-if="!recommandCompany" ng-disabled="companyRegisterForm.$invalid" ng-click="registerCompany()") 下一步
 
     .step_select_group(ng-if="step === 'selectGroup'" ng-cloak)
       h1 选择您感兴趣的项目
