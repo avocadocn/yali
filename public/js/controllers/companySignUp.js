@@ -721,7 +721,61 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
     changeDistrict();
   };
 
-  // the end of step company
+  $scope.registerCompany = function() {
+    $scope.post('/company/quickCreateUserAndCompany', {
+      email: $scope.validEmail,
+      name: $scope.companyRegisterFormData.name,
+      password: $scope.companyRegisterFormData.password,
+      province: $scope.companyRegisterFormData.province.value,
+      city: $scope.companyRegisterFormData.city.value,
+      district: $scope.companyRegisterFormData.district.value
+    }).success(function(data) {
+      $scope.uid = data.uid;
+      $scope.go('selectGroup');
+    }).error(function(data) {
+      // todo
+    });
+  };
+  // the end of step company ===================================================
+
+
+  // step selectGroup ==============================================================
+  $scope.init.selectGroup = function() {
+    getGroups();
+  };
+
+  function getGroups() {
+    if ($scope.groups) return;
+
+    $http.get('/group/getgroups').success(function(data) {
+      $scope.groups = data.splice(0, 16);
+    }).error(function(data) {
+      // todo
+    });
+  }
+
+  $scope.selectType = function(index) {
+    $scope.groups[index].selected = !$scope.groups[index].selected;
+  };
+
+  $scope.createTeams = function() {
+    var selectedGroups = $scope.groups.filter(function(group) {
+      return group.selected === true;
+    });
+    $http.post('/company/quickCreateTeams',{
+      groups: selectedGroups,
+      uid: $scope.uid
+    }).success(function(data, status) {
+      $scope.go('success');
+      if (data.result) {
+        $scope.emailDomain = $scope.email.split('@')[1];
+      }
+    })
+    .error(function(data, status) {
+      // todo
+    });
+  };
+  // the end of step selectGroup ===================================================
 
 }]);
 

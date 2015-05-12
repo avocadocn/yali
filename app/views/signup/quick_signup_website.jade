@@ -59,6 +59,12 @@ block contentExt
 
     .step_select_group(ng-if="step === 'selectGroup'" ng-cloak)
       h1 选择您感兴趣的项目
+      .groups.clearfix
+        .group(ng-repeat='group in groups' ng-class="{'active':group.selected}" ng-click="selectType($index)")
+          .img_contain(class='group_'+'{{group._id}}')
+          .shadow(ng-class="{'active': group.selected}")
+          label(for='{{group._id}}') {{group.groupType}}
+      button(ng-click="createTeams()") 完成
 
     .step_success(ng-if="step === 'success'" ng-cloak)
       h1 注册成功
