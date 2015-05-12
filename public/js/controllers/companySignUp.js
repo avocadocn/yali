@@ -170,7 +170,7 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$lo
     })
   }
   var searchCompany = function() {
-    $http.post('/search/company', {email:$scope.email})
+    $http.post('/search/company', {email:$scope.email, limit:4})
     .success(function(data, status) {
       if(data.companies.length === 0) {
         $scope.step = 8;
@@ -182,6 +182,7 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$lo
         $scope.page = 1;
         $scope.companies=data.companies;
         if($scope.page===data.pageCount) {$scope.hasNext = false;}
+        else {$scope.hasNext = true;}
         $scope.hasPrevious = false;
       }
     });
@@ -190,7 +191,7 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$lo
   //-step 2
   $scope.nextPage = function() {
     if($scope.hasNext) {
-      $http.post('/search/company',{email:$scope.email, page:$scope.page+1}).success(function (data,status){
+      $http.post('/search/company',{email:$scope.email, page:$scope.page+1, limit:4}).success(function (data,status){
         $scope.companies=data.companies;
         $scope.page++;
         if($scope.page===data.pageCount) {$scope.hasNext = false;}
@@ -200,7 +201,7 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$lo
   };
   $scope.prePage = function() {
     if($scope.hasPrevious) {
-      $http.post('/search/company',{email:$scope.email, page:$scope.page-1}).success(function (data,status){
+      $http.post('/search/company',{email:$scope.email, page:$scope.page-1, limit:4}).success(function (data,status){
         $scope.companies=data.companies;
         $scope.hasNext = true;
         $scope.page--;

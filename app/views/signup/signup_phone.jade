@@ -22,8 +22,8 @@ block content
         img.search_title(src="/img/signup/dl_signup_search_title.png")
         i.fa.fa-reply(ng-click="preStep()")
         .companies
-          .company(ng-repeat="company in companies" ng-click="select(company)")
-            span {{company.name}}
+          .company.clearfix(ng-repeat="company in companies" ng-click="select(company)")
+            span.cname {{company.name}}
             i.fa.fa-chevron-right.pull-right
           span.prePage(ng-click="prePage()" ng-if="hasPrevious") 上一页
           span.nextPage(ng-click="nextPage()" ng-if="hasNext") 下一页

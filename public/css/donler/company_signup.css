@@ -454,9 +454,15 @@
   padding: 8px 5px;
   border-radius: 5px;
   background-color: #fff;
-  display: flex;
   color: #666;
   font-size: 14px;
+}
+.signup_phone .signup_step_two .board .companies .company .cname {
+  float: left;
+  width: 92%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .signup_phone .signup_step_two .board .companies .company .fa {
   color: #ccc;
