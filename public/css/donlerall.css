@@ -7892,6 +7892,10 @@ input.ng-invalid.ng-dirty {
   font-size: 17px;
 }
 
+.quick_signup_website_page {
+  background: transparent;
+}
+
 .resetPassword {
   margin-top: 100px;
 }

@@ -219,7 +219,7 @@ exports.signup = function(req, res) {
             is_need_invite: is_need_invite
           });
         }else {
-          res.render('signup/company_signup', {
+          res.render('signup/quick_signup_website', {
             title: '注册',
             is_need_invite: is_need_invite
           });

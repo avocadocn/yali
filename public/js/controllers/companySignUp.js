@@ -388,6 +388,184 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$ro
   };
 }]);
 
+companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootScope', '$http', function($scope, $rootScope, $http) {
+
+  /**
+   * 注册步骤，可以是:
+   * 'search' - 搜索
+   * 'select' - 找到公司
+   * 'notFound' - 没有找到公司
+   * 'company' - 快速注册公司（填写表单）
+   * 'personal' - 个人注册（找到公司并选择个人注册的情况）
+   * 'selectGroup' - 选择感兴趣项目
+   * 'success' - 注册成功
+   * 'hasRegister' - 已注册
+   * @type {String}
+   */
+  $scope.step = 'search';
+
+  // 每一步的初始化数据的方法
+  $scope.init = {};
+
+  $scope.go = function(step) {
+    $scope.step = step;
+    if ($scope.init[step]) {
+      $scope.init[step]();
+    }
+  };
+
+  $scope.validEmail = '';
+
+  // step search =====================================================
+  $scope.init.search = function() {
+    $scope.validEmail = '';
+  };
+  $scope.init.search();
+
+  $scope.searchFormData = {email: ''};
+
+  var emailPattern =  /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
+  $scope.search = function(keyEvent) {
+    if (keyEvent && keyEvent.which !== 13) return;
+    if (!$scope.searchFormData.email || $scope.searchFormData.email === '') return;
+    var isEmail = emailPattern.test($scope.searchFormData.email);
+    if (!isEmail) return;
+
+    checkUserEmail($scope.searchFormData.email);
+  };
+
+  function checkUserEmail(email) {
+    $http.post('/users/mailCheck', {login_email: email})
+      .then(function(res) {
+        var data = res.data;
+        if (data.active === 1) {
+          return checkCompanyEmail(email);
+        }
+        else {
+          // todo 已经注册
+          $scope.go('hasRegister');
+        }
+      })
+      .then(null, function(res) {
+        // todo something err
+      });
+  }
+
+  function checkCompanyEmail(email) {
+    return $http.post('/company/mailCheck', {login_email: email}).then(function(res) {
+      var data = res.data;
+      if (data && data.hasCompany) {
+        // todo 已经注册
+        $scope.go('hasRegister');
+      }
+      else {
+        // todo 没有注册，搜索公司
+        searchCompany(email);
+      }
+    });
+  }
+
+  function searchCompany(email) {
+    return $http.post('/search/company', {email: email}).then(function(res) {
+      var data = res.data;
+      if (data && data.companies.length > 0) {
+        // todo 找到公司
+        $scope.go('select');
+        $scope.searchResCompanies = data.companies;
+        $scope.page = 1;
+        if ($scope.page === data.pageCount) {
+          $scope.hasNext = false;
+        }
+        $scope.hasPrevious = false;
+      }
+      else {
+        // todo 没有找到公司
+        $scope.go('notFound');
+      }
+      $scope.validEmail = email;
+    });
+  }
+  // the end of step search =====================================================
+
+
+  // step select ================================================================
+  $scope.init.select = function() {
+    $scope.selectedCompany = null;
+  };
+  $scope.init.select();
+
+  $scope.nextPage = function() {
+    if ($scope.hasNext) {
+      $http.post('/search/company', {
+        email: $scope.validEmail,
+        page: $scope.page + 1
+      }).success(function(data, status) {
+        $scope.searchResCompanies = data.companies;
+        $scope.page++;
+        if ($scope.page === data.pageCount) {
+          $scope.hasNext = false;
+        }
+        $scope.hasPrevious = true;
+      });
+    }
+  };
+
+  $scope.prePage = function() {
+    if ($scope.hasPrevious) {
+      $http.post('/search/company', {
+        email: $scope.validEmail,
+        page: $scope.page - 1
+      }).success(function(data, status) {
+        $scope.searchResCompanies = data.companies;
+        $scope.hasNext = true;
+        $scope.page--;
+        if ($scope.page === 1) {
+          $scope.hasPrevious = false;
+        }
+      });
+    }
+  };
+
+  $scope.select = function(company) {
+    $scope.selectedCompany = company;
+    $scope.go('personal');
+  };
+  // the end of step select =====================================================
+
+
+  // step personal ==============================================================
+  $scope.init.personal = function() {
+    $scope.personalRegisterFormData = {
+      cid: $scope.selectedCompany._id,
+      email: $scope.validEmail,
+      inviteKey: '',
+      nickname: '',
+      password: '',
+      realname: '',
+      quick: true
+    };
+  }
+  $scope.init.personal();
+
+  $scope.registerUser = function() {
+    $http.post('/users/dealActive?notinvited=true', $scope.personalRegisterFormData)
+      .success(function(data) {
+        if (data.result === 1) {
+          $scope.go('success');
+        }
+        else {
+          alert('注册失败');
+        }
+      })
+      .error(function(data) {
+        // todo
+      });
+  };
+
+  // the end of step personal ===================================================
+
+}]);
+
 companySignUpApp.controller('userSignupController',['$http','$scope','$rootScope',function ($http,$scope,$rootScope) {
   //-验证个人邮箱
   var mailCheck = function(callback) {
