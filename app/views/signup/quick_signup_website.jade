@@ -85,6 +85,14 @@ block contentExt
 
     .step_has_register(ng-if="step === 'hasRegister'" ng-cloak)
       h1 已注册
+      a(href="/users/signin/" ng-if="!emailDomain && !notVerified")
+        img.signin(src="/img/signup/dl_signup_signin.png")
+      //- 重发激活信
+      img.nomail(src="/img/signup/dl_signup_nomail.png" ng-if="!emailDomain && notVerified")
+      img.resend(src="/img/signup/dl_signup_resend.png" ng-click="resend()" ng-if="!emailDomain && notVerified")
+      //- 公司已注册未激活，去邮箱收激活信
+      a(ng-href="http://mail.{{emailDomain}}" ng-if="emailDomain")
+        img.nomail(src="/img/signup/dl_signup_verimail.png")
 
 
 append footExt

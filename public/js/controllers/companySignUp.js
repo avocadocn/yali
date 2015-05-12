@@ -463,6 +463,9 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
           return checkCompanyEmail(email);
         }
         else {
+          if (data.active === 2) {
+            $scope.notVerified = true;
+          }
           $scope.go('hasRegister');
         }
       })
@@ -475,7 +478,17 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
     return $http.post('/company/mailCheck', {login_email: email}).then(function(res) {
       var data = res.data;
       if (data && data.hasCompany) {
-        $scope.go('hasRegister');
+        if (data.company.status.active === true) {
+          var company = data.company;
+          company.name = company.info.name;
+          $scope.searchResCompanies = [company];
+          $scope.validEmail = email;
+          $scope.go('select');
+        }
+        else {
+          $scope.emailDomain = email.split('@')[1];
+          $scope.go('hasRegister');
+        }
       }
       else {
         searchCompany(email);
@@ -752,7 +765,7 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
   };
 
   $scope.registerCompany = function() {
-    $scope.post('/company/quickCreateUserAndCompany', {
+    $http.post('/company/quickCreateUserAndCompany', {
       email: $scope.validEmail,
       name: $scope.companyRegisterFormData.name,
       password: $scope.companyRegisterFormData.password,
@@ -798,7 +811,7 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
     }).success(function(data, status) {
       $scope.go('success');
       if (data.result) {
-        $scope.emailDomain = $scope.email.split('@')[1];
+        $scope.emailDomain = $scope.validEmail.split('@')[1];
       }
     })
     .error(function(data, status) {
