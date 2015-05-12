@@ -14,14 +14,11 @@ block contentExt
         li(ng-repeat="company in searchResCompanies" ng-click="choose(company)" ng-bind="company.name")
       span(ng-click="prePage()" ng-if="hasPrevious") 上一页
       span(ng-click="nextPage()" ng-if="hasNext") 下一页
+      button(ng-click="go('company')") 我来组织吧
 
     .step_not_found(ng-if="step === 'notFound'" ng-cloak)
       h1 没有找到（文字待定）
-      button 我来组织吧
-
-    .step_company(ng-if="step === 'company'" ng-cloak)
-      h1 快速注册
-      form(name="companyRegisterForm")
+      button(ng-click="go('company')") 我来组织吧
 
     .step_personal(ng-if="step === 'personal'" ng-cloak)
       h1 快速注册
@@ -48,6 +45,17 @@ block contentExt
           label 点击注册即代表同意
           a 服务条款(todo)
           button(ng-click="registerUser()" ng-disabled="personalRegisterForm.$invalid") 免费注册个人账号
+
+    .step_company(ng-if="step === 'company'" ng-cloak)
+      h1 快速注册
+      form(name="companyRegisterForm")
+        input(ng-model="companyRegisterFormData.name" placeholder="公司名称" required)
+        div
+          select(name="province" ng-model="companyRegisterFormData.province" ng-options="province.value for province in provinces" ng-change="selcetProvince()")
+          select(name="city" ng-model="companyRegisterFormData.city" ng-options="city.value for city in cities" ng-change="selectCity()")
+          select(name="district" ng-model="companyRegisterFormData.district" ng-options="district.value for district in districts")
+        input(type="password" ng-model="companyRegisterFormData.password" placeholder="密码" ng-minlength=6 required)
+        button(ng-disabled="companyRegisterForm.$invalid" ng-click="registerCompany()") 下一步
 
     .step_select_group(ng-if="step === 'selectGroup'" ng-cloak)
       h1 选择您感兴趣的项目

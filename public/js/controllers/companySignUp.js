@@ -409,7 +409,7 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$lo
   };
 }]);
 
-companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootScope', '$http', function($scope, $rootScope, $http) {
+companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootScope', '$http', '$q', function($scope, $rootScope, $http, $q) {
 
   /**
    * 注册步骤，可以是:
@@ -513,7 +513,6 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
   $scope.init.select = function() {
     $scope.selectedCompany = null;
   };
-  $scope.init.select();
 
   $scope.nextPage = function() {
     if ($scope.hasNext) {
@@ -566,7 +565,6 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
       quick: true
     };
   }
-  $scope.init.personal();
 
   $scope.registerUser = function() {
     $http.post('/users/dealActive?notinvited=true', $scope.personalRegisterFormData)
@@ -575,7 +573,7 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
           $scope.go('success');
         }
         else {
-          alert('注册失败');
+          // todo 注册失败
         }
       })
       .error(function(data) {
@@ -584,6 +582,146 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
   };
 
   // the end of step personal ===================================================
+
+
+  // step company ===============================================================
+  $scope.init.company = function() {
+    $scope.companyRegisterFormData = {
+      name: '',
+      province: '',
+      city: '',
+      district: '',
+      password: ''
+    };
+    initProvince();
+  };
+
+  function getLocation() {
+    var deferred = $q.defer();
+    if ($scope.location) {
+      deferred.resolve($scope.location);
+    }
+    else {
+      $http.jsonp('http://api.map.baidu.com/location/ip?ak=krPnXlL3wNORRa1KYN1RAx3c&callback=JSON_CALLBACK')
+        .success(function(data) {
+          var detail = data.content.address_detail;
+          $scope.location = {
+            province: detail.province,
+            city: detail.city,
+            district: detail.district
+          };
+          deferred.resolve($scope.location);
+        })
+        .error(function() {
+          deferred.resolve(null);
+        });
+    }
+
+    return deferred.promise;
+  }
+
+  function getRegions() {
+    var deferred = $q.defer();
+
+    if ($scope.provinces) {
+      deferred.resolve($scope.provinces);
+    }
+    else {
+      $http.get('/region').success(function(data) {
+        $scope.provinces = data.data;
+        deferred.resolve($scope.provinces);
+      }).error(function(data) {
+        deferred.reject(new Error(data && data.msg || '获取省市区数据失败'));
+      });
+    }
+
+    return deferred.promise;
+  }
+
+  function initProvince() {
+    getLocation().then(function() {
+      return getRegions();
+    }).then(function() {
+      if ($scope.location) {
+        var provinceIndex = getIndexOfLocation($scope.location.province, $scope.provinces);
+        if (provinceIndex !== -1) {
+          $scope.companyRegisterFormData.province = $scope.provinces[provinceIndex];
+          changeCity();
+
+          var cityIndex = getIndexOfLocation($scope.location.city, $scope.cities);
+          if (cityIndex !== -1) {
+            $scope.companyRegisterFormData.city = $scope.cities[cityIndex];
+            changeDistrict();
+
+            var districtIndex = getIndexOfLocation($scope.location.district, $scope.districts);
+            if (districtIndex !== -1) {
+              $scope.companyRegisterFormData.district = $scope.districts[districtIndex];
+            }
+            else {
+              setDefaultOptions('district');
+            }
+          }
+          else {
+            setDefaultOptions('city');
+          }
+        }
+        else {
+          setDefaultOptions('province');
+        }
+      }
+      else {
+        setDefaultOptions('province');
+      }
+    }).then(null, function(err) {
+      // todo
+    });
+  }
+
+  function getIndexOfLocation(location, array) {
+    for (var i = 0, len = array.length; i < len; i++) {
+      if (location === array[i].value) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  /**
+   * 设置默认选项
+   * @param {String} startDefaultOption 'province', 'city', 'district'
+   */
+  function setDefaultOptions(startDefaultOption) {
+    if (startDefaultOption === 'province') {
+      $scope.companyRegisterFormData.province = $scope.provinces[0];
+      $scope.companyRegisterFormData.city = $scope.companyRegisterFormData.province.data[0];
+      $scope.companyRegisterFormData.district = $scope.companyRegisterFormData.city.data[0];
+    }
+    else if (startDefaultOption === 'city') {
+      $scope.companyRegisterFormData.city = $scope.companyRegisterFormData.province.data[0];
+      $scope.companyRegisterFormData.district = $scope.companyRegisterFormData.city.data[0];
+    }
+    else if (startDefaultOption === 'district') {
+      $scope.companyRegisterFormData.district = $scope.companyRegisterFormData.city.data[0];
+    }
+  }
+
+  function changeCity() {
+    $scope.cities = $scope.companyRegisterFormData.province.data;
+    $scope.companyRegisterFormData.city = $scope.cities[0];
+    changeDistrict();
+  }
+  function changeDistrict() {
+    $scope.districts = $scope.companyRegisterFormData.city.data;
+    $scope.companyRegisterFormData.district = $scope.districts[0];
+  }
+  $scope.selcetProvince = function() {
+    changeCity();
+  };
+  $scope.selectCity = function() {
+    changeDistrict();
+  };
+
+  // the end of step company
 
 }]);
 
