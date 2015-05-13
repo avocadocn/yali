@@ -585,7 +585,10 @@
 .image_box .preview .image_nav .thumb_box .thumb_box_inner {
   width: 6000px;
   height: 60px;
-  transition: margin-left 1s;
+  transition: margin-left;
+  -moz-transition: margin-left;
+  -webkit-transition: margin-left;
+  -o-transition: margin-left;
   -moz-transition: margin-left 1s;
   -webkit-transition: margin-left 1s;
   -o-transition: margin-left 1s;

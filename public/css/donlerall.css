@@ -2640,7 +2640,10 @@
 .image_box .preview .image_nav .thumb_box .thumb_box_inner {
   width: 6000px;
   height: 60px;
-  transition: margin-left 1s;
+  transition: margin-left;
+  -moz-transition: margin-left;
+  -webkit-transition: margin-left;
+  -o-transition: margin-left;
   -moz-transition: margin-left 1s;
   -webkit-transition: margin-left 1s;
   -o-transition: margin-left 1s;
@@ -3698,7 +3701,10 @@
 .image_box .preview .image_nav .thumb_box .thumb_box_inner {
   width: 6000px;
   height: 60px;
-  transition: margin-left 1s;
+  transition: margin-left;
+  -moz-transition: margin-left;
+  -webkit-transition: margin-left;
+  -o-transition: margin-left;
   -moz-transition: margin-left 1s;
   -webkit-transition: margin-left 1s;
   -o-transition: margin-left 1s;
@@ -5378,7 +5384,10 @@ input::-webkit-inner-spin-button {
 }
 .dl-form-control -webkit-transition border-color ease-in-out .15s,
 .dl-form-control box-shadow ease-in-out .15s {
-  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+  transition: border-color ease-in-out 0.15s;
+  -moz-transition: border-color ease-in-out 0.15s;
+  -webkit-transition: border-color ease-in-out 0.15s;
+  -o-transition: border-color ease-in-out 0.15s;
 }
 .dl_err {
   color: #f00;
@@ -6273,7 +6282,10 @@ input.ng-invalid.ng-dirty {
   -webkit-transition: all 0.1s ease-in;
   -moz-transition: all 0.1s ease-in-out;
   -o-transition: all 0.1s ease-in-out;
-  transition: all 0.1s ease-in-out;
+  transition: all;
+  -moz-transition: all;
+  -webkit-transition: all;
+  -o-transition: all;
 }
 .dl_integrate_container .team_main .team_family_box .slider_nav .carousel_thumbs .active {
   border: solid 3px #3498db;
@@ -6794,7 +6806,10 @@ input.ng-invalid.ng-dirty {
   left: 50%;
   margin-left: 500px;
   bottom: -100px;
-  transition: bottom 0.5s;
+  transition: bottom;
+  -moz-transition: bottom;
+  -webkit-transition: bottom;
+  -o-transition: bottom;
   -moz-transition: bottom 0.5s;
   -webkit-transition: bottom 0.5s;
   -o-transition: bottom 0.5s;
