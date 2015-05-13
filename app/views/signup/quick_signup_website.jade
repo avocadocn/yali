@@ -2,11 +2,14 @@ extends ../layouts/register
 
 block contentExt
   .dl_container.quick_signup_website_page(ng-controller="quickSignupWebsiteController")
-    .step_search(ng-if="step === 'search'" ng-cloak)
-      h1 同事都在玩，快来加入吧。
-      form(name="searchForm")
-        input(type="email" name="email" ng-model="searchFormData.email" ng-keypress="search($event)" placeholder="请输入您的企业邮箱" required)
-        button(ng-click="search()") 查找
+    .step_search.register_box(ng-if="step === 'search'" ng-cloak)
+      //- rg: register
+      h1.rg_title 快速注册
+      p.rg_description 同事都在玩，快来加入吧。
+      form.rg_form(name="searchForm")
+        input.rg_form_control.rg_search_input(type="email" name="email" ng-model="searchFormData.email" ng-keypress="search($event)" placeholder="请输入您的企业邮箱" required)
+        button.rg_search_btn(ng-click="search()" ng-disabled="searchForm.$invalid")
+          i.fa.fa-search
 
     .step_select(ng-if="step === 'select'" ng-cloak)
       h1 为您查找的公司（文字待定）

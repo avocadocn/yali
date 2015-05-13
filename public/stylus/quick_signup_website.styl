@@ -1,4 +1,50 @@
 @require variables
 
+quickSignupWebsitePage_col_blue = #3ca2e0
+
 .quick_signup_website_page
   background transparent // 占位用，不然会报错，写了其它样式后移去
+
+  .register_box
+    border 2px solid quickSignupWebsitePage_col_blue
+    border-radius 8px
+    padding 40px
+
+  .rg_form_control
+    display block
+    width 100%
+    min-height 34px
+    height auto
+    padding 6px 5px
+    font-size 12px
+    line-height 1.42857143
+    background-color #fff
+    background-image none
+    border 1px solid #ccc
+    border-radius 0
+    color #999
+
+  .step_search
+    margin-top 95px
+    .rg_title
+      margin 0
+      font-size 28px
+      line-height 1
+      color quickSignupWebsitePage_col_blue
+    .rg_description
+      margin-top 40px
+      font-size 16px
+      line-height 1
+    .rg_form
+      position relative
+      margin-top 40px
+    .rg_search_input
+      border 1px solid #3ca2e0
+      border-radius 5px
+    .rg_search_btn
+      position absolute
+      right 0
+      top 4px
+      color #3ca2e0
+      font-size 20px
+      background-color transparent

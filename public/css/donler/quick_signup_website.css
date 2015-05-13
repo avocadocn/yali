@@ -1,3 +1,52 @@
 .quick_signup_website_page {
   background: transparent;
 }
+.quick_signup_website_page .register_box {
+  border: 2px solid #3ca2e0;
+  border-radius: 8px;
+  padding: 40px;
+}
+.quick_signup_website_page .rg_form_control {
+  display: block;
+  width: 100%;
+  min-height: 34px;
+  height: auto;
+  padding: 6px 5px;
+  font-size: 12px;
+  line-height: 1.42857143;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 0;
+  color: #999;
+}
+.quick_signup_website_page .step_search {
+  margin-top: 95px;
+}
+.quick_signup_website_page .step_search .rg_title {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1;
+  color: #3ca2e0;
+}
+.quick_signup_website_page .step_search .rg_description {
+  margin-top: 40px;
+  font-size: 16px;
+  line-height: 1;
+}
+.quick_signup_website_page .step_search .rg_form {
+  position: relative;
+  margin-top: 40px;
+}
+.quick_signup_website_page .step_search .rg_search_input {
+  border: 1px solid #3ca2e0;
+  border-radius: 5px;
+}
+.quick_signup_website_page .step_search .rg_search_btn {
+  position: absolute;
+  right: 0;
+  top: 4px;
+  color: #3ca2e0;
+  font-size: 20px;
+  background-color: transparent;
+}
