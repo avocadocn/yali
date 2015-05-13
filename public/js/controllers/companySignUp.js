@@ -506,6 +506,9 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
         if ($scope.page === data.pageCount) {
           $scope.hasNext = false;
         }
+        else {
+          $scope.hasNext = true;
+        }
         $scope.hasPrevious = false;
       }
       else {

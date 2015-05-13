@@ -1,15 +1,28 @@
 @require variables
 
 quickSignupWebsitePage_col_blue = #3ca2e0
+quickSignupWebsitePage_col_orange = #f48361
 
 .quick_signup_website_page
   background transparent // 占位用，不然会报错，写了其它样式后移去
 
   .register_box
+    margin-top 95px
     border 2px solid quickSignupWebsitePage_col_blue
     border-radius 8px
     padding 40px
-
+  .rg_title
+    margin 0
+    font-size 28px
+    line-height 1
+    color quickSignupWebsitePage_col_blue
+  .rg_description
+    margin-top 40px
+    font-size 16px
+    line-height 1
+  .rg_link
+    cursor pointer
+    color quickSignupWebsitePage_col_orange
   .rg_form_control
     display block
     width 100%
@@ -25,26 +38,49 @@ quickSignupWebsitePage_col_blue = #3ca2e0
     color #999
 
   .step_search
-    margin-top 95px
-    .rg_title
-      margin 0
-      font-size 28px
-      line-height 1
-      color quickSignupWebsitePage_col_blue
-    .rg_description
-      margin-top 40px
-      font-size 16px
-      line-height 1
     .rg_form
       position relative
       margin-top 40px
     .rg_search_input
-      border 1px solid #3ca2e0
+      border 1px solid quickSignupWebsitePage_col_blue
       border-radius 5px
     .rg_search_btn
       position absolute
       right 0
       top 4px
-      color #3ca2e0
+      color quickSignupWebsitePage_col_blue
       font-size 20px
       background-color transparent
+
+  .step_select
+    .rg_res_com_list
+      margin-top 40px
+      list-style none
+      padding 0
+    .rg_res_com
+      display inline-block
+      margin-right 10px
+      margin-bottom 10px
+      font-size 12px
+      line-height 1
+      border-radius 5px
+      padding 8px 10px
+      border 1px solid quickSignupWebsitePage_col_blue
+      color quickSignupWebsitePage_col_blue
+      background-color #fff
+      cursor pointer
+      &:hover
+        color white
+        background-color quickSignupWebsitePage_col_blue
+    .rg_no_res_description
+      margin-top 40px
+      font-size 12px
+      line-height 1
+    .rg_no_res
+      &:last-child
+        margin-bottom 0
+    .rg_pager
+      margin 10px 0
+    .rg_pre_page, .rg_next_page
+      cursor pointer
+      color quickSignupWebsitePage_col_blue
