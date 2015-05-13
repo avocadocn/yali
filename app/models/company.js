@@ -119,6 +119,10 @@ var CompanySchema = new Schema({
         membernumber: {
             type: Number,
             default: 0
+        },
+        cover:{ //封面
+            type:String,
+            default: '/img/company_cover.png'
         }
     },
     register_date: {
