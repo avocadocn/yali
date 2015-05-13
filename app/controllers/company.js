@@ -676,13 +676,10 @@ exports.quickvalidate = function(req, res) {
             });
           }
         } else {
-          // res.render('company/validate/active_success');
-          if (isMobile(req)) {res.render('company/validate/active_success_mobile');}
-          else {res.render('company/validate/active_success');}
-          // res.render('company/company_validate_error', {
-          //   title: '验证失败',
-          //   message: '您的公司已经激活!'
-          // });
+          res.render('company/company_validate_error', {
+            title: '验证失败',
+            message: '您的公司已经激活!'
+          });
         }
       } else {
         res.render('company/company_validate_error', {
