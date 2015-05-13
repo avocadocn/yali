@@ -1,126 +1,127 @@
 extends ../layouts/register
 
 block contentExt
-  .dl_container.quick_signup_website_page(ng-controller="quickSignupWebsiteController")
-    //- TODO: 开发完毕后一定要移除
-    //.debug_tools
-      button(ng-repeat="step in ['search', 'select', 'notFound', 'personal', 'company', 'selectGroup', 'success', 'hasRegister']" ng-click="go(step)" ng-bind="step")
-    //- THE END OF TODO
+  .dl_container
+    .quick_signup_website_page(ng-controller="quickSignupWebsiteController")
+      //- TODO: 开发完毕后一定要移除
+      .debug_tools
+        button(ng-repeat="step in ['search', 'select', 'notFound', 'personal', 'company', 'selectGroup', 'success', 'hasRegister']" ng-click="go(step)" ng-bind="step")
+      //- THE END OF TODO
 
-    .step_search.register_box(ng-if="step === 'search'" ng-cloak)
-      //- rg: register
-      h1.rg_title 快速注册
-      p.rg_description 同事都在玩，快来加入吧。
-      form.rg_form(name="searchForm")
-        input.rg_form_control.rg_search_input(type="email" name="email" ng-model="searchFormData.email" ng-keypress="search($event)" placeholder="请输入您的企业邮箱" required)
-        button.rg_search_btn(ng-click="search()" ng-disabled="searchForm.$invalid")
-          i.fa.fa-search
+      .step_search.register_box(ng-if="step === 'search'" ng-cloak)
+        //- rg: register
+        h1.rg_title 快速注册
+        p.rg_description 同事都在玩，快来加入吧。
+        form.rg_form(name="searchForm")
+          input.rg_form_control.rg_search_input(type="email" name="email" ng-model="searchFormData.email" ng-keypress="search($event)" placeholder="请输入您的企业邮箱" required)
+          button.rg_search_btn(ng-click="search()" ng-disabled="searchForm.$invalid")
+            i.fa.fa-search
 
-    .step_select.register_box(ng-if="step === 'select'" ng-cloak)
-      h1.rg_title 选择您的公司
-      ul.rg_res_com_list
-        li.rg_res_com(ng-repeat="company in searchResCompanies" ng-click="select(company)" ng-bind="company.name")
-      .rg_pager.clearfix
-        span.rg_pre_page.pull-left(ng-click="prePage()" ng-if="hasPrevious") 上一页
-        span.rg_next_page.pull-right(ng-click="nextPage()" ng-if="hasNext") 下一页
-      .rg_no_res_description
-        p.rg_no_res 若没有您的公司：
-        p.rg_no_res
-          a.rg_link(ng-click="go('search')") 返回重新搜索
-          | &nbsp;或&nbsp;
-          a.rg_link(ng-click="go('company')") 为您的企业进行注册
+      .step_select.register_box(ng-if="step === 'select'" ng-cloak)
+        h1.rg_title 选择您的公司
+        ul.rg_res_com_list
+          li.rg_res_com(ng-repeat="company in searchResCompanies" ng-click="select(company)" ng-bind="company.name")
+        .rg_pager.clearfix
+          span.rg_pre_page.pull-left(ng-click="prePage()" ng-if="hasPrevious") 上一页
+          span.rg_next_page.pull-right(ng-click="nextPage()" ng-if="hasNext") 下一页
+        .rg_no_res_description
+          p.rg_no_res 若没有您的公司：
+          p.rg_no_res
+            a.rg_link(ng-click="go('search')") 返回重新搜索
+            | &nbsp;或&nbsp;
+            a.rg_link(ng-click="go('company')") 为您的企业进行注册
 
-    .step_not_found.register_box(ng-if="step === 'notFound'" ng-cloak)
-      h1.rg_title 没有找到您的公司，快来注册吧
-      button.rg_btn_block(ng-click="go('company')") 注册
+      .step_not_found.register_box(ng-if="step === 'notFound'" ng-cloak)
+        h1.rg_title 没有找到您的公司，快来注册吧
+        button.rg_btn_block(ng-click="go('company')") 注册
 
-    .step_personal.register_box(ng-if="step === 'personal'" ng-cloak)
-      h1.rg_title 填写您的信息
-      form.rg_form(name="personalRegisterForm")
-        .rg_form_group.clearfix
-          label.rg_form_left * 企业名称:
-          span.rg_form_right.rg_form_right_text(ng-bind="selectedCompany.name")
-        .rg_form_group.clearfix
-          label.rg_form_left * 企业邮箱:
-          input.rg_form_control.rg_form_right(type="text" name="email" ng-model="personalRegisterFormData.email" readonly)
-        .rg_form_group.clearfix(ng-class="{'rg_error':personalRegisterForm.inviteKey.$invalid && personalRegisterForm.inviteKey.$dirty || isInviteKeyCorrect === false}")
-          label.rg_form_left * 邀请码:
-          input.rg_form_control.rg_form_right(type="text" placeholder="请向您的公司管理员或同事索要8位邀请码" name="inviteKey" ng-model="personalRegisterFormData.inviteKey" ng-change="checkInviteKey()" ng-minlength=8 ng-maxlength=8 required)
-          .rg_tips
-            i.fa.fa-check.valid(ng-if="isInviteKeyCorrect === true")
-            i.fa.fa-close.invalid(ng-if="isInviteKeyCorrect === false")
-        .rg_form_group.clearfix(ng-class="{'rg_error':personalRegisterForm.nickname.$invalid && personalRegisterForm.nickname.$dirty}")
-          label.rg_form_left * 昵称:
-          input.rg_form_control.rg_form_right(type="text" name="nickname" ng-model="personalRegisterFormData.nickname" required)
-        .rg_form_group.clearfix(ng-class="{'rg_error':personalRegisterForm.password.$invalid && personalRegisterForm.password.$dirty}")
-          label.rg_form_left * 密码:
-          input.rg_form_control.rg_form_right(type="password" name="password" ng-model="personalRegisterFormData.password" ng-minlength=6 required)
-        .rg_form_group.clearfix(ng-class="{'rg_error':personalRegisterForm.realname.$invalid && personalRegisterForm.realName.$dirty}")
-          label.rg_form_left * 真实姓名:
-          input.rg_form_control.rg_form_right(type="text" name="realname" ng-model="personalRegisterFormData.realname" required)
-        .rg_form_group.clearfix
-          .rg_form_left
-          .rg_form_right
-            p.rg_access_text 点击注册即代表同意
-              a.rg_link(href="/about#law" target="_blank") 服务条款
-        .rg_form_group.clearfix
-          .rg_form_left
-          .rg_form_right
-            button.rg_btn_block(ng-click="registerUser()" ng-disabled="personalRegisterForm.$invalid || !isInviteKeyCorrect") 免费注册个人账号
+      .step_personal.register_box(ng-if="step === 'personal'" ng-cloak)
+        h1.rg_title 填写您的信息
+        form.rg_form(name="personalRegisterForm")
+          .rg_form_group.clearfix
+            label.rg_form_left * 企业名称:
+            span.rg_form_right.rg_form_right_text(ng-bind="selectedCompany.name")
+          .rg_form_group.clearfix
+            label.rg_form_left * 企业邮箱:
+            input.rg_form_control.rg_form_right(type="text" name="email" ng-model="personalRegisterFormData.email" readonly)
+          .rg_form_group.clearfix(ng-class="{'rg_error':personalRegisterForm.inviteKey.$invalid && personalRegisterForm.inviteKey.$dirty || isInviteKeyCorrect === false}")
+            label.rg_form_left * 邀请码:
+            input.rg_form_control.rg_form_right(type="text" placeholder="请向您的公司管理员或同事索要8位邀请码" name="inviteKey" ng-model="personalRegisterFormData.inviteKey" ng-change="checkInviteKey()" ng-minlength=8 ng-maxlength=8 required)
+            .rg_tips
+              i.fa.fa-check.valid(ng-if="isInviteKeyCorrect === true")
+              i.fa.fa-close.invalid(ng-if="isInviteKeyCorrect === false")
+          .rg_form_group.clearfix(ng-class="{'rg_error':personalRegisterForm.nickname.$invalid && personalRegisterForm.nickname.$dirty}")
+            label.rg_form_left * 昵称:
+            input.rg_form_control.rg_form_right(type="text" name="nickname" ng-model="personalRegisterFormData.nickname" required)
+          .rg_form_group.clearfix(ng-class="{'rg_error':personalRegisterForm.password.$invalid && personalRegisterForm.password.$dirty}")
+            label.rg_form_left * 密码:
+            input.rg_form_control.rg_form_right(type="password" name="password" ng-model="personalRegisterFormData.password" ng-minlength=6 required)
+          .rg_form_group.clearfix(ng-class="{'rg_error':personalRegisterForm.realname.$invalid && personalRegisterForm.realName.$dirty}")
+            label.rg_form_left * 真实姓名:
+            input.rg_form_control.rg_form_right(type="text" name="realname" ng-model="personalRegisterFormData.realname" required)
+          .rg_form_group.clearfix
+            .rg_form_left
+            .rg_form_right
+              p.rg_access_text 点击注册即代表同意
+                a.rg_link(href="/about#law" target="_blank") 服务条款
+          .rg_form_group.clearfix
+            .rg_form_left
+            .rg_form_right
+              button.rg_btn_block(ng-click="registerUser()" ng-disabled="personalRegisterForm.$invalid || !isInviteKeyCorrect") 免费注册个人账号
 
-    .step_company.register_box(ng-if="step === 'company'" ng-cloak)
-      h1.rg_title 请填写企业信息
-      form.rg_form(name="companyRegisterForm")
-        .rg_form_group
-          input.rg_form_control(ng-model="companyRegisterFormData.name" ng-blur="checkOfficeName()" placeholder="公司名称" required)
-          p.rg_remind(ng-if="recommandCompany && !domain") 检测到同名公司，不过您的邮箱后缀不对哦，换公司邮箱搜索试试?
-          .rg_remind_op.clearfix(ng-if="recommandCompany && !domain")
-            button.rg_btn_block.pull-left(ng-click="go('search')")
-              i.fa.fa-fw.fa-arrow-left
-              | &nbsp;换邮箱
-            button.rg_btn_block.pull-right(ng-click="ignoreRecommand()")
-              | 继续注册&nbsp;
-              i.fa.fa-fw.fa-arrow-right
-          //- 同名&&email不正确 提示换邮箱
-          p.rg_remind(ng-if="recommandCompany && domain") 检测到同名公司
-          .rg_remind_op.clearfix(ng-if="recommandCompany && domain")
-            button.rg_btn_block.pull-right(ng-click="ignoreRecommand()") 继续注册
-            button.rg_btn_block.rg_btn_first.pull-right(ng-click="select(recommandCompany)") 点击加入
-        .rg_form_group.rg_select_group.clearfix(ng-if="!recommandCompany")
-          select.rg_form_control(name="province" ng-model="companyRegisterFormData.province" ng-options="province.value for province in provinces" ng-change="selcetProvince()")
-          select.rg_form_control(name="city" ng-model="companyRegisterFormData.city" ng-options="city.value for city in cities" ng-change="selectCity()")
-          select.rg_form_control(name="district" ng-model="companyRegisterFormData.district" ng-options="district.value for district in districts")
-        .rg_form_group(ng-if="!recommandCompany")
-          input.rg_form_control(type="password" ng-model="companyRegisterFormData.password" placeholder="密码" ng-minlength=6 required)
-        .rg_form_group.rg_next_group(ng-if="!recommandCompany")
-          button.rg_btn_block(ng-disabled="companyRegisterForm.$invalid" ng-click="registerCompany()") 下一步
+      .step_company.register_box(ng-if="step === 'company'" ng-cloak)
+        h1.rg_title 请填写企业信息
+        form.rg_form(name="companyRegisterForm")
+          .rg_form_group
+            input.rg_form_control(ng-model="companyRegisterFormData.name" ng-blur="checkOfficeName()" placeholder="公司名称" required)
+            p.rg_remind(ng-if="recommandCompany && !domain") 检测到同名公司，不过您的邮箱后缀不对哦，换公司邮箱搜索试试?
+            .rg_remind_op.clearfix(ng-if="recommandCompany && !domain")
+              button.rg_btn_block.pull-left(ng-click="go('search')")
+                i.fa.fa-fw.fa-arrow-left
+                | &nbsp;换邮箱
+              button.rg_btn_block.pull-right(ng-click="ignoreRecommand()")
+                | 继续注册&nbsp;
+                i.fa.fa-fw.fa-arrow-right
+            //- 同名&&email不正确 提示换邮箱
+            p.rg_remind(ng-if="recommandCompany && domain") 检测到同名公司
+            .rg_remind_op.clearfix(ng-if="recommandCompany && domain")
+              button.rg_btn_block.pull-right(ng-click="ignoreRecommand()") 继续注册
+              button.rg_btn_block.rg_btn_first.pull-right(ng-click="select(recommandCompany)") 点击加入
+          .rg_form_group.rg_select_group.clearfix(ng-if="!recommandCompany")
+            select.rg_form_control(name="province" ng-model="companyRegisterFormData.province" ng-options="province.value for province in provinces" ng-change="selcetProvince()")
+            select.rg_form_control(name="city" ng-model="companyRegisterFormData.city" ng-options="city.value for city in cities" ng-change="selectCity()")
+            select.rg_form_control(name="district" ng-model="companyRegisterFormData.district" ng-options="district.value for district in districts")
+          .rg_form_group(ng-if="!recommandCompany")
+            input.rg_form_control(type="password" ng-model="companyRegisterFormData.password" placeholder="密码" ng-minlength=6 required)
+          .rg_form_group.rg_next_group(ng-if="!recommandCompany")
+            button.rg_btn_block(ng-disabled="companyRegisterForm.$invalid" ng-click="registerCompany()") 下一步
 
-    .step_select_group.register_box(ng-if="step === 'selectGroup'" ng-cloak)
-      h1.rg_title 选择您感兴趣的项目
-      .groups.clearfix
-        .group(ng-repeat='group in groups' ng-class="{'active':group.selected}" ng-click="selectType($index)")
-          .img_contain(class='group_'+'{{group._id}}')
-          .shadow(ng-class="{'active': group.selected}")
-          label.group_type(for='{{group._id}}') {{group.groupType}}
-      .clearfix
-        button.rg_btn_block.rg_finish_btn(ng-click="createTeams()") 完成
+      .step_select_group.register_box(ng-if="step === 'selectGroup'" ng-cloak)
+        h1.rg_title 选择您感兴趣的项目
+        .groups.clearfix
+          .group(ng-repeat='group in groups' ng-class="{'active':group.selected}" ng-click="selectType($index)")
+            .img_contain(class='group_'+'{{group._id}}')
+            .shadow(ng-class="{'active': group.selected}")
+            label.group_type(for='{{group._id}}') {{group.groupType}}
+        .clearfix
+          button.rg_btn_block.rg_finish_btn(ng-click="createTeams()") 完成
 
-    .step_success.register_box(ng-if="step === 'success'" ng-cloak)
-      h1.rg_title 您已注册成功
-      .clearfix
-        a.go_to_email(target="_blank" ng-href="http://mail.{{emailDomain}}")
-          | 去邮箱查找激活邮件&nbsp;
-          i.fa.fa-fw.fa-arrow-right
+      .step_success.register_box(ng-if="step === 'success'" ng-cloak)
+        h1.rg_title 您已注册成功
+        .clearfix
+          a.go_to_email(target="_blank" ng-href="http://mail.{{emailDomain}}")
+            | 去邮箱查找激活邮件&nbsp;
+            i.fa.fa-fw.fa-arrow-right
 
-    .step_has_register.register_box(ng-if="step === 'hasRegister'" ng-cloak)
-      a(href="/users/signin/" ng-if="!emailDomain && !notVerified")
-        img.signin(src="/img/signup/dl_signup_signin.png")
-      //- 重发激活信
-      img.nomail(src="/img/signup/dl_signup_nomail.png" ng-if="!emailDomain && notVerified")
-      img.resend(src="/img/signup/dl_signup_resend.png" ng-click="resend()" ng-if="!emailDomain && notVerified")
-      //- 公司已注册未激活，去邮箱收激活信
-      a(ng-href="http://mail.{{emailDomain}}" ng-if="emailDomain")
-        img.nomail(src="/img/signup/dl_signup_verimail.png")
+      .step_has_register.register_box(ng-if="step === 'hasRegister'" ng-cloak)
+        a(href="/users/signin/" ng-if="!emailDomain && !notVerified")
+          img.signin(src="/img/signup/dl_signup_signin.png")
+        //- 重发激活信
+        img.nomail(src="/img/signup/dl_signup_nomail.png" ng-if="!emailDomain && notVerified")
+        img.resend(src="/img/signup/dl_signup_resend.png" ng-click="resend()" ng-if="!emailDomain && notVerified")
+        //- 公司已注册未激活，去邮箱收激活信
+        a(ng-href="http://mail.{{emailDomain}}" ng-if="emailDomain")
+          img.nomail(src="/img/signup/dl_signup_verimail.png")
 
 
 append footExt
