@@ -37,8 +37,15 @@ block contentExt
             a.rg_link(ng-click="go('company')") 为您的企业进行注册
 
       .step_not_found.register_box(ng-if="step === 'notFound'" ng-cloak)
-        h1.rg_title 没有找到您的公司，快来注册吧
-        button.rg_btn_block(ng-click="go('company')") 注册
+        h1 没有找到您的公司，快来注册吧
+        hr
+        .clearfix
+          button.btn.btn-default.btn-lg.pull-left(ng-click="go('search')")
+            i.fa.fa-arrow-left
+            | &nbsp;返回
+          button.btn.btn-primary.btn-lg.pull-right(ng-click="go('company')")
+            | 去注册&nbsp;
+            i.fa.fa-arrow-right
 
       .step_personal.register_box(ng-if="step === 'personal'" ng-cloak)
         h1.rg_title 填写您的信息

@@ -8323,11 +8323,6 @@ input.ng-invalid.ng-dirty {
 .quick_signup_website_page .step_success .go_to_email:hover {
   margin-left: 6px;
 }
-.quick_signup_website_page .step_not_found .rg_btn_block {
-  margin-top: 20px;
-  width: 100px;
-  font-size: 16px;
-}
 
 .resetPassword {
   margin-top: 100px;
