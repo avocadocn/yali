@@ -169,3 +169,61 @@ quickSignupWebsitePage_col_gray = #a1a1a1
           margin-right 0
     .rg_next_group
       margin-top 40px
+
+  .step_select_group
+    .groups
+      margin-top 40px
+    .group
+      float left
+      margin-right 20px
+      margin-bottom 20px
+      width 50px
+      text-align center
+      cursor pointer
+      &.active
+        .img_contain
+          border 1px solid quickSignupWebsitePage_col_blue
+          border-radius 100%
+          box-shadow 0 1px 1px rgba(0,0,0,0.1)
+    .img_contain
+      width 50px
+      height 50px
+      background-image url('/img/signup/dl_signup_groups.png')
+      background-repeat no-repeat
+      background-size 240px 240px
+      margin 0
+      margin-bottom 14px
+      padding 0px
+    for i in 0..16
+      .group_{i+1}
+        background-position i%4 * -60px + 9px floor(i/4) * -60px + 8px
+    .group_3
+      background-position -111px 10px
+    .group_5
+      background-position 3px -52px
+    .group_4
+      background-position -177px 10px
+    .group_6
+      background-position -53px -52px
+    .group_8
+      background-position -168px -52px
+    .group_9
+      background-position 3px -108px
+    .group_15
+      background-position -113px -172px
+    .shadow
+      margin -10px auto 0px
+      width 35px
+      height 5px
+      background #3788c7
+      background-color #aaa
+      border-radius 100%
+      &.active
+        background #46aaf5
+        background-color gray
+    .group_type
+      margin-top 10px
+      margin-bottom 0
+    .rg_finish_btn
+      margin-top 40px
+      width 100px

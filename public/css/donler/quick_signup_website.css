@@ -188,3 +188,121 @@
 .quick_signup_website_page .step_company .rg_next_group {
   margin-top: 40px;
 }
+.quick_signup_website_page .step_select_group .groups {
+  margin-top: 40px;
+}
+.quick_signup_website_page .step_select_group .group {
+  float: left;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  width: 50px;
+  text-align: center;
+  cursor: pointer;
+}
+.quick_signup_website_page .step_select_group .group.active .img_contain {
+  border: 1px solid #3ca2e0;
+  border-radius: 100%;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+}
+.quick_signup_website_page .step_select_group .img_contain {
+  width: 50px;
+  height: 50px;
+  background-image: url("/img/signup/dl_signup_groups.png");
+  background-repeat: no-repeat;
+  background-size: 240px 240px;
+  margin: 0;
+  margin-bottom: 14px;
+  padding: 0px;
+}
+.quick_signup_website_page .step_select_group .group_1 {
+  background-position: 9px 8px;
+}
+.quick_signup_website_page .step_select_group .group_2 {
+  background-position: -51px 8px;
+}
+.quick_signup_website_page .step_select_group .group_3 {
+  background-position: -111px 8px;
+}
+.quick_signup_website_page .step_select_group .group_4 {
+  background-position: -171px 8px;
+}
+.quick_signup_website_page .step_select_group .group_5 {
+  background-position: 9px -52px;
+}
+.quick_signup_website_page .step_select_group .group_6 {
+  background-position: -51px -52px;
+}
+.quick_signup_website_page .step_select_group .group_7 {
+  background-position: -111px -52px;
+}
+.quick_signup_website_page .step_select_group .group_8 {
+  background-position: -171px -52px;
+}
+.quick_signup_website_page .step_select_group .group_9 {
+  background-position: 9px -112px;
+}
+.quick_signup_website_page .step_select_group .group_10 {
+  background-position: -51px -112px;
+}
+.quick_signup_website_page .step_select_group .group_11 {
+  background-position: -111px -112px;
+}
+.quick_signup_website_page .step_select_group .group_12 {
+  background-position: -171px -112px;
+}
+.quick_signup_website_page .step_select_group .group_13 {
+  background-position: 9px -172px;
+}
+.quick_signup_website_page .step_select_group .group_14 {
+  background-position: -51px -172px;
+}
+.quick_signup_website_page .step_select_group .group_15 {
+  background-position: -111px -172px;
+}
+.quick_signup_website_page .step_select_group .group_16 {
+  background-position: -171px -172px;
+}
+.quick_signup_website_page .step_select_group .group_17 {
+  background-position: 9px -232px;
+}
+.quick_signup_website_page .step_select_group .group_3 {
+  background-position: -111px 10px;
+}
+.quick_signup_website_page .step_select_group .group_5 {
+  background-position: 3px -52px;
+}
+.quick_signup_website_page .step_select_group .group_4 {
+  background-position: -177px 10px;
+}
+.quick_signup_website_page .step_select_group .group_6 {
+  background-position: -53px -52px;
+}
+.quick_signup_website_page .step_select_group .group_8 {
+  background-position: -168px -52px;
+}
+.quick_signup_website_page .step_select_group .group_9 {
+  background-position: 3px -108px;
+}
+.quick_signup_website_page .step_select_group .group_15 {
+  background-position: -113px -172px;
+}
+.quick_signup_website_page .step_select_group .shadow {
+  margin: -10px auto 0px;
+  width: 35px;
+  height: 5px;
+  background: #3788c7;
+  background-color: #aaa;
+  border-radius: 100%;
+}
+.quick_signup_website_page .step_select_group .shadow.active {
+  background: #46aaf5;
+  background-color: #808080;
+}
+.quick_signup_website_page .step_select_group .group_type {
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+.quick_signup_website_page .step_select_group .rg_finish_btn {
+  margin-top: 40px;
+  width: 100px;
+}
