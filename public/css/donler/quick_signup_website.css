@@ -306,3 +306,28 @@
   margin-top: 40px;
   width: 100px;
 }
+.quick_signup_website_page .step_has_register .resend {
+  margin-left: 30px;
+  cursor: pointer;
+}
+.quick_signup_website_page .step_success .go_to_email {
+  display: block;
+  float: left;
+  margin-top: 20px;
+  font-size: 18px;
+  line-height: 28px;
+  text-decoration: none;
+  color: #f48361;
+  transition: margin-left 0.5s;
+  -moz-transition: margin-left 0.5s;
+  -webkit-transition: margin-left 0.5s;
+  -o-transition: margin-left 0.5s;
+}
+.quick_signup_website_page .step_success .go_to_email:hover {
+  margin-left: 6px;
+}
+.quick_signup_website_page .step_not_found .rg_btn_block {
+  margin-top: 20px;
+  width: 100px;
+  font-size: 16px;
+}

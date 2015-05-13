@@ -1,4 +1,5 @@
 @require variables
+@require tools
 
 quickSignupWebsitePage_col_blue = #3ca2e0
 quickSignupWebsitePage_col_orange = #f48361
@@ -227,3 +228,27 @@ quickSignupWebsitePage_col_gray = #a1a1a1
     .rg_finish_btn
       margin-top 40px
       width 100px
+
+  .step_has_register
+    .resend
+      margin-left 30px
+      cursor pointer
+
+  .step_success
+    .go_to_email
+      display block
+      float left
+      margin-top 20px
+      font-size 18px
+      line-height 28px
+      text-decoration none
+      color quickSignupWebsitePage_col_orange
+      transition(margin-left 0.5s)
+      &:hover
+        margin-left 6px
+
+  .step_not_found
+    .rg_btn_block
+      margin-top 20px
+      width 100px
+      font-size 16px
