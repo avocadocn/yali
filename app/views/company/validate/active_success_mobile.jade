@@ -1,6 +1,6 @@
-extends ../../layouts/register
+extends ../../layouts/base
 
-block contentExt
+block content
   //- .dl_container.clearfix
   //-   .signup_row
   //-     .block
@@ -8,7 +8,9 @@ block contentExt
   //-         span 企业注册
   //-       .signup_tips
   //-         p 激活成功
-  .active_success
+  .header
+    img.logo(src="/img/dl_logol.png")
+  .active_success_phone
     .active_success_info.clearfix
       span 恭喜您，验证成功!
       i.fa.fa-check
