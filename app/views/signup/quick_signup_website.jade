@@ -3,7 +3,7 @@ extends ../layouts/register
 block contentExt
   .dl_container.quick_signup_website_page(ng-controller="quickSignupWebsiteController")
     //- TODO: 开发完毕后一定要移除
-    .debug_tools
+    //.debug_tools
       button(ng-repeat="step in ['search', 'select', 'notFound', 'personal', 'company', 'selectGroup', 'success', 'hasRegister']" ng-click="go(step)" ng-bind="step")
     //- THE END OF TODO
 
@@ -25,7 +25,9 @@ block contentExt
         span.rg_next_page.pull-right(ng-click="nextPage()" ng-if="hasNext") 下一页
       .rg_no_res_description
         p.rg_no_res 若没有您的公司：
-        p.rg_no_res 邀请贵公司HR进行注册 或
+        p.rg_no_res
+          a.rg_link(ng-click="go('search')") 返回重新搜索
+          | &nbsp;或&nbsp;
           a.rg_link(ng-click="go('company')") 为您的企业进行注册
 
     .step_not_found.register_box(ng-if="step === 'notFound'" ng-cloak)
