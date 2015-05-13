@@ -8042,6 +8042,7 @@ input.ng-invalid.ng-dirty {
   padding: 4rem;
   border: 1px solid #e8e8e8;
   min-height: 300px;
+  position: relative;
 }
 .quick_signup_website_page .register_box h1 {
   font-size: 36px;
@@ -8174,6 +8175,7 @@ input.ng-invalid.ng-dirty {
 }
 .quick_signup_website_page .step_select_group .groups {
   margin-top: 40px;
+  margin-left: 20px;
 }
 .quick_signup_website_page .step_select_group .group {
   float: left;
@@ -8287,19 +8289,19 @@ input.ng-invalid.ng-dirty {
   margin-bottom: 0;
 }
 .quick_signup_website_page .step_select_group .rg_finish_btn {
-  margin-top: 40px;
   width: 100px;
+  margin: 40px auto 0;
+  border-radius: 5px;
 }
-.quick_signup_website_page .step_has_register .resend {
-  margin-left: 30px;
-  cursor: pointer;
+.quick_signup_website_page .step_has_register .register_content {
+  text-align: center;
+  margin-top: 50px;
 }
-.quick_signup_website_page .step_success .go_to_email {
+.quick_signup_website_page .step_has_register .register_content .operate {
   display: block;
-  float: left;
   margin-top: 20px;
   font-size: 18px;
-  line-height: 28px;
+  line-height: 50px;
   text-decoration: none;
   color: #f48361;
   transition: margin-left 0.5s;
@@ -8307,7 +8309,30 @@ input.ng-invalid.ng-dirty {
   -webkit-transition: margin-left 0.5s;
   -o-transition: margin-left 0.5s;
 }
-.quick_signup_website_page .step_success .go_to_email:hover {
+.quick_signup_website_page .step_has_register .register_content .operate:hover {
+  margin-left: 6px;
+}
+.quick_signup_website_page .step_has_register .register_content .resend {
+  margin-left: 30px;
+  cursor: pointer;
+}
+.quick_signup_website_page .step_success .register_content {
+  margin-top: 50px;
+  text-align: center;
+}
+.quick_signup_website_page .step_success .register_content .go_to_email {
+  display: block;
+  margin-top: 20px;
+  font-size: 18px;
+  line-height: 50px;
+  text-decoration: none;
+  color: #f48361;
+  transition: margin-left 0.5s;
+  -moz-transition: margin-left 0.5s;
+  -webkit-transition: margin-left 0.5s;
+  -o-transition: margin-left 0.5s;
+}
+.quick_signup_website_page .step_success .register_content .go_to_email:hover {
   margin-left: 6px;
 }
 

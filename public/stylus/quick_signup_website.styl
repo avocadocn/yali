@@ -156,6 +156,7 @@ quickSignupWebsitePage_col_gray = #a1a1a1
   .step_select_group
     .groups
       margin-top 40px
+      margin-left 20px
     .group
       float left
       margin-right 20px
@@ -208,23 +209,39 @@ quickSignupWebsitePage_col_gray = #a1a1a1
       margin-top 10px
       margin-bottom 0
     .rg_finish_btn
-      margin-top 40px
       width 100px
+      margin 40px auto 0
+      border-radius 5px
 
   .step_has_register
-    .resend
-      margin-left 30px
-      cursor pointer
+    .register_content
+      text-align center
+      margin-top 50px
+      .operate
+        display block
+        margin-top 20px
+        font-size 18px
+        line-height 50px
+        text-decoration none
+        color quickSignupWebsitePage_col_orange
+        transition(margin-left 0.5s)
+        &:hover
+          margin-left 6px
+      .resend
+        margin-left 30px
+        cursor pointer
 
   .step_success
-    .go_to_email
-      display block
-      float left
-      margin-top 20px
-      font-size 18px
-      line-height 28px
-      text-decoration none
-      color quickSignupWebsitePage_col_orange
-      transition(margin-left 0.5s)
-      &:hover
-        margin-left 6px
+    .register_content
+      margin-top 50px
+      text-align center
+      .go_to_email
+        display block
+        margin-top 20px
+        font-size 18px
+        line-height 50px
+        text-decoration none
+        color quickSignupWebsitePage_col_orange
+        transition(margin-left 0.5s)
+        &:hover
+          margin-left 6px

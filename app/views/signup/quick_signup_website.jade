@@ -86,7 +86,7 @@ block contentExt
               button.btn.btn-primary.btn-block.btn-lg(ng-click="registerUser()" ng-disabled="personalRegisterForm.$invalid || !isInviteKeyCorrect") 免费注册个人账号
 
       .step_company.register_box(ng-if="step === 'company'" ng-cloak)
-        h1.rg_title 请填写企业信息
+        h1.text-center 请填写企业信息
         form.rg_form(name="companyRegisterForm")
           .rg_form_group
             input.rg_form_control(ng-model="companyRegisterFormData.name" ng-blur="checkOfficeName()" placeholder="公司名称" required)
@@ -113,7 +113,7 @@ block contentExt
             button.rg_btn_block(ng-disabled="companyRegisterForm.$invalid" ng-click="registerCompany()") 下一步
 
       .step_select_group.register_box(ng-if="step === 'selectGroup'" ng-cloak)
-        h1.rg_title 选择您感兴趣的项目
+        h1.text-center 选择您感兴趣的项目
         .groups.clearfix
           .group(ng-repeat='group in groups' ng-class="{'active':group.selected}" ng-click="selectType($index)")
             .img_contain(class='group_'+'{{group._id}}')
@@ -123,21 +123,30 @@ block contentExt
           button.rg_btn_block.rg_finish_btn(ng-click="createTeams()") 完成
 
       .step_success.register_box(ng-if="step === 'success'" ng-cloak)
-        h1.rg_title 您已注册成功
-        .clearfix
+        .register_content
+          h1 您已注册成功
           a.go_to_email(target="_blank" ng-href="http://mail.{{emailDomain}}")
             | 去邮箱查找激活邮件&nbsp;
             i.fa.fa-fw.fa-arrow-right
 
       .step_has_register.register_box(ng-if="step === 'hasRegister'" ng-cloak)
-        a(href="/users/signin/" ng-if="!emailDomain && !notVerified")
-          img.signin(src="/img/signup/dl_signup_signin.png")
+        .register_content(ng-if="!emailDomain && !notVerified")
+          h1.text-center 邮箱已注册
+          a.operate(href="/users/signin/")
+            | 直接登录&nbsp;
+            i.fa.fa-fw.fa-arrow-right
         //- 重发激活信
-        img.nomail(src="/img/signup/dl_signup_nomail.png" ng-if="!emailDomain && notVerified")
-        img.resend(src="/img/signup/dl_signup_resend.png" ng-click="resend()" ng-if="!emailDomain && notVerified")
+        .register_content(ng-if="!emailDomain && notVerified")
+          h1.text-center 没收到激活邮件？
+          a.operate(ng-click="resend()")
+            | 重新发送&nbsp;
+            i.fa.fa-fw.fa-arrow-right
         //- 公司已注册未激活，去邮箱收激活信
-        a(ng-href="http://mail.{{emailDomain}}" ng-if="emailDomain")
-          img.nomail(src="/img/signup/dl_signup_verimail.png")
+        .register_content(ng-if="emailDomain")
+          h1.text-center 公司已注册
+          a.operate(ng-href="http://mail.{{emailDomain}}")
+            | 请收验证信&nbsp;
+            i.fa.fa-fw.fa-arrow-right
 
 
 append footExt
