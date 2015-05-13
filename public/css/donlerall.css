@@ -8038,6 +8038,82 @@ input.ng-invalid.ng-dirty {
   cursor: pointer;
   color: #3ca2e0;
 }
+.quick_signup_website_page .step_personal .rg_form {
+  margin-top: 40px;
+}
+.quick_signup_website_page .step_personal .rg_form_group {
+  padding: 5px 0;
+}
+.quick_signup_website_page .step_personal .rg_form_left {
+  display: block;
+  float: left;
+  margin: 0;
+  text-align: right;
+  width: 100px;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 34px;
+  min-height: 1px;
+  color: #a1a1a1;
+}
+.quick_signup_website_page .step_personal .rg_error .rg_form_left {
+  color: #a94442;
+}
+.quick_signup_website_page .step_personal .rg_error .rg_form_control {
+  border: 1px solid #ffc0cb;
+}
+.quick_signup_website_page .step_personal .rg_form_right {
+  display: block;
+  float: left;
+  margin-left: 10px;
+  width: 300px;
+}
+.quick_signup_website_page .step_personal .rg_form_right_text {
+  font-size: 14px;
+  line-height: 34px;
+}
+.quick_signup_website_page .step_personal .rg_form_control {
+  border: 0;
+  border-radius: 2px 2px 0 0;
+  box-shadow: 0 -1px 1px #d9d9d9;
+}
+.quick_signup_website_page .step_personal .rg_access_text {
+  margin-top: 5px;
+}
+.quick_signup_website_page .step_personal .rg_link {
+  color: #3ca2e0;
+}
+.quick_signup_website_page .step_personal .rg_btn_block {
+  margin: 0;
+  display: block;
+  width: 100%;
+  height: 40px;
+  color: #fff;
+  background-color: #3ca2e0;
+  border: none;
+  line-height: 1;
+  position: relative;
+  font-size: 12px;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+}
+.quick_signup_website_page .step_personal .rg_btn_block:disabled {
+  opacity: 0.65;
+}
+.quick_signup_website_page .step_personal .rg_tips {
+  float: left;
+  width: 34px;
+  text-align: center;
+  font-size: 14px;
+  line-height: 34px;
+}
+.quick_signup_website_page .step_personal .rg_tips .valid {
+  color: #3ca2e0;
+}
+.quick_signup_website_page .step_personal .rg_tips .invalid {
+  color: #f48361;
+}
 
 .resetPassword {
   margin-top: 100px;
