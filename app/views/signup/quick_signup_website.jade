@@ -61,27 +61,32 @@ block contentExt
           .rg_form_right
             button.rg_btn_block(ng-click="registerUser()" ng-disabled="personalRegisterForm.$invalid || !isInviteKeyCorrect") 免费注册个人账号
 
-    .step_company(ng-if="step === 'company'" ng-cloak)
-      h1 快速注册
-      form(name="companyRegisterForm")
-        input(ng-model="companyRegisterFormData.name" ng-blur="checkOfficeName()" placeholder="公司名称" required)
-        p(ng-if="recommandCompany && !domain")
-          span 检测到同名公司，不过您的邮箱后缀不对哦，换公司邮箱搜索试试?
-        div(ng-if="recommandCompany && !domain")
-          button(ng-click="go('search')") 换邮箱
-          button(ng-click="ignoreRecommand()") 继续注册
-        //- 同名&&email不正确 提示换邮箱
-        p(ng-if="recommandCompany && domain")
-          span 检测到同名公司
-        div(ng-if="recommandCompany && domain")
-          button(ng-click="select(recommandCompany)") 点击加入
-          button(ng-click="ignoreRecommand()") 继续注册
-        div(ng-if="!recommandCompany")
-          select(name="province" ng-model="companyRegisterFormData.province" ng-options="province.value for province in provinces" ng-change="selcetProvince()")
-          select(name="city" ng-model="companyRegisterFormData.city" ng-options="city.value for city in cities" ng-change="selectCity()")
-          select(name="district" ng-model="companyRegisterFormData.district" ng-options="district.value for district in districts")
-        input(type="password" ng-model="companyRegisterFormData.password" ng-if="!recommandCompany" placeholder="密码" ng-minlength=6 required)
-        button(ng-if="!recommandCompany" ng-disabled="companyRegisterForm.$invalid" ng-click="registerCompany()") 下一步
+    .step_company.register_box(ng-if="step === 'company'" ng-cloak)
+      h1.rg_title 请填写企业信息
+      form.rg_form(name="companyRegisterForm")
+        .rg_form_group
+          input.rg_form_control(ng-model="companyRegisterFormData.name" ng-blur="checkOfficeName()" placeholder="公司名称" required)
+          p.rg_remind(ng-if="recommandCompany && !domain") 检测到同名公司，不过您的邮箱后缀不对哦，换公司邮箱搜索试试?
+          .rg_remind_op.clearfix(ng-if="recommandCompany && !domain")
+            button.rg_btn_block.pull-left(ng-click="go('search')")
+              i.fa.fa-fw.fa-arrow-left
+              | &nbsp;换邮箱
+            button.rg_btn_block.pull-right(ng-click="ignoreRecommand()")
+              | 继续注册&nbsp;
+              i.fa.fa-fw.fa-arrow-right
+          //- 同名&&email不正确 提示换邮箱
+          p.rg_remind(ng-if="recommandCompany && domain") 检测到同名公司
+          .rg_remind_op.clearfix(ng-if="recommandCompany && domain")
+            button.rg_btn_block.pull-right(ng-click="ignoreRecommand()") 继续注册
+            button.rg_btn_block.rg_btn_first.pull-right(ng-click="select(recommandCompany)") 点击加入
+        .rg_form_group.rg_select_group.clearfix(ng-if="!recommandCompany")
+          select.rg_form_control(name="province" ng-model="companyRegisterFormData.province" ng-options="province.value for province in provinces" ng-change="selcetProvince()")
+          select.rg_form_control(name="city" ng-model="companyRegisterFormData.city" ng-options="city.value for city in cities" ng-change="selectCity()")
+          select.rg_form_control(name="district" ng-model="companyRegisterFormData.district" ng-options="district.value for district in districts")
+        .rg_form_group(ng-if="!recommandCompany")
+          input.rg_form_control(type="password" ng-model="companyRegisterFormData.password" placeholder="密码" ng-minlength=6 required)
+        .rg_form_group.rg_next_group(ng-if="!recommandCompany")
+          button.rg_btn_block(ng-disabled="companyRegisterForm.$invalid" ng-click="registerCompany()") 下一步
 
     .step_select_group(ng-if="step === 'selectGroup'" ng-cloak)
       h1 选择您感兴趣的项目

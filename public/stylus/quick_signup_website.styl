@@ -5,8 +5,6 @@ quickSignupWebsitePage_col_orange = #f48361
 quickSignupWebsitePage_col_gray = #a1a1a1
 
 .quick_signup_website_page
-  background transparent // 占位用，不然会报错，写了其它样式后移去
-
   .register_box
     margin-top 95px
     border 2px solid quickSignupWebsitePage_col_blue
@@ -24,6 +22,11 @@ quickSignupWebsitePage_col_gray = #a1a1a1
   .rg_link
     cursor pointer
     color quickSignupWebsitePage_col_orange
+  .rg_form
+    margin-top 40px
+    width 400px
+  .rg_form_group
+    padding 5px 0
   .rg_form_control
     display block
     width 100%
@@ -34,14 +37,31 @@ quickSignupWebsitePage_col_gray = #a1a1a1
     line-height 1.42857143
     background-color #fff
     background-image none
-    border 1px solid #ccc
-    border-radius 0
     color #999
+    border 0
+    border-radius 2px 2px 0 0
+    box-shadow 0 -1px 1px #d9d9d9
+  .rg_btn_block
+    display block
+    margin 0
+    padding 0
+    width 100%
+    height 40px
+    color #fff
+    background-color quickSignupWebsitePage_col_blue
+    border none
+    line-height 40px
+    position relative
+    font-size 12px
+    text-align center
+    vertical-align middle
+    cursor pointer
+    &:disabled
+      opacity 0.65
 
   .step_search
     .rg_form
       position relative
-      margin-top 40px
     .rg_search_input
       border 1px solid quickSignupWebsitePage_col_blue
       border-radius 5px
@@ -87,14 +107,11 @@ quickSignupWebsitePage_col_gray = #a1a1a1
       color quickSignupWebsitePage_col_blue
 
   .step_personal
-    .rg_form
-      margin-top 40px
-    .rg_form_group
-      padding 5px 0
     .rg_form_left
       display block
       float left
       margin 0
+      padding-right 10px
       text-align right
       width 100px
       font-size 14px
@@ -110,35 +127,14 @@ quickSignupWebsitePage_col_gray = #a1a1a1
     .rg_form_right
       display block
       float left
-      margin-left 10px
       width 300px
     .rg_form_right_text
       font-size 14px
       line-height 34px
-    .rg_form_control
-      border 0
-      border-radius 2px 2px 0 0
-      box-shadow 0 -1px 1px #d9d9d9
     .rg_access_text
       margin-top 5px
     .rg_link
       color quickSignupWebsitePage_col_blue
-    .rg_btn_block
-      margin 0
-      display block
-      width 100%
-      height 40px
-      color #fff
-      background-color quickSignupWebsitePage_col_blue
-      border none
-      line-height 1
-      position relative
-      font-size 12px
-      text-align center
-      vertical-align middle
-      cursor pointer
-      &:disabled
-        opacity 0.65
     .rg_tips
       float left
       width 34px
@@ -149,3 +145,27 @@ quickSignupWebsitePage_col_gray = #a1a1a1
         color quickSignupWebsitePage_col_blue
       .invalid
         color quickSignupWebsitePage_col_orange
+
+  .step_company
+    .rg_remind
+      margin-top 15px
+    .rg_remind_op
+      margin-top 15px
+      .rg_btn_block
+        width 100px
+        font-size 14px
+        line-height 34px
+        height 34px
+      .rg_btn_first
+        margin-right 10px
+    .rg_select_group
+      .rg_form_control
+        float left
+        width 124px
+        height 34px
+        padding 0
+        margin-right 14px
+        &:last-child
+          margin-right 0
+    .rg_next_group
+      margin-top 40px
