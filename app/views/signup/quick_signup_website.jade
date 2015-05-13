@@ -10,23 +10,28 @@ block contentExt
 
       .step_search.register_box(ng-if="step === 'search'" ng-cloak)
         //- rg: register
-        h1.rg_title 快速注册
-        p.rg_description 同事都在玩，快来加入吧。
-        form.rg_form(name="searchForm")
-          input.rg_form_control.rg_search_input(type="email" name="email" ng-model="searchFormData.email" ng-keypress="search($event)" placeholder="请输入您的企业邮箱" required)
-          button.rg_search_btn(ng-click="search()" ng-disabled="searchForm.$invalid")
-            i.fa.fa-search
+        h1.text-center 快速注册
+        p.text-center 同事都在玩，快来加入吧。
+        form(name="searchForm")
+          .input-group.input-group-lg
+            input.form-control(type="email" name="email" ng-model="searchFormData.email" ng-keypress="search($event)" placeholder="请输入您的企业邮箱" required)
+            span.input-group-btn
+              button.btn.btn-default(ng-click="search()" ng-disabled="searchForm.$invalid")
+                i.fa.fa-search
 
       .step_select.register_box(ng-if="step === 'select'" ng-cloak)
-        h1.rg_title 选择您的公司
-        ul.rg_res_com_list
-          li.rg_res_com(ng-repeat="company in searchResCompanies" ng-click="select(company)" ng-bind="company.name")
-        .rg_pager.clearfix
-          span.rg_pre_page.pull-left(ng-click="prePage()" ng-if="hasPrevious") 上一页
-          span.rg_next_page.pull-right(ng-click="nextPage()" ng-if="hasNext") 下一页
+        h1.text-center 选择您的公司
+        ul.list-group.rg_res_com_list
+          li.list-group-item.rg_res_com(ng-repeat="company in searchResCompanies" ng-click="select(company)" ng-bind="company.name")
+        nav
+          ul.pager
+            li.previous(ng-click="prePage()" ng-if="hasPrevious")
+              a &larr;&nbsp;上一页
+            li.next(ng-click="nextPage()" ng-if="hasNext")
+              a 下一页&nbsp;&rarr;
         .rg_no_res_description
-          p.rg_no_res 若没有您的公司：
           p.rg_no_res
+            | 若没有您的公司，您可以&nbsp;
             a.rg_link(ng-click="go('search')") 返回重新搜索
             | &nbsp;或&nbsp;
             a.rg_link(ng-click="go('company')") 为您的企业进行注册

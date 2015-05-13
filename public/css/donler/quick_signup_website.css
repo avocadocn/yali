@@ -28,7 +28,7 @@
 }
 .quick_signup_website_page .rg_link {
   cursor: pointer;
-  color: #f48361;
+  color: #3ca2e0;
 }
 .quick_signup_website_page .rg_form {
   margin-top: 40px;
@@ -86,43 +86,23 @@
   font-size: 20px;
   background-color: transparent;
 }
-.quick_signup_website_page .step_select .rg_res_com_list {
-  margin-top: 40px;
-  list-style: none;
-  padding: 0;
-}
 .quick_signup_website_page .step_select .rg_res_com {
-  display: inline-block;
-  margin-right: 10px;
-  margin-bottom: 10px;
-  font-size: 12px;
-  line-height: 1;
-  border-radius: 5px;
-  padding: 8px 10px;
-  border: 1px solid #3ca2e0;
-  color: #3ca2e0;
-  background-color: #fff;
   cursor: pointer;
 }
 .quick_signup_website_page .step_select .rg_res_com:hover {
   color: #fff;
   background-color: #3ca2e0;
 }
+.quick_signup_website_page .step_select .pager a {
+  color: #3ca2e0;
+}
 .quick_signup_website_page .step_select .rg_no_res_description {
   margin-top: 40px;
   font-size: 12px;
   line-height: 1;
 }
-.quick_signup_website_page .step_select .rg_no_res:last-child {
+.quick_signup_website_page .step_select .rg_no_res {
   margin-bottom: 0;
-}
-.quick_signup_website_page .step_select .rg_pager {
-  margin: 10px 0;
-}
-.quick_signup_website_page .step_select .rg_pre_page,
-.quick_signup_website_page .step_select .rg_next_page {
-  cursor: pointer;
-  color: #3ca2e0;
 }
 .quick_signup_website_page .step_personal .rg_form_left {
   display: block;
