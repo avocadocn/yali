@@ -1,6 +1,6 @@
 .quick_signup_website_page {
   width: 75%;
-  margin: 2rem auto;
+  margin: 36px auto;
 }
 .quick_signup_website_page .debug_tools {
   position: absolute;
@@ -8,13 +8,24 @@
 }
 .quick_signup_website_page .register_box {
   width: 75%;
-  margin: 0 auto 2rem;
+  margin: 0 auto 36px;
   background-color: #fff;
-  border-radius: 0.25rem;
+  border-radius: 4px;
   box-shadow: 0 1px 0 rgba(0,0,0,0.25);
   padding: 4rem;
   border: 1px solid #e8e8e8;
   min-height: 300px;
+}
+.quick_signup_website_page .register_box h1 {
+  font-size: 36px;
+  line-height: 45px;
+  letter-spacing: -1px;
+  font-weight: 700;
+  margin: 0 0 18px;
+}
+.quick_signup_website_page .register_box p {
+  font-size: 18px;
+  margin: 0 0 18px;
 }
 .quick_signup_website_page .rg_title {
   margin: 0;
@@ -71,21 +82,6 @@
 }
 .quick_signup_website_page .rg_btn_block:disabled {
   opacity: 0.65;
-}
-.quick_signup_website_page .step_search .rg_form {
-  position: relative;
-}
-.quick_signup_website_page .step_search .rg_search_input {
-  border: 1px solid #3ca2e0;
-  border-radius: 5px;
-}
-.quick_signup_website_page .step_search .rg_search_btn {
-  position: absolute;
-  right: 0;
-  top: 4px;
-  color: #3ca2e0;
-  font-size: 20px;
-  background-color: transparent;
 }
 .quick_signup_website_page .step_select .rg_res_com {
   cursor: pointer;
