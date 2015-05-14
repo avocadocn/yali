@@ -47,41 +47,44 @@ block contentExt
             i.fa.fa-arrow-right
 
       .step_personal.register_box(ng-if="step === 'personal'" ng-cloak)
+        p: a.rg_link(ng-click="go('select')")
+          i.fa.fa-fw.fa-arrow-left
+          | 返回
         h1.text-center 填写您的信息
         form.form-horizontal(name="personalRegisterForm")
           .form-group.form-group-lg
-            label.col-sm-3.control-label * 企业名称:
-            .col-sm-9
+            label.col-sm-2.control-label 企业名称
+            .col-sm-10
               p.form-control-static(ng-bind="selectedCompany.name")
           .form-group.form-group-lg
-            label.col-sm-3.control-label * 企业邮箱:
-            .col-sm-9
+            label.col-sm-2.control-label 企业邮箱
+            .col-sm-10
               p.form-control-static(ng-bind="personalRegisterFormData.email")
           .form-group.form-group-lg(ng-class="{'has-error':personalRegisterForm.inviteKey.$invalid && personalRegisterForm.inviteKey.$dirty || isInviteKeyCorrect === false}")
-            label.col-sm-3.control-label * 邀请码:
-            .col-sm-9
+            label.col-sm-2.control-label 邀请码
+            .col-sm-10
               input.form-control(type="text" placeholder="请向您的公司管理员或同事索要8位邀请码" name="inviteKey" ng-model="personalRegisterFormData.inviteKey" ng-change="checkInviteKey()" ng-minlength=8 ng-maxlength=8 required)
               .rg_tips
                 i.fa.fa-check.valid(ng-if="isInviteKeyCorrect === true")
                 i.fa.fa-close.invalid(ng-if="isInviteKeyCorrect === false")
           .form-group.form-group-lg(ng-class="{'has-error':personalRegisterForm.nickname.$invalid && personalRegisterForm.nickname.$dirty}")
-            label.col-sm-3.control-label * 昵称:
-            .col-sm-9
+            label.col-sm-2.control-label 昵称
+            .col-sm-10
               input.form-control(type="text" name="nickname" ng-model="personalRegisterFormData.nickname" required)
           .form-group.form-group-lg(ng-class="{'has-error':personalRegisterForm.password.$invalid && personalRegisterForm.password.$dirty}")
-            label.col-sm-3.control-label * 密码:
-            .col-sm-9
+            label.col-sm-2.control-label 密码
+            .col-sm-10
               input.form-control(type="password" name="password" ng-model="personalRegisterFormData.password" ng-minlength=6 required)
           .form-group.form-group-lg(ng-class="{'has-error':personalRegisterForm.realname.$invalid && personalRegisterForm.realName.$dirty}")
-            label.col-sm-3.control-label * 真实姓名:
-            .col-sm-9
+            label.col-sm-2.control-label 真实姓名
+            .col-sm-10
               input.form-control(type="text" name="realname" ng-model="personalRegisterFormData.realname" required)
           .form-group.form-group-lg
-            .col-sm-9.col-sm-offset-3
+            .col-sm-10.col-sm-offset-2
               p.rg_access_text 点击注册即代表同意
                 a.rg_link(href="/about#law" target="_blank") 服务条款
           .form-group.form-group-lg
-            .col-sm-9.col-sm-offset-3
+            .col-sm-10.col-sm-offset-2
               button.btn.btn-primary.btn-block.btn-lg(ng-click="registerUser()" ng-disabled="personalRegisterForm.$invalid || !isInviteKeyCorrect") 免费注册个人账号
 
       .step_company.register_box(ng-if="step === 'company'" ng-cloak)
