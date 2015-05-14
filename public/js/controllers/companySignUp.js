@@ -518,7 +518,7 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
         $scope.go('select');
       }
       else {
-        $scope.go('company', {title: '没找到同事，我来注册'});
+        $scope.go('company', {title: '你比同事先到，快来注册'});
       }
     });
   }

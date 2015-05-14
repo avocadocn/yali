@@ -20,7 +20,10 @@ block contentExt
           span.help-block(ng-if="errMsg.search" ng-bind="errMsg.search" ng-cloak)
 
       .step_select.register_box(ng-if="step === 'select'" ng-cloak)
-        h1.text-center 选择您的公司
+        p: a.rg_link(ng-click="go('search')")
+          i.fa.fa-fw.fa-arrow-left
+          | 返回
+        h1.text-center 为您找到的公司
         form(name="reSearchForm" ng-if="isTooMuchRes")
           p 搜索结果太多？您可以在结果中查找：
           .input-group.input-group-lg
@@ -41,10 +44,8 @@ block contentExt
               a 下一页&nbsp;&rarr;
         .rg_no_res_description
           p.rg_no_res
-            | 若没有您的公司，您可以&nbsp;
-            a.rg_link(ng-click="go('search')") 返回重新搜索
-            | &nbsp;或&nbsp;
-            a.rg_link(ng-click="go('company')") 为您的企业进行注册
+            | 没找到同事，我来&nbsp;
+            a.rg_link(ng-click="go('company')") 注册
 
       .step_personal.register_box(ng-if="step === 'personal'" ng-cloak)
         p: a.rg_link(ng-click="go('select')")
