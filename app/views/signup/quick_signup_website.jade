@@ -106,7 +106,17 @@ block contentExt
             label.col-sm-2.control-label 公司名称
             .col-sm-10
               input.form-control(ng-model="companyRegisterFormData.name" ng-blur="checkOfficeName()" placeholder="公司名称" required)
-              span.help-block(ng-if="recommandCompany && !domain") 检测到同名公司，不过您的邮箱后缀不对哦，换公司邮箱搜索试试?
+          .form-group.form-group-lg.rg_select_group.clearfix
+            label.col-sm-2.control-label 公司地址
+            .col-sm-3.rg_select
+              select.form-control(name="province" ng-model="companyRegisterFormData.province" ng-options="province.value for province in provinces" ng-change="selcetProvince()")
+            .col-sm-3.rg_select
+              select.form-control(name="city" ng-model="companyRegisterFormData.city" ng-options="city.value for city in cities" ng-change="selectCity()")
+            .col-sm-3.rg_select
+              select.form-control(name="district" ng-model="companyRegisterFormData.district" ng-options="district.value for district in districts")
+          .form-group(ng-if="recommandCompany")
+            .col-sm-10.col-sm-offset-2
+              span.help-block(ng-if="!domain") 检测到同名公司，不过您的邮箱后缀不对哦，换公司邮箱搜索试试?
               .clearfix(ng-if="recommandCompany && !domain")
                 button.btn.btn-default.btn-lg.pull-left(ng-click="go('search')")
                   i.fa.fa-arrow-left
@@ -115,18 +125,10 @@ block contentExt
                   | 继续注册&nbsp;
                   i.fa.fa-arrow-right
               //- 同名&&email不正确 提示换邮箱
-              span.help-block(ng-if="recommandCompany && domain") 检测到同名公司
+              span.help-block(ng-if="domain") 检测到同名公司
               .clearfix(ng-if="recommandCompany && domain")
                 button.btn.btn-default.btn-lg.pull-right(ng-click="ignoreRecommand()") 继续注册
                 button.btn.btn-primary.btn-lg.rg_btn_first.pull-right(ng-click="select(recommandCompany)") 点击加入
-          .form-group.form-group-lg.rg_select_group.clearfix(ng-if="!recommandCompany")
-            label.col-sm-2.control-label 公司地址
-            .col-sm-3.rg_select
-              select.form-control(name="province" ng-model="companyRegisterFormData.province" ng-options="province.value for province in provinces" ng-change="selcetProvince()")
-            .col-sm-3.rg_select
-              select.form-control(name="city" ng-model="companyRegisterFormData.city" ng-options="city.value for city in cities" ng-change="selectCity()")
-            .col-sm-3.rg_select
-              select.form-control(name="district" ng-model="companyRegisterFormData.district" ng-options="district.value for district in districts")
           .form-group.form-group-lg.rg_next_group(ng-if="!recommandCompany")
              .col-sm-10.col-sm-offset-2
               button.btn.btn-primary.btn-block.btn-lg(ng-disabled="companyRegisterForm.$invalid" ng-click="registerCompany()") 下一步
