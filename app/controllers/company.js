@@ -676,10 +676,8 @@ exports.quickvalidate = function(req, res) {
             });
           }
         } else {
-          res.render('company/company_validate_error', {
-            title: '验证失败',
-            message: '您的公司已经激活!'
-          });
+          if (isMobile(req)) {res.render('company/validate/active_success_mobile');}
+          else {res.render('company/validate/active_success');}
         }
       } else {
         res.render('company/company_validate_error', {
