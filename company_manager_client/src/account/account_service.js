@@ -9,8 +9,7 @@ define(['./account', 'app'], function (account) {
       },
       responseError: function(res) {
         if (res.status === 401) {
-          $location.path('/login');
-          // location.href = '/company/manager/#/login';
+          location.href = location.origin + '/company/manager/login';
         }
         return $q.reject(res);
       }
