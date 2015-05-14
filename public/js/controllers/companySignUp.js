@@ -638,7 +638,7 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
 
   // step company ===============================================================
   $scope.init.company = function(opts) {
-    if (opts.title) {
+    if (opts && opts.title) {
       $scope.stepCompanyTitle = opts.title;
     }
     else {
