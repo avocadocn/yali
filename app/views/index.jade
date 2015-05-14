@@ -14,8 +14,10 @@ block content
               p 融洽的团队关系
             a.clearLinkUnderline.btn_reg(href="/company/signup" title="免费注册") 免 费 注 册
             .appinfo
-              img.barcode(ng-src="/img/index/2d_barcodes.png")
-              img.btn_app(ng-src="/img/index/coming_soon.png")
+              .barcode
+                img(ng-src="/img/app_download_barcodes.png/100/100")
+              a.btn_app(href="/index/appdownload")
+                img(ng-src="/img/index/download.gif")
   footer.dl_footer.index_footer
     .dl_container
       .dl_row
