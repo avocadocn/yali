@@ -17,6 +17,7 @@ block contentExt
             span.input-group-btn
               button.btn.btn-default(ng-click="search()" ng-disabled="searchForm.$invalid")
                 i.fa.fa-search
+          span.help-block(ng-if="errMsg.search" ng-bind="errMsg.search" ng-cloak)
 
       .step_select.register_box(ng-if="step === 'select'" ng-cloak)
         h1.text-center 选择您的公司
@@ -27,6 +28,7 @@ block contentExt
             span.input-group-btn
               button.btn.btn-default(ng-click="reSearch()" ng-disabled="reSearchForm.$invalid")
                 i.fa.fa-search
+          span.help-block(ng-if="errMsg.reSearch" ng-bind="errMsg.reSearch" ng-cloak)
         .rg_res_com_list
           button.btn.btn-default.btn-lg.btn-block.rg_res_com(ng-repeat="company in searchResCompanies" ng-click="select(company)")
             span.pull-left {{company.name}}

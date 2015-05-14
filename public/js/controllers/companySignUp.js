@@ -435,11 +435,15 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
     }
   };
 
+  // 错误消息
+  $scope.errMsg = {};
+
   $scope.validEmail = '';
 
   // step search =====================================================
   $scope.init.search = function() {
     $scope.validEmail = '';
+    $scope.errMsg.search = null;
   };
   $scope.init.search();
 
@@ -471,7 +475,8 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
         }
       })
       .then(null, function(res) {
-        // todo something err
+        var data = res.data;
+        $scope.errMsg.search = (data && data.msg) || '搜索失败，这可能是网络问题或服务器错误造成的。';
       });
   }
 
@@ -528,6 +533,7 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
       email: $scope.validEmail,
       key: ''
     };
+    $scope.errMsg.reSearch = null;
   };
 
   $scope.nextPage = function() {
@@ -572,7 +578,7 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
       $scope.hasPrevious = false;
       $scope.hasNext = false;
     }).error(function(data) {
-      // todo
+      $scope.errMsg.reSearch = (data && data.msg) || '搜索失败，这可能是网络问题或服务器错误造成的。';
     });
   };
 
@@ -605,7 +611,7 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
       }).success(function(data) {
         $scope.isInviteKeyCorrect = (data.invitekeyCheck === 1);
       }).error(function(data) {
-        // todo
+        // 这里不必处理了，即使请求失败，也不应该影响用户输入
       });
     }
   };
@@ -617,11 +623,13 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
           $scope.go('success');
         }
         else {
-          // todo 注册失败
+          // 注册失败，这里弹框并不友好，但正常情况下不会到这里
+          // 如果注册到了这一步，也不能直接知道原因
+          alertify.alert('注册失败');
         }
       })
       .error(function(data) {
-        // todo
+        alertify.alert((data && data.msg) || '注册失败，这可能是网络问题或服务器错误造成的。');
       });
   };
 
@@ -717,7 +725,7 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
         setDefaultOptions('province');
       }
     }).then(null, function(err) {
-      // todo
+      alertify.alert(err || '获取数据失败，这可能是网络问题或服务器错误造成的。');
     });
   }
 
@@ -798,7 +806,7 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
       $scope.uid = data.uid;
       $scope.go('selectGroup');
     }).error(function(data) {
-      // todo
+      alertify.alert((data && data.msg) || '注册失败，这可能是网络问题或服务器错误造成的。');
     });
   };
   // the end of step company ===================================================
@@ -815,7 +823,7 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
     $http.get('/group/getgroups').success(function(data) {
       $scope.groups = data.splice(0, 16);
     }).error(function(data) {
-      // todo
+      alertify.alert((data && data.msg) || '获取数据失败，这可能是网络问题或服务器错误造成的。');
     });
   }
 
@@ -830,14 +838,14 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
     $http.post('/company/quickCreateTeams',{
       groups: selectedGroups,
       uid: $scope.uid
-    }).success(function(data, status) {
+    }).success(function(data) {
       $scope.go('success');
       if (data.result) {
         $scope.emailDomain = $scope.validEmail.split('@')[1];
       }
     })
-    .error(function(data, status) {
-      // todo
+    .error(function(data) {
+      alertify.alert((data && data.msg) || '操作失败，这可能是网络问题或服务器错误造成的。');
     });
   };
   // the end of step selectGroup ===================================================
@@ -850,7 +858,7 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
         $scope.go('success');
       })
       .error(function(data, status) {
-        // todo
+        alertify.alert((data && data.msg) || '操作失败，这可能是网络问题或服务器错误造成的。');
       });
   };
   // the end of step hasRegister
