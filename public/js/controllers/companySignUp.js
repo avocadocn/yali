@@ -464,6 +464,7 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
         var data = res.data;
         $scope.validEmail = email;
         if (data.active === 1) {
+          $scope.hideInviteKey = data.hideInviteKey;
           return checkCompanyEmail(email);
         }
         else {
