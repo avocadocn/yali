@@ -9,7 +9,6 @@ block contentExt
       //- THE END OF TODO
 
       .step_search.register_box(ng-if="step === 'search'" ng-cloak)
-        //- rg: register
         h1.text-center 快速注册
         p.text-center.sub_text 同事都在玩，快来加入吧。
         form(name="searchForm")
@@ -62,9 +61,9 @@ block contentExt
             label.col-sm-3.control-label * 邀请码:
             .col-sm-9
               input.form-control(type="text" placeholder="请向您的公司管理员或同事索要8位邀请码" name="inviteKey" ng-model="personalRegisterFormData.inviteKey" ng-change="checkInviteKey()" ng-minlength=8 ng-maxlength=8 required)
-            //- .rg_tips
-            //-   i.fa.fa-check.valid(ng-if="isInviteKeyCorrect === true")
-            //-   i.fa.fa-close.invalid(ng-if="isInviteKeyCorrect === false")
+              .rg_tips
+                i.fa.fa-check.valid(ng-if="isInviteKeyCorrect === true")
+                i.fa.fa-close.invalid(ng-if="isInviteKeyCorrect === false")
           .form-group.form-group-lg(ng-class="{'has-error':personalRegisterForm.nickname.$invalid && personalRegisterForm.nickname.$dirty}")
             label.col-sm-3.control-label * 昵称:
             .col-sm-9
