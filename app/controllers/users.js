@@ -2205,7 +2205,7 @@ exports.resendActiveEmail = function(req, res, next) {
   if (!req.body.email) {
     return sendInvalidMsg('缺少email');
   }
-  else if (!validator.isEmail(email)) {
+  else if (!validator.isEmail(req.body.email)) {
     return sendInvalidMsg('email无效');
   }
   var email = req.body.email.toLowerCase();

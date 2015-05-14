@@ -467,6 +467,7 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
           if (data.active === 2) {
             $scope.notVerified = true;
           }
+          $scope.validEmail = email;
           $scope.go('hasRegister');
         }
       })
@@ -487,6 +488,7 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
         }
         else {
           $scope.emailDomain = email.split('@')[1];
+          $scope.validEmail = email;
           $scope.go('hasRegister');
         }
       }
