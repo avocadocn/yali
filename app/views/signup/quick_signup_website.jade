@@ -134,15 +134,16 @@ block contentExt
               button.btn.btn-primary.btn-block.btn-lg(ng-disabled="companyRegisterForm.$invalid" ng-click="registerCompany()") 下一步
 
       .step_select_group.register_box(ng-if="step === 'selectGroup'" ng-cloak)
-        h1.text-center 选择您感兴趣的项目
-        .groups.row
-          .group.col-sm-3(ng-repeat='group in groups' ng-class="{'active':group.selected}" ng-click="selectType($index)")
-            .img_contain(class='group_'+'{{group._id}}')
-            .shadow(ng-class="{'active': group.selected}")
-            label.group_type(for='{{group._id}}') {{group.groupType}}
         .row
-          .col-sm-10.col-sm-offset-1
-            button.btn.btn-primary.btn-block.btn-lg(ng-click="createTeams()") 完成
+          .col-sm-8.col-sm-offset-2
+            h1.text-center 选择您感兴趣的项目
+            .groups.row
+              .group.col-sm-3(ng-repeat='group in groups' ng-class="{'active':group.selected}" ng-click="selectType($index)")
+                .img_contain(class='group_'+'{{group._id}}')
+                .shadow(ng-class="{'active': group.selected}")
+                label.group_type(for='{{group._id}}') {{group.groupType}}
+            .row
+              button.btn.btn-primary.btn-block.btn-lg.col-sm-12(ng-click="createTeams()") 完成
 
       .step_success.register_box(ng-if="step === 'success'" ng-cloak)
         .register_content
