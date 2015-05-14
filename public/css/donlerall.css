@@ -8088,17 +8088,26 @@ input.ng-invalid.ng-dirty {
 .quick_signup_website_page .step_select .rg_res_com_list {
   margin: 40px 0;
 }
-.quick_signup_website_page .step_select .rg_res_com_list .rg_res_com {
-  cursor: pointer;
+.quick_signup_website_page .step_select .rg_res_com {
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-bottom: 5px;
+  font-size: 16px;
+  line-height: 24px;
 }
-.quick_signup_website_page .step_select .rg_res_com_list .rg_res_com:hover {
+.quick_signup_website_page .step_select .rg_res_com:hover {
   color: #fff;
   background-color: #3ca2e0;
+  border-color: #3ca2e0;
+}
+.quick_signup_website_page .step_select .rg_res_com .fa {
+  line-height: 24px;
 }
 .quick_signup_website_page .step_select .pager a {
   color: #3ca2e0;
 }
 .quick_signup_website_page .step_select .rg_no_res_description {
+  margin-top: 40px;
   line-height: 1;
 }
 .quick_signup_website_page .step_select .rg_no_res {
