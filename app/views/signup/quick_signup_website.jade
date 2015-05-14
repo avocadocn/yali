@@ -22,9 +22,9 @@ block contentExt
         h1.text-center 选择您的公司
         ul.list-group.rg_res_com_list
           li.list-group-item.rg_res_com(ng-repeat="company in searchResCompanies" ng-click="select(company)" ng-bind="company.name")
-        nav
+        nav(ng-if="hasPrevious||hasNext")
           ul.pager
-            li.previous(ng-click="prePage()" ng-if="hasPrevious")
+            li.previous(ng-click="prePage()" )
               a &larr;&nbsp;上一页
             li.next(ng-click="nextPage()" ng-if="hasNext")
               a 下一页&nbsp;&rarr;

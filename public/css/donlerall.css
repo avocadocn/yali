@@ -8062,6 +8062,7 @@ input.ng-invalid.ng-dirty {
   padding: 4rem;
   border: 1px solid #e8e8e8;
   min-height: 300px;
+  font-size: 14px;
 }
 .quick_signup_website_page .register_box h1 {
   font-size: 36px;
@@ -8084,10 +8085,13 @@ input.ng-invalid.ng-dirty {
   cursor: pointer;
   color: #3ca2e0;
 }
-.quick_signup_website_page .step_select .rg_res_com {
+.quick_signup_website_page .step_select .rg_res_com_list {
+  margin: 40px 0;
+}
+.quick_signup_website_page .step_select .rg_res_com_list .rg_res_com {
   cursor: pointer;
 }
-.quick_signup_website_page .step_select .rg_res_com:hover {
+.quick_signup_website_page .step_select .rg_res_com_list .rg_res_com:hover {
   color: #fff;
   background-color: #3ca2e0;
 }
@@ -8095,8 +8099,6 @@ input.ng-invalid.ng-dirty {
   color: #3ca2e0;
 }
 .quick_signup_website_page .step_select .rg_no_res_description {
-  margin-top: 40px;
-  font-size: 12px;
   line-height: 1;
 }
 .quick_signup_website_page .step_select .rg_no_res {
