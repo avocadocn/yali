@@ -459,6 +459,7 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
     $http.post('/users/mailCheck', {login_email: email})
       .then(function(res) {
         var data = res.data;
+        $scope.validEmail = email;
         if (data.active === 1) {
           return checkCompanyEmail(email);
         }
@@ -482,7 +483,6 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
           var company = data.company;
           company.name = company.info.name;
           $scope.searchResCompanies = [company];
-          $scope.validEmail = email;
           $scope.go('select');
         }
         else {
@@ -500,7 +500,6 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
     return $http.post('/search/company', {email: email}).then(function(res) {
       var data = res.data;
       if (data && data.companies.length > 0) {
-        $scope.go('select');
         $scope.searchResCompanies = data.companies;
         $scope.page = 1;
         if ($scope.page === data.pageCount) {
@@ -508,13 +507,14 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
         }
         else {
           $scope.hasNext = true;
+          $scope.isTooMuchRes = true;
         }
         $scope.hasPrevious = false;
+        $scope.go('select');
       }
       else {
         $scope.go('notFound');
       }
-      $scope.validEmail = email;
     });
   }
   // the end of step search =====================================================
@@ -523,6 +523,10 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
   // step select ================================================================
   $scope.init.select = function() {
     $scope.selectedCompany = null;
+    $scope.reSearchFormData = {
+      email: $scope.validEmail,
+      key: ''
+    };
   };
 
   $scope.nextPage = function() {
@@ -555,6 +559,20 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
         }
       });
     }
+  };
+
+  $scope.reSearch = function(keyEvent) {
+    if (keyEvent && keyEvent.which !== 13) return;
+    if (!$scope.reSearchFormData.key || $scope.reSearchFormData.key === '') return;
+
+    $http.post('/search/company', $scope.reSearchFormData).success(function(data) {
+      $scope.searchResCompanies = data.companies;
+
+      $scope.hasPrevious = false;
+      $scope.hasNext = false;
+    }).error(function(data) {
+      // todo
+    });
   };
 
   // 在未搜索到公司进行快速注册时也用到

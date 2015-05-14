@@ -12,7 +12,12 @@ var mongoose = require('mongoose'),
 
 //TODO
 //根据email搜索公司
-exports.getCompany = function (req, res) {
+exports.getCompany = function (req, res, next) {
+
+  if (req.body.key) {
+    return searchCompanyByKeyWord(req, res, next);
+  }
+
   var options = {};
   var companies_rst = [];
   // if(req.body.regx){
@@ -51,6 +56,38 @@ exports.getCompany = function (req, res) {
     }
   });
 };
+
+function searchCompanyByKeyWord(req, res, next) {
+  try {
+    var regx = new RegExp(req.body.key);
+    console.log(regx)
+    var email = req.body.email.toLowerCase();
+    var domain = email.split('@')[1];
+    Company.find({
+      'info.name': regx,
+      'status.active': true,
+      'status.mail_active': true,
+      'email.domain': domain
+    }, {
+      _id: 1,
+      'info.name': 1,
+      'info.logo': 1
+    }).exec().then(function(companies) {
+      res.send({
+        companies: companies.map(function(company) {
+          return {
+            _id: company._id,
+            name: company.info.name,
+            logo: company.info.logo
+          };
+        })
+      });
+    }).then(null, next);
+  }
+  catch (e) {
+    next(e);
+  }
+}
 
 
 //TODO
