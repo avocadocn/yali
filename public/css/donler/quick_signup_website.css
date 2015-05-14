@@ -102,19 +102,7 @@
 .quick_signup_website_page .step_personal .rg_tips .invalid {
   color: #f48361;
 }
-.quick_signup_website_page .step_company .rg_remind {
-  margin-top: 15px;
-}
-.quick_signup_website_page .step_company .rg_remind_op {
-  margin-top: 15px;
-}
-.quick_signup_website_page .step_company .rg_remind_op .rg_btn_block {
-  width: 100px;
-  font-size: 14px;
-  line-height: 34px;
-  height: 34px;
-}
-.quick_signup_website_page .step_company .rg_remind_op .rg_btn_first {
+.quick_signup_website_page .step_company .rg_btn_first {
   margin-right: 10px;
 }
 .quick_signup_website_page .step_company .rg_select_group .rg_select {

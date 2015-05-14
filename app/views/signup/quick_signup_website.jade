@@ -106,19 +106,19 @@ block contentExt
             label.col-sm-2.control-label 公司名称
             .col-sm-10
               input.form-control(ng-model="companyRegisterFormData.name" ng-blur="checkOfficeName()" placeholder="公司名称" required)
-            p.rg_remind(ng-if="recommandCompany && !domain") 检测到同名公司，不过您的邮箱后缀不对哦，换公司邮箱搜索试试?
-            .rg_remind_op.clearfix(ng-if="recommandCompany && !domain")
-              button.rg_btn_block.pull-left(ng-click="go('search')")
-                i.fa.fa-fw.fa-arrow-left
-                | &nbsp;换邮箱
-              button.rg_btn_block.pull-right(ng-click="ignoreRecommand()")
-                | 继续注册&nbsp;
-                i.fa.fa-fw.fa-arrow-right
-            //- 同名&&email不正确 提示换邮箱
-            p.rg_remind(ng-if="recommandCompany && domain") 检测到同名公司
-            .rg_remind_op.clearfix(ng-if="recommandCompany && domain")
-              button.rg_btn_block.pull-right(ng-click="ignoreRecommand()") 继续注册
-              button.rg_btn_block.rg_btn_first.pull-right(ng-click="select(recommandCompany)") 点击加入
+              span.help-block(ng-if="recommandCompany && !domain") 检测到同名公司，不过您的邮箱后缀不对哦，换公司邮箱搜索试试?
+              .clearfix(ng-if="recommandCompany && !domain")
+                button.btn.btn-default.btn-lg.pull-left(ng-click="go('search')")
+                  i.fa.fa-arrow-left
+                  | &nbsp;换邮箱
+                button.btn.btn-primary.btn-lg.pull-right(ng-click="ignoreRecommand()")
+                  | 继续注册&nbsp;
+                  i.fa.fa-arrow-right
+              //- 同名&&email不正确 提示换邮箱
+              span.help-block(ng-if="recommandCompany && domain") 检测到同名公司
+              .clearfix(ng-if="recommandCompany && domain")
+                button.btn.btn-default.btn-lg.pull-right(ng-click="ignoreRecommand()") 继续注册
+                button.btn.btn-primary.btn-lg.rg_btn_first.pull-right(ng-click="select(recommandCompany)") 点击加入
           .form-group.form-group-lg.rg_select_group.clearfix(ng-if="!recommandCompany")
             label.col-sm-2.control-label 公司地址
             .col-sm-3.rg_select

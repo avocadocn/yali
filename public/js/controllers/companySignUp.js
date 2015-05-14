@@ -644,6 +644,10 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
     else {
       $scope.stepCompanyTitle = '请填写企业信息';
     }
+
+    $scope.domain = null;
+    $scope.recommandCompany = null;
+
     $scope.companyRegisterFormData = {
       email: $scope.validEmail,
       name: '',
