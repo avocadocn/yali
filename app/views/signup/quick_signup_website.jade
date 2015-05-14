@@ -99,7 +99,7 @@ block contentExt
               button.btn.btn-primary.btn-block.btn-lg(ng-click="registerUser()" ng-disabled="personalRegisterForm.$invalid || !isInviteKeyCorrect") 免费注册个人账号
 
       .step_company.register_box(ng-if="step === 'company'" ng-cloak)
-        h1.text-center 请填写企业信息
+        h1.text-center(ng-bind="stepCompanyTitle")
         form.form-horizontal(name="companyRegisterForm")
           .form-group.form-group-lg
             label.col-sm-2.control-label 公司名称

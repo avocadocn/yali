@@ -428,10 +428,10 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
   // 每一步的初始化数据的方法
   $scope.init = {};
 
-  $scope.go = function(step) {
+  $scope.go = function(step, opts) {
     $scope.step = step;
     if ($scope.init[step]) {
-      $scope.init[step]();
+      $scope.init[step](opts);
     }
   };
 
@@ -519,7 +519,7 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
         $scope.go('select');
       }
       else {
-        $scope.go('notFound');
+        $scope.go('company', {title: '没找到同事，我来注册'});
       }
     });
   }
@@ -637,7 +637,13 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
 
 
   // step company ===============================================================
-  $scope.init.company = function() {
+  $scope.init.company = function(opts) {
+    if (opts.title) {
+      $scope.stepCompanyTitle = opts.title;
+    }
+    else {
+      $scope.stepCompanyTitle = '请填写企业信息';
+    }
     $scope.companyRegisterFormData = {
       name: '',
       province: '',
