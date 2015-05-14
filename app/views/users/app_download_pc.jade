@@ -1,0 +1,12 @@
+extends ../layouts/default
+
+block contentExt
+  .app_download_pc
+    .barcode_container
+      img.barcode(ng-src="/img/app_download_barcodes.png/300/300")
+    .tips
+      p.tip 手机扫描二维码直接下载动梨APP
+      p.tip 或下载安装包到本地
+    .links
+      a.iphone_download(target="_blank" href="https://itunes.apple.com/cn/app/id916162839?mt=8")
+      a.android_download(href="/Donler.apk")

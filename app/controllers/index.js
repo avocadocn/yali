@@ -76,6 +76,8 @@ exports.question = function(req, res) {
 exports.contact = function(req, res) {
   res.render('contact');
 };
+
+
 exports.appdownload = function(req, res) {
   var deviceAgent = req.headers["user-agent"].toLowerCase();
   var weixin = deviceAgent.match(/micromessenger/);
@@ -90,8 +92,8 @@ exports.appdownload = function(req, res) {
   else if(androidAgentID) {
     return res.redirect('/Donler.apk');
   }
-  else{
-    return res.render('users/app_download');
+  else {
+    return res.render('users/app_download_pc');
   }
 };
 exports.feedback = function(req, res) {
