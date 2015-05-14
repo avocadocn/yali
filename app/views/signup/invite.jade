@@ -17,6 +17,8 @@ block contentExt
             .hidden#invitedUserData(data-id="#{invitedUser.id}" data-email="#{invitedUser.email}" data-active="#{invitedUser.mail_active}")
         form.form-inline.form-horizontal(role="form" name='active_form' action='/users/dealActive' method='post')
           .form-group.dl_sm_group(ng-class="{'has-error':active&&active!==1}")
+            .dl_row.text-center
+              label.control-label 欢迎您，#{cname}的成员
             if invitedUser
               .dl_row
                 .label_left

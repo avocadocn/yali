@@ -11,6 +11,8 @@ block content
         .hidden#invitedUserData(data-id="#{invitedUser.id}" data-email="#{invitedUser.email}"  data-realname="#{invitedUser.realname}" data-nickname="#{invitedUser.nickname}" data-active="#{invitedUser.mail_active}")
       form(role="form" name='active_form' action='/users/dealActive' method='post')
         .form-group.dl_sm_group(ng-class="{'has-error':active&&active!==1}")
+          .dl_row.text-center
+              label.control-label 欢迎您，#{cname}的成员
           .dl_row
             label.control-label(for="email") ＊企业邮箱
           if invitedUser
@@ -22,13 +24,13 @@ block content
             .dl_row.email_row
               input.email_row_email(type="text" name="host" ng-model="email" placeholder="email" ng-blur="mailCheck()" required)
               span.email_row_split @
-              if domains.length === 1
-                input(type="hidden" name="domain" ng-model="currentDomain" value="#{domains[0]}")
-                input.email_row_email(type="text" value="#{domains[0]}" disabled="true")
-              if domains.length > 1
-                select.email_row_email.dl_select(name="domain" ng-model="currentDomain" ng-change="mailCheck()")
-                  each domain in domains
-                    option(value="#{domain}" selected='selected')= domain
+              //- if domains.length === 1
+              //-   input(type="hidden" name="domain" ng-model="currentDomain" value="#{domains[0]}")
+              //-   input.email_row_email(type="text" value="#{domains[0]}" disabled="true")
+              //- if domains.length > 1
+              select.email_row_email.dl_select(name="domain" ng-model="currentDomain" ng-change="mailCheck()")
+                each domain in domains
+                  option(value="#{domain}" selected='selected')= domain
               input(type="text" name="index" ng-model="active" ng-show='false')
             if inviteQR
               input(type="hidden" name="inviteKey" value="#{inviteKey}")
@@ -65,22 +67,22 @@ block content
             .dl_row(ng-class="{'has-error':active_form.realname.$invalid && active_form.realName.$dirty}")
               label.control-label(for="realname") ＊#{__("REALNAME")}
               input.dl-form-control(type="text" placeholder="仅公司成员可见" name="realname" ng-model="realname" tooltip-placement="top" tooltip="{{active_form.realName.$invalid && active_form.realName.$dirty ? '请输入真实姓名':''}}" required)
-            .dl_row.clearfix
-              label.control-label(for="department") ＊#{__("DEPARTMENT")}
-              .select_right
-                .select_box(ng-if="department_exist")
-                  select.dl_select(data-placeholder="选择主部门" tabindex="2" ng-model="main_department" ng-options="d.name for d in main_departments" ng-change="selectMainDepartment(main_department)" ng-disabled="main_departments.length == 0")
-                  input(type="text" name="main_department_id" ng-model="main_department_id" ng-show="false")
-                  input(type="text" name="main_department_name" ng-model="main_department_name" ng-show="false")
-                .select_box(ng-if="department_exist")
-                  select.dl_select(data-placeholder="选择二级部门" tabindex="2" ng-model="child_department" ng-options="d.name for d in child_departments" ng-change="selectChildDepartment(child_department)" ng-disabled="child_departments.length == 0")
-                  input(type="text" name="child_department_id" ng-model="child_department_id" ng-show="false")
-                  input(type="text" name="child_department_name" ng-model="child_department_name" ng-show="false")
-                .select_box(ng-if="department_exist" last_child)
-                  select.dl_select(data-placeholder="选择三级部门" tabindex="2" ng-model="grandchild_department" ng-options="d.name for d in grandchild_departments" ng-change="selectGrandChildDepartment(grandchild_department)" ng-disabled="grandchild_departments.length == 0")
-                  input(type="text" name="grandchild_department_id" ng-model="grandchild_department_id" ng-show="false")
-                  input(type="text" name="grandchild_department_name" ng-model="grandchild_department_name" ng-show="false")
-                span.dl_vertical(ng-if="!department_exist") 贵公司还未创建部门,请等待部门创建后再选择!
+            //- .dl_row.clearfix
+            //-   label.control-label(for="department") ＊#{__("DEPARTMENT")}
+            //-   .select_right
+            //-     .select_box(ng-if="department_exist")
+            //-       select.dl_select(data-placeholder="选择主部门" tabindex="2" ng-model="main_department" ng-options="d.name for d in main_departments" ng-change="selectMainDepartment(main_department)" ng-disabled="main_departments.length == 0")
+            //-       input(type="text" name="main_department_id" ng-model="main_department_id" ng-show="false")
+            //-       input(type="text" name="main_department_name" ng-model="main_department_name" ng-show="false")
+            //-     .select_box(ng-if="department_exist")
+            //-       select.dl_select(data-placeholder="选择二级部门" tabindex="2" ng-model="child_department" ng-options="d.name for d in child_departments" ng-change="selectChildDepartment(child_department)" ng-disabled="child_departments.length == 0")
+            //-       input(type="text" name="child_department_id" ng-model="child_department_id" ng-show="false")
+            //-       input(type="text" name="child_department_name" ng-model="child_department_name" ng-show="false")
+            //-     .select_box(ng-if="department_exist" last_child)
+            //-       select.dl_select(data-placeholder="选择三级部门" tabindex="2" ng-model="grandchild_department" ng-options="d.name for d in grandchild_departments" ng-change="selectGrandChildDepartment(grandchild_department)" ng-disabled="grandchild_departments.length == 0")
+            //-       input(type="text" name="grandchild_department_id" ng-model="grandchild_department_id" ng-show="false")
+            //-       input(type="text" name="grandchild_department_name" ng-model="grandchild_department_name" ng-show="false")
+            //-     span.dl_vertical(ng-if="!department_exist") 贵公司还未创建部门,请等待部门创建后再选择!
             .dl_row.clearfix
               label.control-label(for="phone") #{__("PHONE")}
               input.dl-form-control(type="text" name="phone" ng-model="phone")
