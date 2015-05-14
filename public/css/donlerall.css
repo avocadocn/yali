@@ -1114,32 +1114,43 @@
   padding: 5px 10px;
 }
 .signup_phone .signup_header .logo {
-  width: 70%;
+  width: 50%;
   margin-left: 10%;
   margin-top: 20px;
-  max-width: 337px;
+  max-width: 240px;
 }
 .signup_phone .signup_step_one,
-.signup_phone .signup_step_three {
+.signup_phone .signup_step_three,
+.signup_phone .signup_step_eight {
   width: 100%;
   min-height: 80%;
 }
 .signup_phone .signup_step_one .input_box,
-.signup_phone .signup_step_three .input_box {
+.signup_phone .signup_step_three .input_box,
+.signup_phone .signup_step_eight .input_box {
   width: 100%;
   margin: 5% auto 0;
   padding: 0 5%;
   max-width: 539px;
 }
 .signup_phone .signup_step_one .input_box .board,
-.signup_phone .signup_step_three .input_box .board {
+.signup_phone .signup_step_three .input_box .board,
+.signup_phone .signup_step_eight .input_box .board,
+.signup_phone .signup_step_one .input_box .board_company,
+.signup_phone .signup_step_three .input_box .board_company,
+.signup_phone .signup_step_eight .input_box .board_company {
   background-image: url("/img/signup/dl_signup_board.gif");
   background-size: contain;
   background-repeat: no-repeat;
-  padding: 32% 10%;
+  padding: 32% 10% 18%;
+  text-align: center;
 }
 .signup_phone .signup_step_one .input_box .board input,
-.signup_phone .signup_step_three .input_box .board input {
+.signup_phone .signup_step_three .input_box .board input,
+.signup_phone .signup_step_eight .input_box .board input,
+.signup_phone .signup_step_one .input_box .board_company input,
+.signup_phone .signup_step_three .input_box .board_company input,
+.signup_phone .signup_step_eight .input_box .board_company input {
   border-radius: 5px;
   width: 90%;
   height: 40px;
@@ -1151,25 +1162,29 @@
   color: #b2b2b2;
 }
 .signup_phone .signup_step_one .input_box .board .search,
-.signup_phone .signup_step_three .input_box .board .search {
-  width: 90px;
+.signup_phone .signup_step_three .input_box .board .search,
+.signup_phone .signup_step_eight .input_box .board .search,
+.signup_phone .signup_step_one .input_box .board_company .search,
+.signup_phone .signup_step_three .input_box .board_company .search,
+.signup_phone .signup_step_eight .input_box .board_company .search {
+  width: 70%;
   height: 34px;
-  float: right;
-  margin-right: 5%;
-  background-image: url("/img/signup/dl_signup_search.png");
-  background-size: contain;
-  background-color: transparent;
-  background-repeat: no-repeat;
-  margin-top: 7%;
+  margin: 5% auto 0;
+  color: #fff;
+  background-color: #00a8ff;
+  border-radius: 5px;
+  font-size: 16px;
+  box-shadow: 1px 1px 2px rgba(1,1,1,0.3);
 }
 .signup_phone .signup_step_one .signup_bottom,
-.signup_phone .signup_step_three .signup_bottom {
+.signup_phone .signup_step_three .signup_bottom,
+.signup_phone .signup_step_eight .signup_bottom {
   width: 100%;
   min-height: 265px;
-  margin-top: 5%;
 }
 .signup_phone .signup_step_one .signup_bottom .signup_cloud,
-.signup_phone .signup_step_three .signup_bottom .signup_cloud {
+.signup_phone .signup_step_three .signup_bottom .signup_cloud,
+.signup_phone .signup_step_eight .signup_bottom .signup_cloud {
   width: 55%;
   max-width: 367px;
   float: right;
@@ -1279,6 +1294,121 @@
 }
 .signup_phone .signup_step_two .board .companies .nextPage {
   right: 0;
+}
+.signup_phone.step_3 .input_box,
+.signup_phone.step_8 .input_box {
+  margin: auto;
+  padding: 0 8%;
+}
+.signup_phone.step_3 .input_box .board_company,
+.signup_phone.step_8 .input_box .board_company {
+  background-image: url("/img/signup/dl_signup_board_2.gif");
+  padding: 36% 10% 44%;
+}
+.signup_phone.step_3 .input_box .board_company form,
+.signup_phone.step_8 .input_box .board_company form {
+  background-color: #fff;
+}
+.signup_phone.step_3 .input_box .board_company input,
+.signup_phone.step_8 .input_box .board_company input {
+  background-image: none;
+  margin-bottom: 6%;
+  background-color: #f2f5ea;
+  height: 34px;
+}
+.signup_phone.step_3 .input_box .board_company p,
+.signup_phone.step_8 .input_box .board_company p {
+  width: 90%;
+  margin: auto;
+}
+.signup_phone.step_3 .input_box .board_company .email_line,
+.signup_phone.step_8 .input_box .board_company .email_line {
+  margin-bottom: 6%;
+}
+.signup_phone.step_3 .input_box .board_company .email_line .username,
+.signup_phone.step_8 .input_box .board_company .email_line .username,
+.signup_phone.step_3 .input_box .board_company .email_line .email,
+.signup_phone.step_8 .input_box .board_company .email_line .email {
+  float: left;
+  color: #aaa;
+  font-size: 14px;
+}
+.signup_phone.step_3 .input_box .board_company .email_line .email,
+.signup_phone.step_8 .input_box .board_company .email_line .email {
+  margin-left: 10px;
+}
+.signup_phone.step_3 .input_box .board_company .form-group,
+.signup_phone.step_8 .input_box .board_company .form-group {
+  width: 90%;
+  margin: 0 auto 6%;
+}
+.signup_phone.step_3 .input_box .board_company .form-group .select_cover,
+.signup_phone.step_8 .input_box .board_company .form-group .select_cover {
+  width: 32%;
+  background-image: url("/img/signup/dl_select_triangle.png");
+  background-size: 10.5px 9px;
+  background-position-x: 93%;
+  background-position-y: 12px;
+  background-repeat: no-repeat;
+  background-color: #f2f5ea;
+  margin-right: 1.5%;
+  overflow: hidden;
+  border-radius: 5px;
+  border: 1px solid #eee;
+  float: left;
+  height: 34px;
+}
+.signup_phone.step_3 .input_box .board_company .form-group .select_cover select,
+.signup_phone.step_8 .input_box .board_company .form-group .select_cover select {
+  width: 120%;
+  height: 34px;
+  border: 0;
+  background-image: none;
+  background-color: transparent;
+  color: #b2b2b2;
+}
+.signup_phone.step_3 .input_box .board_company .form-group .select_cover[last-child],
+.signup_phone.step_8 .input_box .board_company .form-group .select_cover[last-child] {
+  margin-right: 0;
+}
+.signup_phone.step_3 .input_box .board_company .form-group button,
+.signup_phone.step_8 .input_box .board_company .form-group button {
+  border-radius: 5px;
+  padding: 7px 10px;
+  width: 48%;
+}
+.signup_phone.step_3 .input_box .board_company .next_step,
+.signup_phone.step_8 .input_box .board_company .next_step {
+  float: right;
+  margin-right: 5%;
+  width: 85px;
+  height: 34px;
+  border-radius: 5px;
+}
+.signup_phone.step_3 .signup_bottom,
+.signup_phone.step_8 .signup_bottom {
+  background-image: url("/img/signup/dl_signup_woman.gif");
+  background-size: 200.5px 208.5px;
+  background-repeat: no-repeat;
+  background-position: bottom left;
+  margin-top: -10%;
+}
+.signup_phone.step_8 .input_box {
+  padding: 0;
+}
+.signup_phone.step_8 .input_box .board_company {
+  padding: 0;
+  background-image: none;
+}
+.signup_phone.step_8 .input_box .board_company form {
+  background-color: transparent;
+}
+.signup_phone.step_8 .input_box .board_company .email_line .username,
+.signup_phone.step_8 .input_box .board_company .email_line .email {
+  color: #fff;
+}
+.signup_phone.step_8 .signup_bottom {
+  background: none;
 }
 .signup_phone.step_3 {
   background-color: #ef6767;
@@ -1748,37 +1878,25 @@
   float: right;
   margin-right: 40px;
   position: initial;
+  margin-left: 20px;
 }
-.signup_phone .signup_step_eight .board .board_content {
-  height: 140px;
-  width: 100%;
-  margin-top: 40px;
-  float: left;
-}
-.signup_phone .signup_step_eight .board .board_content .not_found {
+.signup_phone .signup_step_eight .board .not_found {
   color: #fff;
   font-size: 16px;
-  margin: auto;
+  margin-left: 5px;
   margin-bottom: 15px;
 }
-.signup_phone .signup_step_eight .board .board_content .select_line {
-  margin: auto;
-}
-.signup_phone .signup_step_eight .board .board_content .organize_btn {
-  border-radius: 5px;
-  width: 80%;
-  height: 42px;
-  margin: auto;
-  font-size: 18px;
-  margin-top: 15px;
-  color: #fff;
-  box-shadow: 2px 2px 2px rgba(0,0,0,0.3);
-  background-color: #94cd3e;
+.signup_phone .signup_step_eight .board .board_content {
+  height: 235px;
+  width: 100%;
+  margin-top: 20px;
+  float: left;
 }
 .signup_phone .signup_step_eight .signup_bottom_3 {
   background-image: url("/img/signup/dl_signup_bg_4.png");
   width: 299.5px;
   height: 199.5px;
+  margin-top: -30px;
 }
 .active_success,
 .active_success_phone {

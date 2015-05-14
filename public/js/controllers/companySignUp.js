@@ -175,6 +175,7 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$lo
       if(data.companies.length === 0) {
         $scope.step = 8;
         $location.hash('8');
+        getRegions();
       }
       else {
         $scope.step = 2;

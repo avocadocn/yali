@@ -245,12 +245,12 @@
     width 100%
     padding 5px 10px
     .logo
-      width 70%
+      width 50%
       margin-left 10%
       margin-top 20px
-      max-width 337px
-
-  .signup_step_one ,.signup_step_three
+      max-width 240px
+  //-三个页面的通用input样式
+  .signup_step_one ,.signup_step_three ,.signup_step_eight
     width 100%
     min-height 80%
     //- height 100%
@@ -259,11 +259,12 @@
       margin 5% auto 0
       padding 0 5%
       max-width 539px
-      .board
+      .board ,.board_company
         background-image url('/img/signup/dl_signup_board.gif')
         background-size contain
         background-repeat no-repeat
-        padding 32% 10%
+        padding 32% 10% 18%
+        text-align center
         input
           border-radius 5px
           width 90%
@@ -275,19 +276,25 @@
           padding 2px 10px
           color #b2b2b2
         .search
-          width 90px
+          width 70%
           height 34px
-          float right
-          margin-right 5%
-          background-image url('/img/signup/dl_signup_search.png')
-          background-size contain
-          background-color transparent
-          background-repeat no-repeat
-          margin-top 7%
+          margin 5% auto 0
+          color #fff
+          background-color #00A8FF
+          border-radius 5px
+          font-size 16px
+          box-shadow 1px 1px 2px rgba(1,1,1,.3)
+          //- float right
+          //- margin-right 5%
+          //- background-image url('/img/signup/dl_signup_search.png')
+          //- background-size contain
+          //- background-color transparent
+          //- background-repeat no-repeat
+          //- margin-top 7%
     .signup_bottom
       width 100%
       min-height 265px
-      margin-top 5%
+      //- margin-top 5%
       .signup_cloud
         width 55%
         max-width 367px
@@ -307,6 +314,7 @@
     background-size 128px 234.5px
     background-repeat no-repeat
     background-position bottom left
+  //- 2、8步通用背景样式
   &.step_2 ,&.step_8
     background-color #FFD54B
   .signup_step_two ,.signup_step_eight
@@ -379,6 +387,87 @@
           bottom 0
         .nextPage
           right 0
+  &.step_3, &.step_8
+    .input_box
+      margin auto
+      padding 0 8%
+      .board_company
+        background-image url('/img/signup/dl_signup_board_2.gif')
+        padding 36% 10% 44%
+        form
+          background-color #fff
+        input
+          background-image none
+          margin-bottom 6%
+          background-color #f2f5ea
+          height 34px
+        p
+          width 90%
+          margin auto
+        .email_line
+          margin-bottom 6%
+          .username ,.email
+            float left
+            color #aaa
+            font-size 14px
+          .email
+            margin-left 10px
+        .form-group
+          width 90%
+          margin 0 auto 6%
+          .select_cover
+            width 32%
+            background-image url('/img/signup/dl_select_triangle.png')
+            background-size 10.5px 9px
+            background-position-x 93%
+            background-position-y 12px
+            background-repeat no-repeat
+            background-color #f2f5ea
+            margin-right 1.5%
+            overflow hidden
+            border-radius 5px
+            border 1px solid #eee
+            float left
+            height 34px
+            select
+              width 120%
+              height 34px
+              border 0
+              background-image none
+              background-color transparent
+              color #b2b2b2
+          .select_cover[last-child]
+            margin-right 0
+          button
+            border-radius 5px
+            padding 7px 10px
+            width 48%
+        .next_step
+          float right
+          margin-right 5%
+          width 85px
+          height 34px
+          border-radius 5px
+
+    .signup_bottom
+      background-image url('/img/signup/dl_signup_woman.gif')
+      background-size 200.5px 208.5px
+      background-repeat no-repeat
+      background-position bottom left
+      margin-top -10%
+  &.step_8
+    .input_box
+      padding 0
+      .board_company
+        padding 0
+        background-image none
+        form
+          background-color transparent
+        .email_line
+          .username ,.email
+            color #fff
+    .signup_bottom
+      background none
   &.step_3
     background-color #ef6767
     background-image url('/img/signup/dl_signup_bg_3.gif')
@@ -730,32 +819,34 @@
         float right
         margin-right 40px
         position initial
+        margin-left 20px
+      .not_found
+        color #fff
+        font-size 16px
+        margin-left 5px
+        margin-bottom 15px
       .board_content
-        height 140px
+        height 235px
         width 100%
-        margin-top 40px
+        margin-top 20px
         float left
-        .not_found
-          color #fff
-          font-size 16px
-          margin auto
-          margin-bottom 15px
-        .select_line
-          margin auto
-        .organize_btn
-          border-radius 5px
-          width 80%
-          height 42px
-          margin auto
-          font-size 18px
-          margin-top 15px
-          color #fff
-          box-shadow 2px 2px 2px rgba(0, 0, 0, 0.3)
-          background-color #94cd3e
+        //- .select_line
+        //-   margin auto
+        //- .organize_btn
+        //-   border-radius 5px
+        //-   width 80%
+        //-   height 42px
+        //-   margin auto
+        //-   font-size 18px
+        //-   margin-top 15px
+        //-   color #fff
+        //-   box-shadow 2px 2px 2px rgba(0, 0, 0, 0.3)
+        //-   background-color #94cd3e
     .signup_bottom_3
       background-image url('/img/signup/dl_signup_bg_4.png')
       width 299.5px
       height 199.5px
+      margin-top -30px
 .active_success ,.active_success_phone
   width 556px
   height 600px

@@ -11,7 +11,7 @@ block content
       .input_box
         .board
           input(ng-model="email" ng-keypress="checkMail($event)" placeholder="请输入您的企业邮箱" required)
-          button.search(ng-click="checkMail()" ng-disabled="loading")
+          button.search(ng-click="checkMail()" ng-disabled="loading") 查&nbsp;&nbsp;找
       .signup_bottom
         //- img.signup_man(src="/img/signup/dl_signup_man.png")
         img.signup_cloud(src="/img/signup/dl_signup_cloud.gif")
@@ -83,14 +83,16 @@ block content
     .signup_step_eight(ng-show="step===8")
       .board.clearfix
         i.fa.fa-reply(ng-click="preStep()")
+        .not_found
+          p 你比同事先到，快来注册！
         .board_content
-          .not_found
-            p 很抱歉，没有找到您的公司
-          .select_line
-            .left
-            .middle
-            .right
-          button.organize_btn(ng-click="organize()") 我来组织吧
+          include partials/personal_step_three_phone
+          //- .select_line
+          //-   .left
+          //-   .middle
+          //-   .right
+          //- button.organize_btn(ng-click="organize()") 我来组织吧
+
       .signup_bottom_3
 
 block footExt
