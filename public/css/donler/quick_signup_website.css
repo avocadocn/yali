@@ -119,14 +119,10 @@
   margin-top: 40px;
 }
 .quick_signup_website_page .step_select_group .groups {
-  margin-top: 40px;
-  margin-left: 20px;
+  margin: 40px auto 20px;
 }
 .quick_signup_website_page .step_select_group .group {
-  float: left;
-  margin-right: 20px;
   margin-bottom: 20px;
-  width: 50px;
   text-align: center;
   cursor: pointer;
 }
@@ -141,8 +137,7 @@
   background-image: url("/img/signup/dl_signup_groups.png");
   background-repeat: no-repeat;
   background-size: 240px 240px;
-  margin: 0;
-  margin-bottom: 14px;
+  margin: 0 auto 14px;
   padding: 0px;
 }
 .quick_signup_website_page .step_select_group .group_1 {
@@ -232,11 +227,6 @@
 .quick_signup_website_page .step_select_group .group_type {
   margin-top: 10px;
   margin-bottom: 0;
-}
-.quick_signup_website_page .step_select_group .rg_finish_btn {
-  width: 100px;
-  margin: 40px auto 0;
-  border-radius: 5px;
 }
 .quick_signup_website_page .step_has_register .register_content {
   text-align: center;
