@@ -8045,7 +8045,8 @@ input.ng-invalid.ng-dirty {
 }
 @media (min-width: 768px) {
   .quick_signup_website_page .form-horizontal .form-group-lg .control-label {
-    padding-top: 14.333333px;
+    padding-top: 14px;
+    font-size: 14px;
   }
 }
 .quick_signup_website_page .debug_tools {
@@ -8130,6 +8131,9 @@ input.ng-invalid.ng-dirty {
 }
 .quick_signup_website_page .step_company .rg_remind_op .rg_btn_first {
   margin-right: 10px;
+}
+.quick_signup_website_page .step_company .rg_select_group .rg_select {
+  width: 27.6666%;
 }
 .quick_signup_website_page .step_company .rg_select_group .rg_form_control {
   float: left;

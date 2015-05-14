@@ -4,8 +4,8 @@ block contentExt
   .dl_container
     .quick_signup_website_page(ng-controller="quickSignupWebsiteController")
       //- TODO: 开发完毕后一定要移除
-      //- .debug_tools
-      //-   button(ng-repeat="step in ['search', 'select', 'notFound', 'personal', 'company', 'selectGroup', 'success', 'hasRegister']" ng-click="go(step)" ng-bind="step")
+      .debug_tools
+        button(ng-repeat="step in ['search', 'select', 'notFound', 'personal', 'company', 'selectGroup', 'success', 'hasRegister']" ng-click="go(step)" ng-bind="step")
       //- THE END OF TODO
 
       .step_search.register_box(ng-if="step === 'search'" ng-cloak)
@@ -91,8 +91,8 @@ block contentExt
         h1.text-center 请填写企业信息
         form.form-horizontal(name="companyRegisterForm")
           .form-group.form-group-lg
-            label.col-sm-3.control-label * 公司名称:
-            .col-sm-9
+            label.col-sm-2.control-label 公司名称
+            .col-sm-10
               input.form-control(ng-model="companyRegisterFormData.name" ng-blur="checkOfficeName()" placeholder="公司名称" required)
             p.rg_remind(ng-if="recommandCompany && !domain") 检测到同名公司，不过您的邮箱后缀不对哦，换公司邮箱搜索试试?
             .rg_remind_op.clearfix(ng-if="recommandCompany && !domain")
@@ -108,19 +108,19 @@ block contentExt
               button.rg_btn_block.pull-right(ng-click="ignoreRecommand()") 继续注册
               button.rg_btn_block.rg_btn_first.pull-right(ng-click="select(recommandCompany)") 点击加入
           .form-group.form-group-lg.rg_select_group.clearfix(ng-if="!recommandCompany")
-            label.col-sm-3.control-label * 公司地址:
-            .col-sm-3
+            label.col-sm-2.control-label 公司地址
+            .col-sm-3.rg_select
               select.form-control(name="province" ng-model="companyRegisterFormData.province" ng-options="province.value for province in provinces" ng-change="selcetProvince()")
-            .col-sm-3
+            .col-sm-3.rg_select
               select.form-control(name="city" ng-model="companyRegisterFormData.city" ng-options="city.value for city in cities" ng-change="selectCity()")
-            .col-sm-3
+            .col-sm-3.rg_select
               select.form-control(name="district" ng-model="companyRegisterFormData.district" ng-options="district.value for district in districts")
           .form-group.form-group-lg(ng-if="!recommandCompany")
-            label.col-sm-3.control-label * 密码:
-            .col-sm-9
+            label.col-sm-2.control-label 密码
+            .col-sm-10
               input.form-control(type="password" ng-model="companyRegisterFormData.password" placeholder="密码" ng-minlength=6 required)
           .form-group.form-group-lg.rg_next_group(ng-if="!recommandCompany")
-             .col-sm-9.col-sm-offset-3
+             .col-sm-10.col-sm-offset-2
               button.btn.btn-primary.btn-block.btn-lg(ng-disabled="companyRegisterForm.$invalid" ng-click="registerCompany()") 下一步
 
       .step_select_group.register_box(ng-if="step === 'selectGroup'" ng-cloak)
