@@ -415,7 +415,6 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
    * 注册步骤，可以是:
    * 'search' - 搜索
    * 'select' - 找到公司
-   * 'notFound' - 没有找到公司
    * 'company' - 快速注册公司（填写表单）
    * 'personal' - 个人注册（找到公司并选择个人注册的情况）
    * 'selectGroup' - 选择感兴趣项目
@@ -645,6 +644,7 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
       $scope.stepCompanyTitle = '请填写企业信息';
     }
     $scope.companyRegisterFormData = {
+      email: $scope.validEmail,
       name: '',
       province: '',
       city: '',
@@ -802,7 +802,7 @@ companySignUpApp.controller('quickSignupWebsiteController', ['$scope', '$rootSco
 
   $scope.registerCompany = function() {
     $http.post('/company/quickCreateUserAndCompany', {
-      email: $scope.validEmail,
+      email: $scope.companyRegisterFormData.email,
       name: $scope.companyRegisterFormData.name,
       password: $scope.companyRegisterFormData.password,
       province: $scope.companyRegisterFormData.province.value,

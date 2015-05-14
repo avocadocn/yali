@@ -5,7 +5,7 @@ block contentExt
     .quick_signup_website_page(ng-controller="quickSignupWebsiteController")
       //- TODO: 开发完毕后一定要移除
       //-.debug_tools
-        button(ng-repeat="step in ['search', 'select', 'notFound', 'personal', 'company', 'selectGroup', 'success', 'hasRegister']" ng-click="go(step)" ng-bind="step")
+        button(ng-repeat="step in ['search', 'select', 'personal', 'company', 'selectGroup', 'success', 'hasRegister']" ng-click="go(step)" ng-bind="step")
       //- THE END OF TODO
 
       .step_search.register_box(ng-if="step === 'search'" ng-cloak)
@@ -45,17 +45,6 @@ block contentExt
             a.rg_link(ng-click="go('search')") 返回重新搜索
             | &nbsp;或&nbsp;
             a.rg_link(ng-click="go('company')") 为您的企业进行注册
-
-      .step_not_found.register_box(ng-if="step === 'notFound'" ng-cloak)
-        h1 没有找到您的公司，快来注册吧
-        hr
-        .clearfix
-          button.btn.btn-default.btn-lg.pull-left(ng-click="go('search')")
-            i.fa.fa-arrow-left
-            | &nbsp;返回
-          button.btn.btn-primary.btn-lg.pull-right(ng-click="go('company')")
-            | 去注册&nbsp;
-            i.fa.fa-arrow-right
 
       .step_personal.register_box(ng-if="step === 'personal'" ng-cloak)
         p: a.rg_link(ng-click="go('select')")
@@ -105,6 +94,14 @@ block contentExt
         h1.text-center(ng-bind="stepCompanyTitle")
         form.form-horizontal(name="companyRegisterForm")
           .form-group.form-group-lg
+            label.col-sm-2.control-label 账号
+            .col-sm-10
+              input.form-control(type="email" ng-model="companyRegisterFormData.email" placeholder="邮箱" required)
+          .form-group.form-group-lg
+            label.col-sm-2.control-label 密码
+            .col-sm-10
+              input.form-control(type="password" ng-model="companyRegisterFormData.password" placeholder="密码" ng-minlength=6 required)
+          .form-group.form-group-lg
             label.col-sm-2.control-label 公司名称
             .col-sm-10
               input.form-control(ng-model="companyRegisterFormData.name" ng-blur="checkOfficeName()" placeholder="公司名称" required)
@@ -129,10 +126,6 @@ block contentExt
               select.form-control(name="city" ng-model="companyRegisterFormData.city" ng-options="city.value for city in cities" ng-change="selectCity()")
             .col-sm-3.rg_select
               select.form-control(name="district" ng-model="companyRegisterFormData.district" ng-options="district.value for district in districts")
-          .form-group.form-group-lg(ng-if="!recommandCompany")
-            label.col-sm-2.control-label 密码
-            .col-sm-10
-              input.form-control(type="password" ng-model="companyRegisterFormData.password" placeholder="密码" ng-minlength=6 required)
           .form-group.form-group-lg.rg_next_group(ng-if="!recommandCompany")
              .col-sm-10.col-sm-offset-2
               button.btn.btn-primary.btn-block.btn-lg(ng-disabled="companyRegisterForm.$invalid" ng-click="registerCompany()") 下一步
