@@ -1972,6 +1972,33 @@
 .active_success_phone .active_success_button {
   width: 250px;
 }
+.active_error_phone {
+  width: 95%;
+  height: 500px;
+  border: 3px solid #f5ab95;
+  border-radius: 10px;
+  margin: 20px auto;
+  padding: 10px 20px;
+}
+.active_error_phone .error_icon {
+  margin-right: 0;
+  font-size: 80px;
+  color: #f5ab95;
+}
+.active_error_phone .error_title {
+  margin-left: 16px;
+  font-size: 24px;
+  line-height: 80px;
+}
+.active_error_phone .active_error_divider {
+  height: 2px;
+  margin: 12px 0 27px;
+  background-color: #f5ab95;
+}
+.active_error_phone .active_error_msg {
+  font-size: 18px;
+  line-height: 1.5;
+}
 
 .dl_detail_main {
   width: 660px;

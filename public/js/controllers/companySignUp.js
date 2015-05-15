@@ -1106,3 +1106,19 @@ companySignUpApp.controller('userSignupController',['$http','$scope','$rootScope
     $scope.grandchild_department_name = $scope.child_department.name;
   };
 }]);
+
+companySignUpApp.controller('activeFailController', ['$scope', '$http', function($scope, $http) {
+  var resendEmail = document.getElementById('resend_email');
+
+  $scope.resend = function() {
+    $http.post('/users/resend/activeEmail',{email: resendEmail.value})
+      .success(function(data,status){
+        $scope.isFinishResend = true;
+      })
+      .error(function(data, status) {
+        $scope.resendErrorMsg = (data && data.msg) || '操作失败，这可能是网络问题或服务器错误造成的。'
+      });
+  };
+
+}]);
+

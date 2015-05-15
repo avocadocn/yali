@@ -588,6 +588,14 @@ exports.validate = function(req, res) {
 };
 //快速注册进入验证，已经填好公司信息和个人信息，只需要将两者激活
 exports.quickvalidate = function(req, res) {
+  var renderErrorPage = function(data) {
+    if (isMobile(req)) {
+      res.render('company/validate/active_error_mobile', data);
+    }
+    else {
+      res.render('company/company_validate_error', data);
+    }
+  };
 
   var key = req.query.key;
   var _id = req.query.id;
@@ -604,10 +612,10 @@ exports.quickvalidate = function(req, res) {
             var saveCompany = function () {
               company.save(function(err) {
                 if (err) {
-                  console.log(err);
-                  res.render('company/company_validate_error', {
+                  console.log(err.stack);
+                  renderErrorPage({
                     title: '验证失败',
-                    message: '未知错误!'
+                    message: '服务器错误。'
                   });
                 } else {
                   User.findOne({username:company.info.email}).exec()
@@ -626,33 +634,32 @@ exports.quickvalidate = function(req, res) {
                           });
                           if (isMobile(req)) {res.render('company/validate/active_success_mobile');}
                           else {res.render('company/validate/active_success');}
-                            
                         }
                         else{
-                          res.render('company/company_validate_error', {
+                          renderErrorPage({
                             title: '验证失败',
-                            message: '未知错误!'
+                            message: '服务器错误。'
                           });
                         }
                       })
                     }
                     else{
-                      res.render('company/company_validate_error', {
-                        title: '验证失败',
-                        message: '该公司激活成功，但对应的个人不存在!'
+                      renderErrorPage({
+                        title: '激活成功',
+                        isOnlyCompanySuccess: true,
+                        isFail: false
                       });
                     }
                   })
-                  .then(null,function (err) {
-                    console.log(err)
-                    res.render('company/company_validate_error', {
+                  .then(null, function (err) {
+                    console.log(err.stack);
+                    renderErrorPage({
                       title: '验证失败',
-                      message: '未知错误!'
+                      message: '服务器错误。'
                     });
-                  })
-                  
+                  });
                 }
-              })
+              });
             };
             if(!company.invite_qrcode){
               var qrDir = '/img/qrcode/companyinvite/';
@@ -670,9 +677,10 @@ exports.quickvalidate = function(req, res) {
               saveCompany();
             }
           } else {
-            res.render('company/company_validate_error', {
+            renderErrorPage({
               title: '验证失败',
-              message: '验证码不正确!'
+              isInviteKeyInvalid: true,
+              resendEmail: company.login_email
             });
           }
         } else {
@@ -680,9 +688,9 @@ exports.quickvalidate = function(req, res) {
           else {res.render('company/validate/active_success');}
         }
       } else {
-        res.render('company/company_validate_error', {
+        renderErrorPage({
           title: '验证失败',
-          message: '该公司不存在!'
+          isNeedRegister: true
         });
       }
     });
