@@ -20,7 +20,7 @@ block content
       //- 选择公司或选择自己注册
       .board
         img.search_title(src="/img/signup/dl_signup_search_title.png")
-        i.fa.fa-reply(ng-click="preStep()")
+        //- i.fa.fa-reply(ng-click="preStep()")
         .companies
           .company.clearfix(ng-repeat="company in companies" ng-click="select(company)")
             span.cname {{company.name}}
@@ -82,9 +82,9 @@ block content
       include partials/personal_step_seven_phone
     .signup_step_eight(ng-show="step===8")
       .board.clearfix
-        i.fa.fa-reply(ng-click="preStep()")
-        .not_found
-          p 你比同事先到，快来注册！
+        //- i.fa.fa-reply(ng-click="preStep()")
+        img.not_found(src="/img/signup/dl_signup_comeon.png")
+        //- p 你比同事先到，快来注册！
         .board_content
           include partials/personal_step_three_phone
           //- .select_line

@@ -422,13 +422,6 @@
   padding: 50px 15px 0;
   margin: auto;
 }
-.signup_phone .signup_step_two .board .fa-reply,
-.signup_phone .signup_step_eight .board .fa-reply {
-  margin-left: 30px;
-  position: absolute;
-  color: #fff;
-  font-size: 20px;
-}
 .signup_phone .signup_step_two .signup_bottom_2,
 .signup_phone .signup_step_eight .signup_bottom_2,
 .signup_phone .signup_step_two .signup_bottom_3,
@@ -1073,18 +1066,13 @@
 }
 .signup_phone .signup_step_eight .board {
   text-align: center;
-}
-.signup_phone .signup_step_eight .board .fa-reply {
-  float: right;
-  margin-right: 40px;
-  position: initial;
-  margin-left: 20px;
+  padding-top: 45px;
 }
 .signup_phone .signup_step_eight .board .not_found {
-  color: #fff;
-  font-size: 16px;
+  width: 125px;
+  height: 36px;
+  float: left;
   margin-left: 5px;
-  margin-bottom: 15px;
 }
 .signup_phone .signup_step_eight .board .board_content {
   height: 235px;
