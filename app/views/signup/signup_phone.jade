@@ -5,7 +5,7 @@ block content
   .signup_phone.clearfix(ng-controller="userSignupMobileController" class="step_{{step}}")
     .signup_header
       img.logo(src="/img/signup/dl_logo_signup.png")
-    
+      button.back_btn(ng-click="preStep()" ng-if="step>1" ng-cloak) 返回
     .signup_step_one(ng-show="step===1")
       //- check邮箱
       .input_box

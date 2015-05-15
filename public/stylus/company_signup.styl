@@ -249,6 +249,11 @@
       margin-left 10%
       margin-top 20px
       max-width 240px
+    .back_btn
+      background-color transparent
+      color white
+      float right
+      margin-top 20px
   //-三个页面的通用input样式
   .signup_step_one ,.signup_step_three ,.signup_step_eight
     width 100%
@@ -267,7 +272,7 @@
         text-align center
         input
           border-radius 5px
-          width 90%
+          width 95%
           height 40px
           display block
           margin auto
@@ -275,10 +280,21 @@
           font-size 14px
           padding 2px 10px
           color #b2b2b2
+  &.step_1
+    background-image url('/img/signup/dl_signup_man.gif')
+    background-size 128px 234.5px
+    background-repeat no-repeat
+    background-position bottom left
+    .signup_step_one
+      .input_box
+        .board
+          padding-top 28%
+          input
+            height 45px
         .search
           width 70%
           height 34px
-          margin 5% auto 0
+          margin 6% auto 0
           color #fff
           background-color #00A8FF
           border-radius 5px
@@ -293,11 +309,6 @@
         max-width 367px
         float right
         margin-right 5%
-  &.step_1
-    background-image url('/img/signup/dl_signup_man.gif')
-    background-size 128px 234.5px
-    background-repeat no-repeat
-    background-position bottom left
   //- 2、8步通用背景样式
   &.step_2 ,&.step_8
     background-color #FFD54B
@@ -396,8 +407,12 @@
             font-size 14px
           .email
             margin-left 10px
+            width 78%
+            overflow hidden
+            text-overflow ellipsis
+            white-space nowrap
         .form-group
-          width 90%
+          width 95%
           margin 0 auto 6%
           .select_cover
             width 32%

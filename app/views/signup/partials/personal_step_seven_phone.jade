@@ -46,5 +46,5 @@
         .signup_container
           .sinup_label 
           .sinup_input
-            button.signup_button(ng-click="signupUser()" ng-disabled="active_form.$invalid || inviteKeyCorrect === 2 || !inviteKeyCorrect") 免费注册个人账号
+            button.signup_button(ng-click="signupUser()" ng-disabled="active_form.$invalid || (inviteKeyCorrect === 2&&!hideInviteKey)") 免费注册个人账号
 .signup_bottom

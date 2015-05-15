@@ -322,6 +322,12 @@
   margin-top: 20px;
   max-width: 240px;
 }
+.signup_phone .signup_header .back_btn {
+  background-color: transparent;
+  color: #fff;
+  float: right;
+  margin-top: 20px;
+}
 .signup_phone .signup_step_one,
 .signup_phone .signup_step_three,
 .signup_phone .signup_step_eight {
@@ -355,7 +361,7 @@
 .signup_phone .signup_step_three .input_box .board_company input,
 .signup_phone .signup_step_eight .input_box .board_company input {
   border-radius: 5px;
-  width: 90%;
+  width: 95%;
   height: 40px;
   display: block;
   margin: auto;
@@ -364,40 +370,37 @@
   padding: 2px 10px;
   color: #b2b2b2;
 }
-.signup_phone .signup_step_one .input_box .board .search,
-.signup_phone .signup_step_three .input_box .board .search,
-.signup_phone .signup_step_eight .input_box .board .search,
-.signup_phone .signup_step_one .input_box .board_company .search,
-.signup_phone .signup_step_three .input_box .board_company .search,
-.signup_phone .signup_step_eight .input_box .board_company .search {
+.signup_phone.step_1 {
+  background-image: url("/img/signup/dl_signup_man.gif");
+  background-size: 128px 234.5px;
+  background-repeat: no-repeat;
+  background-position: bottom left;
+}
+.signup_phone.step_1 .signup_step_one .input_box .board {
+  padding-top: 28%;
+}
+.signup_phone.step_1 .signup_step_one .input_box .board input {
+  height: 45px;
+}
+.signup_phone.step_1 .signup_step_one .input_box .search {
   width: 70%;
   height: 34px;
-  margin: 5% auto 0;
+  margin: 6% auto 0;
   color: #fff;
   background-color: #00a8ff;
   border-radius: 5px;
   font-size: 16px;
   box-shadow: 1px 1px 2px rgba(1,1,1,0.3);
 }
-.signup_phone .signup_step_one .signup_bottom,
-.signup_phone .signup_step_three .signup_bottom,
-.signup_phone .signup_step_eight .signup_bottom {
+.signup_phone.step_1 .signup_bottom {
   width: 100%;
   min-height: 265px;
 }
-.signup_phone .signup_step_one .signup_bottom .signup_cloud,
-.signup_phone .signup_step_three .signup_bottom .signup_cloud,
-.signup_phone .signup_step_eight .signup_bottom .signup_cloud {
+.signup_phone.step_1 .signup_bottom .signup_cloud {
   width: 55%;
   max-width: 367px;
   float: right;
   margin-right: 5%;
-}
-.signup_phone.step_1 {
-  background-image: url("/img/signup/dl_signup_man.gif");
-  background-size: 128px 234.5px;
-  background-repeat: no-repeat;
-  background-position: bottom left;
 }
 .signup_phone.step_2,
 .signup_phone.step_8 {
@@ -539,10 +542,14 @@
 .signup_phone.step_3 .input_box .board_company .email_line .email,
 .signup_phone.step_8 .input_box .board_company .email_line .email {
   margin-left: 10px;
+  width: 78%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .signup_phone.step_3 .input_box .board_company .form-group,
 .signup_phone.step_8 .input_box .board_company .form-group {
-  width: 90%;
+  width: 95%;
   margin: 0 auto 6%;
 }
 .signup_phone.step_3 .input_box .board_company .form-group .select_cover,

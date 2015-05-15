@@ -112,7 +112,10 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$lo
   }
   $scope.isQQBrowser = isQQBrowser();
   $scope.isAndroidBrowser = isAndroidBrowser();
-  // alert($scope.isAndroidBrowser);
+  
+  $scope.preStep = function() {
+    history.back();
+  }
 
   //- step 1
   $scope.step = 1;
@@ -210,10 +213,10 @@ companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$lo
       });
     }
   };
-  $scope.preStep = function() {
-    $scope.step = 1 ;
-    $location.hash('1');
-  }
+  // $scope.preStep = function() {
+  //   $scope.step = 1 ;
+  //   $location.hash('1');
+  // }
   $scope.select = function(company) {
     $scope.selectedCompany = company;
     $scope.userInfo = {
