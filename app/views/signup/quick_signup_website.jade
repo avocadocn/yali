@@ -97,7 +97,7 @@ block contentExt
           .form-group.form-group-lg
             label.col-sm-2.control-label 账号
             .col-sm-10
-              input.form-control(type="email" ng-model="companyRegisterFormData.email" placeholder="邮箱" required)
+              p.form-control-static(ng-bind="companyRegisterFormData.email")
           .form-group.form-group-lg
             label.col-sm-2.control-label 密码
             .col-sm-10
