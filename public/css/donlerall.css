@@ -1302,7 +1302,7 @@
 }
 .signup_phone.step_3 .input_box .board_company,
 .signup_phone.step_8 .input_box .board_company {
-  background-image: url("/img/signup/dl_signup_board_2.gif");
+  background-image: url("/img/signup/dl_signup_board_2.png");
   padding: 36% 10% 44%;
 }
 .signup_phone.step_3 .input_box .board_company form,
@@ -1411,7 +1411,7 @@
   padding: 0 8%;
 }
 .signup_phone.step_3 .signup_step_three .input_box .board {
-  background-image: url("/img/signup/dl_signup_board_2.gif");
+  background-image: url("/img/signup/dl_signup_board_2.png");
   padding: 40% 10%;
 }
 .signup_phone.step_3 .signup_step_three .input_box .board form {
