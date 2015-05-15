@@ -3,10 +3,10 @@ block headExt
   meta(name="viewport" content="width=device-width,initial-scale=1, user-scalable=no")
 block content
   .signup_phone.clearfix(ng-controller="userSignupMobileController" class="step_{{step}}")
-    .signup_header
+    .signup_header(ng-if="step!==4" ng-cloak)
       img.logo(src="/img/signup/dl_logo_signup.png")
       button.back_btn(ng-click="preStep()" ng-if="step>1" ng-cloak) 返回
-    .signup_step_one(ng-show="step===1")
+    .signup_step_one(ng-show="step===1 && loadFinished" ng-cloak)
       //- check邮箱
       .input_box
         .board
@@ -16,14 +16,14 @@ block content
         //- img.signup_man(src="/img/signup/dl_signup_man.png")
         img.signup_cloud(src="/img/signup/dl_signup_cloud.gif")
 
-    .signup_step_two(ng-show="step===2")
+    .signup_step_two(ng-show="step===2 && loadFinished" ng-cloak)
       //- 选择公司或选择自己注册
       .board
         img.search_title(src="/img/signup/dl_signup_search_title.png")
         //- i.fa.fa-reply(ng-click="preStep()")
         .companies
           .company.clearfix(ng-repeat="company in companies" ng-click="select(company)")
-            span.cname {{company.name}}
+            span.cname(ng-cloak) {{company.name}}
             i.fa.fa-chevron-right.pull-right
           span.prePage(ng-click="prePage()" ng-if="hasPrevious") 上一页
           span.nextPage(ng-click="nextPage()" ng-if="hasNext") 下一页
@@ -31,10 +31,10 @@ block content
         img.notfound(src="/img/signup/dl_signup_notfound.png")
         button.organize(ng-click="organize()")
     
-    .signup_step_three(ng-class="{'isQQBrowser':isQQBrowser, 'isAndroid':isAndroidBrowser}" ng-show="step===3")
+    .signup_step_three(ng-class="{'isQQBrowser':isQQBrowser, 'isAndroid':isAndroidBrowser}" ng-show="step===3 && loadFinished" ng-cloak)
       //- 填入公司资料及密码
       include partials/personal_step_three_phone
-    .signup_step_four(ng-show="step===4")
+    .signup_step_four(ng-show="step===4 && loadFinished" ng-cloak)
       .board
         i.fa.fa-hand-o-right
         .select_label 选择您感兴趣的项目
@@ -43,10 +43,10 @@ block content
           .middle
           .right
         .groups.clearfix
-          .group(ng-repeat='group in groups' ng-class="{'active':group.selected}" ng-click="selectType($index)")
+          .group(ng-repeat='group in groups' ng-class="{'active':group.selected}" ng-click="selectType($index)" ng-cloak)
             .img_contain(class='group_'+'{{group._id}}' )
             .shadow(ng-class="{'active': group.selected}")
-            label(for='{{group._id}}') {{group.groupType}}
+            label(for='{{group._id}}' ng-cloak) {{group.groupType}}
         .select_line
           .left
           .middle
@@ -54,7 +54,7 @@ block content
         .signup_button
           button.sinup_team_button(ng-click="createTeams()") 完&nbsp;&nbsp;成
       //- include partials/personal_step_four_phone
-    .signup_step_five(ng-show="step===5")
+    .signup_step_five(ng-show="step===5 && loadFinished" ng-cloak)
       //- 注册成功
       .board
         .board_content
@@ -64,7 +64,7 @@ block content
             span 去邮箱
             i.fa.fa-chevron-right
     //- 支线系列
-    .signup_step_six(ng-show="step===6")
+    .signup_step_six(ng-show="step===6 && loadFinished" ng-cloak)
       //- 已经注册过
       .board
         .board_content
@@ -77,9 +77,9 @@ block content
           //- 公司已注册未激活，去邮箱收激活信
           a(ng-href="http://mail.{{emailDomain}}" ng-if="emailDomain")
             img.nomail(src="/img/signup/dl_signup_verimail.png")
-    .signup_step_seven(ng-show="step===7")
+    .signup_step_seven(ng-show="step===7 && loadFinished" ng-cloak)
       include partials/personal_step_seven_phone
-    .signup_step_eight(ng-show="step===8")
+    .signup_step_eight(ng-show="step===8 && loadFinished" ng-cloak)
       .board.clearfix
         //- i.fa.fa-reply(ng-click="preStep()")
         img.not_found(src="/img/signup/dl_signup_comeon.png")

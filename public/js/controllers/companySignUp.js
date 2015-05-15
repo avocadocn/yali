@@ -103,6 +103,7 @@ companySignUpApp.controller('signupController',['$http','$scope','$rootScope',fu
 
 companySignUpApp.controller('userSignupMobileController', ['$http','$scope','$location',function ($http,$scope,$location) {
   //判断浏览器
+  $scope.loadFinished = true;
   var ua = navigator.userAgent.toLowerCase();
   var isQQBrowser = function(){
     return (/micromessenger/.test(ua)) ? true : (/mqqbrowser/.test(ua)) ;
