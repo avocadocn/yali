@@ -4,12 +4,31 @@ append headExt
   link(rel="stylesheet" href="/css/company_signup.css")
 
 block contentExt
-  .dl_container.clearfix
+  .dl_container.clearfix(ng-controller="activeFailController")
     .signup_row
       .block
         .signup_title.company_title
           span 企业注册
-        .signup_tips
-          p 验证错误
-        if (message && message.length)
+        if message
           .signup_tips= message
+        if isNeedRegister
+          .signup_tips
+            | 您还没有注册，快来
+            a(href="/company/signup") 注册
+            | 吧。
+        if isOnlyCompanySuccess
+          .signup_tips
+            | 公司账号激活成功，您现在可以
+            a(href="/company/signup") 注册个人账号
+            | 。
+        if isInviteKeyInvalid
+          .signup_tips
+            | 验证码不正确，请
+            a(ng-click="resend()") 重新收取激活信
+            | 。
+          input#resend_email(type="hidden" value="#{resendEmail}")
+          .signup_tips(ng-if="isFinishResend") 已重新发送激活邮件
+          .signup_tips.text-danger(ng-if="resendErrorMsg" ng-bind="resendErrorMsg")
+
+block footExt
+  script(src="/js/controllers/companySignUp.js")

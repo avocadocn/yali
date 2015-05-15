@@ -28,7 +28,8 @@ block content
     if isInviteKeyInvalid
       .active_error_msg
         | 验证码不正确，请
-        a(ng-click="resend()") 重新收取激活信。
+        a(ng-click="resend()") 重新收取激活信
+        | 。
       input#resend_email(type="hidden" value="#{resendEmail}")
       .active_error_msg(ng-if="isFinishResend") 已重新发送激活邮件
       .active_error_msg.text-danger(ng-if="resendErrorMsg" ng-bind="resendErrorMsg")
