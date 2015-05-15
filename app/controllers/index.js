@@ -78,6 +78,11 @@ exports.contact = function(req, res) {
 };
 
 
+var isMobile = function(req) {
+  var deviceAgent = req.headers["user-agent"].toLowerCase();
+  return deviceAgent.match(/(iphone|ipod|ipad|android)/);
+};
+
 exports.appdownload = function(req, res) {
   var deviceAgent = req.headers["user-agent"].toLowerCase();
   var weixin = deviceAgent.match(/micromessenger/);
