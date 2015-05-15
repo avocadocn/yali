@@ -953,11 +953,7 @@
   padding-right: 10px;
 }
 .signup_phone.step_7 {
-  background-color: #2cc3c7;
-  background-image: url("/img/signup/dl_signup_sun.gif");
-  background-repeat: no-repeat;
-  background-size: 212.5px 78.5px;
-  background-position: 90% 30px;
+  background-color: #ffd54b;
 }
 .signup_phone .signup_step_seven {
   width: 100%;
@@ -965,13 +961,11 @@
 .signup_phone .signup_step_seven .board {
   margin: 14px auto 0;
   width: 95%;
-  min-width: 305px;
-  min-height: 430px;
-  padding: 10% 0 20%;
-  background-image: url("/img/signup/dl_signup_input_box.png");
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
+  min-width: 300px;
+  min-height: 370px;
+  padding: 10% 0 10%;
+  border-radius: 10px;
+  background-color: #2ac464;
 }
 .signup_phone .signup_step_seven .board .company_input_box {
   width: 50%;
@@ -991,7 +985,7 @@
 .signup_phone .signup_step_seven .board .company_input_box .signup_container .sinup_label label {
   float: right;
   font-size: 14px;
-  color: #ccc;
+  color: #fff;
   font-weight: 100;
 }
 .signup_phone .signup_step_seven .board .company_input_box .signup_container .sinup_company_name,
@@ -1007,6 +1001,7 @@
 .signup_phone .signup_step_seven .board .company_input_box .signup_container .sinup_input {
   float: right;
   width: 70%;
+  color: #fff;
 }
 .signup_phone .signup_step_seven .board .company_input_box .signup_container .sinup_input input {
   border-radius: 5px;
@@ -1020,7 +1015,7 @@
   color: #b2b2b2;
 }
 .signup_phone .signup_step_seven .board .company_input_box .signup_container .sinup_input a {
-  color: #2cc3c7;
+  color: #28689b;
 }
 .signup_phone .signup_step_seven .board .company_input_box .signup_container .sinup_input .signup_button {
   border-radius: 5px;
@@ -1028,11 +1023,11 @@
   height: 30px;
   font-size: 14px;
   color: #fff;
-  background-color: #2cc3c7;
+  background-color: #ff9f41;
   box-shadow: 1px 1px 2px rgba(1,1,1,0.3);
 }
 .signup_phone .signup_step_seven .board .company_input_box .signup_container .sinup_input .signup_button:disabled {
-  opacity: 0.65;
+  opacity: 0.9;
 }
 .signup_phone .signup_step_seven .board .company_input_box .signup_container .key_tips {
   float: right;
