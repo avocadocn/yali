@@ -109,7 +109,7 @@ block panel
     +campaignsContainer('挑战','recent_competition','competitions',false)
     +campaignsContainer('正在进行','recent_now','nowCampaigns',true)
     +campaignsContainer('即将开始','recent_join','recentJoinedCampaigns',true)
-    .user_campaigns_container(ng-if="campaignLoaded && (noCampagins || (recentUnjoinedCampaigns.length==0 && recentJoinedCampaigns.length == 0 && competitions.length == 0 && nowCampaigns.length == 0))")
+    .user_campaigns_container.noCampagins(ng-if="nowShow=='all' && campaignLoaded && (noCampagins || (recentUnjoinedCampaigns.length==0 && recentJoinedCampaigns.length == 0 && competitions.length == 0 && nowCampaigns.length == 0))")
       .recent_unjoin
         .no_campaign
           .no_campaign_tip

@@ -429,6 +429,9 @@
   width: 570px;
   float: right;
 }
+.user_page .dl_container .main .campaigns_container .user_campaigns_container.noCampagins {
+  margin-top: 0px;
+}
 .user_page .dl_container .main .campaigns_container .user_campaigns_container {
   background-color: #fff;
   float: left;
