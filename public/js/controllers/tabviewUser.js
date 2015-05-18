@@ -302,6 +302,7 @@ tabViewUser.controller('recentCampaignController',['$http', '$scope', '$rootScop
     $scope.nowShow ='all';
     var data = document.getElementById('user_data').dataset;
     $scope.campaignLoaded = false;
+    $scope.noCampagins = false;
     $rootScope.uid = data.uid;
     $http({
       method:'get',
@@ -314,6 +315,9 @@ tabViewUser.controller('recentCampaignController',['$http', '$scope', '$rootScop
         $rootScope.competitions = data.campaigns[3];
         $rootScope.nowCampaigns = data.campaigns[2];
         // $scope.topCampaign = data.campaigns[1][0];
+      } else if(data.result === 0) {
+        $scope.campaignLoaded = true;
+        $scope.noCampagins = true;
       }
     }).error(function(data,status){
       console.log('DATA ERROR');
