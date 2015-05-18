@@ -6,6 +6,7 @@ block content
     .signup_header(ng-if="step!==4" ng-cloak)
       img.logo(src="/img/signup/dl_logo_signup.png")
       button.back_btn(ng-click="preStep()" ng-if="step>1" ng-cloak) 返回
+      img.universe(src="/img/signup/dl_signup_universe.png")
     .signup_step_one(ng-show="step===1 && loadFinished" ng-cloak)
       //- check邮箱
       .input_box

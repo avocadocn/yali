@@ -1119,6 +1119,12 @@
   margin: 20px auto 0;
   max-width: 240px;
 }
+.signup_phone .signup_header .universe {
+  width: 150px;
+  height: 40px;
+  display: block;
+  margin: 10px auto 0;
+}
 .signup_phone .signup_header .back_btn {
   background-color: transparent;
   color: #fff;
