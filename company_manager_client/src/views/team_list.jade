@@ -14,7 +14,7 @@
             a.btn.btn-primary(ui-sref="manager.pointTeamLeader({teamId:team._id})") 任命队长
     .row
       .col-xs-12
-        .box.box-primary(ng-show="leaderTeams.length")
+        .box.box-primary(bindonce="leaderTeams" bo-show="leaderTeams.length")
           .box-header
             h3.box-title 有队长的小队
           .box-body.no-padding
@@ -33,13 +33,13 @@
                   th 任命
               tbody
                 tr(ng-repeat="team in leaderTeams")
-                  td {{team.name}}
-                  td {{team.leaders[0].nickname}}
-                  td {{team.memberCount}}
-                  td {{team.count.last_month_campaign}}
-                  td {{team.count.total_campaign}}
-                  td {{team.score_rank.score}}
-                  td {{team.score.total}}
+                  td(bo-bind="team.name")
+                  td(bo-bind="team.leaders[0].nickname")
+                  td(bo-bind="team.memberCount")
+                  td(bo-bind="team.count.last_month_campaign")
+                  td(bo-bind="team.count.total_campaign")
+                  td(bo-bind="team.score_rank.score")
+                  td(bo-bind="team.score.total")
                   td
                     button.btn.btn-xs.btn-link(ng-click="detail('leaderTeams', $index)") 详情
                   td
@@ -48,7 +48,7 @@
                     a(ui-sref="manager.pointTeamLeader({teamId:team._id})") 任命队长
     .row
       .col-xs-12
-        .box.box-primary(ng-show="closedTeams.length")
+        .box.box-primary(bindonce="closedTeams" bo-show="closedTeams.length")
           .box-header
             h3.box-title 被关闭的小队
           .box-body.no-padding
@@ -67,13 +67,13 @@
                   //- th.center 任命
               tbody
                 tr(ng-repeat="team in closedTeams")
-                  td {{team.name}}
-                  td {{team.leaders[0].nickname}}
-                  td {{team.memberCount}}
-                  td {{team.count.last_month_campaign}}
-                  td {{team.count.total_campaign}}
-                  td {{team.score_rank.score}}
-                  td {{team.score.total}}
+                  td(bo-bind="team.name")
+                  td(bo-bind="team.leaders[0].nickname")
+                  td(bo-bind="team.memberCount")
+                  td(bo-bind="team.count.last_month_campaign")
+                  td(bo-bind="team.count.total_campaign")
+                  td(bo-bind="team.score_rank.score")
+                  td(bo-bind="team.score.total")
                   td
                     button.btn.btn-xs.btn-link(ng-click="detail('leaderTeams', $index)") 详情
                   td
@@ -86,41 +86,41 @@ script(type="text/ng-template" id="teamDetailModal.html")
       span(aria-hidden="true") &times;
     h4.modal-title 小队详情
   .modal-body
-    .team_detail_modal(ng-cloak)
+    .team_detail_modal(bindonce="team")
       .row
         .col-md-2 队名
-        .col-md-10 {{team.name}}
+        .col-md-10(bo-bind="team.name")
       .row
         .col-md-2 公司名
-        .col-md-10 {{team.cname}}
+        .col-md-10(bo-bind="team.cname")
       .row
         .col-md-2 类型
-        .col-md-10 {{team.groupType}}
+        .col-md-10(bo-bind="team.groupType")
       .row
         .col-md-2 主场一
-        .col-md-10 {{team.homeCourts.length>0?team.homeCourts[0].name :'暂无'}}
+        .col-md-10(bo-bind="team.homeCourts.length > 0 ? team.homeCourts[0].name :'暂无'")
       .row
         .col-md-2 主场二
-        .col-md-10 {{team.homeCourts.length>1?team.homeCourts[1].name :'暂无'}}
+        .col-md-10(bo-bind="team.homeCourts.length > 1 ? team.homeCourts[1].name :'暂无'")
       .row
         .col-md-2 活跃度
-        .col-md-10 {{team.score.total}}
+        .col-md-10(bo-bind="team.score.total")
       .row
         .col-md-2 积分
-        .col-md-10 {{team.score_rank.score}}
+        .col-md-10(bo-bind="team.score_rank.score")
       .row
         .col-md-2 队长
         .col-md-2.user(ng-repeat="leader in team.leaders")
-          img.user_logo(ng-src="{{leader.photo}}/40/40")
-          .user_name {{leader.nickname}}
+          img.user_logo(bo-src="leader.photo + '/40/40'")
+          .user_name(bo-bind="leader.nickname")
       .row
         .col-md-2 成员
         .col-md-2.user(ng-repeat="member in team.members")
-          img.user_logo(ng-src="{{member.photo}}/40/40")
-          .user_name {{member.nickname}}
+          img.user_logo(bo-src="member.photo + '/40/40'")
+          .user_name(bo-bind="member.nickname")
       .row
         .col-md-2 近期活动
-        .col-md-10 {{team.lastCampaign?team.lastCampaign.theme :'无'}}
+        .col-md-10(bo-bind="team.lastCampaign?team.lastCampaign.theme :'无'")
   .modal-footer
     button.btn.btn-primary(ng-click="cancel()") 确定
 
