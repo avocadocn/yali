@@ -50,7 +50,7 @@
                     span.caret
                   ul.dropdown-menu
                     li 
-                      a(ng-click="showStatus(0)") 无
+                      a(ng-click="showStatus(0)") 全部
                     li 
                       a(ng-click="showStatus(1)") 正常
                     li 
@@ -59,19 +59,18 @@
                       a(ng-click="showStatus(3)") 未激活
               th.center 编辑
           tbody
-            tr(ng-repeat="member in companyMembers" ng-cloak)
-              td {{$index+1}}
-              td: img.memer_logo(ng-src="{{member.photo}}/40/40")
-              td {{member.username}}
-              td.center {{member.realname || '-'}}
-              td.center {{member.department.name || '-'}}
-              td.center {{member.team.length}}
-              td.center {{member.campaignCount}}
-              td.center {{member.score.total}}
+            tr(bindonce="companyMembers" ng-repeat="member in companyMembers" ng-cloak)
+              td(bo-bind="$index+1")
+              td: img.memer_logo(bo-src="member.photo + '/40/40'")
+              td(bo-bind="member.username")
+              td.center(bo-bind="member.realname || '-'")
+              td.center(bo-bind="member.department.name || '-'")
+              td.center(bo-bind="member.team.length")
+              td.center(bo-bind="member.campaignCount")
+              td.center(bo-bind="member.score.total")
               td.center
                 button.btn.btn-link(member-detail now-user-id="member._id") 查看详情
-              td.center
-                {{member.active? '正常' : member.mail_active ? '屏蔽中' : '未激活'}}
+              td.center(bo-bind="member.active? '正常' : member.mail_active ? '屏蔽中' : '未激活'")
               td.center
                 i.fa.fa-edit(member-edit now-user-id="member._id")
 

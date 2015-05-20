@@ -1,5 +1,6 @@
 define([
   'angular',
+  'bindonce',
   'uiRouter',
   'angularBootstrap',
   'bootstrap',
@@ -22,7 +23,7 @@ define([
   './member/module',
   './department/module',
   './search/module'
-], function(angular) {
+], function(angular, bindonce) {
   return angular.module('app', [
     'ui.router',
     'ui.bootstrap',
@@ -36,7 +37,8 @@ define([
     'campaign',
     'member',
     'department',
-    'search'
+    'search',
+    'pasvaz.bindonce'
   ]).run([
     '$rootScope',
     '$state',
