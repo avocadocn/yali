@@ -154,6 +154,7 @@ define(['angular', 'qrcode', 'angulardatatables'], function (angular, qrcode, an
       'DTOptionsBuilder',
       'DTColumnDefBuilder',
       function ($rootScope, $scope, $state, $timeout, memberService, departmentService, $modal, DTOptionsBuilder, DTColumnDefBuilder) {
+
         $scope.dtOptions = DTOptionsBuilder.newOptions()
         .withOption('searching', false)
         // .withOption('paging', false)

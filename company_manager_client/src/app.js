@@ -1,6 +1,7 @@
 define([
   'angular',
   'bindonce',
+  'angulardatatables',
   'uiRouter',
   'angularBootstrap',
   'bootstrap',
@@ -23,7 +24,7 @@ define([
   './member/module',
   './department/module',
   './search/module'
-], function(angular, bindonce) {
+], function(angular, bindonce, angulardatatables) {
   return angular.module('app', [
     'ui.router',
     'ui.bootstrap',
@@ -38,7 +39,8 @@ define([
     'member',
     'department',
     'search',
-    'pasvaz.bindonce'
+    'pasvaz.bindonce',
+    'datatables'
   ]).run([
     '$rootScope',
     '$state',
@@ -48,7 +50,11 @@ define([
     'accountService',
     'initData',
     'companyService',
-    function($rootScope, $state, $stateParams, $http, storageService, accountService, initData, companyService) {
+    'DTDefaultOptions',
+    function($rootScope, $state, $stateParams, $http, storageService, accountService, initData, companyService, DTDefaultOptions) {
+      // set dataTable default display
+      DTDefaultOptions.setDisplayLength(25);
+
       $rootScope.$state = $state;
       $rootScope.$stateParams = $stateParams;
 

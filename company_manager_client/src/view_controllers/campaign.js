@@ -61,8 +61,8 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
       //campaigns
       $scope.pages = [];
       $scope.nowPage = 0;
-      $scope.number = $scope.numbers[0];
-      $scope.numOfPage = 10;
+      $scope.number = $scope.numbers[1];
+      $scope.numOfPage = 25;
       //调用情况：
       //  1、日期变更时
       //  2、活动单位变更
@@ -584,8 +584,8 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
       //campaigns
       $scope.pages = [];
       $scope.nowPage = 0;
-      $scope.number = $scope.numbers[0];
-      $scope.numOfPage = 10;
+      $scope.number = $scope.numbers[1];
+      $scope.numOfPage = 25;
       //调用情况：
       //  1、日期变更时
       //  2、翻页
