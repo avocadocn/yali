@@ -1,5 +1,5 @@
-define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
-  return angular.module('campaignCtrls', ['AMap']).controller('campaign.campaignCtrl', [
+define(['angular', 'moment', 'map/map', 'pen', 'bindonce'], function (angular, moment, bindonce) {
+  return angular.module('campaignCtrls', ['AMap', 'pasvaz.bindonce']).controller('campaign.campaignCtrl', [
     '$scope', '$rootScope', 'storageService', 'teamService', 'campaignService', 'apiBaseUrl',
     function ($scope, $rootScope, storageService, teamService, campaignService, apiBaseUrl) {
       var cid = $rootScope.company._id;

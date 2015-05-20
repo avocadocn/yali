@@ -6,35 +6,35 @@
     .box-tools.pull-right
       .btn.btn-box-tool(ng-click="close()")
         i.fa.fa-times
-  .box-body.clearfix
+  .box-body.clearfix(bindonce="campaign")
     .modal_container
-      .campaign_team(ng-repeat="team in campaign.campaign_unit" ng-if="campaignOfTeams")
-        img.campaign_logo(ng-src="{{team.team.logo}}/60/60")
-        .campaign_theme {{team.team.name}}
-        .campaign_company {{team.company.name}}
-      .campaign_team(ng-if="!campaignOfTeams")
+      .campaign_team(bindonce="campaign.campaign_unit" ng-repeat="team in campaign.campaign_unit" bo-if="campaignOfTeams")
+        img.campaign_logo(bo-src="team.team.logo/60/60")
+        .campaign_theme(bo-bind="") {{team.team.name}}
+        .campaign_company(bo-bind="") {{team.company.name}}
+      .campaign_team(bo-if="!campaignOfTeams")
         .campaign_logo 公司活动
     .modal_container
       .campaign_label 开始时间
-      a.campaign_content {{campaign.start_time | date:'yyyy-MM-dd HH:mm'}}
+      a.campaign_content(bo-bind="campaign.start_time | date:'yyyy-MM-dd HH:mm'")
     .modal_container
       .campaign_label 结束时间
-      a.campaign_content {{campaign.end_time | date:'yyyy-MM-dd HH:mm'}}
+      a.campaign_content(bo-bind="campaign.end_time | date:'yyyy-MM-dd HH:mm'")
     .modal_container
       .campaign_label 地点
-      a.campaign_content {{campaign.location.name}}
+      a.campaign_content(bo-bind="campaign.location.name")
     .modal_container
       .campaign_label 报名截止时间
-      a.campaign_content {{campaign.deadline | date:'yyyy-MM-dd HH:mm'}}
+      a.campaign_content(bo-bind="campaign.deadline | date:'yyyy-MM-dd HH:mm'")
     .modal_container
       .campaign_label 报名人数上限
-      a.campaign_content {{campaign.member_max}}
+      a.campaign_content(bo-bind="campaign.member_max")
     .modal_container
       .campaign_label 最少人数
-      a.campaign_content {{campaign.member_min}}
+      a.campaign_content(bo-bind="campaign.member_min")
     .modal_container.campaign_inroduce
       .campaign_label 简介
-      p.campaign_intro_content {{campaign.content}}
+      p.campaign_intro_content(bo-bind="campaign.content")
     .modal_container.campaign_announce
       .campaign_label 公告
       p.campaign_announce_content 暂无
@@ -42,7 +42,7 @@
       .campaign_label.non_float 已报名
       .campaign_member
         campaign-member(members="campaign.members")
-        .no_campaign_member(ng-if="!campaign.members.length") 无成员加入
+        .no_campaign_member(bo-if="!campaign.members.length") 无成员加入
         //- img(ng-repeat="member in team.member" ng-src="{{member.photo}}/60/60" ng-if="$index<3")
         //- //- img(ng-repeat="member in team.member" ng-src="{{member.photo}}/60/60")
         //- .campaign_member_more(ng-if="team.member.length > 3" ng-click="showAllMember($event)") 查看更多成员

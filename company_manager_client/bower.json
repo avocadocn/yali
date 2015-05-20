@@ -19,6 +19,7 @@
     "jszip": "Stuk/jszip#~2.5.0",
     "datatables": "latest",
     "angular-datatables": "~0.4.2",
-    "font-awesome": "~4.3.0"
+    "font-awesome": "~4.3.0",
+    "angular-bindonce": "~0.3.3"
   }
 }

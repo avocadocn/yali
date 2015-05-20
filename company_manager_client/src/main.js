@@ -3,6 +3,7 @@ requirejs.config({
   name: 'main',
   paths: {
     angular: '../bower-lib/angular/angular',
+    bindonce: '../bower-lib/angular-bindonce/bindonce',
     uiRouter: '../bower-lib/angular-ui-router/release/angular-ui-router',
     jQuery: '../bower-lib/jquery/dist/jquery',
     cropit: '../bower-lib/cropit/dist/jquery.cropit',
@@ -39,6 +40,9 @@ requirejs.config({
     angular: {
       exports: 'angular',
       deps: ['jQuery']
+    },
+    bindonce: {
+      exports: 'bindonce'
     },
     uiRouter: {
       deps: ['angular']

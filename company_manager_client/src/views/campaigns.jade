@@ -69,19 +69,19 @@
                     th.center 详情
                     th.center 操作
                 tbody
-                  tr(ng-repeat="campaign in campaigns")
+                  tr(bindonce="campaigns" ng-repeat="campaign in campaigns")
                     //- td.center(ng-cloak) {{$index+1}}
-                    td.center(ng-cloak)
-                      img(ng-src="{{campaign.logo}}/40/40")
-                    td.center.theme(ng-cloak) {{campaign.theme}}
-                    td.center(ng-cloak) 
-                      p {{campaign.startTime | date:'yyyy-MM-dd'}}
-                      p {{campaign.startTime | date:'HH:mm'}}
-                    td.center(ng-cloak)
-                      p {{campaign.endTime | date:'yyyy-MM-dd'}}
-                      p {{campaign.endTime | date:'HH:mm'}}
-                    td.center(ng-cloak) {{campaign.memberNumber}}
-                    td.center(ng-cloak) {{campaign.status}}
+                    td.center
+                      img(bo-src="campaign.logo/40/40")
+                    td.center.theme(bo-bind="campaign.theme")
+                    td.center 
+                      p(bo-bind="campaign.startTime | date:'yyyy-MM-dd'")
+                      p(bo-bind="campaign.startTime | date:'HH:mm'")
+                    td.center
+                      p(bo-bind="campaign.endTime | date:'yyyy-MM-dd'")
+                      p(bo-bind="campaign.endTime | date:'HH:mm'")
+                    td.center(bo-bind="campaign.memberNumber")
+                    td.center(bo-bind="campaign.status")
                     td.center
                       //- a(ng-click="goDetail(campaign._id)" href="") 详情
                       a(href="" edit-campaign campaign-id="campaign._id") 详情
