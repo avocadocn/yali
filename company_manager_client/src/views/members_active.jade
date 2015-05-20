@@ -1,10 +1,10 @@
-.members
+.members(bindonce="unClosedMembers")
   section.content-header
     h1
       | 待激活成员
-      small(ng-bind-template="{{unClosedMembers.length}}人待激活")
+      small(bo-bind="unClosedMembers.length + '人待激活'")
   section.content
-    .box.box-primary(ng-show="unClosedMembers.length")
+    .box.box-primary(bo-show="unClosedMembers.length")
       .box-header
         h3.box-title 待激活成员
       .box-body.no-padding
@@ -17,14 +17,14 @@
               th 操作
           tbody
             tr(ng-repeat="member in unClosedMembers")
-              td {{$index+1}}
-              td {{member.username}}
-              td {{member.register_date | date:'yyyy-MM-dd HH:mm'}}
+              td(bo-bind="$index+1") {{}}
+              td(bo-bind="member.username") {{}}
+              td(bo-bind="member.register_date | date:'yyyy-MM-dd HH:mm'")
               //- td
               //-   button 查看详情
               td
                 button.btn.btn-primary.btn-xs.btn-flat(ng-click="active(member._id)") 激活
-    .box.box-primary(ng-show="closedMembers.length")
+    .box.box-primary(bindonce="closedMembers" bo-show="closedMembers.length")
       .box-header
         h3.box-title 被屏蔽成员
       .box-body.no-padding
@@ -37,9 +37,9 @@
               th 操作
           tbody
             tr(ng-repeat="member in closedMembers")
-              td {{$index+1}}
-              td {{member.username}}
-              td {{member.nickname}}
+              td(bo-bind="$index+1")
+              td(bo-bind="member.username")
+              td(bo-bind="member.nickname")
               //- td
               //-   button 查看详情
               td
