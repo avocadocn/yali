@@ -69,7 +69,29 @@ define(['angular', 'qrcode', 'angulardatatables'], function (angular, qrcode, an
       '$scope',
       '$state',
       'memberService',
-      function ($rootScope, $scope, $state, memberService) {
+      'DTOptionsBuilder',
+      'DTColumnDefBuilder',
+      function ($rootScope, $scope, $state, memberService, DTOptionsBuilder, DTColumnDefBuilder) {
+        $scope.dtOptions = DTOptionsBuilder.newOptions()
+        .withOption('searching', false)
+        // .withOption('paging', false)
+        .withLanguage({
+          'lengthMenu': '_MENU_',
+          'zeroRecords': '无数据',
+          'paginate': {
+            'previous': '上一页',
+            'next': '下一页'
+          }
+        })
+        .withOption('info', false);
+
+        $scope.dtColumnDefs =[
+          DTColumnDefBuilder.newColumnDef(0),
+          DTColumnDefBuilder.newColumnDef(1),
+          DTColumnDefBuilder.newColumnDef(2),
+          DTColumnDefBuilder.newColumnDef(3).notSortable()
+        ];
+
         var closedUserFilter = function(user) {
           if(user.mail_active===true) {
             return true;

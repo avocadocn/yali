@@ -8,7 +8,7 @@
       .box-header
         h3.box-title 待激活成员
       .box-body.no-padding
-        table.table.table-striped
+        table(datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs").table.table-striped
           thead
             tr
               th
@@ -28,7 +28,7 @@
       .box-header
         h3.box-title 被屏蔽成员
       .box-body.no-padding
-        table.table.table-striped
+        table(datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs").table.table-striped
           thead
             tr
               th
