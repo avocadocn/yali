@@ -60,17 +60,17 @@
                             a(ng-click="onCampaignStatusChange(3)") 已结束
                     th.center 操作
                 tbody
-                  tr(ng-repeat="campaign in campaigns")
+                  tr(bindonce="campaigns" ng-repeat="campaign in campaigns")
                     //- td.center(ng-cloak) {{$index+1}}
-                    td.center(ng-cloak)
-                      img(ng-src="{{campaign.logo}}/40/40")
-                    td.center.theme(ng-cloak) {{campaign.theme}}
-                    td.center(ng-cloak) 
-                      span {{campaign.startTime | date:'MM-dd'}} {{campaign.startTime | date:'HH:mm'}}
-                    td.center(ng-cloak)
-                      span {{campaign.endTime | date:'MM-dd'}} {{campaign.endTime | date:'HH:mm'}}
-                    td.center(ng-cloak) {{campaign.memberNumber}}
-                    td.center(ng-cloak) {{campaign.status}}
+                    td.center
+                      img(bo-src="campaign.logo + '/40/40'")
+                    td.center.theme(bo-bind="campaign.theme")
+                    td.center
+                      span(bo-bind="campaign.startTime | date:'MM-dd HH:mm'")
+                    td.center
+                      span(bo-bind="campaign.endTime | date:'MM-dd HH:mm'")
+                    td.center(bo-bind="campaign.memberNumber")
+                    td.center(bo-bind="campaign.status")
                     td.center(ng-cloak) 
                       a(href="" edit-campaign campaign-id="campaign._id") 详情
                       button.dl_btn.close_btn(ng-if="campaign.status==='未开始'||campaign.status==='已开始'" ng-disabled="!campaign.active" ng-click="closeCampaign(campaign)") {{campaign.active? '关闭': '已关闭'}}

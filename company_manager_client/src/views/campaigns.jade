@@ -72,7 +72,7 @@
                   tr(bindonce="campaigns" ng-repeat="campaign in campaigns")
                     //- td.center(ng-cloak) {{$index+1}}
                     td.center
-                      img(bo-src="campaign.logo/40/40")
+                      img(bo-src="campaign.logo + '/40/40'")
                     td.center.theme(bo-bind="campaign.theme")
                     td.center 
                       p(bo-bind="campaign.startTime | date:'yyyy-MM-dd'")
