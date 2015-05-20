@@ -106,7 +106,6 @@ define(['angular', 'angulardatatables'], function (angular) {
           teamName: ''
         }
         teamService.getGroups().success(function (data) {
-          console.log(data);
           $scope.groups = data;
         })
         .error(function (data) {
