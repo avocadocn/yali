@@ -11,6 +11,7 @@
         .row
           .col-md-3.col-sm-6.col-xs-12.team(ng-repeat="team in noLeaderTeams")
             p {{team.name}},还没有队长
+            a.btn.btn-primary.edit_btn(ui-sref="manager.editTeam({teamId:team._id})") 编辑
             a.btn.btn-primary(ui-sref="manager.pointTeamLeader({teamId:team._id})") 任命队长
     .row
       .col-xs-12
