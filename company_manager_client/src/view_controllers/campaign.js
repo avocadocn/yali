@@ -375,12 +375,11 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
     'teamList',
     'molds',
     function($scope, initData, campaignService, teamList, molds) {
-      $scope.teamList = teamList.map(function(team) {
-        return {
-          _id: team._id,
-          name: team.name,
-          selected: false
-        };
+      $scope.teamList = [];
+      teamList.forEach(function(team) {
+        if(team.active) {
+          $scope.teamList.push(team);
+        }
       });
       var teamIds = [];
 
