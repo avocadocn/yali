@@ -8,11 +8,11 @@
         i.fa.fa-times
   .box-body.clearfix(bindonce="campaign")
     .modal_container
-      .campaign_team(bindonce="campaign.campaign_unit" ng-repeat="team in campaign.campaign_unit" bo-if="campaignOfTeams")
-        img.campaign_logo(bo-src="team.team.logo/60/60")
-        .campaign_theme(bo-bind="") {{team.team.name}}
-        .campaign_company(bo-bind="") {{team.company.name}}
-      .campaign_team(bo-if="!campaignOfTeams")
+      .campaign_team(ng-repeat="team in campaign.campaign_unit" ng-if="campaignOfTeams")
+        img.campaign_logo(bo-src="team.team.logo + '/60/60'")
+        .campaign_theme(bo-bind="team.team.name")
+        .campaign_company(bo-bind="team.company.name")
+      .campaign_team(ng-if="!campaignOfTeams")
         .campaign_logo 公司活动
     .modal_container
       .campaign_label 开始时间

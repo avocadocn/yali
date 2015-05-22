@@ -331,6 +331,7 @@ define(['./campaign', 'alertify', 'moment'], function (campaign, alertify, momen
               .success(function (data, status) {
                 scope.campaignOfTeams = true;
                 scope.campaign = data;
+
                 scope.campaign.members = [];
                 var units = scope.campaign.campaign_unit;
                 for(var i=units.length-1; i>=0; i--) {
@@ -339,7 +340,7 @@ define(['./campaign', 'alertify', 'moment'], function (campaign, alertify, momen
                   }
                 }
                 if(data.campaign_type === 1 || data.campaign_type > 5) {
-                  scope.campaignOfTeams = true;
+                  scope.campaignOfTeams = false;
                 }
                 scope.campaign.deadline = moment(scope.campaign.deadline).format('YYYY-MM-DD HH:mm');
                 // $('#deadlineEdit').datetimepicker({
