@@ -404,7 +404,7 @@ exports.groupSelect = function(req, res) {
       }
 
       for (var i = 0, length = selected_groups.length; i < length; i++) {
-        var tname = company.info.official_name + '-' + selected_groups[i].group_type + '队'; //默认的小队名
+        var tname = selected_groups[i].group_type + '队' + '-' + company.info.official_name; //默认的小队名
 
 
         var companyGroup = new CompanyGroup();
@@ -1134,7 +1134,7 @@ exports.quickCreateTeams = function(req, res, next) {
           poster: {role:'HR'},
           group_type: groupDoc[groupIndex].group_type,
           cname: companyDoc.info.name,
-          name: companyDoc.info.name + '-' + groupDoc[groupIndex].group_type + '队',
+          name: groupDoc[groupIndex].group_type + '队' + '-' + companyDoc.info.name,
           logo: '/img/icons/group/' + groupDoc[groupIndex].entity_type.toLowerCase() + '_on.png',
           entity_type: groupDoc[groupIndex].entity_type,
           city: {
