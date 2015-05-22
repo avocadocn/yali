@@ -15,9 +15,9 @@
             a.btn.btn-primary(ui-sref="manager.pointTeamLeader({teamId:team._id})") 任命队长
     .row
       .col-xs-12
-        .box.box-primary(bindonce="leaderTeams" bo-show="leaderTeams.length")
+        .box.box-primary(bindonce="unclosedTeams")
           .box-header
-            h3.box-title 有队长的小队
+            h3.box-title 全部小队
           .box-body.no-padding
             table(datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs").table.table-striped
               thead
@@ -33,7 +33,7 @@
                   th 编辑
                   th 任命
               tbody
-                tr(ng-repeat="team in leaderTeams")
+                tr(ng-repeat="team in unclosedTeams")
                   td(bo-bind="team.name")
                   td(bo-bind="team.leaders[0].nickname")
                   td(bo-bind="team.memberCount")
@@ -42,7 +42,7 @@
                   td(bo-bind="team.score_rank.score")
                   td(bo-bind="team.score.total")
                   td
-                    button.btn.btn-xs.btn-link(ng-click="detail('leaderTeams', $index)") 详情
+                    button.btn.btn-xs.btn-link(ng-click="detail('unclosedTeams', $index)") 详情
                   td
                     a(ui-sref="manager.editTeam({teamId:team._id})") 编辑
                   td
