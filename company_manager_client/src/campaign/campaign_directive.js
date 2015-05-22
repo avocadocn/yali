@@ -313,6 +313,7 @@ define(['./campaign', 'alertify', 'moment'], function (campaign, alertify, momen
         restrict: 'A',
         scope: {
           campaignId: '=',
+          action: '='
         },
         // template: '<a href="" ng-click="getCampaign(campaignId)"> 详情</a>',
         // templateUrl: '/company/manager/templates/campaign/editCampaign.html',
@@ -343,13 +344,25 @@ define(['./campaign', 'alertify', 'moment'], function (campaign, alertify, momen
                   scope.campaignOfTeams = false;
                 }
                 scope.campaign.deadline = moment(scope.campaign.deadline).format('YYYY-MM-DD HH:mm');
-                // $('#deadlineEdit').datetimepicker({
-                //   autoclose: true,
-                //   language: 'zh-CN',
-                //   startDate: new Date(),
-                //   pickerPosition:"bottom-left"
-                // });
-                // $('#deadlineEdit').datetimepicker('setEndDate', new Date(scope.campaign.end_time));   //截至时间应小于结束时间
+                if(scope.action==='edit') {
+                  $('#deadlineEdit').datetimepicker({
+                    autoclose: true,
+                    language: 'zh-CN',
+                    startDate: new Date(),
+                    pickerPosition:"bottom-left"
+                  });
+                  $('#deadlineEdit').datetimepicker('setEndDate', new Date(scope.campaign.end_time));   //截至时间应小于结束时间
+                  var options = {
+                    editor: document.getElementById('campaignDetailEdit'), // {DOM Element} [required]
+                    class: 'dl_markdown', // {String} class of the editor,
+                    textarea: '<textarea name="content" ng-model="content"></textarea>', // fallback for old browsers
+                    list: ['h5', 'p', 'insertorderedlist','insertunorderedlist', 'indent', 'outdent', 'bold', 'italic', 'underline'], // editor menu list
+                    stay: false,
+                    toolBarId: 'campaignDetailEditToolBar'
+                  };
+
+                  var editor = new Pen(options);
+                }
               })
               .error(function (data, status) {
 
@@ -357,35 +370,22 @@ define(['./campaign', 'alertify', 'moment'], function (campaign, alertify, momen
           }
           ele.on('click', scope.getCampaign);
 
-          // $("#deadlineEdit").on("changeDate",function (ev) {
-          //   var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
-          //   scope.campaign.deadline = moment(dateUTC).format("YYYY-MM-DD HH:mm");
-          // });
+          $("#deadlineEdit").on("changeDate",function (ev) {
+            var dateUTC = new Date(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000));
+            scope.campaign.deadline = moment(dateUTC).format("YYYY-MM-DD HH:mm");
+          });
 
-          // var options = {
-          //   editor: document.getElementById('campaignDetailEdit'), // {DOM Element} [required]
-          //   class: 'dl_markdown', // {String} class of the editor,
-          //   textarea: '<textarea name="content" ng-model="content"></textarea>', // fallback for old browsers
-          //   list: ['h5', 'p', 'insertorderedlist','insertunorderedlist', 'indent', 'outdent', 'bold', 'italic', 'underline'], // editor menu list
-          //   stay: false,
-          //   toolBarId: 'campaignDetailEditToolBar'
-          // };
-
-          // var editor = new Pen(options);
-
-          // scope.edit = function() {
-          //   scope.editing = true;
-          // };
-          // scope.save = function() {
-          //   campaignService.editCampaign(scope.campaign)
-          //   .success(function (data, status) {
-          //     alert('保存成功');
-          //     scope.editing = false;
-          //   })
-          //   .error(function (data, status) {
-          //     alert('保存失败:' + data.msg);
-          //   })
-          // };
+          scope.save = function() {
+            scope.submitting = true;
+            campaignService.editCampaign(scope.campaign)
+            .success(function (data, status) {
+              alert('保存成功');
+              scope.submitting = false;
+            })
+            .error(function (data, status) {
+              alert('保存失败:' + data.msg);
+            })
+          };
         }
       }
     }])

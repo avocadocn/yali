@@ -53,7 +53,7 @@ module.exports = function(grunt) {
         tasks: ['copy:loginJs']
       },
       stylus: {
-        files: ['src/view_stylus/*.styl', 'src/donler.styl'],
+        files: ['src/view_stylus/*.styl', 'src/donler.styl', 'src/**/*.styl'],
         tasks: ['stylus', 'concat:css']
       },
       loginStylus: {

@@ -1,62 +1,62 @@
-.modal.fade#sponsorCampaignModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
-  .modal-dialog
-    .dl_campaign_modal
-      .dl_modal_header
-        .headline
-          i.fa.fa-bullhorn.head_logo
-          span 发活动
-          button.dl_close(type="button" data-dismiss="modal" aria-hidden="true") ×
-        form(name="campaign_form" novalidate)
-          .dl_modal_body.clearfix
-            .dl_modal_sponsor
-              .btn-group
-                button.dl_btn.select_btn(ng-click="selectType('company')" ng-class="{'selected': selectedType==='company'}") 公司活动
-                button.dl_btn.select_btn(ng-click="selectType('team')" ng-class="{'selected': selectedType==='team'}") 小队活动
-              .groups.dl_row.teamNameBox(ng-if="selectedType==='team'")
-                .group(ng-repeat='team in teams' ng-click="toggleSelectTeam(team._id, $index)" ng-class="{'selected': team.selected}")
-                  span.team_name(ng-cloak) {{team.name}}
-            .dl_modal_content.clearfix
-              .dl_modal_container
-                input.dl_modal_input.dl_form_control(type="text" name="theme" ng-model="theme" placeholder="输入活动主题，限定14字" maxlength=20 required)
-              .dl_modal_container
-                .input-group
-                  .input-group-btn
-                    input.dl_modal_input.dl_form_control.dl_modal_input_container(type="text" name="mold" ng-model="mold" data-toggle="dropdown" readonly required)
-                    button.input-group-addon.no_radius(type='button' data-toggle="dropdown")
-                      i.fa.fa-angle-down
-                    ul.dropdown-menu.dropdown-menu-right.no_radius(role="menu")
-                      li(ng-repeat="select_mold in molds")
-                        a(ng-click="selectMold(select_mold.name)") {{select_mold.name}}
-              .dl_modal_container
-                .dl_modal_half_container
-                  .input-group.date.form_datetime#start_time
-                    input.dl_form_control.dl_modal_input(type="text" ng-model="start_time" name="startTime" placeholder="选择活动开始时间" data-date-format="YYYY-MM-DD HH:mm" readonly required)
-                    span.input-group-addon.no_radius
-                      span.glyphicon.glyphicon-calendar
-                .dl_modal_half_container.end_time(ng-class="{'has-error':start_time >= end_time}")
-                  .input-group.date.form_datetime#end_time
-                    input.dl_form_control.dl_modal_input(type="text" ng-model="end_time" name="endTime" placeholder="选择活动结束时间" data-date-format="YYYY-MM-DD HH:mm" readonly required)
-                    span.input-group-addon.no_radius
-                      span.glyphicon.glyphicon-calendar
-              .dl_modal_container
-                .dl_modal_half_container
-                  input.dl_modal_input.dl_form_control(type="text" ng-model="member_max" name="memberMax" placeholder="输入人数上限")
-                .dl_modal_half_container.end_time(ng-class="{'has-error':deadline < end_time}")
-                  .input-group.date.form_datetime#deadline
-                    input.dl_form_control.dl_modal_input(type="text" ng-model="deadline" name="deadline" placeholder="选择报名截止时间" data-date-format="YYYY-MM-DD HH:mm" readonly required)
-                    span.input-group-addon.no_radius
-                      span.glyphicon.glyphicon-calendar
-              .dl_modal_container
-                .dl_modal_input_container
-                  input.dl_modal_input.dl_form_control(type="text" name="location" ng-model="location.name" placeholder="请输入活动场地的详细地址，并点击后方图标标注" maxlength=40 required)
-                .dl_modal_button
-                  button.dl_map_btn(type='button' ng-click="showMap()")
-                    i.fa.fa-map-marker
-              .dl_modal_container.dl_modal_map_container(ng-show="showMapFlag")
-                #mapDetail.map_height
-              .dl_modal_container
-                .detail_editor.detail_input
-                  #campaignDetailToolBar
-                  #campaignDetail.markdownContainer.dl_modal_input(ng-focus="checkContent()" name="content" ng-model="content" contenteditable="true" mix-maxlength=4000)
-          .dl_modal_footer
-            button.dl_btn.dl_modal_btn(type='button' ng-click='pressed=true;sponsorCampaign()' data-dismiss="modal" aria-hidden="true" ng-disabled="campaign_form.$invalid||pressed") 立即发起
+//- .modal.fade#sponsorCampaignModel(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+//-   .modal-dialog
+//-     .dl_campaign_modal
+//-       .dl_modal_header
+//-         .headline
+//-           i.fa.fa-bullhorn.head_logo
+//-           span 发活动
+//-           button.dl_close(type="button" data-dismiss="modal" aria-hidden="true") ×
+//-         form(name="campaign_form" novalidate)
+//-           .dl_modal_body.clearfix
+//-             .dl_modal_sponsor
+//-               .btn-group
+//-                 button.dl_btn.select_btn(ng-click="selectType('company')" ng-class="{'selected': selectedType==='company'}") 公司活动
+//-                 button.dl_btn.select_btn(ng-click="selectType('team')" ng-class="{'selected': selectedType==='team'}") 小队活动
+//-               .groups.dl_row.teamNameBox(ng-if="selectedType==='team'")
+//-                 .group(ng-repeat='team in teams' ng-click="toggleSelectTeam(team._id, $index)" ng-class="{'selected': team.selected}")
+//-                   span.team_name(ng-cloak) {{team.name}}
+//-             .dl_modal_content.clearfix
+//-               .dl_modal_container
+//-                 input.dl_modal_input.dl_form_control(type="text" name="theme" ng-model="theme" placeholder="输入活动主题，限定14字" maxlength=20 required)
+//-               .dl_modal_container
+//-                 .input-group
+//-                   .input-group-btn
+//-                     input.dl_modal_input.dl_form_control.dl_modal_input_container(type="text" name="mold" ng-model="mold" data-toggle="dropdown" readonly required)
+//-                     button.input-group-addon.no_radius(type='button' data-toggle="dropdown")
+//-                       i.fa.fa-angle-down
+//-                     ul.dropdown-menu.dropdown-menu-right.no_radius(role="menu")
+//-                       li(ng-repeat="select_mold in molds")
+//-                         a(ng-click="selectMold(select_mold.name)") {{select_mold.name}}
+//-               .dl_modal_container
+//-                 .dl_modal_half_container
+//-                   .input-group.date.form_datetime#start_time
+//-                     input.dl_form_control.dl_modal_input(type="text" ng-model="start_time" name="startTime" placeholder="选择活动开始时间" data-date-format="YYYY-MM-DD HH:mm" readonly required)
+//-                     span.input-group-addon.no_radius
+//-                       span.glyphicon.glyphicon-calendar
+//-                 .dl_modal_half_container.end_time(ng-class="{'has-error':start_time >= end_time}")
+//-                   .input-group.date.form_datetime#end_time
+//-                     input.dl_form_control.dl_modal_input(type="text" ng-model="end_time" name="endTime" placeholder="选择活动结束时间" data-date-format="YYYY-MM-DD HH:mm" readonly required)
+//-                     span.input-group-addon.no_radius
+//-                       span.glyphicon.glyphicon-calendar
+//-               .dl_modal_container
+//-                 .dl_modal_half_container
+//-                   input.dl_modal_input.dl_form_control(type="text" ng-model="member_max" name="memberMax" placeholder="输入人数上限")
+//-                 .dl_modal_half_container.end_time(ng-class="{'has-error':deadline < end_time}")
+//-                   .input-group.date.form_datetime#deadline
+//-                     input.dl_form_control.dl_modal_input(type="text" ng-model="deadline" name="deadline" placeholder="选择报名截止时间" data-date-format="YYYY-MM-DD HH:mm" readonly required)
+//-                     span.input-group-addon.no_radius
+//-                       span.glyphicon.glyphicon-calendar
+//-               .dl_modal_container
+//-                 .dl_modal_input_container
+//-                   input.dl_modal_input.dl_form_control(type="text" name="location" ng-model="location.name" placeholder="请输入活动场地的详细地址，并点击后方图标标注" maxlength=40 required)
+//-                 .dl_modal_button
+//-                   button.dl_map_btn(type='button' ng-click="showMap()")
+//-                     i.fa.fa-map-marker
+//-               .dl_modal_container.dl_modal_map_container(ng-show="showMapFlag")
+//-                 #mapDetail.map_height
+//-               .dl_modal_container
+//-                 .detail_editor.detail_input
+//-                   #campaignDetailToolBar
+//-                   #campaignDetail.markdownContainer.dl_modal_input(ng-focus="checkContent()" name="content" ng-model="content" contenteditable="true" mix-maxlength=4000)
+//-           .dl_modal_footer
+//-             button.dl_btn.dl_modal_btn(type='button' ng-click='pressed=true;sponsorCampaign()' data-dismiss="modal" aria-hidden="true" ng-disabled="campaign_form.$invalid||pressed") 立即发起

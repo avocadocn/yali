@@ -25,24 +25,39 @@
       a.campaign_content(bo-bind="campaign.location.name")
     .modal_container
       .campaign_label 报名截止时间
-      a.campaign_content(bo-bind="campaign.deadline | date:'yyyy-MM-dd HH:mm'")
+      a.campaign_content(bo-bind="campaign.deadline | date:'yyyy-MM-dd HH:mm'" ng-show="!action")
+      .dl_modal_half_container.end_time(ng-show="action === 'edit'")
+        .input-group.date.form_datetime#deadlineEdit
+          input.dl_form_control(type="text" ng-model="campaign.deadline" name="deadline" placeholder="选择报名截止时间" data-date-format="YYYY-MM-DD HH:mm" readonly required)
+          span.input-group-addon.no_radius
+            span.glyphicon.glyphicon-calendar
     .modal_container
       .campaign_label 报名人数上限
-      a.campaign_content(bo-bind="campaign.member_max")
+      a.campaign_content(bo-bind="campaign.member_max"  ng-show="!action")
+      .dl_modal_half_container(ng-show="action === 'edit'")
+        input.dl_form_control(type="text" ng-model="campaign.member_max" name="memberMax" placeholder="输入人数上限")
     .modal_container
       .campaign_label 最少人数
-      a.campaign_content(bo-bind="campaign.member_min")
+      a.campaign_content(bo-bind="campaign.member_min"  ng-show="!action")
+      .dl_modal_half_container(ng-show="action === 'edit'")
+        input.dl_form_control(type="text" ng-model="campaign.member_min" name="memberMin" placeholder="输入人数下限")
     .modal_container.campaign_inroduce
       .campaign_label 简介
-      p.campaign_intro_content(bo-bind="campaign.content")
-    .modal_container.campaign_announce
-      .campaign_label 公告
-      p.campaign_announce_content 暂无
+      p.campaign_intro_content(bo-bind="campaign.content"  ng-show="!action")
+      .detail_editor.detail_input(ng-show="action === 'edit'")
+        #campaignDetailEditToolBar
+        #campaignDetailEdit.markdownContainer.dl_modal_input(name="content" ng-model="campaign.content" contenteditable="true" mix-maxlength=4000)
+
+    //- .modal_container.campaign_announce
+    //-   .campaign_label 公告
+    //-   p.campaign_announce_content 暂无
     .modal_container
       .campaign_label.non_float 已报名
       .campaign_member
         campaign-member(members="campaign.members")
         .no_campaign_member(bo-if="!campaign.members.length") 无成员加入
+  .campaign_footer(ng-if="action==='edit'&&!campaign.finish&&campaign.active")
+    button.dl_btn.campaign_modal_btn(type="button" ng-disabled="submitting" ng-click="save()" ng-cloak) 保存
         //- img(ng-repeat="member in team.member" ng-src="{{member.photo}}/60/60" ng-if="$index<3")
         //- //- img(ng-repeat="member in team.member" ng-src="{{member.photo}}/60/60")
         //- .campaign_member_more(ng-if="team.member.length > 3" ng-click="showAllMember($event)") 查看更多成员
