@@ -114,7 +114,7 @@ define(['angular', 'angulardatatables'], function (angular) {
         });
         $scope.changeType = function (index) {
           $scope.newTeam._id = $scope.groups[index]._id;
-          $scope.newTeam.teamName = $rootScope.company.shortName + '-' + $scope.groups[index].groupType + '队';
+          $scope.newTeam.teamName = $scope.groups[index].groupType + '队'  + '-' + $rootScope.company.shortName;
         }
         $scope.save = function () {
           teamService.create({selectedGroups:[$scope.newTeam]}).success(function (data) {
