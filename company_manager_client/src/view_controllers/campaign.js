@@ -352,6 +352,8 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
         $scope.end_time = null;
         $scope.startTime = null;
         $scope.endTime = null;
+        $('#startTime').datetimepicker('setEndDate', null);
+        $('#endTime').datetimepicker('setStartDate', null);
         getCampaigns();
       }
       $scope.closeCampaign = function (campaign) {
