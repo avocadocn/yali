@@ -185,9 +185,9 @@ exports.getComment = function (req, res) {
       comments: comments
     }, function (err) {
       if (err) console.log(err);
-      if(req.user.provider=='user') {
-        userReadComment(req.user, req.params.hostId);
-      }
+      // if(req.user.provider=='user') {
+      //   userReadComment(req.user, req.params.hostId);
+      // }
       // 即使错误依然会做基本的权限设置（公司可删自己员工的，自己可以删自己的），所以依旧返回数据
       res.send({'comments': comments, nextStartDate: nextStartDate, 'user': {'_id': req.user._id}});
       
@@ -379,57 +379,57 @@ exports.setComment = function (req, res) {
           //   joinedUids.push(campaign.members[i]._id.toString());
           // }
           //获取在此小队的人
-          var getUidsInTeams = function (tids, callback) {
-            CompanyGroup.find({'_id':{'$in':tids}},function(err, teams){
-              if(err){
-                console.log(err);
-                callback(null,err);
-              }else {
-                var teamUids = [];
-                var teamLength = teams.length;
-                for(var i=0; i<teamLength; i++) {
-                  var memberLength = teams[i].member.length;
-                  for(var j=0;j<memberLength;j++) {
-                    teamUids.push(teams[i].member[j]._id.toString());
-                  }
-                }
-                callback(teamUids);
-              }
-            })
-          };
+          // var getUidsInTeams = function (tids, callback) {
+          //   CompanyGroup.find({'_id':{'$in':tids}},function(err, teams){
+          //     if(err){
+          //       console.log(err);
+          //       callback(null,err);
+          //     }else {
+          //       var teamUids = [];
+          //       var teamLength = teams.length;
+          //       for(var i=0; i<teamLength; i++) {
+          //         var memberLength = teams[i].member.length;
+          //         for(var j=0;j<memberLength;j++) {
+          //           teamUids.push(teams[i].member[j]._id.toString());
+          //         }
+          //       }
+          //       callback(teamUids);
+          //     }
+          //   })
+          // };
 
-          getUidsInTeams(campaign.tid,function(teamUids,err){
-            if(err){
+          // getUidsInTeams(campaign.tid,function(teamUids,err){
+          //   if(err){
 
-            }else{
-              var joinedUids = teamUids ;
-              //未参加->不在此小队的评论过的人
-              var unjoinedUids = [];
-              for(var i = 0; i<campaign.commentMembers.length;i++) {
-                if(joinedUids.indexOf(campaign.commentMembers[i]._id.toString()) === -1){
-                  unjoinedUids.push(campaign.commentMembers[i]._id.toString());
-                }
-              }
-              //---socket
-              socketPush(campaign, comment, joinedUids, unjoinedUids);
+          //   }else{
+          //     var joinedUids = teamUids ;
+          //     //未参加->不在此小队的评论过的人
+          //     var unjoinedUids = [];
+          //     for(var i = 0; i<campaign.commentMembers.length;i++) {
+          //       if(joinedUids.indexOf(campaign.commentMembers[i]._id.toString()) === -1){
+          //         unjoinedUids.push(campaign.commentMembers[i]._id.toString());
+          //       }
+          //     }
+          //     //---socket
+          //     socketPush(campaign, comment, joinedUids, unjoinedUids);
 
-              //users操作
-              var revalentUids = joinedUids.concat(unjoinedUids);
-              User.find({'_id':{'$in':revalentUids}},{'commentCampaigns':1,'unjoinedCommentCampaigns':1,'team':1},function(err,users){
-                if(err){
-                  console.log(err);
-                }else{
-                  async.map(users,function(user,callback){
-                    updateUserCommentList(campaign, user, req.user._id, function(){
-                      callback();
-                    });
-                  },function(err, results) {
-                    return;
-                  });
-                }
-              });
-            }
-          });
+          //     //users操作
+          //     var revalentUids = joinedUids.concat(unjoinedUids);
+          //     User.find({'_id':{'$in':revalentUids}},{'commentCampaigns':1,'unjoinedCommentCampaigns':1,'team':1},function(err,users){
+          //       if(err){
+          //         console.log(err);
+          //       }else{
+          //         async.map(users,function(user,callback){
+          //           updateUserCommentList(campaign, user, req.user._id, function(){
+          //             callback();
+          //           });
+          //         },function(err, results) {
+          //           return;
+          //         });
+          //       }
+          //     });
+          //   }
+          // });
         });
       }
     }
