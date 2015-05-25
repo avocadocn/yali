@@ -18,6 +18,9 @@
             .fc-center
               span#calendar_title
             .campaign_type.pull-right
+              .circle.inactive 
+              .type-label 关闭活动            
+            .campaign_type.pull-right
               .circle.team 
               .type-label 小队活动
             .campaign_type.pull-right
@@ -58,6 +61,8 @@
                             a(ng-click="onCampaignStatusChange(2)") 进行中
                           li 
                             a(ng-click="onCampaignStatusChange(3)") 已结束
+                          li 
+                            a(ng-click="onCampaignStatusChange(4)") 已关闭
                     th.center 操作
                 tbody
                   tr(bindonce="campaigns" ng-repeat="campaign in campaigns")
@@ -70,10 +75,10 @@
                     td.center
                       span(bo-bind="campaign.endTime | date:'MM-dd HH:mm'")
                     td.center(bo-bind="campaign.memberNumber")
-                    td.center(bo-bind="campaign.status")
+                    td.center(bo-bind="campaign.active ? campaign.status : '已关闭'")
                     td.center(ng-cloak) 
                       a(href="" edit-campaign campaign-id="campaign._id") 详情
-                      button.dl_btn.close_btn(ng-if="campaign.status==='未开始'||campaign.status==='已开始'" ng-disabled="!campaign.active" ng-click="closeCampaign(campaign)") {{campaign.active? '关闭': '已关闭'}}
+                      button.dl_btn.close_btn(ng-if="campaign.active && (campaign.status==='未开始'||campaign.status==='进行中')" ng-click="closeCampaign(campaign)") 关闭
               .row
                 .col-xs-12
                   .data-table-paginate
@@ -85,4 +90,4 @@
                       li(ng-if="hasNext" ng-class="{disabled:!hasNext}" ng-click="getPage('next')" ng-cloak)
                         a.page(href="") 下一页
 
-sponsor-campaign(data="data")
+//- sponsor-campaign(data="data")

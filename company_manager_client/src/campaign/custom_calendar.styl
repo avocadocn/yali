@@ -226,6 +226,8 @@ borderColor = #ddd
         background-color #dc5247
       &.team
         background-color #1fc39e
+      &.inactive
+        background-color #ccc
     .type-label
       font-size 12px
       margin 5px 5px 0
@@ -237,20 +239,22 @@ borderColor = #ddd
   font-size 1em
   white-space nowrap
   cursor pointer
-.campaigin-company ,.campaigin-team ,.campaigin-team-no-com-campaign
+.campaign_info
   position absolute
-  height 15px
-  width 15px
-  left 6px
+  left 1px
   bottom 5px
-  text-align center
-  border-radius 3px
-  font-size 12px
-  font-weight 500
-  color white
-  background-color #dc5247
-.campaigin-team
-  left 26px
-  background-color #1fc39e
-.campaigin-team-no-com-campaign
-  background-color #1fc39e
+  .campaign-company ,.campaign-team ,.campaign-inactive
+    float left
+    margin-left 5px
+    height 15px
+    width 15px
+    text-align center
+    border-radius 3px
+    font-size 12px
+    font-weight 500
+    color white
+    background-color #dc5247
+  .campaign-team
+    background-color #1fc39e
+  .campaign-inactive
+    background-color #ccc
