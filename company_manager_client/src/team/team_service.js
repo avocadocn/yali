@@ -9,6 +9,15 @@ define(['./team'], function (team) {
       get: function (id) {
         return $http.get(apiBaseUrl + '/teams/' + id);
       },
+
+      /**
+       * 获取小队成员
+       * @param  {String} id 小队的id
+       * @return {HttpPromise}
+       */
+      getMembers: function(id) {
+        return $http.get(apiBaseUrl + '/teams/' + id + '/members');
+      },
       /**
        * 获取公司的小队列表
        * @param  {String}   id      公司的id

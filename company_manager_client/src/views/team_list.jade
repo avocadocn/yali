@@ -116,9 +116,11 @@ script(type="text/ng-template" id="teamDetailModal.html")
           .user_name(bo-bind="leader.nickname")
       .row
         .col-md-2 成员
-        .col-md-2.user(ng-repeat="member in team.members")
-          img.user_logo(bo-src="member.photo + '/40/40'")
-          .user_name(bo-bind="member.nickname")
+        .col-md-10
+          .row
+            .col-md-2.user(ng-repeat="member in team.members")
+              img.user_logo(bo-src="member.photo + '/40/40'")
+              .user_name(bo-bind="member.nickname")
       .row
         .col-md-2 近期活动
         .col-md-10(bo-bind="team.lastCampaign?team.lastCampaign.theme :'无'")

@@ -139,8 +139,11 @@ define(['angular', 'angulardatatables'], function (angular) {
         $scope.memberBoxTitle = ['小队成员', '公司成员'];
         $scope.showTeamMemberTitle = $scope.memberTitle[0];
         $scope.showMemberBoxTitle = $scope.memberBoxTitle[0];
-        teamService.get($state.params.teamId).success(function (data) {
-          $scope.team = data;
+        teamService.getMembers($state.params.teamId).success(function (data) {
+          $scope.team = {
+            leaders: data.leaders,
+            _id: $state.params.teamId
+          };
           $scope.teamMembers = data.members;
           $scope.members = data.members;
         })
