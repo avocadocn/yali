@@ -267,10 +267,12 @@ define(['angular', 'angulardatatables'], function (angular) {
         };
 
         $scope.editLogo = function () {
-          var dataURI = cropper.cropit('export', {
-            type: 'image/jpeg',
-            quality: 1
-          });
+          // var dataURI = cropper.cropit('export', {
+          //   type: 'image/jpeg',
+          //   quality: 1
+          // });
+          var dataURI = cropper.cropit('export');
+
           if (!dataURI || dataURI === '') {
             return;
           }
@@ -303,10 +305,12 @@ define(['angular', 'angulardatatables'], function (angular) {
         };
 
         $scope.editFamily = function () {
-          var dataURI = cropperFamily.cropit('export', {
-            type: 'image/jpeg',
-            quality: 1
-          });
+          // var dataURI = cropperFamily.cropit('export', {
+          //   type: 'image/jpeg',
+          //   quality: 1
+          // });
+          var dataURI = cropperFamily.cropit('export');
+          
           if (!dataURI || dataURI === '') {
             return;
           }

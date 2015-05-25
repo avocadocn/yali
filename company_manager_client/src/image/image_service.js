@@ -14,6 +14,7 @@ define(['./image'], function (image) {
         var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
 
         // write the bytes of the string to a typed array
+        // var ab = new ArrayBuffer(byteString.length);
         var ia = new Uint8Array(byteString.length);
         for (var i = 0; i < byteString.length; i++) {
           ia[i] = byteString.charCodeAt(i);

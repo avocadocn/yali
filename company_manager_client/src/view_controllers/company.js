@@ -47,10 +47,12 @@ define(['angular', 'jQuery', 'cropit'], function (angular, $) {
       };
 
       $scope.editLogo = function () {
-        var dataURI = cropper.cropit('export', {
-          type: 'image/jpeg',
-          quality: 1
-        });
+        // var dataURI = cropper.cropit('export', {
+        //   type: 'image/jpeg',
+        //   quality: 1
+        // });
+        var dataURI = cropper.cropit('export');
+
         if (!dataURI || dataURI === '') {
           return;
         }
@@ -83,15 +85,18 @@ define(['angular', 'jQuery', 'cropit'], function (angular, $) {
       };
 
       $scope.editFamily = function () {
-        var dataURI = cropperFamily.cropit('export', {
-          type: 'image/jpeg',
-          quality: 1
-        });
+        // var dataURI = cropperFamily.cropit('export', {
+        //   type: 'image/jpeg',
+        //   quality: 1
+        // });
+        var dataURI = cropperFamily.cropit('export');
+
         if (!dataURI || dataURI === '') {
           return;
         }
         var fd = new FormData();
         var blob = imageService.dataURItoBlob(dataURI);
+
         fd.append('cover', blob);
         companyService.editCover(company._id, fd, function (err) {
           if (err) {
