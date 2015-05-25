@@ -241,7 +241,7 @@ var sendCompanyGuideJob = function () {
         mailSet = sendcloud;
       }
       async.each(companies, function (company, callback) {
-        mailSet.sendCompanyOperationGuideMail(req.body.email, company._id.toString(), req.headers.host);
+        mailSet.sendCompanyOperationGuideMail(company.login_email, company.info.name, config.host.product);
         callback();
       }, function(err){
         if( err ) {
@@ -345,42 +345,42 @@ var lastMonthCampaignCount =  function(){
 }
 exports.init = function(){
   //自动统计小队分数
-  var teamPointRule = new schedule.RecurrenceRule();
-  teamPointRule.hour = 0;
-  teamPointRule.minute = 0;
-  var teamPointSchedule = schedule.scheduleJob(teamPointRule, function(){
-      teamPoint();
-  });
-  teamPoint();
-  //自动完成已经结束的活动
-  var finishCampaignRule = new schedule.RecurrenceRule();
-  finishCampaignRule.minute = 0;
-  var finishCampaignSchedule = schedule.scheduleJob(finishCampaignRule, function(){
-      finishCampaign();
-  });
-  //统计本周的活动数和活动人次，每小时一次
-  var currentWeekCampaignRule = new schedule.RecurrenceRule();
-  currentWeekCampaignRule.minute = 0;
-  var currentWeekCampaignSchedule = schedule.scheduleJob(currentWeekCampaignRule,currentWeekCampaignCount );
-  //统计上周的活动数和活动人次，每周一的0点运行一次
-  var lastWeekCampaignRule = new schedule.RecurrenceRule();
-  lastWeekCampaignRule.dayOfWeek = 1;
-  lastWeekCampaignRule.hour = 0;
-  lastWeekCampaignRule.minute = 0;
-  var lastWeekCampaignSchedule = schedule.scheduleJob(lastWeekCampaignRule, lastWeekCampaignCount);
-  //统计上月的活动数和活动人次，每月1号的0点运行一次
-  var lastMonthCampaignRule = new schedule.RecurrenceRule();
-  lastMonthCampaignRule.date = 1;
-  lastMonthCampaignRule.hour = 0;
-  lastMonthCampaignRule.minute = 0;
-  var lastMonthCampaignSchedule = schedule.scheduleJob(lastMonthCampaignRule,lastMonthCampaignCount);
-  //发送邮件给刚刚激活的公司
-  var sendCompanyGuideRule = new schedule.RecurrenceRule();
-  sendCompanyGuideRule.hour = 0;
-  sendCompanyGuideRule.minute = 0;
-  var sendCompanyGuideSchedule = schedule.scheduleJob(sendCompanyGuideRule, function(){
-    sendCompanyGuideJob();
-  });
+  // var teamPointRule = new schedule.RecurrenceRule();
+  // teamPointRule.hour = 0;
+  // teamPointRule.minute = 0;
+  // var teamPointSchedule = schedule.scheduleJob(teamPointRule, function(){
+  //     teamPoint();
+  // });
+  // teamPoint();
+  // //自动完成已经结束的活动
+  // var finishCampaignRule = new schedule.RecurrenceRule();
+  // finishCampaignRule.minute = 0;
+  // var finishCampaignSchedule = schedule.scheduleJob(finishCampaignRule, function(){
+  //     finishCampaign();
+  // });
+  // //统计本周的活动数和活动人次，每小时一次
+  // var currentWeekCampaignRule = new schedule.RecurrenceRule();
+  // currentWeekCampaignRule.minute = 0;
+  // var currentWeekCampaignSchedule = schedule.scheduleJob(currentWeekCampaignRule,currentWeekCampaignCount );
+  // //统计上周的活动数和活动人次，每周一的0点运行一次
+  // var lastWeekCampaignRule = new schedule.RecurrenceRule();
+  // lastWeekCampaignRule.dayOfWeek = 1;
+  // lastWeekCampaignRule.hour = 0;
+  // lastWeekCampaignRule.minute = 0;
+  // var lastWeekCampaignSchedule = schedule.scheduleJob(lastWeekCampaignRule, lastWeekCampaignCount);
+  // //统计上月的活动数和活动人次，每月1号的0点运行一次
+  // var lastMonthCampaignRule = new schedule.RecurrenceRule();
+  // lastMonthCampaignRule.date = 1;
+  // lastMonthCampaignRule.hour = 0;
+  // lastMonthCampaignRule.minute = 0;
+  // var lastMonthCampaignSchedule = schedule.scheduleJob(lastMonthCampaignRule,lastMonthCampaignCount);
+  // //发送邮件给刚刚激活的公司
+  // var sendCompanyGuideRule = new schedule.RecurrenceRule();
+  // sendCompanyGuideRule.hour = 0;
+  // sendCompanyGuideRule.minute = 0;
+  // var sendCompanyGuideSchedule = schedule.scheduleJob(sendCompanyGuideRule, function(){
+  //   sendCompanyGuideJob();
+  // });
   // sendCompanyGuideJob();
 };
 //统计活动数

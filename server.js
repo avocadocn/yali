@@ -114,7 +114,7 @@ if (cluster.isMaster) {
 exports = module.exports = app;
 
 //var dataInit = require('./app/config/db');
-require('./app/services/schedule').init();
+// require('./app/services/schedule').init();
 //dataInit.create();
 
 // 创建被git排除的目录
