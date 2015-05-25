@@ -599,6 +599,64 @@ exports.quickvalidate = function(req, res) {
 
   var key = req.query.key;
   var _id = req.query.id;
+  var saveCompany = function (company) {
+    company.save(function(err) {
+      if (err) {
+        console.log(err.stack);
+        renderErrorPage({
+          title: '验证失败',
+          message: '服务器错误。'
+        });
+      } else {
+        User.findOne({username:company.info.email}).exec()
+        .then(function (user) {
+          if(user){
+            user.active = true;
+            user.mail_active = true;
+            user.save(function (err) {
+              if(!err){
+                Config.findOne({ name: config.CONFIG_NAME }, function (err, config) {
+                  if (err || !config || !config.smtp || config.smtp === 'sendcloud') {
+                    sendcloud.sendInviteColleageMail(company.info.email, company.invite_key, company._id.toString(), company.invite_qrcode, req.headers.host);
+                  } else if (config.smtp === '163') {
+                    mail.sendInviteColleageMail(company.info.email, company.invite_key, company._id.toString(), company.invite_qrcode, req.headers.host);
+                  }
+                });
+                if (isMobile(req)) {res.render('company/validate/active_success_mobile');}
+                else {res.render('company/validate/active_success');}
+                //team全部激活
+                CompanyGroup.update({'cid':company._id},{'$set':{'company_active':true,'active':true}},{'multi':true},function (err){
+                  if(err) {
+                    console.log(err.stack);
+                  }
+                });
+              }
+              else{
+                renderErrorPage({
+                  title: '验证失败',
+                  message: '服务器错误。'
+                });
+              }
+            })
+          }
+          else{
+            renderErrorPage({
+              title: '激活成功',
+              isOnlyCompanySuccess: true,
+              isFail: false
+            });
+          }
+        })
+        .then(null, function (err) {
+          console.log(err.stack);
+          renderErrorPage({
+            title: '验证失败',
+            message: '服务器错误。'
+          });
+        });
+      }
+    });
+  };
   Company.findOne({
       _id: _id
     },
@@ -609,58 +667,7 @@ exports.quickvalidate = function(req, res) {
             company.status.active = true;
             company.status.mail_active = true;
             company.status.date = new Date();
-            var saveCompany = function () {
-              company.save(function(err) {
-                if (err) {
-                  console.log(err.stack);
-                  renderErrorPage({
-                    title: '验证失败',
-                    message: '服务器错误。'
-                  });
-                } else {
-                  User.findOne({username:company.info.email}).exec()
-                  .then(function (user) {
-                    if(user){
-                      user.active = true;
-                      user.mail_active = true;
-                      user.save(function (err) {
-                        if(!err){
-                          Config.findOne({ name: config.CONFIG_NAME }, function (err, config) {
-                            if (err || !config || !config.smtp || config.smtp === 'sendcloud') {
-                              sendcloud.sendInviteColleageMail(company.info.email, company.invite_key, company._id.toString(), company.invite_qrcode, req.headers.host);
-                            } else if (config.smtp === '163') {
-                              mail.sendInviteColleageMail(company.info.email, company.invite_key, company._id.toString(), company.invite_qrcode, req.headers.host);
-                            }
-                          });
-                          if (isMobile(req)) {res.render('company/validate/active_success_mobile');}
-                          else {res.render('company/validate/active_success');}
-                        }
-                        else{
-                          renderErrorPage({
-                            title: '验证失败',
-                            message: '服务器错误。'
-                          });
-                        }
-                      })
-                    }
-                    else{
-                      renderErrorPage({
-                        title: '激活成功',
-                        isOnlyCompanySuccess: true,
-                        isFail: false
-                      });
-                    }
-                  })
-                  .then(null, function (err) {
-                    console.log(err.stack);
-                    renderErrorPage({
-                      title: '验证失败',
-                      message: '服务器错误。'
-                    });
-                  });
-                }
-              });
-            };
+
             if(!company.invite_qrcode){
               var qrDir = '/img/qrcode/companyinvite/';
               var fileName = company._id.toString()+'.png';
@@ -670,11 +677,11 @@ exports.quickvalidate = function(req, res) {
                 if(!err){
                   company.invite_qrcode =qrcodeUrl;
                 }
-                saveCompany();
+                saveCompany(company);
               });
             }
             else{
-              saveCompany();
+              saveCompany(company);
             }
           } else {
             renderErrorPage({
@@ -1137,6 +1144,8 @@ exports.quickCreateTeams = function(req, res, next) {
           name: groupDoc[groupIndex].group_type + '队' + '-' + companyDoc.info.name,
           logo: '/img/icons/group/' + groupDoc[groupIndex].entity_type.toLowerCase() + '_on.png',
           entity_type: groupDoc[groupIndex].entity_type,
+          active: false,
+          company_active: false,
           city: {
             province: companyDoc.info.city.province,
             city: companyDoc.info.city.city,
