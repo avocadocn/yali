@@ -377,6 +377,10 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
     'teamList',
     'molds',
     function($scope, initData, campaignService, teamList, molds) {
+      $scope.moreDetail = {
+        company: false,
+        team: false
+      };
       $scope.teamList = [];
       teamList.forEach(function(team) {
         if(team.active) {
@@ -528,7 +532,13 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
       };
 
       var editor = new Pen(options);
-
+      $scope.toggleMoreDetail = function() {
+        if($scope.campaignType === 'company') {
+          $scope.moreDetail.company = !$scope.moreDetail.company;
+        } else {
+          $scope.moreDetail.team = !$scope.moreDetail.team;
+        }
+      }
       // 发布相关
       $scope.sending = false;
       $scope.publish = function() {

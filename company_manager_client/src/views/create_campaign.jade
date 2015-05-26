@@ -42,23 +42,25 @@
                     span.glyphicon.glyphicon-map-marker
               .form-group(ng-show="hasSearch")
                 map-search(ctrl="mapCtrl")
-              .form-group.time_group
+              .form-group
+                label.cp_form_label 简介
+                .pen_editor
+                  #create_cp_page_pen_toolbar
+                  .form-control#create_cp_page_pen_content(name="content" ng-model="formData.content" contenteditable="true" mix-maxlength=4000 required)
+              .form-group.time_group(ng-show="campaignType === 'company' ? moreDetail.company :  moreDetail.team")
                 label.cp_form_label 报名截止时间
                 .input-group.date.form_datetime#deadline
                   input.form-control(type="text" ng-model="formData.deadline" name="deadline" placeholder="请选择报名截止时间" data-date-format="YYYY-MM-DD HH:mm" readonly)
                   .input-group-addon
                     span.glyphicon.glyphicon-calendar
-              .form-group
+              .form-group(ng-show="campaignType === 'company' ? moreDetail.company :  moreDetail.team")
                 label.cp_form_label 报名人数上限
                 input.form-control(type="number" name="memberMax" ng-model="formData.member_max")
-              .form-group
+              .form-group(ng-show="campaignType === 'company' ? moreDetail.company :  moreDetail.team")
                 label.cp_form_label 最少人数
                 input.form-control(type="number" name="memberMin" ng-model="formData.member_min")
-              .form-group
-                label.cp_form_label 简介
-                .pen_editor
-                  #create_cp_page_pen_toolbar
-                  .form-control#create_cp_page_pen_content(name="content" ng-model="formData.content" contenteditable="true" mix-maxlength=4000)
+              .form-group.more_detail
+                a(href="" ng-click="toggleMoreDetail()" ng-bind="campaignType === 'company' ? (moreDetail.company ? '收起' : '更多') : (moreDetail.team ? '收起' : '更多')")
               .form-group.clearfix
                 button.btn.pull-right(ng-class="{'btn-primary': createCampaignForm.$valid, 'btn-default': createCampaignForm.$invalid}" ng-disabled="createCampaignForm.$invalid || sending" ng-click="publish()")
                   span(ng-if="!sending") 发布
