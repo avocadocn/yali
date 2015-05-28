@@ -1289,8 +1289,8 @@ app.directive('contenteditable',function() {
             }
             // the difference = pasted string with HTML:
             var pasted = after.substr(pos1, after.length-pos2-pos1);
-            // strip the tags:
-            var replace = pasted.replace(/style\s*=(['\"\s]?)[^'\"]*?\1/gi,'').replace(/class\s*=(['\"\s]?)[^'\"]*?\1/gi,'');
+            // strip the tags: 
+            var replace = pasted.replace(/style\s*=(['\"\s]?)[^\1]*?\1/gi,'').replace(/class\s*=(['\"\s]?)[^\1]*?\1/gi,'');
             // build clean content:
             var replaced = after.substr(0, pos1)+replace+after.substr(pos1+pasted.length);
             // replace the HTML mess with the plain content
