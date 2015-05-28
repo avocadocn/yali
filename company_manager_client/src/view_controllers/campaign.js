@@ -76,12 +76,15 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
           if(data.campaigns[i].campaignType===1 || data.campaigns[i].campaignType>5) {
             data.campaigns[i].logo = $rootScope.company.logo;
           }else {
-            var tid = data.campaigns[i].unitId;
+            var tids = data.campaigns[i].unitId;
+            var tidsLength = data.campaigns[i].unitId.length;
             var teamsLength = $scope.data.teams.length;
-            for(var j=0; j<teamsLength; j++) {
-              if($scope.data.teams[j]._id === tid) {
-                data.campaigns[i].logo = $scope.data.teams[j].logo;
-                break;
+            for (var k = 0; k < tidsLength; k++) {
+              for (var j = 0; j < teamsLength; j++) {
+                if ($scope.data.teams[j]._id === tids[k]) {
+                  data.campaigns[i].logo = $scope.data.teams[j].logo;
+                  break;
+                }
               }
             }
           }
@@ -601,19 +604,22 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
       //  1、日期变更时
       //  2、翻页
       //  3、每页数目变更
-      var getSuccessProcess = function(data) {
+    var getSuccessProcess = function(data) {
         //logo
         var campaignsLength = data.campaigns.length;
-        for(var i=0; i<campaignsLength; i++) {
-          if(data.campaigns[i].campaignType===1 || data.campaigns[i].campaignType>5) {
+        for (var i = 0; i < campaignsLength; i++) {
+          if (data.campaigns[i].campaignType === 1 || data.campaigns[i].campaignType > 5) {
             data.campaigns[i].logo = $rootScope.company.logo;
-          }else {
-            var tid = data.campaigns[i].unitId;
+          } else {
+            var tids = data.campaigns[i].unitId;
+            var tidsLength = data.campaigns[i].unitId.length;
             var teamsLength = $scope.data.teams.length;
-            for(var j=0; j<teamsLength; j++) {
-              if($scope.data.teams[j]._id === tid) {
-                data.campaigns[i].logo = $scope.data.teams[j].logo;
-                break;
+            for (var k = 0; k < tidsLength; k++) {
+              for (var j = 0; j < teamsLength; j++) {
+                if ($scope.data.teams[j]._id === tids[k]) {
+                  data.campaigns[i].logo = $scope.data.teams[j].logo;
+                  break;
+                }
               }
             }
           }
