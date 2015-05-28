@@ -3,7 +3,7 @@
     h1
       | 编辑小队信息
     ol.breadcrumb
-      li: a(ui-sref="teamList") 小队管理
+      li: a(ui-sref="manager.teamList") 小队管理
       li.active 编辑小队
   section.content
     .row
@@ -53,7 +53,7 @@
                         button.btn.btn-primary(type="button" ng-click="editFamily()" ng-if="familyIsUploading") 确定
                     input.cropit-image-input#cropit_image_input_family(type="file")
               .form-group.text-center.operator
-                a.btn.btn-default(ui-sref="teamList") 取消
+                a.btn.btn-default(ui-sref="manager.teamList") 取消
                 button.btn.btn-success(type="button" ng-click="edit()") 确定
                 button.btn.btn-danger(ng-if="team && team.active" ng-click="closeTeam(team._id)") 关闭小队
                 button.btn.btn-primary(ng-if="team && !team.active" ng-click="openTeam(team._id)") 打开小队
