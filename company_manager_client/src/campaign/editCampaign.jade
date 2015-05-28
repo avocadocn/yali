@@ -43,7 +43,7 @@
         input.dl_form_control(type="text" ng-model="campaign.member_min" name="memberMin" placeholder="输入人数下限")
     .modal_container.campaign_inroduce
       .campaign_label 简介
-      p.campaign_intro_content(bo-bind="campaign.content"  ng-show="!action")
+      p.campaign_intro_content(bo-html="campaign.content"  ng-show="!action")
       .detail_editor.detail_input(ng-show="action === 'edit'")
         #campaignDetailEditToolBar
         #campaignDetailEdit.markdownContainer.dl_modal_input(name="content" ng-model="campaign.content" contenteditable="true" mix-maxlength=4000)

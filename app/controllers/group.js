@@ -296,9 +296,9 @@ exports.teampage = function(req, res) {
   var team = req.companyGroup;
   if (!team.active) {
     if (req.user.provider === 'user') {
-      res.redirect('/users/home');
+      return res.redirect('/users/home');
     } else if (req.user.provider === 'company') {
-      res.redirect('/company/home');
+      return res.redirect('/company/home');
     }
   }
   // 仅提供id，其它所有数据通过group.info获取
