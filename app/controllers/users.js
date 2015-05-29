@@ -1303,13 +1303,22 @@ exports.home = function(req, res) {
   var selected_teams = [];
   var user_teams = [];
   for(var i = 0; i < req.user.team.length; i ++) {
-    user_teams.push(req.user.team[i]._id.toString());
+    if(req.user.team[i].active) {
+      user_teams.push(req.user.team[i]._id.toString());
+    }
   }
   var department = _user.department;
   if (!_user.department || !_user.department._id) {
     department = null;
   }
-  var myteam = req.user.team;
+  var filterActiveTeam = function(obj) {
+    if('active' in obj && obj.active) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  var myteam = req.user.team.filter(filterActiveTeam);
   var _myteam = [];
   var myteamLength= myteam.length;
   for(var i = 0; i < myteamLength; i ++) {

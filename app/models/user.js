@@ -35,7 +35,11 @@ var _team = new Schema({
         type : Boolean,
         default : false
     },
-    logo: String
+    logo: String,
+    active: {
+      type: Boolean,
+      default: true
+    }
 });
 
 
