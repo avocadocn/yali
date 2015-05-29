@@ -95,7 +95,7 @@ exports.appdownload = function(req, res) {
     return res.redirect('https://itunes.apple.com/cn/app/id916162839?mt=8');
   }
   else if(androidAgentID) {
-    return res.redirect('/Donler.apk');
+    return res.redirect('http://www.wandoujia.com/apps/com.donler.app');
   }
   else {
     return res.render('users/app_download_pc');
