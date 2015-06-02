@@ -18,7 +18,7 @@
             i.fa.fa-child
           .info-box-content
             .info-box-text 等待审核
-            .info-box-number(ng-cloak) {{inactiveMemberLength}}人
+            .info-box-number(bindonce="inactiveMemberLength" bo-bind="inactiveMemberLength + '人'") 
     .box.box-primary
       .box-header.with-border
         h3.box-title 所有成员

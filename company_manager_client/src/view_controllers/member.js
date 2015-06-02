@@ -212,12 +212,12 @@ define(['angular', 'qrcode', 'angulardatatables'], function (angular, qrcode, an
           .error(function(data) {
             alert(data.msg);
           });
-        // memberService.getMembers($rootScope.company._id,{resultType:4}).success(function (data) {
-        //   $scope.inactiveMemberLength = data.length;
-        // })
-        // .error(function (data) {
-        //   console.log(data.msg);
-        // });
+        memberService.getMembers($rootScope.company._id,{resultType:4}).success(function (data) {
+          $scope.inactiveMemberLength = data.length;
+        })
+        .error(function (data) {
+          console.log(data.msg);
+        });
 
         // $scope.pageNum =10;
         // $scope.nowPage = 1;
