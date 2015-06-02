@@ -109,8 +109,6 @@ define(['./member', 'jQuery', 'cropit'], function (member, $) {
               },300)
               
             })
-
-            
           }
            //激活
           scope.active = function () {
@@ -119,6 +117,17 @@ define(['./member', 'jQuery', 'cropit'], function (member, $) {
               alert('激活成功');
               scope.nowUser.active = true;
               scope.nowUser.mail_active = true;
+            })
+            .error(function (data) {
+              alert(data.msg);
+            });
+          };
+          //取消屏蔽
+          scope.openUser = function() {
+            var id = scope.nowUser._id;
+            memberService.open(id).success(function (data) {
+              alert('取消屏蔽成功');
+              scope.nowUser.active = true;
             })
             .error(function (data) {
               alert(data.msg);
