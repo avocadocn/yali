@@ -4,7 +4,7 @@ define(['angular', 'app', 'init_data', 'routes'], function(angular, app, initDat
   var $http = initInjector.get('$http');
   var $q = initInjector.get('$q');
 
-  var apiBaseUrl = 'http://' + window.location.hostname + ':3002';
+  var apiBaseUrl = 'http://' + window.location.hostname + ':3002/v1_4';
   app.constant('apiBaseUrl', apiBaseUrl);
 
   var token = localStorage.getItem('x-access-token');

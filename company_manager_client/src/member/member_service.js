@@ -46,6 +46,15 @@ define(['./member'], function (member) {
       },
 
       /**
+       * 取消屏蔽用户
+       * @param  {String} id 用户id
+       * @return {HttpPromise}    
+       */
+      open: function (id) {
+        return $http.post(apiBaseUrl + '/users/'+id+'/open');
+      },
+
+      /**
        * 屏蔽用户
        * @param  {String} id 用户id
        * @return {HttpPromise}    

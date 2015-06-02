@@ -58,7 +58,7 @@
   .box-footer.text-center
     button.btn.btn-primary(ng-click="save()") 保存
     button.btn.btn-danger(ng-if="nowUser.active" ng-click="closeUser()") 屏蔽
-    button.btn.btn-warning(ng-if="!nowUser.active && nowUser.mail_active" ng-click="active()") 取消屏蔽
+    button.btn.btn-warning(ng-if="!nowUser.active && nowUser.mail_active" ng-click="openUser()") 取消屏蔽
     button.btn.btn-info(ng-if="!nowUser.active && !nowUser.mail_active" ng-click="active()") 激活
     button.btn.btn-default(ng-click="close()") 关闭
 script(type="text/ng-template" id="node.html")
