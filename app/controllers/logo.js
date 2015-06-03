@@ -48,6 +48,7 @@ exports.updateLogo = function(req, res, next) {
       switch (req.body.target) {
       case 'u':
         target_model = req.user;
+        target_model.timeHash = new Date();
         this_id = req.user._id;
         updateLogo = schedule.updateUlogo;
         logo_model = target_model;

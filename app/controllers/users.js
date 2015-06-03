@@ -1732,6 +1732,7 @@ exports.saveAccount = function (req, res, next) {
     for (var i in req.body.user) {
       user[i] = req.body.user[i];
     }
+    user.timeHash = new Date();
     user.save(function(err) {
       if (err) {
         return next(err);
@@ -1961,6 +1962,7 @@ exports.editUserInfo = function(req, res, next) {
       user.introduce = req.body.editValue;
     else if (req.body.editName==='phone')
       user.phone = req.body.editValue;
+    user.timeHash = new Date();
     //todo photo
     user.save(function(err){
       if (!err) {

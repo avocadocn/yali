@@ -187,7 +187,11 @@ var UserSchema = new Schema({
         }
     },
     campaignCount: Number,
-    invite_person: Schema.Types.ObjectId
+    invite_person: Schema.Types.ObjectId,
+    timeHash: {
+        type: Date,
+        default: Date.now
+    }
 });
 
 /**
