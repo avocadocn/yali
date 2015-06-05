@@ -101,6 +101,7 @@ exports.activateGroup = function(req, res) {
         return res.send({'result':0,'msg':'小队查询错误'});
       }else{
         companyGroup.active = active;
+        companyGroup.timeHash = new Date();
         companyGroup.save(function(s_err){
           if(s_err){
             console.log(s_err);
@@ -420,6 +421,7 @@ exports.saveInfo =function(req,res,next) {
         }
         companyGroup.home_court = homecourts;
       }
+      companyGroup.timeHash = new Date();
       companyGroup.save(function (s_err){
         if(s_err){
             console.log(s_err);

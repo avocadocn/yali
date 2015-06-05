@@ -1503,6 +1503,7 @@ exports.joinGroup = function (req, res){
               'name':companyGroup.name,
               'logo':companyGroup.logo
             });
+            companyGroup.timeHash = new Date();
             //保存小队
             companyGroup.save(function (err){
               if(err){
@@ -1609,6 +1610,7 @@ exports.quitGroup = function (req, res){
         if(leader_index>-1){
           companyGroup.leader.splice(leader_index,1);
         }
+        companyGroup.timeHash = new Date();
         companyGroup.save(function (err) {
           if(err){
             return res.send(err);
