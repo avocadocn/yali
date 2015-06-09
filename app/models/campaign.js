@@ -215,6 +215,10 @@ var Campaign = new Schema({
       type:Date,
       default: Date.now
     }
+  },
+  timeHash: {
+    type: Date,
+    default: Date.now
   }
 });
 
