@@ -841,6 +841,7 @@ exports.cancelCampaign = function(req, res){
   }
 
   campaign.active = false;
+  campaign.timeHash = new Date();
   campaign.save(function (err) {
     if (err) {
       return res.send({ result: 0, msg: '关闭活动失败' });
@@ -887,6 +888,7 @@ exports.editCampaign = function(req, res){
   if(req.body.deadline) {
     campaign.deadline = req.body.deadline;
   }
+  campaign.timeHash = new Date();
   campaign.save(function (err) {
     if (err) {
       return res.send({ result: 0, msg:'编辑活动失败，请重试' });
@@ -1979,6 +1981,7 @@ exports.joinCampaign = function (req, res) {
     //       console.log(err);
     //   });
     // }
+    campaign.hashTime = new Date();
     campaign.save(function (err) {
       if (err) {
         console.log(err);
@@ -2027,6 +2030,7 @@ exports.quitCampaign = function (req, res) {
     //       console.log(err);
     //   });
     // }
+    campaign.timeHash = new Date();
     campaign.save(function (err) {
       if (err) {
         res.send({ result: 0, msg: '退出活动失败，请重试。' });
