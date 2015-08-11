@@ -74,12 +74,9 @@ module.exports = function(grunt) {
         files: [{
           expand: true,
           cwd: 'company_manager_client/src',
-          src: ['**/*.jade', '!index.jade', '!login.jade'],
+          src: ['**/*.jade'],
           dest: 'company_manager_client/templates/',
           ext: '.html'
-        }, {
-          'index.html': 'company_manager_client/src/index.jade',
-          'login.html': 'company_manager_client/src/login.jade'
         }]
       }
     },

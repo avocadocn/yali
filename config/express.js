@@ -70,17 +70,17 @@ module.exports = function (app, passport, db) {
     app.use(express.json());
     app.use(express.methodOverride());
 
-    var hour = 3600000;
-    // Express/Redis session storage
-    app.use(session({
-      secret: config.sessionSecret,
-      store: new RedisStore(),
-      resave: false,
-      saveUninitialized: true,
-      cookie: {
-        maxAge: hour * 24 * 7
-      }
-    }));
+    // var hour = 3600000;
+    // // Express/Redis session storage
+    // app.use(session({
+    //   secret: config.sessionSecret,
+    //   store: new RedisStore(),
+    //   resave: false,
+    //   saveUninitialized: true,
+    //   cookie: {
+    //     maxAge: hour * 24 * 7
+    //   }
+    // }));
 
 
     //app.use(middleware.auth_user);
@@ -102,38 +102,6 @@ module.exports = function (app, passport, db) {
       next();
     });
 
-    // Use passport sessions
-    app.use(passport.initialize());
-    app.use(passport.session());
-
-    app.use(function (req, res, next) {
-
-      if (req.user && req.user.provider === 'user' && !req.user.company_official_name) {
-        mongoose.model('Company')
-          .findById(req.user.cid)
-          .exec()
-          .then(function (company) {
-            req.user.company_official_name = company.info.official_name;
-            req.user.save(function (err) {
-              if (err) {
-                console.log(err);
-              }
-              res.locals.global_user = req.user;
-              next();
-            })
-          })
-          .then(null, function (err) {
-            console.log(err);
-            res.locals.global_user = req.user;
-            next();
-          })
-
-      } else {
-        res.locals.global_user = req.user;
-        next();
-      }
-    });
-
     // Connect flash for flash messages
     app.use(flash());
 
@@ -145,22 +113,6 @@ module.exports = function (app, passport, db) {
     app.use(express.static(config.root + '/public'));
 
     app.use(errorHandle);
-
-    app.use(tokenService.verifying(app));
-    app.use(function (req, res, next) {
-      if (req.url.indexOf('/company/manager/templates') === -1) {
-        return next();
-      }
-      var unAuth = function () {
-        res.status(401).send({ isLogin: false });
-      };
-      if (!req.tokenUser || req.tokenUser.type !== 'company') {
-        unAuth();
-      } else {
-        next();
-      }
-    });
-
     app.use(
       '/company/manager',
       express.static(config.root + '/company_manager_client')
@@ -168,3 +120,5 @@ module.exports = function (app, passport, db) {
 
   });
 };
+
+
