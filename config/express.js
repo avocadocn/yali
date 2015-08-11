@@ -9,7 +9,6 @@ var express = require('express'),
   flash = require('connect-flash'),   //session operate
   helpers = require('view-helpers'),
   config = require('./config'),
-  middleware = require('./middleware'),
   errorHandle = require('../app/middlewares/error_handle'),
   tokenService = require('../app/services/token'),
   i18n = require('i18n'),

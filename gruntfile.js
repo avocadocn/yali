@@ -3,201 +3,241 @@
 var config = require('./config/config');
 
 module.exports = function(grunt) {
-    // Project Configuration
-    grunt.initConfig({
-        pkg: grunt.file.readJSON('package.json'),
-        watch: {
-            js: {
-                files: ['gruntfile.js', 'server.js', 'app/**/*.js', 'public/js/**.js', '!public/js/**min.js', '!public/js/db.js', 'test/**/*.js', '!test/coverage/**/*.js'],
-                //tasks: ['jshint'],
-                options: {
-                    livereload: true
-                }
-            },
-            css: {
-                files: ['public/css/**.css', '!public/css/**.min.css'],
-                tasks: ['concat', 'cssmin'],
-                options: {
-                    livereload: true
-                }
-            },
-            stylus: {
-                files: ['public/stylus/**.styl', 'public/mobile/www/css/*.styl'],
-                tasks: ['stylus']
-            }
+
+  require('load-grunt-tasks')(grunt);
+
+  var createRequireJSOptions = function(isProduct) {
+    var opts = {
+      mainConfigFile: 'company_manager_client/src/main.js',
+      out: 'public/company_client/js/donler.js',
+      urlArgs: '',
+      uglify: {
+        toplevel: true,
+        ascii_only: true,
+        beautify: true,
+        max_line_length: 1000,
+
+        //How to pass uglifyjs defined symbols for AST symbol replacement,
+        //see "defines" options for ast_mangle in the uglifys docs.
+        defines: {
+          DEBUG: ['name', 'false']
         },
-        jshint: {
-            all: {
-                src: ['gruntfile.js', 'server.js', 'app/**/*.js', 'public/js/**.js', '!public/js/**min.js', '!public/js/db.js', 'test/**/*.js', '!test/coverage/**/*.js'],
-                options: {
-                    jshintrc: true
-                }
-            }
+
+        //Custom value supported by r.js but done differently
+        //in uglifyjs directly:
+        //Skip the processor.ast_mangle() part of the uglify call (r.js 2.0.5+)
+        no_mangle: true
+      },
+      optimize: 'uglify2',
+      generateSourceMaps: true,
+      preserveLicenseComments: false
+    };
+
+    if (isProduct) {
+      opts.generateSourceMaps = false;
+    }
+
+    return opts;
+  };
+
+  grunt.initConfig({
+    pkg: grunt.file.readJSON('package.json'),
+    watch: {
+      jade: {
+        files: ['company_manager_client/src/**/*.jade'],
+        tasks: ['jade']
+      },
+      js: {
+        files: ['company_manager_client/src/**/*.js', '!company_manager_client/src/login.js'],
+        tasks: ['requirejs']
+      },
+      loginJs: {
+        files: ['company_manager_client/src/login.js'],
+        tasks: ['copy:loginJs']
+      },
+      stylus: {
+        files: ['company_manager_client/src/view_stylus/*.styl', 'company_manager_client/src/donler.styl', 'company_manager_client/src/**/*.styl'],
+        tasks: ['stylus', 'concat:css']
+      },
+      loginStylus: {
+        files: ['company_manager_client/src/login.styl'],
+        tasks: ['stylus', 'concat:loginCss']
+      }
+    },
+    jade: {
+      compile: {
+        options: {
+          data: {
+            debug: false
+          }
         },
-        stylus: {
-            compile: {
-                options: {
-                    urlfunc: 'embedurl',
-                    compress: false,
-                    cache: false
+        files: [{
+          expand: true,
+          cwd: 'company_manager_client/src',
+          src: ['**/*.jade', '!index.jade', '!login.jade'],
+          dest: 'company_manager_client/templates/',
+          ext: '.html'
+        }, {
+          'index.html': 'company_manager_client/src/index.jade',
+          'login.html': 'company_manager_client/src/login.jade'
+        }]
+      }
+    },
+    requirejs: {
+      compile: {
+        options: createRequireJSOptions()
+      },
+      publish: {
+        options: createRequireJSOptions(true)
+      }
+    },
+    stylus: {
+      compile: {
+        options: {
+          urlfunc: 'embedurl',
+          compress: true,
+          cache: false
+        },
+        files: [
+          {'company_manager_client/dist/donler.min.css': 'company_manager_client/src/donler.styl'},
+          {'company_manager_client/dist/login.min.css': 'company_manager_client/src/login.styl'}
+        ]
+      }
+    },
+    copy: {
+      main: {
+        files: [
+          {
+            expand: true,
+            flatten: true,
+            filter: 'isFile',
+            src: [
+              'public/lib/bootstrap/dist/fonts/**',
+              'public/lib/font-awesome/fonts/**'
+            ],
+            dest: 'public/company_client/fonts/'
+          },
+          {
+            expand: true,
+            flatten: true,
+            filter: 'isFile',
+            src: [
+              'public/lib/pen/src/font/**'
+            ],
+            // pen也太特殊了吧。。。
+            dest: 'public/company_client/css/font/'
+          },
+          {
+            expand: true,
+            flatten: true,
+            filter: 'isFile',
+            src: ['company_manager_client/src/calendar-template/**'],
+            dest: 'public/company_client/calendar-template/'
+          },
+          {
+            expand: true,
+            flatten: true,
+            filter: 'isFile',
+            src: ['public/lib/datatables/media/images/**'],
+            dest: 'public/company_client/images/'
+          },
+          {
+            expand: true,
+            flatten: true,
+            src: ['company_manager_client/custom-lib/require.js'],
+            dest: 'public/company_client/js/'
+          }
+        ]
+      },
+      loginJs: {
+        files: [
+          {
+            expand: true,
+            flatten: true,
+            src: ['company_manager_client/src/login.js'],
+            dest: 'public/company_client/js/'
+          }
+        ]
+      }
+    },
+    concat: {
+      css: {
+        src: [
+          'public/lib/bootstrap/dist/css/bootstrap.min.css',
+          'public/lib/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css',
+          'public/lib/pen/src/pen.css',
+          'public/lib/font-awesome/css/font-awesome.min.css',
+          'public/lib/bootstrap-calendar/css/calendar.min.css',
+          'public/lib/admin-lte/dist/css/AdminLTE.min.css',
+          'public/lib/admin-lte/dist/css/skins/skin-blue.min.css',
+          'public/lib/datatables/media/css/jquery.dataTables.min.css',
+          'company_manager_client/dist/donler.min.css'
+        ],
+        dest: 'public/company_client/css/donler.min.css'
+      },
+      loginCss: {
+        src: [
+          'public/lib/bootstrap/dist/css/bootstrap.min.css',
+          'public/lib/admin-lte/dist/css/AdminLTE.min.css',
+          'public/lib/admin-lte/dist/css/skins/skin-blue.min.css',
+          'company_manager_client/dist/login.min.css'
+        ],
+        dest: 'public/company_client/css/login.min.css'
+      }
+    },
+    nodemon: {
+        dev: {
+            script: 'server.js',
+            options: {
+                args: [],
+                ignore: ['public/**', 'node_modules/**'],
+                ext: 'js,jade',
+                nodeArgs: ['--debug'],
+                delayTime: 1000,
+                env: {
+                    PORT: config.port
                 },
-                files: [{
-                    expand: true,
-                    cwd: 'public/stylus/',
-                    src: '*.styl',
-                    dest: 'public/css/',
-                    ext: '.css'
-                }, {
-                    expand: true,
-                    cwd: 'public/mobile/www/css/',
-                    src: '*.styl',
-                    dest: 'public/mobile/www/css/',
-                    ext: '.css'
-                }]
-            }
-        },
-        concat: {
-            css: {
-                src: [
-                    'public/lib/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.css',
-                    'public/lib/alertify.js/themes/alertify.core.css',
-                    'public/lib/alertify.js/themes/alertify.default.css',
-                    'public/lib/angular-carousel/dist/angular-carousel.min.css',
-                    'public/lib/bootstrap-calendar/css/calendar.css'
-                ],
-                dest: 'public/css/library.css'
-            },
-            cssdonler:{
-                src: [
-                    'public/css/donler.css',
-                    'public/css/timeline.css',
-                    'public/css/custom_alertify.css',
-                    'public/css/dl_card.css',
-                    'public/css/custom_calendar.css',
-                    'public/css/group_select.css',
-                    'public/css/campaign_list.css',
-                    'public/css/tree.css'
-                ],
-                dest: 'public/css/donlerall.css'
-            },
-            js: {
-                src: [
-                    'public/lib/jquery/jquery.js',
-                    'public/lib/angular/angular.js',
-                    'public/lib/angular-route/angular-route.js',
-                    'public/lib/moment/moment.js',
-                    'public/lib/moment/lang/zh-cn.js',
-                    'public/lib/bootstrap/dist/js/bootstrap.js',
-                    'public/lib/angular-translate/angular-translate.min.js',
-                    'public/lib/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js',
-                    'public/lib/angular-bootstrap/ui-bootstrap.js',
-                    'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
-                    'public/lib/alertify.js/lib/alertify.min.js',
-                    'public/lib/masonry/dist/masonry.pkgd.min.js',
-                    'public/lib/angular-masonry/angular-masonry.js',
-                    'public/lib/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js',
-                    'public/lib/smalot-bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js',
-                    'public/lib/lazysizes/lazysizes.js',
-                    'public/lib/angular-touch/angular-touch.min.js',
-                    'public/lib/angular-carousel/dist/angular-carousel.js',
-                    'public/lib/angular-file-upload/angular-file-upload.min.js',
-                    'public/lib/underscore/underscore.js',
-                    'public/js/language/zh-CN.js',
-                    'public/lib/bootstrap-calendar/js/calendar.js'
-                ],
-                dest: 'public/js/library.js'
-            },
-            jsdonler: {
-                src: [
-                    'public/js/modules/**/*.js',
-                    'public/js/app.js',
-                    'public/js/service/**.js',
-                    'public/js/controllers/message_header.js',
-                    'public/js/dl_card.js'
-                ],
-                dest: 'public/js/donlerall.js'
-            }
-        },
-        uglify: {
-            options: {
-                mangle: false,
-                banner: '/*! <%= pkg.name %> */\n',
-                sourceMap: true,
-                sourceMapName: 'public/js/library.min.js.map'
-            },
-            my_target: {
-                files: [{
-                    expand: true,
-                    cwd: 'public/js/',
-                    src: ['library.js', 'donlerall.js'],
-                    dest: 'public/js/',
-                    ext: '.min.js'
-                }]
-            }
-        },
-        cssmin: {
-            minify: {
-                expand: true,
-                cwd: 'public/css/',
-                src: ['library.css', 'donlerall.css'],
-                dest: 'public/css/',
-                ext: '.min.css'
-            }
-        },
-        nodemon: {
-            dev: {
-                script: 'server.js',
-                options: {
-                    args: [],
-                    ignore: ['public/**', 'node_modules/**'],
-                    ext: 'js,jade',
-                    nodeArgs: ['--debug'],
-                    delayTime: 1,
-                    env: {
-                        PORT: config.port
-                    },
-                    cwd: __dirname
-                }
-            }
-        },
-        concurrent: {
-            tasks: ['nodemon', 'watch'],
-            options: {
-                logConcurrentOutput: true
-            }
-        },
-        shell: {
-            nightwatch: {
-                command: 'node node_modules/nightwatch/bin/nightwatch -e default,chrome'
-            }
-        },
-        mochaTest: {
-            options: {
-                reporter: 'spec',
-                require: 'server.js'
-            },
-            src: ['test/mocha/**/*.js']
-        },
-        env: {
-            test: {
-                NODE_ENV: 'test'
+                cwd: __dirname
             }
         }
+    },
+    concurrent: {
+        tasks: ['nodemon', 'watch'],
+        options: {
+            logConcurrentOutput: true
+        }
+    },
+    shell: {
+        nightwatch: {
+            command: 'node node_modules/nightwatch/bin/nightwatch -e default,chrome'
+        }
+    },
+    mochaTest: {
+        options: {
+            reporter: 'spec',
+            require: 'server.js'
+        },
+        src: ['test/mocha/**/*.js']
+    },
+    env: {
+        test: {
+            NODE_ENV: 'test'
+        }
+    }
     });
-
-    grunt.loadNpmTasks('grunt-contrib-concat');
-    require('load-grunt-tasks')(grunt);
+    grunt.registerTask('default', ['compile', 'develop']);
+    grunt.registerTask('develop', ['concurrent']);
+    grunt.registerTask('compile', ['jade', 'stylus', 'requirejs:compile', 'copy', 'concat']);
+    grunt.registerTask('publish', ['jade', 'stylus', 'requirejs:publish', 'copy', 'concat']);
 
     //Making grunt default to force in order not to break the project.
     grunt.option('force', true);
-
-    //Default task(s).
-
-    grunt.registerTask('default', ['stylus', 'concat', 'uglify', 'cssmin', 'concurrent']);
     grunt.registerTask('hint', ['jshint']);
     //Test task.
     grunt.registerTask('test', ['env:test', 'mochaTest', 'shell:nightwatch']);
 };
+
+
 
 
 
