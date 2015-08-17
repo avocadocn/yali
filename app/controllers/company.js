@@ -9,13 +9,12 @@ var path = require('path'),
 
 exports.renderHrManagerPage = function(req, res) {
   var rootPath = meanConfig.root;
-  //先取消获取html内容的权限认证
-  // if (req.session && req.session.mgcid) {
+  if (req.session && req.session.uid) {
     res.sendfile(path.join(rootPath, 'company_manager_client/templates/index.html'));
-  // }
-  // else {
-  //   res.redirect('/company/manager/login');
-  // }
+  }
+  else {
+    res.redirect('/company/manager/login');
+  }
 };
 
 exports.renderLoginPage = function(req, res) {

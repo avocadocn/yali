@@ -16,8 +16,6 @@ var express = require('express'),
 
 var session = require('express-session'),
   RedisStore = require('connect-redis')(session);
-
-
 module.exports = function (app, passport, db) {
   i18n.configure({
     locales: ['zh-cn'],
@@ -70,17 +68,17 @@ module.exports = function (app, passport, db) {
     app.use(express.json());
     app.use(express.methodOverride());
 
-    // var hour = 3600000;
-    // // Express/Redis session storage
-    // app.use(session({
-    //   secret: config.sessionSecret,
-    //   store: new RedisStore(),
-    //   resave: false,
-    //   saveUninitialized: true,
-    //   cookie: {
-    //     maxAge: hour * 24 * 7
-    //   }
-    // }));
+    var hour = 3600000;
+    // Express/Redis session storage
+    app.use(session({
+      secret: config.sessionSecret,
+      store: new RedisStore(),
+      resave: false,
+      saveUninitialized: true,
+      cookie: {
+        maxAge: hour * 24 * 7
+      }
+    }));
 
 
     //app.use(middleware.auth_user);
