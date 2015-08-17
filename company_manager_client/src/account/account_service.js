@@ -19,20 +19,11 @@ define(['./account', 'app'], function (account) {
       return {
 
         /**
-         * 登录
-         * @param {{username: String, password: String}} postData
-         * @returns {HttpPromise}
-         */
-        login: function (postData) {
-          return $http.post(apiBaseUrl + '/companies/login', postData, {withCredentials: true});
-        },
-
-        /**
          * 注销
          * @returns {HttpPromise}
          */
         logout: function () {
-          return $http.post(apiBaseUrl + '/companies/logout', null, {withCredentials: true});
+          return $http.post(apiBaseUrl + '/users/logout', null, {withCredentials: true});
         },
 
         /**
