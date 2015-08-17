@@ -69,15 +69,15 @@ define(['app'], function (app) {
           controller: 'campaign.createCampaignCtrl',
           resolve: {
             teamList: ['teamService', 'initData', function(teamService, initData) {
-              return teamService.getList(initData.company._id).then(function(res) {
-                return res.data;
-              });
-            }],
-            molds: ['campaignService', function(campaignService) {
-              return campaignService.getCampaignMolds().then(function(res) {
-                return res.data;
+              return teamService.getList().then(function(res) {
+                return res.data.groups;
               });
             }]
+            // molds: ['campaignService', function(campaignService) {
+            //   return campaignService.getCampaignMolds().then(function(res) {
+            //     return res.data;
+            //   });
+            // }]
           }
         })
         .state('manager.campaigns', {

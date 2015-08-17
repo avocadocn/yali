@@ -11,7 +11,7 @@
             h3.box-title 选择小队
           .box-body.clearfix.team_filter_box
             .group_filters
-              .group_filter(ng-repeat="group in groups" ng-class="{'selected':nowGroup.gid===group.gid}" ng-click="selectGroup(group)") {{group.groupType}}
+              .group_filter(ng-repeat="group in groups" ng-class="" ng-click="selectGroup(group)") {{group.groupType}}
             .team_list
               .team_card(ng-repeat="team in nowGroup.teams" ng-class="{'selected':currentTeamId===team._id}" ng-click="selectTeam(team._id)")
                 .dl_info_box

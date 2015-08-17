@@ -14,25 +14,25 @@ define(['angular', 'app', 'init_data', 'routes'], function(angular, app, initDat
     $http.defaults.headers.common['x-access-token'] = token;
     // 获取公司数据
     var getCompanyInfoPromise = $http.get(apiBaseUrl + '/companies/' + cid);
-    var getHasLeaderPromise = $http.get(apiBaseUrl + '/companies/' + cid + '/hasLeader');
+    // var getHasLeaderPromise = $http.get(apiBaseUrl + '/companies/' + cid + '/hasLeader');
 
     initData.get({
-      company: getCompanyInfoPromise,
-      hasLeader: getHasLeaderPromise
+      company: getCompanyInfoPromise
+      // hasLeader: getHasLeaderPromise
     }).then(function(initData) {
       app.value('initData', {
-        company: initData.company,
-        hasLeader: initData.hasLeader.hasLeader
+        company: initData.company.company
+        // hasLeader: initData.hasLeader.hasLeader
       });
       angular.bootstrap(document, ['app']);
     }).then(null, function(res) {
       if (res.status === 401) {
         app.value('initData', {
           company: null,
-          hasLeader: null
+          // hasLeader: null
         });
         angular.bootstrap(document, ['app']);
-        console.log(3)
+        // console.log(3)
         // location.pathname = '/company/manager/login';
       }
       else {

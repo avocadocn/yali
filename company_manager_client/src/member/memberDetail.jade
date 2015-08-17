@@ -47,7 +47,7 @@
         .info_content(bo-bind="nowUser.active? '正常' : nowUser.mail_active ? '屏蔽中' : '未激活'")
       .info_container
         .info_label.non_float 参加小队
-        .team(ng-repeat="team in nowUser.team" ng-if="team.gid!='0' && ($index<6 || showAll)")
+        .team(ng-repeat="team in nowUser.team" ng-if="$index<6 || showAll")
           img.team_logo(bo-src="team.logo + '/40/40'" bo-title="team.name")
           .team_name(bo-bind="team.name")
         .team_more(ng-if="nowUser.team.length > 6 && !showAll" ng-click="showAllMember()") 查看更多成员

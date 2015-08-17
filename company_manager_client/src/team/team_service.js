@@ -20,19 +20,14 @@ define(['./team'], function (team) {
       },
       /**
        * 获取公司的小队列表
-       * @param  {String}   id      公司的id
        * @return {HttpPromise}
        */
-      getList: function (id) {
-        return $http.get(apiBaseUrl + '/teams/',{
+      getList: function () {
+        return $http.get(apiBaseUrl + '/groups/list/company',{
           params:{
-            hostType:'company',
-            hostId: id
+            type:1
           }
         });
-      },
-      getGroups: function () {
-        return $http.get(apiBaseUrl + '/groups');
       },
       /**
        * 更新小队的信息

@@ -5,19 +5,19 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
       var cid = $rootScope.company._id;
       //获取小队
       $scope.teamsGot = false;
-      teamService.getList(cid).success(function (data) {
+      teamService.getList().success(function (data) {
         $scope.data = {cid: cid, teams: data};
         $scope.cid = cid;
         $scope.groups = {};
-        data.forEach(function(team, index){
-          if($scope.groups[team.gid]){
-            $scope.groups[team.gid].teams.push(team)
-          }
-          else{
-            $scope.groups[team.gid] ={gid:team.gid,groupType:team.groupType,teams:[team]}
-          }
+        data.groups.forEach(function(team, index){
+          // if($scope.groups[team.gid]){
+          //   $scope.groups[team.gid].teams.push(team)
+          // }
+          // else{
+          //   $scope.groups[team.gid] ={gid:team.gid,groupType:team.groupType,teams:[team]}
+          // }
         });
-        $scope.nowGroup= $scope.groups[data[0].gid];
+        // $scope.nowGroup= $scope.groups[data[0].gid];
         $scope.teamsGot = true;
       })
       .error(function (data) {
@@ -378,8 +378,8 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
     'initData',
     'campaignService',
     'teamList',
-    'molds',
-    function($scope, initData, campaignService, teamList, molds) {
+    // 'molds',
+    function($scope, initData, campaignService, teamList) {
       $scope.moreDetail = {
         company: false,
         team: false
@@ -413,7 +413,7 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
         refreshTeamIds();
       };
 
-      $scope.molds = molds;
+      // $scope.molds = molds;
 
       $scope.campaignType = 'company'; // 'company' or 'team';
       $scope.formData = {
@@ -427,7 +427,7 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
         start_time: null,
         end_time: null,
         deadline: null,
-        campaign_mold: molds[0].name,
+        // campaign_mold: molds[0].name,
         member_max: 0,
         member_min: 0,
         content: ''
@@ -445,7 +445,7 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
           start_time: null,
           end_time: null,
           deadline: null,
-          campaign_mold: molds[0].name,
+          // campaign_mold: molds[0].name,
           member_max: 0,
           member_min: 0,
           content: ''
@@ -569,8 +569,8 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
     function($scope, $rootScope, storageService, teamService, campaignService, apiBaseUrl) {
       var cid = $rootScope.company._id;
       $scope.teamsGot = false;
-      teamService.getList(cid).success(function (data) {
-        $scope.data = {cid: cid, teams: data};
+      teamService.getList().success(function (data) {
+        $scope.data = {cid: cid, teams: data.groups};
         $scope.teamsGot = true;
       })
       .error(function (data) {
@@ -604,7 +604,7 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
       //  1、日期变更时
       //  2、翻页
       //  3、每页数目变更
-    var getSuccessProcess = function(data) {
+      var getSuccessProcess = function(data) {
         //logo
         var campaignsLength = data.campaigns.length;
         for (var i = 0; i < campaignsLength; i++) {

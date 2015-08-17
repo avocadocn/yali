@@ -139,11 +139,11 @@ define(['angular', 'jQuery', 'cropit'], function (angular, $) {
         // todo
       });
 
-      campaignService.getTimeline('company', cid).success(function(data) {
-        $scope.latestCampaignList = data.slice(0, 5);
-      }).error(function(data, status) {
-        // todo
-      });
+      // campaignService.getTimeline('company', cid).success(function(data) {
+      //   $scope.latestCampaignList = data.slice(0, 5);
+      // }).error(function(data, status) {
+      //   // todo
+      // });
 
       // 是否需要显示时间
       $scope.needShowTime = function(index) {
