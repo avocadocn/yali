@@ -1,0 +1,56 @@
+body
+  margin 0
+header
+  background-color rgba(251, 214, 0, 1)
+  padding 10px
+  height 700px
+  position relative
+  .nav
+    width 400px
+    text-align center
+    margin 0 auto
+    &:before
+      content ""
+      display table
+    &:after
+      content ""
+      display table
+      clear both
+    li
+      list-style none
+      float left
+      width 99px
+      border-right 1px solid black
+      a
+        text-decoration none
+      &:last-child
+        width 100px
+        border-right none
+  .img
+    position absolute
+    &.phone
+      bottom 0
+      right 20%
+    &.logo
+      left 25%
+      top 10%
+  .download
+    position absolute
+    left 25%
+    bottom 20px
+    width 320px
+    height 125px
+    .qrcode
+      width 125px
+      height 125px
+    .ios, .android
+      width 180px
+      height 50px
+    .ios
+      position absolute
+      left 140px
+      top 0
+    .android
+      position absolute
+      left 140px
+      top 75px

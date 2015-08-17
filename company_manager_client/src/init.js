@@ -32,7 +32,6 @@ define(['angular', 'app', 'init_data', 'routes'], function(angular, app, initDat
           // hasLeader: null
         });
         angular.bootstrap(document, ['app']);
-        // console.log(3)
         // location.pathname = '/company/manager/login';
       }
       else {
