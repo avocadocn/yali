@@ -55,8 +55,6 @@
                       a(ng-click="showStatus(1)") 正常
                     li 
                       a(ng-click="showStatus(2)") 屏蔽中
-                    li 
-                      a(ng-click="showStatus(3)") 未激活
               th.center 编辑
           tbody
             tr(bindonce="companyMembers" ng-repeat="member in companyMembers" ng-cloak)
@@ -70,7 +68,7 @@
               td.center(bo-bind="member.score.total")
               td.center
                 button.btn.btn-link(member-detail now-user-id="member._id") 查看详情
-              td.center(bo-bind="member.active? '正常' : member.mail_active ? '屏蔽中' : '未激活'")
+              td.center(bo-bind="member.active? '正常' : '屏蔽中' ")
               td.center
                 i.fa.fa-edit(member-edit now-user-id="member._id")
 

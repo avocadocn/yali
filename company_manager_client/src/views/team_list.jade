@@ -66,34 +66,30 @@ script(type="text/ng-template" id="teamDetailModal.html")
         .col-md-2 公司名
         .col-md-10(bo-bind="team.cname")
       .row
-        .col-md-2 类型
-        .col-md-10(bo-bind="team.groupType")
-      .row
-        .col-md-2 主场一
-        .col-md-10(bo-bind="team.homeCourts.length > 0 ? team.homeCourts[0].name :'暂无'")
-      .row
-        .col-md-2 主场二
-        .col-md-10(bo-bind="team.homeCourts.length > 1 ? team.homeCourts[1].name :'暂无'")
-      .row
-        .col-md-2 活跃度
+        .col-md-2 积分
         .col-md-10(bo-bind="team.score.total")
       .row
-        .col-md-2 积分
-        .col-md-10(bo-bind="team.score_rank.score")
+        .col-md-2 等级
+        .col-md-10(bo-bind="team.level")
+      .row
+        .col-md-2 简介
+        .col-md-10(bo-bind="team.brief")
       .row
         .col-md-2 队长
-        .col-md-2.user(ng-repeat="leader in team.leaders")
-          img.user_logo(bo-src="leader.photo + '/40/40'")
-          .user_name(bo-bind="leader.nickname")
+        //- .col-md-2.user(ng-repeat="leader in team.leaders")
+        .col-md-2.user
+          img.user_logo(bo-if="team.leader" bo-src="team.leader.photo + '/40/40'")
+          .user_name(bo-if="team.leader" bo-bind="team.leader.nickname")
       .row
         .col-md-2 成员
         .col-md-10
           .row
-            .col-md-2.user(ng-repeat="member in team.members")
+            .col-md-2.user(ng-repeat="member in team.member")
               img.user_logo(bo-src="member.photo + '/40/40'")
               .user_name(bo-bind="member.nickname")
-      .row
-        .col-md-2 近期活动
-        .col-md-10(bo-bind="team.lastCampaign?team.lastCampaign.theme :'无'")
+
+      //- .row
+      //-   .col-md-2 近期活动
+      //-   .col-md-10(bo-bind="team.lastCampaign?team.lastCampaign.theme :'无'")
   .modal-footer
     button.btn.btn-primary(ng-click="cancel()") 确定

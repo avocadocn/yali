@@ -63,7 +63,16 @@ define(['angular', 'angulardatatables'], function (angular) {
         alert(data.msg)
       });
       $scope.detail = function (type, index) {
+
         $scope.team = $scope[type][index];
+
+        // teamService.get($scope[type][index]._id)
+        // .success(function(status, data) {
+        //   $scope.team = data;
+        // })
+        // .error(function(status, data) {
+        //   console.log('获取资料失败');
+        // })
         var modalInstance = $modal.open({
           templateUrl: 'teamDetailModal.html',
           scope: $scope
