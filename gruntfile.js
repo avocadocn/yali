@@ -44,7 +44,7 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
     watch: {
       jade: {
-        files: ['company_manager_client/src/**/*.jade','app/views/index.jade'],
+        files: ['company_manager_client/src/**/*.jade','app/views/*.jade'],
         tasks: ['jade']
       },
       js: {
@@ -56,7 +56,7 @@ module.exports = function(grunt) {
         tasks: ['copy:loginJs']
       },
       stylus: {
-        files: ['public/stylus/style.styl', 'company_manager_client/src/view_stylus/*.styl', 'company_manager_client/src/donler.styl', 'company_manager_client/src/**/*.styl'],
+        files: ['public/stylus/*.styl', 'company_manager_client/src/view_stylus/*.styl', 'company_manager_client/src/donler.styl', 'company_manager_client/src/**/*.styl'],
         tasks: ['stylus', 'concat:css']
       },
       loginStylus: {
@@ -81,7 +81,7 @@ module.exports = function(grunt) {
         {
           expand: true,
           cwd: 'app/views',
-          src: ['index.jade'],
+          src: ['*.jade'],
           dest: 'public/',
           ext: '.html'
         }]
@@ -105,7 +105,8 @@ module.exports = function(grunt) {
         files: [
           {'company_manager_client/dist/donler.min.css': 'company_manager_client/src/donler.styl'},
           {'company_manager_client/dist/login.min.css': 'company_manager_client/src/login.styl'},
-          {'public/css/style.min.css': 'public/stylus/style.styl'}
+          {'public/css/style.min.css': 'public/stylus/style.styl'},
+          {'public/css/about.min.css': 'public/stylus/about.styl'}
         ]
       }
     },

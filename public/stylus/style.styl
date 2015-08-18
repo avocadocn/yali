@@ -1,3 +1,4 @@
+bodyColor = rgba(251, 214, 0, 1)
 @keyframes bottom2top
   from
     bottom -100px
@@ -65,7 +66,7 @@ animation(name,time)
 body
   margin 0
 header
-  background-color rgba(251, 214, 0, 1)
+  background-color bodyColor
   padding 10px
   height 700px
   position relative
@@ -126,7 +127,7 @@ header
       left 140px
       top 75px
 footer
-  background-color rgba(251, 214, 0, 1)
+  background-color bodyColor
   padding 30px 10px
   text-align center
   p
@@ -171,7 +172,7 @@ footer
       font-size 18px
       text-align left
       margin-bottom 30px
-      color rgba(251, 214, 0, 1)
+      color bodyColor
       li
         .content
           font-size 12px
@@ -179,6 +180,9 @@ footer
     &.new_student
       img.img
         width 20%
+        &.center
+          position relative
+          bottom -2px
         &.left
           position relative
           bottom 90px
@@ -191,6 +195,9 @@ footer
           animation(right2left,1s)
     &.team
       position relative
+      .center
+        position relative
+        bottom -2px
       img.img
         position absolute
         &.left1
@@ -224,6 +231,9 @@ footer
     &.question
       img.img
         width 20%
+        &.center
+          position relative
+          bottom -2px
         &.left
           position relative
           bottom 100px
