@@ -23,6 +23,7 @@ header
       border-right 1px solid black
       a
         text-decoration none
+        color black
       &:last-child
         width 100px
         border-right none
@@ -30,10 +31,13 @@ header
     position absolute
     &.phone
       bottom 0
-      right 20%
+      left 50%
     &.logo
       left 25%
       top 10%
+    &.slogan
+      left 25%
+      top 35%
   .download
     position absolute
     left 25%
@@ -54,3 +58,98 @@ header
       position absolute
       left 140px
       top 75px
+footer
+  background-color rgba(251, 214, 0, 1)
+  padding 30px 10px
+  text-align center
+  p
+    font-size 12px
+  .nav
+    width 400px
+    margin 0 auto
+    &:before
+      content ""
+      display table
+    &:after
+      content ""
+      display table
+      clear both
+    li
+      list-style none
+      float left
+      width 99px
+      border-right 1px solid black
+      a
+        text-decoration none
+        color black
+      &:last-child
+        width 100px
+        border-right none
+.container
+  >section
+    text-align center
+    h1
+      font-size 32px
+    p 
+      font-size 22px
+    ul
+      width 300px
+      line-height 20px
+      margin 0 auto
+      font-size 18px
+      text-align left
+      margin-bottom 30px
+      color rgba(251, 214, 0, 1)
+      li
+        .content
+          font-size 12px
+          color black
+    &.new_student
+      img.img
+        width 25%
+        &.left
+          position relative
+          bottom 90px
+          left 15px
+        &.right
+          position relative
+          bottom 70px
+          right 25px
+    &.team
+      position relative
+      img.img
+        position absolute
+        &.left1
+          top 160px
+          left 50%
+          margin-left -550px
+        &.left2
+          top 230px
+          left 50%
+          margin-left -540px
+        &.right1
+          top 400px
+          right 50%
+          margin-right -570px
+        &.right2
+          top 440px
+          right 50%
+          margin-right -435px
+    &.rank
+      position relative
+      img.center1
+        position absolute
+        left 50%
+        margin-left -294px
+        top 160px
+    &.question
+      img.img
+        width 25%
+        &.left
+          position relative
+          bottom 100px
+          right 30px
+        &.right
+          position relative
+          bottom 100px
+          left 30px
