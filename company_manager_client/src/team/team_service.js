@@ -22,16 +22,16 @@ define(['./team'], function (team) {
        * 获取公司的小队列表
        * @return {HttpPromise}
        */
-      getList: function () {
+      getList: function (type) {
+        var params ={from:'admin'};
+        if(type) params.type=type;
         return $http.get(apiBaseUrl + '/groups/list/company',{
-          params:{
-            type:1
-          }
+          params:params
         });
       },
       /**
        * 更新小队的信息
-       * @param  {String} id         小队id
+       * @param  {String} id         小队的id
        * @param  {[type]} updateData 更新的数据
        * @return {HttpPromise}
        */

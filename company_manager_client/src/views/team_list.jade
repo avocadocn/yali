@@ -6,18 +6,18 @@
   section.content
     .row.operate_row
       .col-md-2.col-sm-4.col-xs-12.text-center
-        a.btn.btn-primary(ui-sref="manager.createTeam") 新建小队
+        a.btn.btn-primary(ui-sref="manager.createTeam") 新建群组
       .col-md-10.col-sm-8.col-xs-12(ng-if="noLeaderTeams.length>0")
         .row
           .col-md-3.col-sm-6.col-xs-12.team(ng-repeat="team in noLeaderTeams")
-            p {{team.name}},还没有队长
+            p {{team.name}},还没有群主
             a.btn.btn-primary.edit_btn(ui-sref="manager.editTeam({teamId:team._id})") 编辑
-            a.btn.btn-primary(ui-sref="manager.pointTeamLeader({teamId:team._id})") 任命队长
+            a.btn.btn-primary(ui-sref="manager.pointTeamLeader({teamId:team._id})") 任命群主
     .row
       .col-xs-12
-        .box.box-primary(bindonce="unclosedTeams")
+        .box.box-primary(bindonce="teams")
           .box-header
-            h3.box-title 全部小队
+            h3.box-title 全部群组
           .box-body.no-padding
             table(datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs").table.table-striped
               thead
@@ -25,62 +25,33 @@
                   th 名称
                   th 队长
                   th 人数
-                  th 上月活动数
-                  th 总活动数
+                  //- th 上月活动数
+                  //- th 总活动数
                   th 积分
-                  th 活跃度
+                  //- th 活跃度
+                  th 需验证
+                  th 等级
                   th 详情
                   th 编辑
                   th 任命
               tbody
-                tr(ng-repeat="team in unclosedTeams")
+                tr(ng-repeat="team in teams")
                   td(bo-bind="team.name")
-                  td(bo-bind="team.leaders[0].nickname")
-                  td(bo-bind="team.memberCount")
-                  td(bo-bind="team.count.last_month_campaign")
-                  td(bo-bind="team.count.total_campaign")
-                  td(bo-bind="team.score_rank.score")
+                  td(bo-bind="team.leader.nickname")
+                  td(bo-bind="team.member.length")
+                  //- td(bo-bind="team.count.last_month_campaign")
+                  //- td(bo-bind="team.count.total_campaign")
+                  //- td(bo-bind="team.score_rank.score")
                   td(bo-bind="team.score.total")
+                  td(bo-bind="team.hasValidate")
+                  td(bo-bind="team.level")
                   td
-                    button.btn.btn-xs.btn-link(ng-click="detail('unclosedTeams', $index)") 详情
+                    button.btn.btn-xs.btn-link(ng-click="detail('teams', $index)") 详情
                   td
                     a(ui-sref="manager.editTeam({teamId:team._id})") 编辑
                   td
                     a(ui-sref="manager.pointTeamLeader({teamId:team._id})") 任命队长
-    .row
-      .col-xs-12
-        .box.box-primary(bindonce="closedTeams" bo-show="closedTeams.length")
-          .box-header
-            h3.box-title 被关闭的小队
-          .box-body.no-padding
-            table(datatable="ng" dt-options="Options" dt-column-defs="ColumnDefs").table.table-striped
-              thead
-                tr
-                  th 名称
-                  th 队长
-                  th 人数
-                  th 上月活动数
-                  th 总活动数
-                  th 积分
-                  th 活跃度
-                  th 详情
-                  th 编辑
-                  //- th.center 任命
-              tbody
-                tr(ng-repeat="team in closedTeams")
-                  td(bo-bind="team.name")
-                  td(bo-bind="team.leaders[0].nickname")
-                  td(bo-bind="team.memberCount")
-                  td(bo-bind="team.count.last_month_campaign")
-                  td(bo-bind="team.count.total_campaign")
-                  td(bo-bind="team.score_rank.score")
-                  td(bo-bind="team.score.total")
-                  td
-                    button.btn.btn-xs.btn-link(ng-click="detail('closedTeams', $index)") 详情
-                  td
-                    a(ui-sref="manager.editTeam({teamId:team._id})") 编辑
-                  //- td.center
-                  //-   a(ui-sref="manager.pointTeamLeader({teamId:team._id})") 任命队长
+
 script(type="text/ng-template" id="teamDetailModal.html")
   .modal-header
     button.close(type="button" data-dismiss="modal" aria-label="Close" ng-click="cancel()")
@@ -126,13 +97,3 @@ script(type="text/ng-template" id="teamDetailModal.html")
         .col-md-10(bo-bind="team.lastCampaign?team.lastCampaign.theme :'无'")
   .modal-footer
     button.btn.btn-primary(ng-click="cancel()") 确定
-
-
-
-
-
-
-
-
-
-

@@ -25,12 +25,11 @@ define(['angular', 'angulardatatables'], function (angular) {
         DTColumnDefBuilder.newColumnDef(1).notSortable(),
         DTColumnDefBuilder.newColumnDef(2),
         DTColumnDefBuilder.newColumnDef(3),
-        DTColumnDefBuilder.newColumnDef(4),
+        DTColumnDefBuilder.newColumnDef(4).notSortable(),
         DTColumnDefBuilder.newColumnDef(5),
-        DTColumnDefBuilder.newColumnDef(6),
+        DTColumnDefBuilder.newColumnDef(6).notSortable(),
         DTColumnDefBuilder.newColumnDef(7).notSortable(),
-        DTColumnDefBuilder.newColumnDef(8).notSortable(),
-        DTColumnDefBuilder.newColumnDef(9).notSortable()
+        DTColumnDefBuilder.newColumnDef(8).notSortable()
       ];
       $scope.Options = DTOptionsBuilder.newOptions()
         .withOption('searching', false)
@@ -45,41 +44,20 @@ define(['angular', 'angulardatatables'], function (angular) {
         })
         .withOption('info', false);
 
-      $scope.ColumnDefs = [
-        DTColumnDefBuilder.newColumnDef(0).notSortable(),
-        DTColumnDefBuilder.newColumnDef(1).notSortable(),
-        DTColumnDefBuilder.newColumnDef(2),
-        DTColumnDefBuilder.newColumnDef(3),
-        DTColumnDefBuilder.newColumnDef(4),
-        DTColumnDefBuilder.newColumnDef(5),
-        DTColumnDefBuilder.newColumnDef(6),
-        DTColumnDefBuilder.newColumnDef(7).notSortable(),
-        DTColumnDefBuilder.newColumnDef(8).notSortable()
-      ];
-      var noLeaderFilter = function(team) {
-        if((!team.leaders || team.leaders.length==0)&&team.active === true) {
-          return true;
-        }
-        return false;
-      };
-      // var haveLeaderFilter = function(team) {
-      //   if(team.leaders.length>0 && team.active === true) {
+      // var noLeaderFilter = function(team) {
+      //   if((!team.leaders || team.leaders.length==0)&&team.active === true) {
       //     return true;
       //   }
       //   return false;
       // };
-      var unclosedFilter = function(team) {
-        return team.active;
-      }
-      var isClosedFilter = function(team) {
-        return !team.active;
-      }
-      teamService.getList($rootScope.company._id).success(function (data) {
-        $scope.teams = data;
-        $scope.unclosedTeams = data.filter(unclosedFilter)
-        $scope.noLeaderTeams = data.filter(noLeaderFilter);
+
+      teamService.getList().success(function (data) {
+        // console.log(data);
+        $scope.teams = data.groups;
+        // $scope.unclosedTeams = data.groups.filter(unclosedFilter)
+        // $scope.noLeaderTeams = data.groups.filter(noLeaderFilter);
         // $scope.leaderTeams = data.filter(haveLeaderFilter);
-        $scope.closedTeams = data.filter(isClosedFilter);
+        // $scope.closedTeams = data.groups.filter(isClosedFilter);
       })
       .error(function (data) {
         alert(data.msg)
@@ -115,7 +93,7 @@ define(['angular', 'angulardatatables'], function (angular) {
           fd.append('isAdmin', true);
           teamService.create(fd).success(function (data) {
             alert('成功创建小队');
-            $socpe.newTeam.name = '';
+            $scope.newTeam.name = '';
             // $state.go('manager.teamList');
           })
           .error(function (data) {
