@@ -103,23 +103,20 @@ define(['angular', 'angulardatatables'], function (angular) {
       'teamService',
       function ($rootScope, $scope, $state, teamService) {
         $scope.newTeam = {
-          _id: '',
-          teamName: ''
-        }
-        teamService.getGroups().success(function (data) {
-          $scope.groups = data;
-        })
-        .error(function (data) {
-          alert(data.msg)
-        });
-        $scope.changeType = function (index) {
-          $scope.newTeam._id = $scope.groups[index]._id;
-          $scope.newTeam.teamName = $scope.groups[index].groupType + '队'  + '-' + $rootScope.company.shortName;
-        }
+          name: '',
+          hasValidate: true
+        };
         $scope.save = function () {
-          teamService.create({selectedGroups:[$scope.newTeam]}).success(function (data) {
+          var fd = new FormData();
+          var newTeam = $scope.newTeam;
+          fd.append('name', newTeam.name);
+          fd.append('hasValidate', newTeam.hasValidate);
+          fd.append('open', true);
+          fd.append('isAdmin', true);
+          teamService.create(fd).success(function (data) {
             alert('成功创建小队');
-            $state.go('manager.teamList');
+            $socpe.newTeam.name = '';
+            // $state.go('manager.teamList');
           })
           .error(function (data) {
             alert(data.msg)

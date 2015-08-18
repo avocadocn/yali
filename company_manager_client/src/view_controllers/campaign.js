@@ -6,10 +6,10 @@ define(['angular', 'moment', 'map/map', 'pen'], function (angular, moment) {
       //获取小队
       $scope.teamsGot = false;
       teamService.getList().success(function (data) {
-        $scope.data = {cid: cid, teams: data};
+        $scope.data = {cid: cid, teams: data.groups};
         $scope.cid = cid;
         $scope.groups = {};
-        data.groups.forEach(function(team, index){
+        data.teams.forEach(function(team, index){
           // if($scope.groups[team.gid]){
           //   $scope.groups[team.gid].teams.push(team)
           // }
