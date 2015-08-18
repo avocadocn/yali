@@ -1,3 +1,67 @@
+@keyframes bottom2top
+  from
+    bottom -400px
+  to
+    bottom 20px
+@keyframes left2right
+  from
+    left -400px
+  to
+    left 15px
+@keyframes right2left
+  from
+    right -400px
+  to
+    right 25px
+@keyframes left2right2
+  from
+    margin-left -1000px
+  to
+    margin-left -550px
+@keyframes right2left2
+  from
+     margin-right -1000px
+  to
+     margin-right -570px
+@keyframes left2right3
+  from
+    left -10%
+  to
+    left 25%
+@keyframes rotate
+  from
+     transform rotate(-30deg)
+    -ms-transform rotate(-30deg)  /* IE 9 */
+    -webkit-transform rotate(-30deg) /* Safari 和 Chrome */
+    -o-transform rotate(-30deg) /* Opera */
+    -moz-transform rotate(-30deg) /* Firefox */
+  to
+     transform rotate(0)
+    -ms-transform rotate(0)  /* IE 9 */
+    -webkit-transform rotate(0) /* Safari 和 Chrome */
+    -o-transform rotate(0) /* Opera */
+    -moz-transform rotate(0) /* Firefox */
+@keyframes scalebig
+  from
+    transform scale(0.1)
+    -ms-transform scale(0.1)  /* IE 9 */
+    -webkit-transform scale(0.1) /* Safari 和 Chrome */
+    -o-transform scale(0.1) /* Opera */
+    -moz-transform scale(0.1) /* Firefox */
+  to
+    transform scale(1)
+    -ms-transform scale(1)  /* IE 9 */
+    -webkit-transform scale(1) /* Safari 和 Chrome */
+    -o-transform scale(1) /* Opera */
+    -moz-transform scale(1) /* Firefox */
+animation(name,time)
+  animation name time
+  /* Firefox: */
+  -moz-animation name time
+  /* Safari and Chrome: */
+  -webkit-animation name time
+  /* Opera: */
+  -o-animation name time
 body
   margin 0
 header
@@ -35,15 +99,18 @@ header
     &.logo
       left 25%
       top 10%
+      animation(left2right3,1s)
     &.slogan
       left 25%
       top 35%
+      animation(left2right3,1s)
   .download
     position absolute
     left 25%
     bottom 20px
     width 320px
     height 125px
+    animation(bottom2top,1s)
     .qrcode
       width 125px
       height 125px
@@ -111,10 +178,12 @@ footer
           position relative
           bottom 90px
           left 15px
+          animation(left2right,1s)
         &.right
           position relative
           bottom 70px
           right 25px
+          animation(right2left,1s)
     &.team
       position relative
       img.img
@@ -123,18 +192,22 @@ footer
           top 160px
           left 50%
           margin-left -550px
+          animation(left2right2,1s)
         &.left2
-          top 230px
+          top 247px
           left 50%
-          margin-left -540px
+          margin-left -543px
+          animation(scalebig,1s)
         &.right1
           top 400px
           right 50%
           margin-right -570px
+          animation(right2left2,1s)
         &.right2
-          top 440px
+          top 450px
           right 50%
-          margin-right -435px
+          margin-right -430px
+          animation(scalebig,1s)
     &.rank
       position relative
       img.center1
@@ -142,6 +215,7 @@ footer
         left 50%
         margin-left -294px
         top 160px
+        animation(rotate,1s)
     &.question
       img.img
         width 20%
@@ -149,7 +223,9 @@ footer
           position relative
           bottom 100px
           right 30px
+          animation(right2left,1s)
         &.right
           position relative
           bottom 100px
           left 30px
+          animation(left2right,1s)
