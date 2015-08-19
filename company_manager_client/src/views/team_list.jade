@@ -43,8 +43,8 @@
                   //- td(bo-bind="team.count.total_campaign")
                   //- td(bo-bind="team.score_rank.score")
                   td(bo-bind="team.score.total")
-                  td(bo-bind="team.hasValidate")
-                  td(bo-bind="team.level")
+                  td(bo-bind="team.hasValidate ? '是' : '否' ")
+                  td(bo-bind="team.level === 1 ? '官方': '非官方'")
                   td
                     button.btn.btn-xs.btn-link(ng-click="detail('teams', $index)") 详情
                   td

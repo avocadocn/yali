@@ -33,16 +33,16 @@ define(['app'], function (app) {
         //     }
         //   }
         // })
-        .state('manager.companyInfo', {
-          url: '/company/info',
-          templateUrl: templateUrl('/views/edit_info.html'),
-          controller: 'company.editCtrl'
-        })
-        .state('manager.accountSetting', {
-          url: '/account',
-          templateUrl: templateUrl('/views/account_settings.html'),
-          controller: 'account.settingCtrl'
-        })
+        // .state('manager.companyInfo', {
+        //   url: '/company/info',
+        //   templateUrl: templateUrl('/views/edit_info.html'),
+        //   controller: 'company.editCtrl'
+        // })
+        // .state('manager.accountSetting', {
+        //   url: '/account',
+        //   templateUrl: templateUrl('/views/account_settings.html'),
+        //   controller: 'account.settingCtrl'
+        // })
         .state('manager.teamList', {
           url: '/team/list',
           templateUrl: templateUrl('/views/team_list.html'),
@@ -63,43 +63,43 @@ define(['app'], function (app) {
           templateUrl: templateUrl('/views/point_leader.html'),
           controller: 'team.pointLeaderCtrl'
         })
-        .state('manager.createCampaign', {
-          url: '/campaigns/create',
-          templateUrl: templateUrl('/views/create_campaign.html'),
-          controller: 'campaign.createCampaignCtrl',
-          resolve: {
-            teamList: ['teamService', 'initData', function(teamService, initData) {
-              return teamService.getList().then(function(res) {
-                return res.data.groups;
-              });
-            }]
-            // molds: ['campaignService', function(campaignService) {
-            //   return campaignService.getCampaignMolds().then(function(res) {
-            //     return res.data;
-            //   });
-            // }]
-          }
-        })
-        .state('manager.campaigns', {
-          url: '/campaigns',
-          templateUrl: templateUrl('/views/campaigns.html'),
-          controller: 'campaign.campaignCtrl'
-        })
-        .state('manager.campaignsCanlendar', {
-          url: '/campaignsCanlendar',
-          templateUrl: templateUrl('/views/campaigns-canlendar.html'),
-          controller: 'campaign.campaignCalendarCtrl'
-        })
+        // .state('manager.createCampaign', {
+        //   url: '/campaigns/create',
+        //   templateUrl: templateUrl('/views/create_campaign.html'),
+        //   controller: 'campaign.createCampaignCtrl',
+        //   resolve: {
+        //     teamList: ['teamService', 'initData', function(teamService, initData) {
+        //       return teamService.getList().then(function(res) {
+        //         return res.data.groups;
+        //       });
+        //     }]
+        //     // molds: ['campaignService', function(campaignService) {
+        //     //   return campaignService.getCampaignMolds().then(function(res) {
+        //     //     return res.data;
+        //     //   });
+        //     // }]
+        //   }
+        // })
+        // .state('manager.campaigns', {
+        //   url: '/campaigns',
+        //   templateUrl: templateUrl('/views/campaigns.html'),
+        //   controller: 'campaign.campaignCtrl'
+        // })
+        // .state('manager.campaignsCanlendar', {
+        //   url: '/campaignsCanlendar',
+        //   templateUrl: templateUrl('/views/campaigns-canlendar.html'),
+        //   controller: 'campaign.campaignCalendarCtrl'
+        // })
         .state('manager.inviteMembers', {
           url: '/members/invite',
           templateUrl: templateUrl('/views/members_invite.html'),
           controller: 'member.inviteCtrl'
         })
-        .state('manager.activeMembers', {
-          url: '/members/active',
-          templateUrl: templateUrl('/views/members_active.html'),
-          controller: 'member.activeCtrl'
-        })
+        // .state('manager.activeMembers', {
+        //   url: '/members/active',
+        //   templateUrl: templateUrl('/views/members_active.html'),
+        //   controller: 'member.activeCtrl'
+        // })
         .state('manager.inactiveMembers', {
           url: '/members/inactive',
           templateUrl: templateUrl('/views/members_inactive.html'),
@@ -115,11 +115,11 @@ define(['app'], function (app) {
           templateUrl: templateUrl('/views/members_batchimport.html'),
           controller: 'member.batchImport'
         })
-        .state('manager.departments', {
-          url: '/departments',
-          templateUrl: templateUrl('/views/department.html'),
-          controller: 'department.managerCtrl'
-        });
+        // .state('manager.departments', {
+        //   url: '/departments',
+        //   templateUrl: templateUrl('/views/department.html'),
+        //   controller: 'department.managerCtrl'
+        // });
     }
   ]);
 });
