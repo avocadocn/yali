@@ -193,31 +193,22 @@ define(['angular', 'qrcode', 'angulardatatables'], function (angular, qrcode, an
         $scope.dtColumnDefs =[
           DTColumnDefBuilder.newColumnDef(0).notSortable(),
           DTColumnDefBuilder.newColumnDef(1).notSortable(),
-          DTColumnDefBuilder.newColumnDef(2),
-          DTColumnDefBuilder.newColumnDef(3).notSortable(),
-          DTColumnDefBuilder.newColumnDef(4).notSortable(),
-          DTColumnDefBuilder.newColumnDef(5),
-          DTColumnDefBuilder.newColumnDef(6),
-          DTColumnDefBuilder.newColumnDef(7),
-          DTColumnDefBuilder.newColumnDef(8).notSortable(),
-          DTColumnDefBuilder.newColumnDef(9).notSortable(),
-          DTColumnDefBuilder.newColumnDef(10).notSortable()
+          DTColumnDefBuilder.newColumnDef(2).notSortable(),
+          DTColumnDefBuilder.newColumnDef(3).notSortable()
         ];
-        memberService.getMembers($rootScope.company._id, {
-            resultType: 2
-          }).success(function(data) {
-            $scope.companyMembers = data;
-            $scope.oldCompanyMembers = data;
-          })
-          .error(function(data) {
-            alert(data.msg);
-          });
-        memberService.getMembers($rootScope.company._id,{resultType:4}).success(function (data) {
-          $scope.inactiveMemberLength = data.length;
+        memberService.getMembers($rootScope.company._id).success(function(data) {
+          $scope.companyMembers = data;
+          $scope.oldCompanyMembers = data;
         })
-        .error(function (data) {
-          console.log(data.msg);
+        .error(function(data) {
+          alert(data.msg);
         });
+        // memberService.getMembers($rootScope.company._id,{resultType:4}).success(function (data) {
+        //   $scope.inactiveMemberLength = data.length;
+        // })
+        // .error(function (data) {
+        //   console.log(data.msg);
+        // });
 
         // $scope.pageNum =10;
         // $scope.nowPage = 1;
@@ -311,6 +302,28 @@ define(['angular', 'qrcode', 'angulardatatables'], function (angular, qrcode, an
                 }
               });
               break;
+          }
+        }
+        $scope.close = function(member) {
+          if(confirm('是否确认屏蔽此人？')) {
+            memberService.close(member._id).success(function(status, data) {
+              member.acitve = false;
+              alert('屏蔽成功');
+            })
+            .error(function(stats, data) {
+              alert('屏蔽失败');
+            });
+          }
+        }
+        $scope.open = function(member) {
+          if(confirm('是否确认解除屏蔽？')) {
+            memberService.open(member._id).success(function(status, data) {
+              member.acitve = true;
+              alert('解除成功');
+            })
+            .error(function(stats, data) {
+              alert('解除失败');
+            });
           }
         }
 

@@ -5,20 +5,20 @@
       //- small(ng-bind-template="共{{companyMembers.length}}人")
       //-这个人数不对 有bug -M
   section.content
-    .row
-      .col-md-6.col-sm-6.col-xs-12
-        a.info-box(ui-sref="manager.inviteMembers")
-          .info-box-icon.bg-blue
-            i.fa.fa-group
-          .info-box-content
-            .info-box-text 邀请
-      .col-md-6.col-sm-6.col-xs-12
-        a.info-box(ui-sref="manager.activeMembers")
-          .info-box-icon.bg-green
-            i.fa.fa-child
-          .info-box-content
-            .info-box-text 等待审核
-            .info-box-number(bindonce="inactiveMemberLength" bo-bind="inactiveMemberLength + '人'") 
+    //- .row
+    //-   .col-md-6.col-sm-6.col-xs-12
+    //-     a.info-box(ui-sref="manager.inviteMembers")
+    //-       .info-box-icon.bg-blue
+    //-         i.fa.fa-group
+    //-       .info-box-content
+    //-         .info-box-text 邀请
+    //-   .col-md-6.col-sm-6.col-xs-12
+    //-     a.info-box(ui-sref="manager.activeMembers")
+    //-       .info-box-icon.bg-green
+    //-         i.fa.fa-child
+    //-       .info-box-content
+    //-         .info-box-text 等待审核
+    //-         .info-box-number(bindonce="inactiveMemberLength" bo-bind="inactiveMemberLength + '人'") 
     .box.box-primary
       .box-header.with-border
         h3.box-title 所有成员
@@ -36,13 +36,13 @@
             tr
               th
               th.center 头像
-              th.center 邮箱
-              th.center 真实姓名
-              th.center 部门
-              th.center 参加小队
-              th.center 参加活动
-              th.center 活跃度
-              td.center 查看详情
+              //- th.center 邮箱
+              th.center 姓名
+              //- th.center 部门
+              //- th.center 参加小队
+              //- th.center 参加活动
+              //- th.center 活跃度
+              //- td.center 查看详情
               th.center 状态
                 //- select.form-control.input-sm(ng-model="" ng-options="" ng-change="selectNumOfPage()")
                 .btn-group
@@ -55,22 +55,23 @@
                       a(ng-click="showStatus(1)") 正常
                     li 
                       a(ng-click="showStatus(2)") 屏蔽中
-              th.center 编辑
+              th.center 关闭
           tbody
-            tr(bindonce="companyMembers" ng-repeat="member in companyMembers" ng-cloak)
-              td(bo-bind="$index+1")
-              td: img.memer_logo(bo-src="member.photo + '/40/40'")
-              td(bo-bind="member.username")
-              td.center(bo-bind="member.realname || '-'")
-              td.center(bo-bind="member.department.name || '-'")
-              td.center(bo-bind="member.team.length")
-              td.center(bo-bind="member.campaignCount")
-              td.center(bo-bind="member.score.total")
-              td.center
+            tr(ng-repeat="member in companyMembers" ng-cloak)
+              td(ng-bind="$index+1")
+              td.center: img.memer_logo(ng-src="{{member.photo}}/40/40")
+              //- td(bo-bind="member.username")
+              td.center(ng-bind="member.realname || '-'")
+              //- td.center(bo-bind="member.department.name || '-'")
+              //- td.center(bo-bind="member.team.length")
+              //- td.center(bo-bind="member.campaignCount")
+              //- td.center(bo-bind="member.score.total")
+              //- td.center
                 button.btn.btn-link(member-detail now-user-id="member._id") 查看详情
-              td.center(bo-bind="member.active? '正常' : '屏蔽中' ")
+              td.center(ng-bind="member.active? '正常' : '屏蔽中' ")
               td.center
-                i.fa.fa-edit(member-edit now-user-id="member._id")
+                i.fa.fa-lock(ng-if="member.active" ng-click="close(member)")
+                i.fa.fa-unlock(ng-if="!member.active" ng-click="open(member)")
 
 
 

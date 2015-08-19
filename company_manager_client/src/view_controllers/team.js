@@ -101,7 +101,7 @@ define(['angular', 'angulardatatables'], function (angular) {
           fd.append('open', true);
           fd.append('isAdmin', true);
           teamService.create(fd).success(function (data) {
-            alert('成功创建小队');
+            alert('成功创建群组');
             $scope.newTeam.name = '';
             // $state.go('manager.teamList');
           })

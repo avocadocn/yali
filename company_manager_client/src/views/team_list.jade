@@ -22,34 +22,34 @@
             table(datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs").table.table-striped
               thead
                 tr
-                  th 名称
-                  th 队长
-                  th 人数
+                  th.center 名称
+                  th.center 队长
+                  th.center 人数
                   //- th 上月活动数
                   //- th 总活动数
-                  th 积分
+                  th.center 积分
                   //- th 活跃度
-                  th 需验证
-                  th 等级
-                  th 详情
-                  th 编辑
-                  th 任命
+                  th.center 需验证
+                  th.center 等级
+                  th.center 详情
+                  th.center 编辑
+                  th.center 任命
               tbody
                 tr(ng-repeat="team in teams")
-                  td(bo-bind="team.name")
-                  td(bo-bind="team.leader.nickname")
-                  td(bo-bind="team.member.length")
+                  td.center(bo-bind="team.name")
+                  td.center(bo-bind="team.leader.nickname")
+                  td.center(bo-bind="team.member.length")
                   //- td(bo-bind="team.count.last_month_campaign")
                   //- td(bo-bind="team.count.total_campaign")
                   //- td(bo-bind="team.score_rank.score")
-                  td(bo-bind="team.score.total")
-                  td(bo-bind="team.hasValidate ? '是' : '否' ")
-                  td(bo-bind="team.level === 1 ? '官方': '非官方'")
-                  td
+                  td.center(bo-bind="team.score.total")
+                  td.center(bo-bind="team.hasValidate ? '是' : '否' ")
+                  td.center(bo-bind="team.level === 1 ? '官方': '非官方'")
+                  td.center
                     button.btn.btn-xs.btn-link(ng-click="detail('teams', $index)") 详情
-                  td
+                  td.center
                     a(ui-sref="manager.editTeam({teamId:team._id})") 编辑
-                  td
+                  td.center
                     a(ui-sref="manager.pointTeamLeader({teamId:team._id})") 任命队长
 
 script(type="text/ng-template" id="teamDetailModal.html")
