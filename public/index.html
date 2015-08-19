@@ -12,7 +12,6 @@ window.onload = function () {
     var totalTop = scrollTop + height;
     var imgs = document.getElementsByClassName("animate");
     for(var i =0,length=imgs.length;i<length;i++) {
-      console.log(imgs[i], getAbsTop(imgs[i]), totalTop)
       if(getAbsTop(imgs[i])<totalTop && imgs[i].className.indexOf("animated")===-1) {
         imgs[i].className+=" animated";
       }
