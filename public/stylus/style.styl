@@ -63,6 +63,8 @@ animation(name,time)
   -webkit-animation name time
   /* Opera: */
   -o-animation name time
+  animation-delay 0.3s
+  -webkit-animation-delay 0.3s /* Safari 和 Chrome */
 body
   margin 0
 header
@@ -71,7 +73,7 @@ header
   height 700px
   position relative
   .nav
-    width 400px
+    width 500px
     text-align center
     margin 0 auto
     &:before
@@ -100,18 +102,21 @@ header
     &.logo
       left 25%
       top 10%
-      animation(left2right3,1s)
+      &.animated
+        animation(left2right3,1s)
     &.slogan
       left 25%
       top 35%
-      animation(left2right3,1s)
+      &.animated
+        animation(left2right3,1s)
   .download
     position absolute
     left 25%
     bottom 20px
     width 320px
     height 125px
-    animation(bottom2top,1s)
+    &.animated
+      animation(bottom2top,1s)
     .qrcode
       width 125px
       height 125px
@@ -166,7 +171,7 @@ footer
     p 
       font-size 22px
     ul
-      width 300px
+      width 350px
       line-height 20px
       margin 0 auto
       font-size 18px
@@ -175,7 +180,7 @@ footer
       color bodyColor
       li
         .content
-          font-size 12px
+          font-size 14px
           color black
     &.new_student
       img.img
@@ -183,43 +188,57 @@ footer
         &.center
           position relative
           bottom -2px
+          z-index 1
         &.left
           position relative
           bottom 90px
           left 15px
-          animation(left2right,1s)
+          z-index 2
+          &.animated
+            animation(left2right,1s)
         &.right
           position relative
           bottom 70px
           right 25px
-          animation(right2left,1s)
+          z-index 2
+          &.animated
+            animation(right2left,1s)
     &.team
       position relative
       .center
         position relative
         bottom -2px
+        z-index 1
       img.img
         position absolute
         &.left1
           top 160px
           left 50%
           margin-left -550px
-          animation(left2right2,1s)
+          z-index 2
+          &.animated
+            animation(left2right2,1s)
         &.left2
           top 247px
           left 50%
           margin-left -543px
-          animation(scalebig,1s)
+          z-index 2
+          &.animated
+            animation(scalebig,1s)
         &.right1
           top 400px
           right 50%
           margin-right -570px
-          animation(right2left2,1s)
+          z-index 2
+          &.animated
+            animation(right2left2,1s)
         &.right2
           top 450px
           right 50%
           margin-right -430px
-          animation(scalebig,1s)
+          z-index 2
+          &.animated
+            animation(scalebig,1s)
     &.rank
       position relative
       img.center1
@@ -227,20 +246,26 @@ footer
         left 50%
         margin-left -294px
         top 160px
-        animation(rotate,1s)
+        &.animated
+          animation(rotate,1s)
     &.question
       img.img
         width 20%
         &.center
           position relative
           bottom -2px
+          z-index 1
         &.left
           position relative
           bottom 100px
           right 30px
-          animation(right2left,1s)
+          z-index 2
+          &.animated
+            animation(right2left,1s)
         &.right
           position relative
           bottom 100px
           left 30px
-          animation(left2right,1s)
+          z-index 2
+          &.animated
+            animation(left2right,1s)
