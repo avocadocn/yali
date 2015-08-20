@@ -174,33 +174,12 @@ define(['angular', 'angulardatatables'], function (angular) {
       '$timeout',
       function ($rootScope, $scope, $state, teamService, memberService,imageService,$modal,$timeout) {
         teamService.get($state.params.teamId).success(function (data) {
-          $scope.team = data;
-          teamService.getFamilyPhotos($state.params.teamId).success(function (data) {
-            $scope.team.familyPhoto = data[0];
-          })
-          .error(function (data) {
-            console.log(data.msg);
-          });
+          if(!data.group)
+            return alert("没有查找的该小队的信息！")
+          $scope.team = data.group;
           $scope.formData = {
-            name: data.name
+            name: data.group.name
           };
-          $scope.homeCourts = [{
-            name: '',
-            loc: { coordinates: [] }
-          }, {
-            name: '',
-            loc: { coordinates: [] }
-          }];
-          $scope.showMaps = [false, false];
-          for (var i = 0; i < $scope.team.homeCourts.length; i++) {
-            var homeCourt = $scope.team.homeCourts[i];
-            if (homeCourt.name) {
-              $scope.homeCourts[i] = homeCourt;
-            }
-            if (homeCourt.loc && homeCourt.loc.coordinates && homeCourt.loc.coordinates.length === 2) {
-              $scope.showMaps[i] = true;
-            }
-          }
         })
         .error(function (data) {
           alert(data.msg);
@@ -265,7 +244,7 @@ define(['angular', 'angulardatatables'], function (angular) {
           }
           var fd = new FormData();
           var blob = imageService.dataURItoBlob(dataURI);
-          fd.append('logo', blob);
+          fd.append('photo', blob);
           teamService.editLogo($scope.team._id, fd, function (err) {
             if (err) {
               alert(err);
@@ -276,171 +255,6 @@ define(['angular', 'angulardatatables'], function (angular) {
             }
           });
 
-        };
-        var cropperFamily = $('#image_cropper_family').cropit({
-          onFileChange: function () {
-            $scope.familyIsUploading = true;
-            $scope.$digest();
-          },
-          imageBackground: true
-        });
-
-        $scope.familyIsUploading = false;
-        var cropitImageInputFamily = $('#cropit_image_input_family');
-        $scope.selectFamily = function () {
-          cropitImageInputFamily.click();
-        };
-
-        $scope.editFamily = function () {
-          // var dataURI = cropperFamily.cropit('export', {
-          //   type: 'image/jpeg',
-          //   quality: 1
-          // });
-          var dataURI = cropperFamily.cropit('export');
-          
-          if (!dataURI || dataURI === '') {
-            return;
-          }
-          var fd = new FormData();
-          var blob = imageService.dataURItoBlob(dataURI);
-          fd.append('photo', blob);
-          teamService.uploadFamilyPhotos($scope.team._id, fd, function (err) {
-            if (err) {
-              alert(err);
-            } else {
-              $scope.familyIsUploading = false;
-              alert('上传成功');
-              window.location.reload();
-            }
-          });
-
-        };
-        $scope.showMapModal = function () {
-          $scope.modalInstance = $modal.open({
-            templateUrl: 'homeCourtModal.html',
-            scope: $scope
-          });
-          //关闭modal
-          $scope.close = function () {
-            $scope.modalInstance.dismiss('cancel');
-          }
-          window.court_map_initialize = function() {
-            $scope.initialize();
-          };
-          var script = document.createElement("script");
-          script.src = "http://webapi.amap.com/maps?v=1.3&key=077eff0a89079f77e2893d6735c2f044&callback=court_map_initialize";
-          document.body.appendChild(script);
-          $scope.MSearches = new Array(2);
-          $scope.locationMaps = new Array(2);
-          $scope.city = '';
-          var courtEleIds = ['courtMap1', 'courtMap2'];
-          var placeSearchCallBack = function(bindMap, index) {
-            return function(data) {
-              bindMap.clearMap();
-              var lngX = data.poiList.pois[0].location.getLng();
-              var latY = data.poiList.pois[0].location.getLat();
-              $scope.homeCourts[index].loc.coordinates = [lngX, latY];
-              var nowPoint = new AMap.LngLat(lngX, latY);
-              var markerOption = {
-                map: bindMap,
-                position: nowPoint,
-                draggable: true
-              };
-              var mar = new AMap.Marker(markerOption);
-              bindMap.setFitView();
-              var changePoint = function(e) {
-                var p = e.lnglat;
-                $scope.homeCourts[index].loc.coordinates = [p.getLng(), p.getLat()];
-              };
-              AMap.event.addListener(mar, "dragend", changePoint);
-            }
-          };
-
-          var bindPlaceSearch = function(bindMap, index, forbiddenCity) {
-            var placeSearchOptions = { //构造地点查询类
-              pageSize: 1,
-              pageIndex: 1,
-              city: $scope.city
-            };
-            if (forbiddenCity) {
-              delete placeSearchOptions.city;
-            }
-            bindMap.plugin(["AMap.PlaceSearch"], function() {
-              $scope.MSearches[index] = new AMap.PlaceSearch(placeSearchOptions);
-              AMap.event.addListener($scope.MSearches[index], "complete", placeSearchCallBack(bindMap, index)); //返回地点查询结果
-            });
-          };
-
-          $scope.initialize = function() {
-            var points = new Array(2);
-            for (var i = 0; i < 2; i++) {
-              $scope.locationMaps[i] = new AMap.Map(courtEleIds[i]);
-              if ($scope.homeCourts[i].name !== '') {
-                var loc = $scope.homeCourts[i].loc;
-                points[i] = new AMap.LngLat(loc.coordinates[0], loc.coordinates[1]);
-                $scope.locationMaps[i].setZoomAndCenter(15, points[i]);
-                var markerOption = {
-                  map: $scope.locationMaps[i],
-                  position: points[i],
-                  draggable: true
-                };
-                var mar = new AMap.Marker(markerOption);
-                var changePoint = function(e) {
-                  var p = e.lnglat;
-                  $scope.homeCourts[i].loc.coordinates = [p.getLng(), p.getLat()];
-                };
-                AMap.event.addListener(mar, "dragend", changePoint);
-              };
-            }
-
-            if ($scope.city != '') {
-              bindPlaceSearch($scope.locationMaps[0], 0);
-              bindPlaceSearch($scope.locationMaps[1], 1);
-            } else {
-
-              $scope.locationMaps[0].plugin(["AMap.CitySearch"], function() {
-                bindPlaceSearch($scope.locationMaps[0], 0, true);
-                bindPlaceSearch($scope.locationMaps[1], 1, true);
-                var citysearch = new AMap.CitySearch();
-                AMap.event.addListener(citysearch, "complete", function(result) {
-                  if (result && result.city && result.bounds) {
-                    var citybounds = result.bounds;
-                    $scope.city = result.city;
-                    bindPlaceSearch($scope.locationMaps[0], 0);
-                    bindPlaceSearch($scope.locationMaps[1], 1);
-                  }
-                });
-                AMap.event.addListener(citysearch, "error", function(result) {
-                  alert(result.info);
-                });
-                citysearch.getLocalCity();
-              });
-            }
-          };
-
-          $scope.changeLocation = function (index) {
-            $scope.showMaps[index] = true;
-            if ($scope.MSearches[index]) {
-              $scope.MSearches[index].search($scope.homeCourts[index].name);
-            } else {
-              $timeout(function() {
-                $scope.MSearches[index].search($scope.homeCourts[index].name);
-              }, 0);
-            }
-          }
-
-          $scope.saveHomeCourt = function () {
-            teamService.update($scope.team._id, {
-              homeCourts: $scope.homeCourts
-            }).success(function () {
-              alert('修改成功');
-              $scope.team.homeCourts = $scope.homeCourts;
-              $scope.close()
-            })
-            .error(function (data) {
-              alert(data.msg);
-            });
-          };
         }
       }
     ]);

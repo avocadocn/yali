@@ -29,6 +29,11 @@ bodyColor = rgba(251, 214, 0, 1)
     left -10%
   to
     left 25%
+@keyframes left2right4
+  from
+    left -10%
+  to
+    left 50%
 @keyframes rotate
   from
      transform rotate(-30deg)
@@ -61,10 +66,10 @@ animation(name,time)
   -moz-animation name time
   /* Safari and Chrome: */
   -webkit-animation name time
-  /* Opera: */
-  -o-animation name time
-  animation-delay 0.3s
-  -webkit-animation-delay 0.3s /* Safari 和 Chrome */
+  // /* Opera: */
+  // -o-animation name time
+  // animation-delay 0.3s
+  // -webkit-animation-delay 0.3s /* Safari 和 Chrome */
 body
   margin 0
 header
@@ -111,12 +116,13 @@ header
         animation(left2right3,1s)
   .download
     position absolute
-    left 25%
+    left 50%
+    margin-left -400px
     bottom 20px
     width 320px
     height 125px
     &.animated
-      animation(bottom2top,1s)
+      animation(left2right4,1s)
     .qrcode
       width 125px
       height 125px

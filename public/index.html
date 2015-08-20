@@ -5,16 +5,18 @@
   }
  return y;
 }
-window.onload = function () {
-  window.onscroll= function(){
-    var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
-    var height = document.documentElement.clientHeight;
-    var totalTop = scrollTop + height;
-    var imgs = document.getElementsByClassName("animate");
-    for(var i =0,length=imgs.length;i<length;i++) {
-      if(getAbsTop(imgs[i])<totalTop && imgs[i].className.indexOf("animated")===-1) {
-        imgs[i].className+=" animated";
-      }
+function addAnimate () {
+  var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+  var height = document.documentElement.clientHeight;
+  var totalTop = scrollTop + height;
+  var imgs = document.getElementsByClassName("animate");
+  for(var i =0,length=imgs.length;i<length;i++) {
+    if(getAbsTop(imgs[i])<totalTop && imgs[i].className.indexOf("animated")===-1) {
+      imgs[i].className+=" animated";
     }
   }
+}
+window.onload = function () {
+  addAnimate();
+  window.onscroll= addAnimate;
 }</script></body></html>

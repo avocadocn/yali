@@ -7,7 +7,7 @@ define(['./team'], function (team) {
        * @return {HttpPromise}
        */
       get: function (id) {
-        return $http.get(apiBaseUrl + '/groups/' + id);
+        return $http.get(apiBaseUrl + '/groups/' + id,{params:{allInfo:true}});
       },
 
       /**

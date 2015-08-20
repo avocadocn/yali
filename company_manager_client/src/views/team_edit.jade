@@ -7,23 +7,6 @@
       li.active 编辑小队
   section.content
     .row
-      .col-sm-8.col-sm-offset-2.team_logo_container
-        .row
-          .col-sm-6.col-sm-offset-3.team_edit_logo
-            .edit_logo_container
-              .cropper#image_cropper
-                .cropit-image-preview-container.img-circle(ng-show="team.logo" ng-style="{'background-image': 'url(' + team.logo + '/256/256)'}")
-                  .cropit-image-preview
-                .operator_slider(ng-show="isUploading")
-                  span.glyphicon.glyphicon-picture.icon_small
-                  input.cropit-image-zoom-input(type="range")
-                  span.glyphicon.glyphicon-picture.icon_large
-                .operator_button.text-center
-                  .btn-group
-                    button.btn.btn-default(ng-click="selectLogo()") 选择图片
-                    button.btn.btn-primary(type="button" ng-click="editLogo()" ng-if="isUploading") 确定
-                input.cropit-image-input#cropit_image_input(type="file")
-    .row
       .col-sm-8.col-sm-offset-2.team_edit_container
         .row
           .col-sm-6.col-sm-offset-3.team_edit_form
@@ -33,47 +16,23 @@
                 input.form-control(type="text" name="name" ng-model="formData.name" ng-maxlength=20 required)
                 p.text-danger(ng-if="editInfoForm.name.$error.required" ng-cloak) 请输入小队名称
                 p.text-danger(ng-if="editInfoForm.name.$error.maxlength" ng-cloak) 请输入长度不超过20个字符
-              .form-group.home_court(ng-repeat="homeCourt in homeCourts")
-                label 主场
-                label.form-control(ng-click="showMapModal()" ng-cloak) {{homeCourt.name}}
-              
               .form-group
                 label 修改小队封面
                 .edit_family_container
-                  .cropper#image_cropper_family
-                    .cropit-image-preview-container(ng-style="{'background-image': 'url(' + (team.familyPhoto.uri ?team.familyPhoto.uri:'/img/family.png')+ '/256/256)'}")
+                  .cropper#image_cropper
+                    .cropit-image-preview-container(ng-show="team.logo" ng-style="{'background-image': 'url(' + team.logo + '/256/256)'}")
                       .cropit-image-preview
-                    .operator_slider(ng-show="familyIsUploading")
+                    .operator_slider(ng-show="isUploading")
                       span.glyphicon.glyphicon-picture.icon_small
                       input.cropit-image-zoom-input(type="range")
                       span.glyphicon.glyphicon-picture.icon_large
                     .operator_button.text-center
                       .btn-group
-                        button.btn.btn-default(ng-click="selectFamily()") 选择图片
-                        button.btn.btn-primary(type="button" ng-click="editFamily()" ng-if="familyIsUploading") 确定
-                    input.cropit-image-input#cropit_image_input_family(type="file")
+                        button.btn.btn-default(ng-click="selectLogo()") 选择图片
+                        button.btn.btn-primary(type="button" ng-click="editLogo()" ng-if="isUploading") 确定
+                    input.cropit-image-input#cropit_image_input(type="file")
               .form-group.text-center.operator
                 a.btn.btn-default(ui-sref="manager.teamList") 取消
                 button.btn.btn-success(type="button" ng-click="edit()") 确定
                 button.btn.btn-danger(ng-if="team && team.active" ng-click="closeTeam(team._id)") 关闭小队
                 button.btn.btn-primary(ng-if="team && !team.active" ng-click="openTeam(team._id)") 打开小队
-  script(type="text/ng-template" id="homeCourtModal.html")
-    .modal-header
-      h3.modal-title  主场
-    .modal-body
-      form(name="homeCourtForm")
-        .home_court
-          .control
-            label.title 主场一：
-            input.address(type="text" name ="home_court_1" ng-change='changeLocation(0)' ng-maxlength=40 tooltip="{{homeCourtForm.home_court_1.$invalid? '主场最长字数40字':'请认真填写主场地址，动梨将根此给您推荐可挑战的周边小队。'}}" ng-model="homeCourts[0].name" tooltip-placement="right")
-          .map_container(ng-show='showMaps[0]')
-            .map#courtMap1
-        .home_court
-          .control
-            label.title 主场二：
-            input.address(type="text" name ="home_court_2" ng-change='changeLocation(1)' ng-maxlength=40 tooltip="{{homeCourtForm.home_court_2.$invalid? '主场最长字数40字':'请认真填写主场地址，动梨将根此给您推荐可挑战的周边小队。'}}" ng-model="homeCourts[1].name" tooltip-placement="right")
-          .map_container(ng-show='showMaps[1]')
-            .map#courtMap2
-    .modal-footer
-      button.finish.btn.btn-primary(type="button" ng-click="saveHomeCourt()") 完成
-      button.btn.btn-default(ng-click="close()") 关闭
