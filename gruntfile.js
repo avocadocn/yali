@@ -44,24 +44,34 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
     watch: {
       jade: {
-        files: ['company_manager_client/src/**/*.jade','app/views/*.jade'],
+        files: ['company_manager_client/src/**/*.jade','app/views/*.jade','app/views/**/*.jade'],
         tasks: ['jade']
       },
-      js: {
+      cmc: {
         files: ['company_manager_client/src/**/*.js', '!company_manager_client/src/login.js'],
         tasks: ['requirejs']
+      },
+      js: {
+        files: ['gruntfile.js','public/js/**/*.js'],
+        options: {
+          livereload: true
+        }
       },
       loginJs: {
         files: ['company_manager_client/src/login.js'],
         tasks: ['copy:loginJs']
       },
       stylus: {
-        files: ['public/stylus/*.styl', 'company_manager_client/src/view_stylus/*.styl', 'company_manager_client/src/donler.styl', 'company_manager_client/src/**/*.styl'],
+        files: ['company_manager_client/src/view_stylus/*.styl', 'company_manager_client/src/donler.styl', 'company_manager_client/src/**/*.styl'],
         tasks: ['stylus', 'concat:css']
       },
       loginStylus: {
         files: ['company_manager_client/src/login.styl'],
         tasks: ['stylus', 'concat:loginCss']
+      },
+      signupStylus: {
+        files: ['public/stylus/*.styl'],
+        tasks: ['stylus']
       }
     },
     jade: {
@@ -83,6 +93,13 @@ module.exports = function(grunt) {
           cwd: 'app/views',
           src: ['*.jade'],
           dest: 'public/',
+          ext: '.html'
+        },
+        {
+          expand: true,
+          cwd: 'app/views',
+          src: ['**/*.jade'],
+          dest: 'templates',
           ext: '.html'
         }]
       }
@@ -106,7 +123,8 @@ module.exports = function(grunt) {
           {'company_manager_client/dist/donler.min.css': 'company_manager_client/src/donler.styl'},
           {'company_manager_client/dist/login.min.css': 'company_manager_client/src/login.styl'},
           {'public/css/style.min.css': 'public/stylus/style.styl'},
-          {'public/css/about.min.css': 'public/stylus/about.styl'}
+          {'public/css/about.min.css': 'public/stylus/about.styl'},
+          {'public/css/signup.min.css': 'public/stylus/signup.styl'}
         ]
       }
     },

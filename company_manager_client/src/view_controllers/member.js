@@ -310,7 +310,7 @@ define(['angular', 'qrcode', 'angulardatatables'], function (angular, qrcode, an
           if(confirm('是否确认屏蔽此人？')) {
             memberService.close(member._id).success(function(status, data) {
               $scope.companyMembers[index].acitve = false;
-              $scope.$apply();
+              // $scope.$apply();
               alert('屏蔽成功');
             })
             .error(function(stats, data) {
@@ -323,7 +323,7 @@ define(['angular', 'qrcode', 'angulardatatables'], function (angular, qrcode, an
           if(confirm('是否确认解除屏蔽？')) {
             memberService.open(member._id).success(function(status, data) {
               $scope.companyMembers[index].acitve = true;
-              $scope.$apply();
+              // $scope.$apply();
               alert('解除成功');
             })
             .error(function(stats, data) {
