@@ -55,9 +55,9 @@
                       a(ng-click="showStatus(1)") 正常
                     li 
                       a(ng-click="showStatus(2)") 屏蔽中
-              th.center 关闭
+              th.center 屏蔽
           tbody
-            tr(ng-repeat="member in companyMembers" ng-cloak)
+            tr(ng-repeat="member in companyMembers track by $index" ng-cloak)
               td(ng-bind="$index+1")
               td.center: img.memer_logo(ng-src="{{member.photo}}/40/40")
               //- td(bo-bind="member.username")
@@ -68,10 +68,12 @@
               //- td.center(bo-bind="member.score.total")
               //- td.center
                 button.btn.btn-link(member-detail now-user-id="member._id") 查看详情
-              td.center(ng-bind="member.active? '正常' : '屏蔽中' ")
+              td.center(ng-cloak) {{member.active ? '正常' : '屏蔽中'}}
               td.center
-                i.fa.fa-lock(ng-if="member.active" ng-click="close(member)")
-                i.fa.fa-unlock(ng-if="!member.active" ng-click="open(member)")
+                a(ng-show="member.active" ng-click="close($index)") 屏蔽
+                  i.fa.fa-lock
+                a(ng-show="!member.active" ng-click="open($index)") 接触屏蔽
+                  i.fa.fa-unlock
 
 
 

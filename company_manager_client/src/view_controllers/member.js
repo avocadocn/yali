@@ -194,7 +194,8 @@ define(['angular', 'qrcode', 'angulardatatables'], function (angular, qrcode, an
           DTColumnDefBuilder.newColumnDef(0).notSortable(),
           DTColumnDefBuilder.newColumnDef(1).notSortable(),
           DTColumnDefBuilder.newColumnDef(2).notSortable(),
-          DTColumnDefBuilder.newColumnDef(3).notSortable()
+          DTColumnDefBuilder.newColumnDef(3).notSortable(),
+          DTColumnDefBuilder.newColumnDef(4).notSortable()
         ];
         memberService.getMembers($rootScope.company._id).success(function(data) {
           $scope.companyMembers = data;
@@ -304,10 +305,12 @@ define(['angular', 'qrcode', 'angulardatatables'], function (angular, qrcode, an
               break;
           }
         }
-        $scope.close = function(member) {
+        $scope.close = function(index) {
+          var member = $scope.companyMembers[index];
           if(confirm('是否确认屏蔽此人？')) {
             memberService.close(member._id).success(function(status, data) {
-              member.acitve = false;
+              $scope.companyMembers[index].acitve = false;
+              $scope.$apply();
               alert('屏蔽成功');
             })
             .error(function(stats, data) {
@@ -315,10 +318,12 @@ define(['angular', 'qrcode', 'angulardatatables'], function (angular, qrcode, an
             });
           }
         }
-        $scope.open = function(member) {
+        $scope.open = function(index) {
+          var member = $scope.companyMembers[index];
           if(confirm('是否确认解除屏蔽？')) {
             memberService.open(member._id).success(function(status, data) {
-              member.acitve = true;
+              $scope.companyMembers[index].acitve = true;
+              $scope.$apply();
               alert('解除成功');
             })
             .error(function(stats, data) {
