@@ -38,6 +38,9 @@ define(['./team'], function (team) {
       update: function (id, updateData) {
         return $http.put(apiBaseUrl + '/groups/' +id, updateData);
       },
+      pointLeader:function (id, updateData) {
+        return $http.post(apiBaseUrl + '/groups/' +id+'/leader', updateData);
+      },
       /**
        * 编辑logo
        * @param  {String}   id       小队id

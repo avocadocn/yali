@@ -8,7 +8,7 @@
       li.active 任命队长
   section.content
     .row
-      .col-xs-12.col-sm-4(ng-if="team.leaders.length > 0")
+      .col-xs-12.col-sm-4(ng-if="team.leader")
         .box.box-primary
           .box-header
             h3.box-title 现任队长
@@ -16,17 +16,21 @@
             ul.products-list.product-list-in-box
               li.item
                 .product-img
-                  img(ng-src="{{team.leaders[0].photo}}")
+                  img(ng-src="{{team.leader.photo}}")
                 .product-info
-                  a.product-title(ng-href="/users/timeLine/{{team.leaders[0]._id}}" target="_blank" ng-bind="team.leaders[0].nickname")
-      .col-xs-12(ng-class="{'col-sm-8': team.leaders.length > 0, 'col-sm-12': team.leaders.length === 0 }")
+                  a.product-title(ng-href="/users/timeLine/{{team.leader._id}}" target="_blank" ng-bind="team.leader.nickname")
+      .col-xs-12(ng-class="{'col-sm-8': team.leader, 'col-sm-12': !team.leader }")
         .box.box-primary
           .box-header
             h3.box-title(ng-bind="showMemberBoxTitle")
             .box-tools
               button.btn.btn-default.btn-xs(ng-click="toggleMember()" ng-bind="showTeamMemberTitle")
           .box-body.no-padding
-            form
+            form.form-inline
+              .form-group
+                label 用户名:
+                input.form-control(type="text" name="name" ng-model="formData.name" ng-maxlength=20)
+                button.btn.btn-primary(ng-click="search()") 搜索
               ul.users-list.clearfix
                 li.user_item(ng-repeat="member in members" ng-click="changeLeader($index)")
                   img(ng-src="{{member.photo}}/64/64" ng-class="{'selected_user': newLeader._id===member._id}")

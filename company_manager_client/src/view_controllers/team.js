@@ -117,40 +117,23 @@ define(['angular', 'angulardatatables'], function (angular) {
       '$state',
       'teamService',
       'memberService',
-      function ($rootScope, $scope, $state, teamService, memberService) {
-        $scope.showTeamMember = true;
-        $scope.memberTitle =['显示公司成员','显示小队成员'];
-        $scope.memberBoxTitle = ['小队成员', '公司成员'];
-        $scope.showTeamMemberTitle = $scope.memberTitle[0];
-        $scope.showMemberBoxTitle = $scope.memberBoxTitle[0];
-        teamService.getMembers($state.params.teamId).success(function (data) {
-          $scope.team = {
-            leaders: data.leaders,
-            _id: $state.params.teamId
-          };
-          $scope.teamMembers = data.members;
-          $scope.members = data.members;
-        })
-        .error(function (data) {
-          alert(data.msg);
-        });
-        memberService.getMembers($rootScope.company._id).success(function (data) {
-          $scope.companyMembers = data;
-        })
-        .error(function (data) {
-          alert(data.msg);
-        });
-        $scope.toggleMember = function () {
-          $scope.showTeamMember =!$scope.showTeamMember;
-          $scope.showTeamMemberTitle = $scope.memberTitle[$scope.showTeamMember ? 0 : 1];
-          $scope.showMemberBoxTitle = $scope.memberBoxTitle[$scope.showTeamMember ? 0 : 1];
-          $scope.members = $scope.showTeamMember ? $scope.teamMembers : $scope.companyMembers;
+      'team',
+      function ($rootScope, $scope, $state, teamService, memberService, team) {
+        $scope.team = team;
+        $scope.formData = {name:""};
+        $scope.search = function() {
+          memberService.search($scope.formData).success(function(data) {
+            $scope.members = data;
+          })
+          .error(function (data) {
+            alert(data.msg)
+          })
         }
         $scope.changeLeader = function (index) {
           $scope.newLeader = $scope.members[index];
         }
         $scope.save =function () {
-          teamService.update($scope.team._id,{leader:$scope.newLeader}).success(function(data) {
+          teamService.pointLeader($scope.team._id,{userId:$scope.newLeader._id}).success(function(data) {
             alert('修改队长成功');
             $state.reload();
           })
@@ -168,11 +151,10 @@ define(['angular', 'angulardatatables'], function (angular) {
       '$scope',
       '$state',
       'teamService',
-      'memberService',
       'imageService',
       '$modal',
       '$timeout',
-      function ($rootScope, $scope, $state, teamService, memberService,imageService,$modal,$timeout) {
+      function ($rootScope, $scope, $state, teamService,imageService,$modal,$timeout) {
         teamService.get($state.params.teamId).success(function (data) {
           if(!data.group)
             return alert("没有查找的该小队的信息！")

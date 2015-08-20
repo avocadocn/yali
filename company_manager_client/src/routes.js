@@ -61,7 +61,14 @@ define(['app'], function (app) {
         .state('manager.pointTeamLeader', {
           url: '/team/pointLeader/:teamId',
           templateUrl: templateUrl('/views/point_leader.html'),
-          controller: 'team.pointLeaderCtrl'
+          controller: 'team.pointLeaderCtrl',
+          resolve: {
+            team: ['teamService', 'initData', '$stateParams', function(teamService, initData, $stateParams) {
+              return teamService.get($stateParams.teamId).then(function(res) {
+                return res.data.group;
+              });
+            }]
+          }
         })
         // .state('manager.createCampaign', {
         //   url: '/campaigns/create',

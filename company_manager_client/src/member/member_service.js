@@ -10,6 +10,9 @@ define(['./member'], function (member) {
       getMembers: function (id, params) {
        return $http.get(apiBaseUrl + '/users/list/' + id,{params:{from:'admin'}});
       },
+      search: function (data) {
+       return $http.get(apiBaseUrl + '/search/users',{params:data});
+      },
       /**
        * 获取成员
        * @param  {String} 成员id
