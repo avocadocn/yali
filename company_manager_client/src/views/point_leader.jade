@@ -21,11 +21,7 @@
                   a.product-title(ng-href="/users/timeLine/{{team.leader._id}}" target="_blank" ng-bind="team.leader.nickname")
       .col-xs-12(ng-class="{'col-sm-8': team.leader, 'col-sm-12': !team.leader }")
         .box.box-primary
-          .box-header
-            h3.box-title(ng-bind="showMemberBoxTitle")
-            .box-tools
-              button.btn.btn-default.btn-xs(ng-click="toggleMember()" ng-bind="showTeamMemberTitle")
-          .box-body.no-padding
+          .box-body
             form.form-inline
               .form-group
                 label 用户名:
