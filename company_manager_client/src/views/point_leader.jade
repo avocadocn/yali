@@ -18,7 +18,7 @@
                 .product-img
                   img(ng-src="{{team.leader.photo}}")
                 .product-info
-                  a.product-title(ng-href="/users/timeLine/{{team.leader._id}}" target="_blank" ng-bind="team.leader.nickname")
+                  a.product-title(ng-bind="team.leader.nickname")
       .col-xs-12(ng-class="{'col-sm-8': team.leader, 'col-sm-12': !team.leader }")
         .box.box-primary
           .box-body
@@ -30,7 +30,7 @@
               ul.users-list.clearfix
                 li.user_item(ng-repeat="member in members" ng-click="changeLeader($index)")
                   img(ng-src="{{member.photo}}/64/64" ng-class="{'selected_user': newLeader._id===member._id}")
-                  a.users-list-name(ng-href="/users/timeLine/{{member._id}}" target="_blank" ng-bind="member.nickname")
+                  a.users-list-name(ng-bind="member.nickname")
               p.text-center(ng-if="members.length === 0" ng-cloak) 该小队没有成员
               .text-center.operator(ng-if="newLeader")
                 button.btn.btn-primary(ng-click="save()") 确定

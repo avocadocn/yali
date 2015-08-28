@@ -41,7 +41,16 @@ app.controller('userSignupController', ['$http', '$scope', '$location', function
   $scope.isValidating = false;
   $scope.validatePhone = function() {
     $scope.isValidating = true;
-    $http.post('/users/validate', $scope.user.phone)
+    $http.post('/users/validate', {
+      phone:$scope.user.phone,
+      from: 'website'
+    })
+    .success(function(data, status) {
+      $scope.validated = true;
+    })
+    .error(function(data, status) {
+      $scope.tip = '验证失败，请重试';
+    })
   };
 
   $scope.register = function() {

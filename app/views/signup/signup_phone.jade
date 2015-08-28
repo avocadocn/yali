@@ -24,7 +24,7 @@ html
             span.company_name {{company.name}}
       .profile(ng-show="step===2" ng-cloak)
         .compnay
-          img.company_logo(ng-src="company.logo")
+          img.company_logo(ng-src="{{company.logo}}")
           form(name="userForm")
             input.user_input(ng-model="user.name" placeholder="姓名" required)
             input.password(type="password" ng-model="user.password" placeholder="密码(至少6位)" ng-minlength=6)
@@ -38,7 +38,7 @@ html
           button.validate(ng-disabled="phoneForm.phone.$invalid" ng-click="validatePhone()") 短信验证
           p.tip(ng-if="tip" ng-cloak) {{tip}}
           input.verification(placeholder="验证码" ng-model="verification" required)
-          button.register(ng-click="register()") 完成注册
+          button.register(ng-click="register()" ng-disabled="phoneForm.$invalid && !validated") 完成注册
     footer
     script(src="/lib/angular/angular.min.js")
     script(src='/js/controllers/signupController.js')
