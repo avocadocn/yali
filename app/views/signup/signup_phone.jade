@@ -16,6 +16,7 @@ html
     section.mobileSignup(ng-controller="userSignupController")
       .search_company(ng-show="step===1" ng-cloak)
         .step 迈出warm第一步
+        select(ng-options="company.name for company in companies" ng-model="company")
         input.search_input(type="text" ng-model="keyword" placeholder="搜索学校" ng-keypress="search($event)")
         .nearby 在warm择校吧
         .companies
