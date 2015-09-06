@@ -7,55 +7,120 @@ html
 .ng-cloak, .x-ng-cloak,
 .ng-hide 
     display none !important
-header
-  background-color bodyColor
-  height 25px
-  padding 10px
-  font-size 16px
-  .nav
-    width 320px
-    text-align center
-    margin 0 auto
-    li
-      float left
-      width 100px
-      border-right
-      a
-        text-decoration none
-        color black
-        font-size 14px
+::-webkit-input-placeholder /* WebKit browsers */
+  color #fff
+:-moz-placeholder /* Mozilla Firefox 4 to 18 */
+  color #fff
+::-moz-placeholder /* Mozilla Firefox 19+ */
+  color #fff
+:-ms-input-placeholder /* Internet Explorer 10+ */
+  color #fff
 body
   margin 0
   section
     padding 10px
-  input
+  input ,select
     outline 0
-    border-radius 5px
-    border 1px solid #ccc
+    border 0
     width 100%
-    height 34px
+    height 44px
     font-size 14px
-    padding 2px 5px
-  .search_company
-    width 80%
-    //- text-align center
+    padding 13px
+    background-color #B95B26
+    color #fff
+    border-radius 6px
+  input.ng-invalid.ng-dirty
+    background-color #A03E3E
+  button
+    font-size 14px
+    border 0
+  select
+    background-color transparent
+.mobile_signup
+  background-image url('/img/signup/phone_bg.png')
+  background-repeat no-repeat
+  background-size cover
+  width 100%
+  overflow-x hidden
+  .singup
+    text-align center
+  .fill_in
+    width 73%
     margin auto
-    .step
-      width 100%
-      text-align center
-      font-size 16px
-    .search_input
+    margin-top 100px
+    border-radius 28px
+    padding 0 24px 24px
+    background-image url('/img/signup/board_bg.png')
+    background-size 140px 20px
+    background-repeat repeat
+    text-align center
+    position relative
+    input, .select_container
       margin-top 10px
-    .nearby
-      margin-top 20px
-      font-size 16px
-      width 100%
-      border-bottom 1px solid #666
-    .companies
-      .no_companies
+    .option_place
+      display none
+    .fill_in_title
+      width 185px
+      height 55px
+      margin-top -20px
+    .select_container
+      border-radius 6px
+      background-color #B95B26
+      background-image url('/img/signup/arrow.png')
+      background-size 17px 10px
+      background-position 95% 17px
+      background-repeat no-repeat
+    .validate
+      display block
+      .verification
+        width 48%
+      .get_validate
+        border-radius 6px
+        background-color #fff
         color #666
-      .company
-        margin-left 10px
-        display block
-        line-height 20px
-
+        height 44px
+        width 48%
+        margin-left 4%
+    .tip
+      color #fff
+      margin-left 12px
+      margin-bottom 0
+      text-align left
+  .submit
+    background-image url('/img/signup/submit.png')
+    background-size 239px 50px
+    background-repeat no-repeat
+    height 50px
+    width 239px
+    margin 30px auto 0
+    background-color transparent
+  .ball
+    position absolute
+  .ball_1, .ball_2 ,.ball_3
+    background-image url('/img/signup/star.png')
+    background-size 68px 64px
+    width 68px
+    height 64px
+  .ball_1
+    left 66px
+    top -35px
+  .ball_2
+    right -28px
+    top -12px
+  .ball_3
+    right 6px
+    top 362px
+  .ball_4
+    background-image url('/img/signup/star_2.png')
+    background-size 110px 79px
+    width 110px
+    height 79px
+    left -17px
+    top 78px
+  .ball_5
+    background-image url('/img/signup/star_3.png')
+    background-size 68px 69px
+    width 68px
+    height 69px
+    left 8px
+    top 245px
