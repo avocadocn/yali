@@ -3,21 +3,24 @@ html
     meta(charset="utf-8")
     title warm注册
     meta(http-equiv="X-UA-Compatible" content="IE=edge,chrome=1")
-    meta(name="viewport" content="width=device-width, initial-scale=1, user-scalable=no minimum-scale=1")
+    meta(name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1")
+    meta(name="apple-mobile-web-app-capable" content="yes")
     link(rel="stylesheet" href="/css/signup.min.css")
     link(href="/img/icons/favicon.ico" rel="shortcut icon" type="image/x-icon")
   body.mobile_signup(ng-app="donler")
-    section.singup(ng-controller="userSignupController")
+    section.signup(ng-controller="userSignupController")
       //- 5个球
       //- .balls
-      .ball.ball_1
-      .ball.ball_2
-      .ball.ball_3
-      .ball.ball_4
-      .ball.ball_5
+      .ball.ball_1.animated.zoomIn
+      .ball.ball_2.animated.fadeInRight
+      .ball.ball_3.animated.fadeInDown
+      //- 蓝
+      .ball.ball_4.animated.rotateIn
+      //- 黄
+      .ball.ball_5.animated.slideInLeft
       //-资料框
       form(name="userForm")
-        .fill_in
+        .fill_in.animated.slideInUp(ng-cloak)
           img.fill_in_title(ng-src="/img/signup/fill_in_title.png")
           .select_container
             select(ng-options="company as company.name for company in companies" ng-change="selectCompany()" ng-model="company")
@@ -34,6 +37,16 @@ html
           input.password(type="password" ng-model="user.password" placeholder="请设置密码(至少6位)" ng-minlength=6)
           p.tip(ng-if="errorMSg" ng-cloak) {{errorMSg}}
         button.submit(ng-click="register()" ng-disabled="userForm.$invalid || !validated")
+      .modal.animated.bounceInUp(ng-if="success" ng-cloak)
+        .wrap
+        .girl_laugh
+          .board
+            img.submit_sucess.animated.flip(ng-src="/img/signup/circle.png")
+            img.submit_success_text.animated.tada(ng-src="/img/signup/submit_success.png")
+            p.download_text.animated.rubberBand 还愣着干嘛！快去下载啊！
+            a.animated.rubberBand(ng-href="http://www.warm.ren") www.warm.ren
+            a(ng-href="http://www.warm.ren")
+              img.know_button(ng-src="/img/signup/know_button.png")
     footer
     script(src="/lib/angular/angular.min.js")
     script(src='/js/controllers/signupController.js')

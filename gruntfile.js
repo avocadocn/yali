@@ -71,7 +71,7 @@ module.exports = function(grunt) {
       },
       signupStylus: {
         files: ['public/stylus/*.styl'],
-        tasks: ['stylus']
+        tasks: ['stylus', 'concat:signupCss']
       }
     },
     jade: {
@@ -124,7 +124,7 @@ module.exports = function(grunt) {
           {'company_manager_client/dist/login.min.css': 'company_manager_client/src/login.styl'},
           {'public/css/style.min.css': 'public/stylus/style.styl'},
           {'public/css/about.min.css': 'public/stylus/about.styl'},
-          {'public/css/signup.min.css': 'public/stylus/signup.styl'}
+          {'public/css/signup.css': 'public/stylus/signup.styl'}
         ]
       }
     },
@@ -207,6 +207,13 @@ module.exports = function(grunt) {
           'company_manager_client/dist/login.min.css'
         ],
         dest: 'public/company_client/css/login.min.css'
+      },
+      signupCss: {
+        src: [
+          'public/css/animate.min.css',
+          'public/css/signup.css'
+        ],
+        dest: 'public/css/signup.min.css'
       }
     },
     nodemon: {

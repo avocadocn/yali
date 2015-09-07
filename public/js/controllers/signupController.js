@@ -64,11 +64,7 @@ app.controller('userSignupController', ['$http', '$scope', '$location', '$timeou
       var sendData = $scope.user;
       sendData.from = 'website';
       $http.post(apiBaseUrl + '/users', sendData).success(function(data, status) {
-        var hostname = window.location.hostname;
-        if(window.location.hostname === 'localhost') {
-          hostname = hostname + ':3000';
-        }
-        window.location = 'http://' + hostname + '/singup/success';
+        $scope.success = true;
       })
       .error(function(data, status) {
         $scope.errorMSg = data.msg;
