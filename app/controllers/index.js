@@ -7,10 +7,6 @@ var meanConfig = require('../../config/config');
 var mongoose = require('mongoose');
 var ShortUrl = mongoose.model('ShortUrl');
 
-exports.home = function(req, res) {
-  // var rootPath = meanConfig.root;
-  res.sendfile('/public/index.html');
-};
 
 exports.skipUrl = function(req, res) {
   var id = req.params.shortId;
@@ -25,3 +21,10 @@ exports.skipUrl = function(req, res) {
     return res.redirect(shortUrl.url);
   })
 }
+
+exports.home = function(req, res) {
+  res.sendfile('templates/index.html');
+};
+exports.template = function(req, res) {
+  res.sendfile('templates/'+req.params.template+'.html');
+};

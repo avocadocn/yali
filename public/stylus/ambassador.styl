@@ -1,0 +1,212 @@
+@import "nib"
+bodyColor = rgba(251, 214, 0, 1)
+borderColor = #979797
+.clearfix
+  &:before
+    content ""
+    display table
+  &:after
+    content ""
+    display table
+    clear both
+body
+  margin 0
+  font-family STHeiti,"Microsoft YaHei",MingLiu,"Helvetica Neue",Helvetica,Arial,sans-serif
+header
+  padding 10px
+  text-align center
+  border-bottom 1px solid borderColor
+  .nav
+    width 800px
+    margin 0 auto
+    padding-top 8px
+    >h1
+      float left
+      margin 0
+      width 200px
+    li
+      list-style none
+      float left
+      width 99px
+      border-right 1px solid black
+      margin-top 8px
+      a
+        text-decoration none
+        color black
+      &:last-child
+        width 100px
+        border-right none
+      &.active
+        a
+          color rgba(251, 214, 0, 1)
+.container
+  .row
+    position relative
+    img
+      position absolute
+      width 10%
+    .bg
+      position static
+      width 100%
+    .cloud
+      bottom -19%
+      left 0
+      width 100%
+      height 30%
+      z-index 2
+  .search
+    .title
+      left 7%
+      top 7%
+      width 48%
+    .bubble
+      right 5%
+      top 17%
+      width 25%
+    .next
+      right 8%
+      top 25%
+      width 19%
+    .sun
+      right 8%
+      top 4%
+      height 15%
+      width auto
+    .boy
+      left 34%
+      bottom 5%
+      width 13%
+    .girl
+      left 53%
+      bottom 5%
+      width 33%
+    .flower
+      left 3%
+      bottom 8%
+      width 6%
+      z-index 2
+    .stone1
+      left 0
+      bottom 5%
+    .chicken
+      right 0
+      bottom 16%
+    .stone2
+      right 0
+      bottom 5%
+  .intro
+    .introduce
+      position absolute
+      left 50%
+      top 20%
+      width 370px
+      margin-left -185px
+      color white
+      .title
+        font-size 46px
+        margin 20px 0
+      .content
+        font-size 16px
+        line-height 24px
+    .chicken
+      left 11%
+      bottom 26%
+      z-index 2
+    .earth
+      left 10%
+      bottom -12%
+      width 20%
+    .cloud1
+      left 27%
+      bottom 10%
+      width 5%
+    .cloud2
+      left 5%
+      bottom 23%
+      width 4%
+    .boys
+      left 40%
+      bottom 18%
+      width 26%
+    .share
+      left 10%
+      bottom 50%
+    .social
+      left 25%
+      bottom 30%
+    .organize
+      left 70%
+      bottom 20%
+    .duty
+      left 80%
+      bottom 50%
+  .join
+    h4
+      position absolute
+      top 12%
+      left 40%
+      width 200px
+      font-size 50px
+      color white
+    .balloon1
+      top 30%
+      left 16%
+      width 12%
+    .balloon2
+      top 25%
+      left 44%
+      width 12%
+    .balloon3
+      top 30%
+      left 72%
+      width 12%
+    .white
+      bottom 5%
+      left 2%
+      width 10%
+    .spaceman
+      bottom 9%
+      left 12%
+      width 7%
+    .star
+      bottom 10%
+      left 35%
+      width 30%
+    .moon
+      bottom 10%
+      right 10%
+      width 16%
+    .cloud1
+      left 33%
+      bottom 8%
+      width 4%
+    .cloud
+      bottom 0
+      height 10%
+footer
+  background-color bodyColor
+  padding 30px 0
+  text-align center
+  p
+    font-size 12px
+  .nav
+    width 400px
+    margin 0 auto
+    &:before
+      content ""
+      display table
+    &:after
+      content ""
+      display table
+      clear both
+    li
+      list-style none
+      float left
+      width 99px
+      border-right 1px solid black
+      a
+        text-decoration none
+        color black
+      &:last-child
+        width 100px
+        border-right none

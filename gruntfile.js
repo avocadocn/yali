@@ -91,13 +91,6 @@ module.exports = function(grunt) {
         {
           expand: true,
           cwd: 'app/views',
-          src: ['*.jade'],
-          dest: 'public/',
-          ext: '.html'
-        },
-        {
-          expand: true,
-          cwd: 'app/views',
           src: ['**/*.jade'],
           dest: 'templates',
           ext: '.html'
@@ -124,7 +117,8 @@ module.exports = function(grunt) {
           {'company_manager_client/dist/login.min.css': 'company_manager_client/src/login.styl'},
           {'public/css/style.min.css': 'public/stylus/style.styl'},
           {'public/css/about.min.css': 'public/stylus/about.styl'},
-          {'public/css/signup.css': 'public/stylus/signup.styl'}
+          {'public/css/signup.css': 'public/stylus/signup.styl'},
+          {'public/css/ambassador.min.css': 'public/stylus/ambassador.styl'}
         ]
       }
     },

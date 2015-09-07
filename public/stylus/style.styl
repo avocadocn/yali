@@ -1,3 +1,4 @@
+@import "nib"
 bodyColor = rgba(251, 214, 0, 1)
 @keyframes bottom2top
   from
@@ -36,42 +37,17 @@ bodyColor = rgba(251, 214, 0, 1)
     left 50%
 @keyframes rotate
   from
-     transform rotate(-30deg)
-    -ms-transform rotate(-30deg)  /* IE 9 */
-    -webkit-transform rotate(-30deg) /* Safari 和 Chrome */
-    -o-transform rotate(-30deg) /* Opera */
-    -moz-transform rotate(-30deg) /* Firefox */
+    transform rotate(-30deg)
   to
-     transform rotate(0)
-    -ms-transform rotate(0)  /* IE 9 */
-    -webkit-transform rotate(0) /* Safari 和 Chrome */
-    -o-transform rotate(0) /* Opera */
-    -moz-transform rotate(0) /* Firefox */
+    transform rotate(0)
 @keyframes scalebig
   from
     transform scale(0.1)
-    -ms-transform scale(0.1)  /* IE 9 */
-    -webkit-transform scale(0.1) /* Safari 和 Chrome */
-    -o-transform scale(0.1) /* Opera */
-    -moz-transform scale(0.1) /* Firefox */
   to
     transform scale(1)
-    -ms-transform scale(1)  /* IE 9 */
-    -webkit-transform scale(1) /* Safari 和 Chrome */
-    -o-transform scale(1) /* Opera */
-    -moz-transform scale(1) /* Firefox */
-animation(name,time)
-  animation name time
-  /* Firefox: */
-  -moz-animation name time
-  /* Safari and Chrome: */
-  -webkit-animation name time
-  // /* Opera: */
-  // -o-animation name time
-  // animation-delay 0.3s
-  // -webkit-animation-delay 0.3s /* Safari 和 Chrome */
 body
   margin 0
+  font-family STHeiti,"Microsoft YaHei",MingLiu,"Helvetica Neue",Helvetica,Arial,sans-serif
 header
   background-color bodyColor
   padding 10px
@@ -108,12 +84,12 @@ header
       left 25%
       top 10%
       &.animated
-        animation(left2right3,1s)
+        animation left2right3 1s
     &.slogan
       left 25%
       top 35%
       &.animated
-        animation(left2right3,1s)
+        animation left2right3 1s
   .download
     position absolute
     left 50%
@@ -122,7 +98,7 @@ header
     width 320px
     height 125px
     &.animated
-      animation(left2right4,1s)
+      animation left2right4 1s
     .qrcode
       width 125px
       height 125px
@@ -167,10 +143,6 @@ footer
 .container
   >section
     text-align center
-    background -webkit-linear-gradient(top,#FFF,#FFF 95%,#F8F8F8)
-    background -moz-linear-gradient(top,#fff,#fff 95%,#f8f8f8)
-    background -o-linear-gradient(top,#fff,#fff 95%,#f8f8f8)
-    background -ms-linear-gradient(top,#fff,#fff 95%,#f8f8f8)
     background linear-gradient(to bottom,#FFF,#FFF 95%,#F8F8F8)
     h1
       font-size 32px
@@ -201,14 +173,14 @@ footer
           left 15px
           z-index 2
           &.animated
-            animation(left2right,1s)
+            animation left2right 1s
         &.right
           position relative
           bottom 70px
           right 25px
           z-index 2
           &.animated
-            animation(right2left,1s)
+            animation right2left 1s
     &.team
       position relative
       .center
@@ -223,28 +195,28 @@ footer
           margin-left -550px
           z-index 2
           &.animated
-            animation(left2right2,1s)
+            animation left2right2 1s
         &.left2
           top 247px
           left 50%
           margin-left -543px
           z-index 2
           &.animated
-            animation(scalebig,1s)
+            animation scalebig 1s
         &.right1
           top 400px
           right 50%
           margin-right -570px
           z-index 2
           &.animated
-            animation(right2left2,1s)
+            animation right2left2 1s
         &.right2
           top 450px
           right 50%
           margin-right -430px
           z-index 2
           &.animated
-            animation(scalebig,1s)
+            animation scalebig 1s
     &.rank
       position relative
       img.center1
@@ -253,7 +225,7 @@ footer
         margin-left -294px
         top 160px
         &.animated
-          animation(rotate,1s)
+          animation rotate 1s
     &.question
       img.img
         width 20%
@@ -267,11 +239,11 @@ footer
           right 30px
           z-index 2
           &.animated
-            animation(right2left,1s)
+            animation right2left 1s
         &.right
           position relative
           bottom 100px
           left 30px
           z-index 2
           &.animated
-            animation(left2right,1s)
+            animation left2right 1s
