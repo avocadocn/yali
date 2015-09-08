@@ -9,6 +9,12 @@ app.controller('userSignupController', ['$http', '$scope', '$location', '$timeou
     $scope.companies = data.companies;
   })
 
+  if(navigator.userAgent.indexOf('Android') >-1) {
+    $scope.deviceName = 'Android';
+  }
+  else {
+    $scope.deviceName = 'iOS';
+  }
   var years = [];
   for(var i = 2015; i>=1980; i--) {
     years.push(i);

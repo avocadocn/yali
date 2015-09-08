@@ -8,7 +8,7 @@ html
     link(rel="stylesheet" href="/css/signup.min.css")
     link(href="/img/icons/favicon.ico" rel="shortcut icon" type="image/x-icon")
   body.mobile_signup(ng-app="donler")
-    section.signup(ng-controller="userSignupController")
+    section.signup(ng-controller="userSignupController" class="{{deviceName}}")
       //- 5个球
       //- .balls
       .ball.ball_1.animated.zoomIn
@@ -36,7 +36,7 @@ html
           input.user_input(ng-model="user.name" placeholder="请输入姓名" required)
           input.password(type="password" ng-model="user.password" placeholder="请设置密码(至少6位)" ng-minlength=6)
           p.tip(ng-if="errorMSg" ng-cloak) {{errorMSg}}
-        button.submit(ng-click="register()" ng-disabled="userForm.$invalid || !validated")
+        button.submit.animated.fadeIn(ng-click="register()" ng-disabled="userForm.$invalid || !validated" ng-cloak)
       .modal.animated.bounceInUp(ng-if="success" ng-cloak)
         .wrap
         .girl_laugh

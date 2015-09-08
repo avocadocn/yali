@@ -6,25 +6,46 @@ html
     meta(name="viewport" content="width=device-width, initial-scale=1, user-scalable=no")
     link(rel="stylesheet" href="/css/signup.min.css")
     link(href="/img/icons/favicon.ico" rel="shortcut icon" type="image/x-icon")
-  body(ng-app="donler")
-    header
-      ul.nav
-        li
-          a(href="#") 首页
-        li
-          a(href="/about.html") 关于warm
-    section.website_signup(ng-controller="userSignupController")
-      .company(ng-show="step===1" ng-cloak)
-        //- span company
-        //-search
-        input.search_input(ng-model="keyword" placeholder="搜索学校")
-        //-list
-        .companies
-
-      .profile(ng-show="step===2" ng-cloak)
-        span profile
-      .phone(ng-show="step===3" ng-cloak)
-        span phone
+  body.pc_signup(ng-app="donler")
+    section.signup(ng-controller="userSignupController")
+      //- 5个球
+      //- .balls
+      .ball.ball_1.animated.zoomIn
+      .ball.ball_2.animated.fadeInRight
+      .ball.ball_3.animated.fadeInDown
+      //- 蓝
+      .ball.ball_4.animated.rotateIn
+      //- 黄
+      .ball.ball_5.animated.slideInLeft
+      //-资料框
+      form(name="userForm")
+        .fill_in.animated.slideInUp(ng-cloak)
+          img.fill_in_title(ng-src="/img/signup/fill_in_title.png")
+          .select_container
+            select(ng-options="company as company.name for company in companies" ng-change="selectCompany()" ng-model="company")
+              option.option_place(value='' ng-disabled selected) 请选择你的大学
+          .select_container
+            select(ng-options="year for year in years" ng-model="user.enrollment")
+              option.option_place(value='' ng-disabled selected) 请选择入学时间
+          input.phone(name="phone" ng-model="user.phone" placeholder="请输入你的手机号" required ng-minlength=11)
+          p.tip(ng-if="tip" ng-cloak) {{tip}}
+          .validate
+            input.verification(placeholder="输入验证码" ng-model="user.code" required)
+            button.get_validate(type="button" ng-disabled="userForm.phone.$invalid || countDown>0" ng-click="validatePhone()" ng-cloak) 获取验证码{{countDown}}
+          input.user_input(ng-model="user.name" placeholder="请输入姓名" required)
+          input.password(type="password" ng-model="user.password" placeholder="请设置密码(至少6位)" ng-minlength=6)
+          p.tip(ng-if="errorMSg" ng-cloak) {{errorMSg}}
+        button.submit(ng-click="register()" ng-disabled="userForm.$invalid || !validated")
+      .modal.animated.bounceInUp(ng-if="success" ng-cloak)
+        .wrap
+        .girl_laugh
+          .board
+            img.submit_sucess.animated.flip(ng-src="/img/signup/circle.png")
+            img.submit_success_text.animated.tada(ng-src="/img/signup/submit_success.png")
+            p.download_text.animated.rubberBand 还愣着干嘛！快去下载啊！
+            a.animated.rubberBand(ng-href="http://www.warm.ren") www.warm.ren
+            a(ng-href="http://www.warm.ren")
+              img.know_button(ng-src="/img/signup/know_button.png")
     footer
     script(src="/lib/angular/angular.min.js")
-    script(src='/js/controllers/singupController.js')
+    script(src='/js/controllers/signupController.js')
