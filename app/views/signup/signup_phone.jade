@@ -22,12 +22,19 @@ html
       form(name="userForm")
         .fill_in.animated.slideInUp(ng-cloak)
           img.fill_in_title(ng-src="/img/signup/fill_in_title.png")
-          .select_container
+          .select_container(ng-if="deviceName === 'iOS' ")
             select(ng-options="company as company.name for company in companies" ng-change="selectCompany()" ng-model="company")
               option.option_place(value='' ng-disabled selected) 请选择你的大学
-          .select_container
+          .select_container(ng-if="deviceName === 'Android'" ng-click="showCompanies()") {{company.name || '请选择你的大学'}}
+          .options.animated.fadeInDown(ng-if="showingCompanies" ng-cloak)
+            .option(ng-repeat="company in companies" ng-click="select(company)" ng-cloak) {{company.name}}
+          
+          .select_container(ng-if="deviceName === 'iOS' ")
             select(ng-options="year for year in years" ng-model="user.enrollment")
               option.option_place(value='' ng-disabled selected) 请选择入学时间
+          .select_container(ng-if="deviceName === 'Android'" ng-click="showEnrollment()") {{user.enrollment || '请选择入学时间'}}
+          .options.animated.fadeInDown(ng-if="showingEnrollment" ng-cloak)
+            .option(ng-repeat="year in years" ng-click="selectEnrollment(year)" ng-cloak) {{year}}
           input.phone(name="phone" ng-model="user.phone" placeholder="请输入你的手机号" required ng-minlength=11)
           p.tip(ng-if="tip" ng-cloak) {{tip}}
           .validate

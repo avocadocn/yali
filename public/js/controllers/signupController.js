@@ -22,8 +22,26 @@ app.controller('userSignupController', ['$http', '$scope', '$location', '$timeou
   $scope.years = years;
   $scope.user = {gender: false};
 
+  //ios选择
   $scope.selectCompany = function() {
     $scope.user.cid = $scope.company._id;
+  };
+
+  //android选择
+  $scope.showCompanies = function() {
+    $scope.showingCompanies = true;
+  };
+  $scope.select = function(company) {
+    $scope.company = company;
+    $scope.user.cid = company._id;
+    $scope.showingCompanies = false;
+  };
+  $scope.showEnrollment = function() {
+    $scope.showingEnrollment = true;
+  };
+  $scope.selectEnrollment = function(year) {
+    $scope.user.enrollment = year;
+    $scope.showingEnrollment = false;
   };
 
   $scope.countDown = '';
