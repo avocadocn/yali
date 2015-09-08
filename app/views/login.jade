@@ -1,0 +1,57 @@
+doctype html
+html
+  head
+    meta(charset="utf-8")
+    title 校园大使
+    meta(http-equiv="X-UA-Compatible" content="IE=edge,chrome=1")
+    meta(name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1, user-scalable=no")
+    link(rel="stylesheet" href="/css/login.min.css")
+    link(href="/img/icons/favicon.ico" rel="shortcut icon" type="image/x-icon")
+  body
+    header
+      ul.nav.clearfix
+        h1 Warm
+        li
+          a(href="/") 首页
+        li
+          a(href="/index/ambassador") 校园大使
+        li
+          a(href="/index/about") 关于warm
+        li
+          a(href="#") 联系warm
+        li
+          a(href="#") 加入warm
+        li.active
+          a(href="/company/manager") 登录
+    section.container
+      img.bg(src="/img/login/bg.png" alt="bg")
+      img.title(src="/img/login/title.png" alt="title")
+      img.bear(src="/img/login/bear.png" alt="bear")
+      img.chicken(src="/img/login/chicken.png" alt="chicken")
+      img.boy(src="/img/login/boy.png" alt="boy")
+      img.airplan(src="/img/login/airplan.png" alt="airplan")
+      form.login
+        h4 登录
+        .row
+          input#phone(type="text" name="username" placeholder="账号/手机号" required)
+        .row
+          input#password(type="password" name="password" placeholder="密码" required)
+          .error#error_msg_p
+        .row.clearfix.operator
+          a.signup(href="/signup") 注册
+          a.reset_pwd(href="/company/forgetPwd")  忘记密码
+        .operator
+          button.btn#login_button(type="button") 登录
+    footer
+      ul.nav
+        li
+          a(href="/company/manager") 校园大使
+        li
+          a(href="#") 关于warm
+        li
+          a(href="#") 联系warm
+        li
+          a(href="#") 加入warm
+      p wwww.warm.ren 2013-2015 All Right Reserved
+      p 沪ICP备14016548号
+    script(src="/company_client/js/login.js")

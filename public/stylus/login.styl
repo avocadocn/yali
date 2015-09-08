@@ -1,0 +1,161 @@
+@import "nib"
+bodyColor = rgba(251, 214, 0, 1)
+borderColor = #979797
+.clearfix
+  &:before
+    content ""
+    display table
+  &:after
+    content ""
+    display table
+    clear both
+body
+  margin 0
+  font-family STHeiti,"Microsoft YaHei",MingLiu,"Helvetica Neue",Helvetica,Arial,sans-serif
+  min-width 1000px
+header
+  padding 10px
+  text-align center
+  border-bottom 1px solid borderColor
+  .nav
+    width 800px
+    margin 0 auto
+    padding-top 8px
+    >h1
+      float left
+      margin 0
+      width 200px
+    li
+      list-style none
+      float left
+      width 99px
+      border-right 1px solid black
+      margin-top 8px
+      a
+        text-decoration none
+        color black
+      &:last-child
+        width 100px
+        border-right none
+      &.active
+        a
+          color rgba(251, 214, 0, 1)
+.container
+  position relative
+  margin-bottom -5px
+  img
+    position absolute
+  .bg
+    position static
+    width 100%
+  .title
+    left 20%
+    top 10%
+    width 20%
+  .bear
+    left 18%
+    bottom 27%
+    width 20%
+  .boy
+    left 43%
+    bottom 26%
+    width 20%
+  .chicken
+    left 17%
+    bottom 44%
+    width 5%
+  .airplan
+    left 9%
+    top 7%
+    width 13%
+  .login
+    width 300px
+    border-radius 5px
+    position absolute
+    right 15%
+    top 20%
+    background-color #FFF
+    text-align center
+    .row
+      margin-bottom 10px
+      line-height 34px
+      input
+        width 80%
+        padding 10px
+        border-radius 5px
+        border 1px solid #ccc
+      .error.show
+        position absolute
+        left 293px
+        top 110px
+        background-color rgba(200,40,41,.8)
+        color #FFF
+        z-index 2
+        border-radius 4px
+        padding 0 5px
+        font-size 12px
+        width 150px
+        &:before
+          content ""
+          position absolute
+          width 0
+          height 0
+          border-top 8px solid rgba(0, 0, 0, 0)
+          border-bottom 8px solid rgba(0, 0, 0, 0)
+          border-right 8px solid rgba(200,40,41,.8)
+          top 8px
+          left -8px
+    .operator
+      padding 0 10%
+      .signup
+        text-decoration none
+        color bodyColor
+        float left
+      .reset_pwd
+        float right
+        color black
+    .btn
+      display block
+      width 100%
+      padding 8px
+      font-size 18px
+      text-align center
+      white-space nowrap
+      vertical-align middle
+      cursor pointer
+      color white
+      border 1px solid bodyColor
+      background-color bodyColor
+      border-radius 4px
+      margin-bottom 20px
+footer
+  background-color bodyColor
+  padding 30px 0
+  text-align center
+  p
+    font-size 12px
+  .nav
+    width 400px
+    margin 0 auto
+    &:before
+      content ""
+      display table
+    &:after
+      content ""
+      display table
+      clear both
+    li
+      list-style none
+      float left
+      width 99px
+      border-right 1px solid black
+      a
+        text-decoration none
+        color black
+      &:last-child
+        width 100px
+        border-right none
+@media (max-width: 1400px)
+  .container
+    .login
+      right 5%

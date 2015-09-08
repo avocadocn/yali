@@ -12,6 +12,7 @@ borderColor = #979797
 body
   margin 0
   font-family STHeiti,"Microsoft YaHei",MingLiu,"Helvetica Neue",Helvetica,Arial,sans-serif
+  min-width 1000px
 header
   padding 10px
   text-align center
@@ -126,7 +127,7 @@ header
       width 4%
     .boys
       left 40%
-      bottom 18%
+      bottom 10%
       width 26%
     .share
       left 10%
@@ -149,15 +150,15 @@ header
       font-size 50px
       color white
     .balloon1
-      top 30%
+      top 35%
       left 16%
       width 12%
     .balloon2
-      top 25%
+      top 30%
       left 44%
       width 12%
     .balloon3
-      top 30%
+      top 35%
       left 72%
       width 12%
     .white
@@ -210,3 +211,13 @@ footer
       &:last-child
         width 100px
         border-right none
+@media (max-width: 1200px)
+  .container
+    .row
+      height 600px
+      .bg
+        height 600px
+      .balloon2
+        top 35%
+      .social
+        bottom 25%

@@ -1,6 +1,20 @@
 
 (function() {
-
+  function getXMLHttpRequest(){
+   if(window.XMLHttpRequest){
+    return new XMLHttpRequest();
+   }else{
+    var names=["msxml","msxml2","msxml3","Microsoft"];
+    for(var i=0;i<names.length;i++){
+     try{
+      var name=names[i]+".XMLHTTP";
+      return new ActiveXObject(name);
+     }catch(e){
+     }
+    }
+   }
+   return null;
+  }
   var apiBaseUrl = 'http://' + window.location.hostname + ':3002'+'/v2_0';
   var loginApiPath = '/users/login';
 
@@ -8,11 +22,10 @@
   var passwordInputEle = document.getElementById('password');
   var loginButtonEle = document.getElementById('login_button');
 
-  var errorMsgRowEle = document.getElementById('error_msg_row');
   var errorMsgPEle = document.getElementById('error_msg_p');
 
   loginButtonEle.onclick = function() {
-    var loginReq = new XMLHttpRequest();
+    var loginReq = getXMLHttpRequest();
     loginReq.onload = function() {
       var data = JSON.parse(this.response);
       if (this.status === 200) {
@@ -32,11 +45,12 @@
       }
       else if (this.status === 401) {
         errorMsgPEle.textContent = data.msg || '账号或密码错误';
-        errorMsgRowEle.classList.remove('hidden');
+        errorMsgPEle.classList.add('show');
+
       }
       else {
         errorMsgPEle.textContent = data.msg || '服务器错误';
-        errorMsgRowEle.classList.remove('hidden');
+        errorMsgPEle.classList.add('show');
       }
     };
     loginReq.withCredentials = true;

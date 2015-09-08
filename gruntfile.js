@@ -44,7 +44,7 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
     watch: {
       jade: {
-        files: ['company_manager_client/src/**/*.jade','app/views/*.jade','app/views/**/*.jade'],
+        files: ['company_manager_client/src/**/*.jade','app/views/**/*.jade'],
         tasks: ['jade']
       },
       cmc: {
@@ -118,7 +118,8 @@ module.exports = function(grunt) {
           {'public/css/style.min.css': 'public/stylus/style.styl'},
           {'public/css/about.min.css': 'public/stylus/about.styl'},
           {'public/css/signup.css': 'public/stylus/signup.styl'},
-          {'public/css/ambassador.min.css': 'public/stylus/ambassador.styl'}
+          {'public/css/ambassador.min.css': 'public/stylus/ambassador.styl'},
+          {'public/css/login.min.css': 'public/stylus/login.styl'}
         ]
       }
     },

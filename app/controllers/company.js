@@ -17,6 +17,6 @@ exports.renderHrManagerPage = function(req, res) {
 };
 
 exports.renderLoginPage = function(req, res) {
-  res.sendfile('company_manager_client/templates/login.html');
+  res.sendfile('templates/login.html');
 };
 
