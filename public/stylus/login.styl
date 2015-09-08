@@ -1,6 +1,7 @@
 @import "nib"
-bodyColor = rgba(251, 214, 0, 1)
+bodyColor = #ffd600
 borderColor = #979797
+redColor = #C82829
 .clearfix
   &:before
     content ""
@@ -39,7 +40,7 @@ header
         border-right none
       &.active
         a
-          color rgba(251, 214, 0, 1)
+          color bodyColor
 .container
   position relative
   margin-bottom -5px
@@ -87,8 +88,8 @@ header
       .error.show
         position absolute
         left 293px
-        top 110px
-        background-color rgba(200,40,41,.8)
+        top 108px
+        background-color redColor
         color #FFF
         z-index 2
         border-radius 4px
@@ -102,7 +103,7 @@ header
           height 0
           border-top 8px solid rgba(0, 0, 0, 0)
           border-bottom 8px solid rgba(0, 0, 0, 0)
-          border-right 8px solid rgba(200,40,41,.8)
+          border-right 8px solid redColor
           top 8px
           left -8px
     .operator
@@ -159,3 +160,11 @@ footer
   .container
     .login
       right 5%
+      .row
+        .error.show
+          left -150px
+          &:before
+            border-right none
+            border-left 8px solid redColor
+            right -8px
+            left initial

@@ -8,7 +8,7 @@
 function addAnimate () {
   var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
   var height = document.documentElement.clientHeight;
-  var totalTop = scrollTop + height;
+  var totalTop = scrollTop + height -300;
   var imgs = document.getElementsByClassName("animate");
   for(var i =0,length=imgs.length;i<length;i++) {
     if(getAbsTop(imgs[i])<totalTop && imgs[i].className.indexOf("animated")===-1) {
