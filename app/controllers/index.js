@@ -6,7 +6,8 @@
 var meanConfig = require('../../config/config');
 var mongoose = require('mongoose');
 var ShortUrl = mongoose.model('ShortUrl');
-
+var path = require('path');
+var fs = require('fs');
 
 exports.skipUrl = function(req, res) {
   var id = req.params.shortId;
@@ -26,5 +27,11 @@ exports.home = function(req, res) {
   res.sendfile('templates/index.html');
 };
 exports.template = function(req, res) {
-  res.sendfile('templates/'+req.params.template+'.html');
+  var dir = 'templates/'+req.params.template+'.html';
+  if (!fs.existsSync(dir)) {
+    res.status(404).send();
+  }
+  else {
+    res.sendfile(dir);
+  }
 };
