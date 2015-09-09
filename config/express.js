@@ -113,7 +113,18 @@ module.exports = function (app, passport, db) {
       express.static(config.root + '/company_manager_client')
     );
     app.use(errorHandle);
+    app.use(function (req, res, next) {
+      if (!req.xhr) {
+        return res.sendfile('templates/404.html');
+      } else {
+        return res.send({ msg: "not found" });
+      }
+    });
   });
 };
+
+
+
+
 
 
