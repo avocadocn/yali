@@ -108,12 +108,11 @@ module.exports = function (app, passport, db) {
     // Setting the fav icon and static folder
     app.use(express.favicon(config.root + '/public/img/icons/favicon.ico'));
     app.use(express.static(config.root + '/public'));
-
-    app.use(errorHandle);
     app.use(
       '/company/manager',
       express.static(config.root + '/company_manager_client')
     );
+    app.use(errorHandle);
   });
 };
 

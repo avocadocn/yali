@@ -16,20 +16,17 @@ module.exports = function(err, req, res, next) {
     if (!req.xhr) {
       return res.redirect('/');
     } else {
-      return res.send(403, { msg: msg });
+      return res.send({ msg: msg });
     }
   } else if (res.statusCode === 404) {
     if (!req.xhr) {
-      return res.status(404).render('404', {
-        url: req.originalUrl,
-        error: 'not found'
-      });
+      return res.sendfile('templates/404.html');
     } else {
-      return res.send(404, { msg: msg });
+      return res.send({ msg: msg });
     }
   } else if (res.statusCode >= 500) {
     if (!req.xhr) {
-      return res.status(res.statusCode).render('500');
+      return res.sendfile('templates/500.html');
     } else {
       return res.send(res.statusCode);
     }

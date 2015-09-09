@@ -26,10 +26,13 @@ exports.skipUrl = function(req, res) {
 exports.home = function(req, res) {
   res.sendfile('templates/index.html');
 };
-exports.template = function(req, res) {
+exports.template = function(req, res, next) {
   var dir = 'templates/'+req.params.template+'.html';
   if (!fs.existsSync(dir)) {
-    res.status(404).send();
+    res.status(404)
+    var err = new Error();
+    err.status = 404;
+    next(err);
   }
   else {
     res.sendfile(dir);
