@@ -38,3 +38,10 @@ exports.template = function(req, res, next) {
     res.sendfile(dir);
   }
 };
+
+exports.introduce = function(req, res) {
+  var deviceAgent = req.headers["user-agent"].toLowerCase();
+  var agentID = deviceAgent.match(/(iphone|ipod|ipad|android)/);
+  var url = agentID ? 'templates/introduce.html' :'templates/index.html';
+  res.sendfile(url);
+};

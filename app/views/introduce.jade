@@ -1,0 +1,43 @@
+html
+  head
+    meta(charset="utf-8")
+    title warm介绍
+    meta(http-equiv="X-UA-Compatible" content="IE=edge,chrome=1")
+    meta(name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1")
+    meta(name="apple-mobile-web-app-capable" content="yes")
+    link(rel="stylesheet" href="/css/introduce.min.css")
+    link(href="/img/icons/favicon.ico" rel="shortcut icon" type="image/x-icon")
+  body
+    .swiper-container
+      .swiper-wrapper
+        .swiper-slide.page_1
+          .bubble
+            img.warm(src="/img/introduce/warm.png")
+          img.school(src="/img/introduce/school.png")
+          img.campus(src="/img/introduce/campus.png")
+        .swiper-slide.page_2
+          img.sun(src="/img/introduce/sun.png")
+          img.buildings(src="/img/introduce/buildings.png")
+          img.cloud_left(src="/img/introduce/cloud_left.png")
+          img.cloud_right(src="/img/introduce/cloud_right.png")
+          img.cloud_up(src="/img/introduce/cloud_up.png")
+          img.boy(src="/img/introduce/boy.png")
+        .swiper-slide.page_3
+          img.boy_cry(src="/img/introduce/boy_cry.png")
+          img.bubble_left(src="/img/introduce/bubble_left.png")
+          img.bubble_right(src="/img/introduce/bubble_right.png")
+          img.bubble_bottom(src="/img/introduce/bubble_bottom.png")
+        .swiper-slide.page_4 Page 4
+        .swiper-slide.page_5 Page 5
+      .swiper-pagination
+      //- .swiper-button-next
+  script(src="/js/dist/swiper.min.js")
+  script.
+    var swiper = new Swiper('.swiper-container', {
+      pagination: '.swiper-pagination',
+      direction: 'vertical',
+      slidesPerView: 1,
+      paginationClickable: true,
+      spaceBetween: 30,
+      mousewheelControl: true
+    });
