@@ -1,15 +1,17 @@
 body
   margin 0
   background-color #232637
+  overflow-x hidden
 .swiper-container
   width 100%
   height 100%
   margin auto
+  .swiper-slide
+    position relative
   .page_1
     background-color #232637
-    background-image url('/img/introduce/bg_1.png')
+    background-image url('/img/introduce/bg_1.jpg')
     background-size cover
-    position relative
     text-align center
     .bubble
       width 90px
@@ -35,7 +37,6 @@ body
   .page_2
     background radial-gradient(200px,#E2D5D5,#70B4D6,#55b4e3)
     background -webkit-radial-gradient(200px,#E2D5D5,#70B4D6,#55b4e3)
-    position relative
     img
       position absolute
     .cloud_left
@@ -65,6 +66,117 @@ body
   .page_3
     background radial-gradient(200px,#999FBB,#6B78B1,#3C4C94)
     background -webkit-radial-gradient(200px,#999FBB,#6B78B1,#3C4C94)
+    text-align center
+    img
+      z-index 10
+      position relative
+    .lamp
+      margin auto
+      width 137px
+    .light
+      border-bottom 220px solid rgba(254, 234, 126, 0.71)
+      border-left 70px solid transparent
+      border-right 70px solid transparent
+      height 0
+      width 129px
+      margin -20px auto
+      z-index 5
     .boy_cry
       width 299px
-
+      margin -150px auto 0
+    .bubble_left
+      width 105px
+      top 115px
+      position absolute
+      left 0
+    .bubble_right
+      right 0
+      top 125px
+      width 105px
+      position absolute
+    .bubble_bottom
+      width 345px
+      margin-top -90px
+  .page_4
+    background radial-gradient(200px,#40404E,#2E2F44,#2f3046)
+    background -webkit-radial-gradient(200px,#40404E,#2E2F44,#2f3046)
+    .container
+      margin-top 40px
+      height 540px
+      width 100%
+      position absolute
+      img
+        position absolute
+      .phone
+        width 278px
+        right 0
+        bottom 0
+      .hand
+        width 227px
+        right 147px
+        bottom 45px
+  .page_5
+    background radial-gradient(200px,#E6D4B0,#E0C080,#e3ba6a)
+    background -webkit-radial-gradient(200px,#E6D4B0,#E0C080,#e3ba6a)
+    background-image url('/img/introduce/club.jpg')
+    background-size cover
+    text-align center
+    overflow-y hidden
+    .light
+      border-bottom 700px solid #f6c064
+      border-left 80px solid transparent
+      border-right 80px solid transparent
+      height 0
+      width 33%
+      margin auto
+      z-index 1
+    img
+      position absolute
+    .girl
+      width 173px
+      bottom 103px
+      left 50%
+      margin-left -60px
+      z-index 10
+    .bubble_1
+      width 109px
+      top 129px
+      left 15px
+    .bubble_2
+      width 113px
+      top 245px
+      left 10px
+    .bubble_3
+      width 115px
+      top 175px
+      right 0
+    .fog
+      width 100%
+      bottom 0
+      left 0
+  .page_6
+    background-color #95d7fb
+    background-image url('/img/introduce/bg_5.jpg')
+    background-size cover
+    .play_text
+      width 232px
+      margin-top 10px
+      margin-left 24%
+    .cloud ,.girl_boy
+      position absolute
+      z-index 5
+    .girl_boy
+      width 253px
+      left 50%
+      position absolute
+      bottom 0
+      margin-left -126px
+      z-index 10
+    .cloud_l
+      width 120px
+      left 0
+      bottom 117px
+    .cloud_r
+      width 107px
+      right 0
+      bottom 153px
