@@ -114,10 +114,18 @@ module.exports = function (app, passport, db) {
     );
     app.use(errorHandle);
     app.use(function (req, res, next) {
+      res.status(404);
       if (!req.xhr) {
-        return res.sendfile('templates/404.html');
+        if (req.accepts('html')) {
+          return res.sendfile('templates/404.html');
+        }
+        if (req.accepts('json')) {
+          res.send({ error: 'Not found' });
+          return;
+        }
+        res.type('txt').send('Not found');
       } else {
-        return res.send({ msg: "not found" });
+        return res.send({ msg: "Not found" });
       }
     });
   });

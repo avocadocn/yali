@@ -5,8 +5,11 @@ html
     title warm
     meta(http-equiv="X-UA-Compatible" content="IE=edge,chrome=1")
     meta(name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1, user-scalable=no")
-    link(rel="stylesheet" href="/css/style.min.css")
+    link(rel="stylesheet" href="/css/home.min.css")
     link(href="/img/icons/favicon.ico" rel="shortcut icon" type="image/x-icon")
+    script(type="text/javascript" src="/js/wow.min.js")
+    script(type="text/javascript").
+      new WOW().init();
   body
     header
       ul.nav
@@ -20,10 +23,10 @@ html
           a(href="#") 联系warm
         li 
           a(href="#") 加入warm
-      img.img.logo.animate(src="/img/home/logo.png" alt="logo")
-      img.img.slogan.animate(src="/img/home/logo.png" alt="slogan")
-      img.img.phone(src="/img/home/phone_header.png" alt="phone")
-      .download.animate
+      img.img.logo.wow.slideInDown(src="/img/home/logo.png" alt="logo")
+      img.img.slogan.wow.slideInDown(src="/img/home/logo.png" alt="slogan")
+      img.img.phone.wow.rubberBand(src="/img/home/phone_header.png" alt="phone")
+      .download.wow.fadeInUp
         img.qrcode(src="/img/home/qrcode.png" alt="qrcode")
         img.android(src="/img/home/android.png" alt="android")
         img.ios(src="/img/home/ios.png" alt="ios")
@@ -36,9 +39,9 @@ html
             span.content 提前报到，率先找到自己的组织，选择自己喜欢的
           li
             span.content 最新动态，即刻关注，掌握第一手社团招新信息
-        img.img.left.animate(src="/img/home/new_left.png" alt="left")
+        img.img.left.wow.slideInLeft(src="/img/home/new_left.png" alt="left")
         img.img.center(src="/img/home/new_center.png" alt="center")
-        img.img.right.animate(src="/img/home/new_right.png" alt="right")
+        img.img.right.wow.slideInRight(src="/img/home/new_right.png" alt="right")
       section.team
         h1 牛叉社团
         p 私人定制，臭味相投，我的社团我做主
@@ -47,11 +50,11 @@ html
             span.content 快人一步，提前了解大学社团，选择自己喜欢的
           li
             span.content 最新动态，即刻关注，掌握第一手社团招新信息
-        img.img.left1.animate(src="/img/home/team_left1.png" alt="left1")
-        img.img.left2.animate(src="/img/home/team_left2.png" alt="left2")
+        img.img.left1.wow.slideInLeft(src="/img/home/team_left1.png" alt="left1")
+        img.img.left2.wow.zoomInRight(src="/img/home/team_left2.png" alt="left2")
         img.center(src="/img/home/team_center.png" alt="center")
-        img.img.right1.animate(src="/img/home/team_right1.png" alt="right1")
-        img.img.right2.animate(src="/img/home/team_right2.png" alt="right2")
+        img.img.right1.wow.slideInRight(src="/img/home/team_right1.png" alt="right1")
+        img.img.right2.wow.zoomInLeft(src="/img/home/team_right2.png" alt="right2")
       section.rank
         h1 人气排行
         p 男神、女神、原来TA就在你隔壁的教室
@@ -60,7 +63,7 @@ html
             span.content 发现身边的男神、女神、喜欢TA就送TA上榜
           li
             span.content 时刻掌握女神地动态，胆大心细，期待屌丝逆袭
-        img.img.center1.animate(src="/img/home/rank_center1.png" alt="center1")
+        img.img.center1.wow.rotateIn(src="/img/home/rank_center1.png" alt="center1")
         img.img.center2(src="/img/home/rank_center2.png" alt="center2")
       section.question
         h1 学长问答
@@ -70,9 +73,9 @@ html
             span.content 问一切你想问的有关校园地问题，总有学长耐心解答
           li
             span.content 发起投票，混个脸熟，让即将成为同学的你参与进来
-        img.img.left.animate(src="/img/home/question_left.png" alt="left")
+        img.img.left.wow.slideInRight(src="/img/home/question_left.png" alt="left")
         img.img.center(src="/img/home/question_center.png" alt="center")
-        img.img.right.animate(src="/img/home/question_right.png" alt="right")
+        img.img.right.wow.slideInLeft(src="/img/home/question_right.png" alt="right")
     footer
       ul.nav
         li 
@@ -84,29 +87,4 @@ html
         li 
           a(href="#") 加入warm
       p wwww.warm.ren 2013-2015 All Right Reserved
-      p 沪ICP备14016548号 
-    script(type="text/javascript").
-      function getAbsTop (e){
-        var y = e.offsetTop;
-        while(e = e.offsetParent){
-          y += e.offsetTop;
-        }
-       return y;
-      }
-      function addAnimate () {
-        var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
-        var height = document.documentElement.clientHeight;
-        var totalTop = scrollTop + height -300;
-        var imgs = document.getElementsByClassName("animate");
-        for(var i =0,length=imgs.length;i<length;i++) {
-          if(getAbsTop(imgs[i])<totalTop && imgs[i].className.indexOf("animated")===-1) {
-            imgs[i].className+=" animated";
-          }
-        }
-      }
-      window.onload = function () {
-        addAnimate();
-        window.onscroll= addAnimate;
-      }
-
-
+      p 沪ICP备14016548号

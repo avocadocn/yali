@@ -69,13 +69,25 @@ module.exports = function(grunt) {
         files: ['company_manager_client/src/login.styl'],
         tasks: ['stylus', 'concat:loginCss']
       },
+      publicStylus: {
+        files: ['public/stylus/*.styl'],
+        tasks: ['stylus']
+      },
       signupStylus: {
         files: ['public/stylus/signup.styl'],
-        tasks: ['stylus', 'concat:signupCss']
+        tasks: ['concat:signupCss']
       },
       introduceStylus: {
         files: ['public/stylus/introduce.styl'],
-        tasks: ['stylus', 'concat:introduceCss']
+        tasks: ['concat:introduceCss']
+      },
+      ambassadorStylus: {
+        files: ['public/stylus/ambassador.styl'],
+        tasks: ['concat:ambassadorCss']
+      },
+      homeStylus:{
+        files: ['public/stylus/home.styl'],
+        tasks: ['concat:homeCss']
       }
     },
     jade: {
@@ -119,10 +131,10 @@ module.exports = function(grunt) {
         files: [
           {'company_manager_client/dist/donler.min.css': 'company_manager_client/src/donler.styl'},
           {'company_manager_client/dist/login.min.css': 'company_manager_client/src/login.styl'},
-          {'public/css/style.min.css': 'public/stylus/style.styl'},
+          {'public/css/home.css': 'public/stylus/home.styl'},
           {'public/css/about.min.css': 'public/stylus/about.styl'},
           {'public/css/signup.css': 'public/stylus/signup.styl'},
-          {'public/css/ambassador.min.css': 'public/stylus/ambassador.styl'},
+          {'public/css/ambassador.css': 'public/stylus/ambassador.styl'},
           {'public/css/login.min.css': 'public/stylus/login.styl'},
           {'public/css/introduce.css': 'public/stylus/introduce.styl'}
         ]
@@ -221,6 +233,20 @@ module.exports = function(grunt) {
           'public/css/swapper.min.css'
         ],
         dest: 'public/css/introduce.min.css'
+      },
+      ambassadorCss:{
+        src: [
+          'public/css/animate_ambassador.min.css',
+          'public/css/ambassador.css'
+        ],
+        dest: 'public/css/ambassador.min.css'
+      },
+      homeCss:{
+        src: [
+          'public/css/animate_ambassador.min.css',
+          'public/css/home.css'
+        ],
+        dest: 'public/css/home.min.css'
       }
     },
     nodemon: {
