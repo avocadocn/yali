@@ -8,39 +8,36 @@ html
     link(rel="stylesheet" href="/css/introduce.min.css")
     link(href="/img/icons/favicon.ico" rel="shortcut icon" type="image/x-icon")
   body
+    .loading
+      .spinner Loading...
     .swiper-container
       .swiper-wrapper
         .swiper-slide.page_1
-          .bubble
+          .bubble.ani(swiper-animate-effect="bounce" swiper-animate-delay="0.5s")
             img.warm(src="/img/introduce/warm.png")
-          img.school(src="/img/introduce/school.png")
-          img.campus(src="/img/introduce/campus.png")
+          img.school.ani(src="/img/introduce/school.png" swiper-animate-effect="bounceInUp")
+          img.campus.ani(src="/img/introduce/campus.png"  swiper-animate-effect="bounceInUp")
         .swiper-slide.page_2
-          img.sun(src="/img/introduce/sun.png")
-          img.buildings(src="/img/introduce/buildings.png")
-          img.cloud_left(src="/img/introduce/cloud_left.png")
-          img.cloud_right(src="/img/introduce/cloud_right.png")
-          img.cloud_up(src="/img/introduce/cloud_up.png")
-          img.boy(src="/img/introduce/boy.png")
+          img.sun.ani(src="/img/introduce/sun.png" swiper-animate-effect="fadeInUp")
+          img.buildings.ani(src="/img/introduce/buildings.png" swiper-animate-effect="bounceInUp")
+          img.cloud_left.ani(src="/img/introduce/cloud_left.png" swiper-animate-effect="slideInLeft")
+          img.cloud_right.ani(src="/img/introduce/cloud_right.png" swiper-animate-effect="slideInRight")
+          img.cloud_up.ani(src="/img/introduce/cloud_up.png" swiper-animate-effect="slideInDown")
+          img.boy.ani(src="/img/introduce/boy.png" swiper-animate-effect="fadeInRight")
         .swiper-slide.page_3
-          //- 晃一下
-          img.lamp(src="/img/introduce/lamp.png")
-          //- flash
-          .light
-          //- fade
-          img.boy_cry(src="/img/introduce/boy_cry.png")
-          //- from left
-          img.bubble_left(src="/img/introduce/bubble_left.png")
-          //- from right
-          img.bubble_right(src="/img/introduce/bubble_right.png")
-          //- from bottom
-          img.bubble_bottom(src="/img/introduce/bubble_bottom.png")
+          .lamp_container.ani(swiper-animate-effect="swing")
+            img.lamp(src="/img/introduce/lamp.png")
+            .lamp_light.ani(swiper-animate-effect="flash" swiper-animate-duration="1.5s")
+          img.boy_cry.ani(src="/img/introduce/boy_cry.png" swiper-animate-effect="zoomIn" swiper-animate-duration="1s")
+          img.bubble_left.ani(src="/img/introduce/bubble_left.png" swiper-animate-effect="fadeInLeft" swiper-animate-delay="1s")
+          img.bubble_right.ani(src="/img/introduce/bubble_right.png" swiper-animate-effect="fadeInRight" swiper-animate-delay="1s")
+          img.bubble_bottom.ani(src="/img/introduce/bubble_bottom.png" swiper-animate-effect="fadeInUp" swiper-animate-delay="1.5s")
         .swiper-slide.page_4
           .container
             //- from right
-            img.phone(src="/img/introduce/phone.png")
+            img.phone.ani(src="/img/introduce/phone.png" swiper-animate-effect="slideInRight")
             //- from left
-            img.hand(src="/img/introduce/hand.png")
+            img.hand.ani(src="/img/introduce/hand.png" swiper-animate-effect="slideInLeft" swiper-animate-delay="1s")
             //- show up
             .cube
             //- img.mockup(src="/img/introduce/mockup.png")
@@ -58,13 +55,6 @@ html
           img.cloud.cloud_r(src="/img/introduce/cloud_r.png")
       .swiper-pagination
       //- .swiper-button-next
-  script(src="/js/dist/swiper.min.js")
-  script.
-    var swiper = new Swiper('.swiper-container', {
-      pagination: '.swiper-pagination',
-      direction: 'vertical',
-      slidesPerView: 1,
-      paginationClickable: true,
-      spaceBetween: 30,
-      mousewheelControl: true
-    });
+  //- script(src="public/lib/swiper/dist/js/swiper.min.js")
+  script(src="/js/dist/introduce.min.js")
+    

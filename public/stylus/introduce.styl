@@ -2,10 +2,14 @@ body
   margin 0
   background-color #232637
   overflow-x hidden
+.loading
+  width 100%
+  height 100%
 .swiper-container
   width 100%
   height 100%
   margin auto
+  display none
   .swiper-slide
     position relative
   .page_1
@@ -13,6 +17,7 @@ body
     background-image url('/img/introduce/bg_1.jpg')
     background-size cover
     text-align center
+    z-index 100
     .bubble
       width 90px
       height 47px
@@ -29,11 +34,13 @@ body
       position relative
       margin auto
     .school
-      width 268px
-      margin-top 140px
+      width 70%
+      margin-top 43%
     .campus
       width 203px
       margin-top 10px
+  //- .page_3 ,.page_4 ,.page_5 ,.page_6
+  //-   display none
   .page_2
     background radial-gradient(200px,#E2D5D5,#70B4D6,#55b4e3)
     background -webkit-radial-gradient(200px,#E2D5D5,#70B4D6,#55b4e3)
@@ -73,10 +80,11 @@ body
     .lamp
       margin auto
       width 137px
-    .light
+    .lamp_light
       border-bottom 220px solid rgba(254, 234, 126, 0.71)
       border-left 70px solid transparent
       border-right 70px solid transparent
+      position relative
       height 0
       width 129px
       margin -20px auto
@@ -126,6 +134,7 @@ body
       border-bottom 700px solid #f6c064
       border-left 80px solid transparent
       border-right 80px solid transparent
+      position relative
       height 0
       width 33%
       margin auto

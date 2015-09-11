@@ -79,7 +79,7 @@ module.exports = function(grunt) {
       },
       introduceStylus: {
         files: ['public/stylus/introduce.styl'],
-        tasks: ['concat:introduceCss']
+        tasks: ['stylus', 'concat:introduceCss']
       },
       ambassadorStylus: {
         files: ['public/stylus/ambassador.styl'],
@@ -88,6 +88,10 @@ module.exports = function(grunt) {
       homeStylus:{
         files: ['public/stylus/home.styl'],
         tasks: ['concat:homeCss']
+      },
+      introduceJs: {
+        files: ['public/js/controllers/introduce.js'],
+        tasks: ['concat:introduceJs', 'uglify:introduce']
       }
     },
     jade: {
@@ -230,7 +234,8 @@ module.exports = function(grunt) {
       introduceCss: {
         src: [
           'public/css/introduce.css',
-          'public/css/swapper.min.css'
+          'public/swiper/dist/css/swiper.min.css',
+          'public/css/animate_full.min.css'
         ],
         dest: 'public/css/introduce.min.css'
       },
@@ -247,23 +252,43 @@ module.exports = function(grunt) {
           'public/css/home.css'
         ],
         dest: 'public/css/home.min.css'
+      },
+      introduceJs: {
+        src: [
+          'public/lib/jquery/dist/jquery.min.js',
+          'public/lib/swiper/dist/js/swiper.jquery.min.js',
+          'public/js/dist/swiper.animate.min.js',
+          'public/js/controllers/introduce.js'
+        ],
+        dest: 'public/js/introduce.js'
+      }
+    },
+    uglify: {
+      introduce: {
+        files: [{
+          expand: true,
+          cwd: 'public/js/',
+          src: ['introduce.js'],
+          dest: 'public/js/dist',
+          ext: '.min.js'
+        }]
       }
     },
     nodemon: {
-        dev: {
-            script: 'server.js',
-            options: {
-                args: [],
-                ignore: ['public/**', 'node_modules/**'],
-                ext: 'js,jade',
-                nodeArgs: ['--debug'],
-                delayTime: 1000,
-                env: {
-                    PORT: config.port
-                },
-                cwd: __dirname
-            }
+      dev: {
+        script: 'server.js',
+        options: {
+          args: [],
+          ignore: ['public/**', 'node_modules/**'],
+          ext: 'js,jade',
+          nodeArgs: ['--debug'],
+          delayTime: 1000,
+          env: {
+              PORT: config.port
+          },
+          cwd: __dirname
         }
+      }
     },
     concurrent: {
         tasks: ['nodemon', 'watch'],
@@ -288,17 +313,17 @@ module.exports = function(grunt) {
             NODE_ENV: 'test'
         }
     }
-    });
-    grunt.registerTask('default', ['compile', 'develop']);
-    grunt.registerTask('develop', ['concurrent']);
-    grunt.registerTask('compile', ['jade', 'stylus', 'requirejs:compile', 'copy', 'concat']);
-    grunt.registerTask('publish', ['jade', 'stylus', 'requirejs:publish', 'copy', 'concat']);
+  });
+  grunt.registerTask('default', ['compile', 'develop']);
+  grunt.registerTask('develop', ['concurrent']);
+  grunt.registerTask('compile', ['jade', 'stylus', 'requirejs:compile', 'copy', 'concat', 'uglify']);
+  grunt.registerTask('publish', ['jade', 'stylus', 'requirejs:publish', 'copy', 'concat', 'uglify']);
 
-    //Making grunt default to force in order not to break the project.
-    grunt.option('force', true);
-    grunt.registerTask('hint', ['jshint']);
-    //Test task.
-    grunt.registerTask('test', ['env:test', 'mochaTest', 'shell:nightwatch']);
+  //Making grunt default to force in order not to break the project.
+  grunt.option('force', true);
+  grunt.registerTask('hint', ['jshint']);
+  //Test task.
+  grunt.registerTask('test', ['env:test', 'mochaTest', 'shell:nightwatch']);
 };
 
 
