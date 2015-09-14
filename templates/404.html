@@ -1,6 +1,30 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><title>404</title><style>.error {
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>404</title><style>html,body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+.bg {
   width: 100%;
+  height: 100%;
+  margin-bottom: -2px;
+}
+.error {
+  width: 500px;
   text-align: center;
-  margin-top: 20%;
   font-size: 40px;
-}</style></head><body><div class="error"><p>该页面已被送往外星球!</p><a href="/">点我回首页</a></div></body></html>
+  color: white;
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  margin-left: -250px;
+}
+.error p {
+  margin: 0;
+  padding-bottom: 50px;
+}
+a.back {
+  color: white;
+  text-decoration: none;
+  border: 1px solid;
+  padding: 10px 30px;
+}</style></head><body><img src="/img/404.jpg" class="bg"><div class="error"><p>Sorry,你的页面找不着了......</p><a href="/" class="back">返回首页</a></div></body></html>
