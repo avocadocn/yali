@@ -2,9 +2,42 @@ body
   margin 0
   background-color #232637
   overflow-x hidden
+@-webkit-keyframes spinner 
+  0% 
+    -webkit-transform rotate(0deg)
+    transform rotate(0deg)
+  100% 
+    -webkit-transform rotate(360deg)
+    transform rotate(360deg)
+@keyframes spinner
+  0%
+    -webkit-transform rotate(0deg);
+    transform rotate(0deg)
+  100%
+    -o-transform rotate(360deg)
+    transform rotate(360deg)
+.spinner:not(:required)
+  border-radius 0.5em
+  animation spinner 1500ms infinite linear
+  -webkit-animation spinner 1500ms infinite linear
+  box-shadow rgba(0, 0, 51, 0.3) 1.5em 0 0 0, rgba(0, 0, 51, 0.3) 1.1em 1.1em 0 0, rgba(0, 0, 51, 0.3) 0 1.5em 0 0, rgba(0, 0, 51, 0.3) -1.1em 1.1em 0 0, rgba(0, 0, 51, 0.3) -1.5em 0 0 0, rgba(0, 0, 51, 0.3) -1.1em -1.1em 0 0, rgba(0, 0, 51, 0.3) 0 -1.5em 0 0, rgba(0, 0, 51, 0.3) 1.1em -1.1em 0 0
+  -webkit-box-shadow rgba(0, 0, 51, 0.3) 1.5em 0 0 0, rgba(0, 0, 51, 0.3) 1.1em 1.1em 0 0, rgba(0, 0, 51, 0.3) 0 1.5em 0 0, rgba(0, 0, 51, 0.3) -1.1em 1.1em 0 0, rgba(0, 0, 51, 0.3) -1.5em 0 0 0, rgba(0, 0, 51, 0.3) -1.1em -1.1em 0 0, rgba(0, 0, 51, 0.3) 0 -1.5em 0 0, rgba(0, 0, 51, 0.3) 1.1em -1.1em 0 0
+  display inline-block
+  font-size 10px
+  width 1em
+  height 1em
+  margin 1.5em
+  overflow hidden
+  text-indent 100%
+  position absolute
+  top 50%
+  left 50%
+  margin-left -0.5em
+  margin-top -0.5em
 .loading
   width 100%
   height 100%
+  background-color #55b4e3
 .swiper-container
   width 100%
   height 100%
@@ -39,8 +72,6 @@ body
     .campus
       width 203px
       margin-top 10px
-  //- .page_3 ,.page_4 ,.page_5 ,.page_6
-  //-   display none
   .page_2
     background radial-gradient(200px,#E2D5D5,#70B4D6,#55b4e3)
     background -webkit-radial-gradient(200px,#E2D5D5,#70B4D6,#55b4e3)
@@ -92,19 +123,36 @@ body
     .boy_cry
       width 299px
       margin -150px auto 0
+    .bubble_left ,.bubble_right ,.bubble_bottom
+      background-size cover
+      color #fff
+      z-index 10
+    .text
+      position absolute
+      top 50px
+      right 50px
     .bubble_left
       width 105px
+      height 149px
       top 115px
       position absolute
       left 0
+      background-image url('/img/introduce/bubble_left.png')
     .bubble_right
       right 0
       top 125px
       width 105px
+      height 148px
       position absolute
+      background-image url('/img/introduce/bubble_right.png')
+      .text
+        right 10px
     .bubble_bottom
       width 345px
-      margin-top -90px
+      height 136px
+      margin -90px auto 0
+      position relative
+      background-image url('/img/introduce/bubble_bottom.png')
   .page_4
     background radial-gradient(200px,#40404E,#2E2F44,#2f3046)
     background -webkit-radial-gradient(200px,#40404E,#2E2F44,#2f3046)
@@ -115,14 +163,30 @@ body
       position absolute
       img
         position absolute
-      .phone
-        width 278px
+      .phone_container
+        position absolute
         right 0
         bottom 0
+        width 278px
+        height 420px
+      .phone
+        width 278px
       .hand
         width 227px
         right 147px
         bottom 45px
+      .cube_container
+        position relative
+        .cube
+          width 203px
+          height 293px
+          top -122px
+          right 52px
+        .mockup
+          width 202px
+          height 129px
+          top -121px
+          right 52px
   .page_5
     background radial-gradient(200px,#E6D4B0,#E0C080,#e3ba6a)
     background -webkit-radial-gradient(200px,#E6D4B0,#E0C080,#e3ba6a)
@@ -147,6 +211,8 @@ body
       left 50%
       margin-left -60px
       z-index 10
+    .bubble_1 ,.bubble_2 ,.bubble_3
+      z-index 10
     .bubble_1
       width 109px
       top 129px
@@ -163,6 +229,7 @@ body
       width 100%
       bottom 0
       left 0
+      z-index 20
   .page_6
     background-color #95d7fb
     background-image url('/img/introduce/bg_5.jpg')

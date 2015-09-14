@@ -44,15 +44,15 @@ html
           input.password(type="password" ng-model="user.password" placeholder="请设置密码(至少6位)" ng-minlength=6)
           p.tip(ng-if="errorMSg" ng-cloak) {{errorMSg}}
         button.submit.animated.fadeIn(ng-click="register()" ng-disabled="userForm.$invalid || !validated" ng-cloak)
-      .modal.animated.bounceInUp(ng-if="success" ng-cloak)
+      .modal.animated.bounceInUp(ng-if="!success" ng-cloak)
         .wrap
         .girl_laugh
           .board
             img.submit_sucess.animated.flip(ng-src="/img/signup/circle.png")
             img.submit_success_text.animated.tada(ng-src="/img/signup/submit_success.png")
             p.download_text.animated.rubberBand 还愣着干嘛！快去下载啊！
-            a.animated.rubberBand(ng-href="http://www.warm.ren") www.warm.ren
-            a(ng-href="http://www.warm.ren")
+            a.animated.rubberBand(ng-href="http://www.55yali.com") www.warm.ren
+            a(ng-href="http://www.55yali.com")
               img.know_button(ng-src="/img/signup/know_button.png")
     footer
     script(src="/lib/angular/angular.min.js")

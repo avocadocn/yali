@@ -23,7 +23,6 @@ v.lazy&&v.lazy.onTransitionStart(),e&&(v.emit("onTransitionStart",v),v.activeInd
 //本插件由www.swiper.com.cn提供
 function swiperAnimateCache(){for(allBoxes=window.document.documentElement.querySelectorAll(".ani"),i=0;i<allBoxes.length;i++)allBoxes[i].attributes["style"]?allBoxes[i].setAttribute("swiper-animate-style-cache",allBoxes[i].attributes["style"].value):allBoxes[i].setAttribute("swiper-animate-style-cache"," "),allBoxes[i].style.visibility="hidden"}function swiperAnimate(a){clearSwiperAnimate();var b=a.slides[a.activeIndex].querySelectorAll(".ani");for(i=0;i<b.length;i++)b[i].style.visibility="visible",effect=b[i].attributes["swiper-animate-effect"]?b[i].attributes["swiper-animate-effect"].value:"",b[i].className=b[i].className+"  "+effect+" "+"animated",style=b[i].attributes["style"].value,duration=b[i].attributes["swiper-animate-duration"]?b[i].attributes["swiper-animate-duration"].value:"",duration&&(style=style+"animation-duration:"+duration+";-webkit-animation-duration:"+duration+";"),delay=b[i].attributes["swiper-animate-delay"]?b[i].attributes["swiper-animate-delay"].value:"",delay&&(style=style+"animation-delay:"+delay+";-webkit-animation-delay:"+delay+";"),b[i].setAttribute("style",style)}function clearSwiperAnimate(){for(allBoxes=window.document.documentElement.querySelectorAll(".ani"),i=0;i<allBoxes.length;i++)allBoxes[i].attributes["swiper-animate-style-cache"]&&allBoxes[i].setAttribute("style",allBoxes[i].attributes["swiper-animate-style-cache"].value),allBoxes[i].style.visibility="hidden",allBoxes[i].className=allBoxes[i].className.replace("animated"," "),allBoxes[i].attributes["swiper-animate-effect"]&&(effect=allBoxes[i].attributes["swiper-animate-effect"].value,allBoxes[i].className=allBoxes[i].className.replace(effect," "))}
 $(document).ready(function() {
-  // console.log('???');
   $('.swiper-container').show();
   $('.loading').fadeOut();
   var swiper = new Swiper('.swiper-container', {
@@ -32,14 +31,22 @@ $(document).ready(function() {
     slidesPerView: 1,
     paginationClickable: true,
     spaceBetween: 0,
+    autoplay: 3000,
     onInit: function(swiper) {
       swiperAnimateCache(swiper);
       swiperAnimate(swiper);
     },
-    onSlideChangeEnd: function(swiper){ 
+    onSlideChangeEnd: function(swiper){
       swiperAnimate(swiper); //每个slide切换结束时也运行当前slide动画
+      //到了第4页开启自动换页，到了第5页关闭
+      if(swiper.activeIndex===3) {
+        swiper.startAutoplay();
+      }
+      else {
+        swiper.stopAutoplay();
+      }
     }
   });
-  
+  swiper.stopAutoplay();
 
 });

@@ -29,30 +29,32 @@ html
             img.lamp(src="/img/introduce/lamp.png")
             .lamp_light.ani(swiper-animate-effect="flash" swiper-animate-duration="1.5s")
           img.boy_cry.ani(src="/img/introduce/boy_cry.png" swiper-animate-effect="zoomIn" swiper-animate-duration="1s")
-          img.bubble_left.ani(src="/img/introduce/bubble_left.png" swiper-animate-effect="fadeInLeft" swiper-animate-delay="1s")
-          img.bubble_right.ani(src="/img/introduce/bubble_right.png" swiper-animate-effect="fadeInRight" swiper-animate-delay="1s")
-          img.bubble_bottom.ani(src="/img/introduce/bubble_bottom.png" swiper-animate-effect="fadeInUp" swiper-animate-delay="1.5s")
+          .bubble_left.ani(swiper-animate-effect="fadeInLeft" swiper-animate-delay="1s")
+            span.text 好无聊
+          .bubble_right.ani(src="/img/introduce/bubble_right.png" swiper-animate-effect="fadeInRight" swiper-animate-delay="1s")
+            span.text 好孤单
+          .bubble_bottom.ani(src="/img/introduce/bubble_bottom.png" swiper-animate-effect="fadeInUp" swiper-animate-delay="1.5s")
+            span.text 哪里有好玩的活动能认识有趣的朋友?
         .swiper-slide.page_4
           .container
-            //- from right
-            img.phone.ani(src="/img/introduce/phone.png" swiper-animate-effect="slideInRight")
-            //- from left
+            .phone_container
+              img.phone.ani(src="/img/introduce/phone.png" swiper-animate-effect="slideInRight")
+              .cube_container.ani(swiper-animate-effect="fadeIn" swiper-animate-delay="2s")
+                img.cube(src="/img/introduce/cube.png")
+                img.mockup(src="/img/introduce/mockup.png")
             img.hand.ani(src="/img/introduce/hand.png" swiper-animate-effect="slideInLeft" swiper-animate-delay="1s")
-            //- show up
-            .cube
-            //- img.mockup(src="/img/introduce/mockup.png")
         .swiper-slide.page_5
-          .light
-          img.girl(src="/img/introduce/girl.png")
+          .light.ani(swiper-animate-effect="fadeInDown")
+          img.girl.ani(src="/img/introduce/girl.png" swiper-animate-effect="zoomIn" swiper-animate-delay="1s")
           img.fog(src="/img/introduce/fog.png")
-          img.bubble_1(src="/img/introduce/bubble_1.png")
-          img.bubble_2(src="/img/introduce/bubble_2.png")
-          img.bubble_3(src="/img/introduce/bubble_3.png")
+          img.bubble_1.ani(src="/img/introduce/bubble_1.png" swiper-animate-effect="flipInY" swiper-animate-delay="2s")
+          img.bubble_2.ani(src="/img/introduce/bubble_2.png" swiper-animate-effect="rollIn" swiper-animate-delay="3s")
+          img.bubble_3.ani(src="/img/introduce/bubble_3.png" swiper-animate-effect="flipInX" swiper-animate-delay="2.5s")
         .swiper-slide.page_6
-          img.play_text(src="/img/introduce/play_text.gif")
-          img.girl_boy(src="/img/introduce/girl_boy.gif")
-          img.cloud.cloud_l(src="/img/introduce/cloud_l.png")
-          img.cloud.cloud_r(src="/img/introduce/cloud_r.png")
+          img.play_text.ani(src="/img/introduce/play_text.gif" swiper-animate-effect="bounceInDown" swiper-animate-delay="1s")
+          img.girl_boy.ani(src="/img/introduce/girl_boy.gif" swiper-animate-effect="zoomInDown")
+          img.cloud.cloud_l.ani(src="/img/introduce/cloud_l.png" swiper-animate-effect="fadeInLeft" swiper-animate-delay="1s")
+          img.cloud.cloud_r.ani(src="/img/introduce/cloud_r.png" swiper-animate-effect="fadeInRight" swiper-animate-delay="1s")
       .swiper-pagination
       //- .swiper-button-next
   //- script(src="public/lib/swiper/dist/js/swiper.min.js")
