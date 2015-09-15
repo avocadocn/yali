@@ -235,7 +235,7 @@ module.exports = function(grunt) {
         src: [
           'public/css/introduce.css',
           'public/swiper/dist/css/swiper.min.css',
-          'public/css/animate_full.min.css'
+          'public/css/ani_intro.min.css'
         ],
         dest: 'public/css/introduce.min.css'
       },
