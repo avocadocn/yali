@@ -3,6 +3,7 @@ $(document).ready(function() {
   $('.loading').fadeOut();
   var swiper = new Swiper('.swiper-container', {
     pagination: '.swiper-pagination',
+    nextButton: '.swiper-button-next',
     direction: 'vertical',
     slidesPerView: 1,
     paginationClickable: true,
@@ -20,6 +21,12 @@ $(document).ready(function() {
       }
       else {
         swiper.stopAutoplay();
+      }
+      if(swiper.activeIndex === 5) {
+        $('.swiper-button-next').hide();
+      }
+      else {
+        $('.swiper-button-next').show();
       }
     }
   });

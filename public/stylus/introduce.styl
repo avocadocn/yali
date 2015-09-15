@@ -16,6 +16,16 @@ body
   100%
     -o-transform rotate(360deg)
     transform rotate(360deg)
+.swiper-button-next
+  position absolute
+  top 94%
+  left 50%
+  margin-left -12px
+  width 35px
+  height 50px
+  background-image url('/img/introduce/angle-double-up2.svg')
+  background-repeat no-repeat
+  background-size 24px
 .spinner:not(:required)
   border-radius 0.5em
   animation spinner 1500ms infinite linear
@@ -50,7 +60,7 @@ body
     background-image url('/img/introduce/bg_1.jpg')
     background-size cover
     text-align center
-    z-index 100
+    //- z-index 100
     .bubble
       width 90px
       height 47px
@@ -79,28 +89,30 @@ body
       position absolute
     .cloud_left
       width 87px
-      top 194px
+      top 38%
     .cloud_right
       width 133px
-      top 170px
+      top 33%
       right 0
     .cloud_up
       width 196px
       right 0
     .sun
-      width 320px
+      max-width 320px
+      width 80%
       top 194px
       left 50%
-      margin-left -160px
+      margin-left -40%
     .buildings
       width 100%
       bottom 0
     .boy
       max-width 535px
+      width 116%
       max-height 90%
       bottom 0
       left 50%
-      margin-left -267px
+      margin-left -58%
   .page_3
     background radial-gradient(200px,#999FBB,#6B78B1,#3C4C94)
     background -webkit-radial-gradient(200px,#999FBB,#6B78B1,#3C4C94)
@@ -124,35 +136,46 @@ body
       width 299px
       margin -150px auto 0
     .bubble_left ,.bubble_right ,.bubble_bottom
-      background-size cover
+      background-size contain
       color #fff
       z-index 10
-    .text
       position absolute
-      top 50px
-      right 50px
+      background-repeat no-repeat
     .bubble_left
       width 105px
       height 149px
       top 115px
-      position absolute
       left 0
       background-image url('/img/introduce/bubble_left.png')
+      .text
+        position absolute
+        width 70px
+        top 70px
+        left 0
     .bubble_right
       right 0
       top 125px
       width 105px
       height 148px
-      position absolute
       background-image url('/img/introduce/bubble_right.png')
       .text
-        right 10px
+        position absolute
+        width 74px
+        right 0
+        top 54px
     .bubble_bottom
       width 345px
       height 136px
-      margin -90px auto 0
-      position relative
       background-image url('/img/introduce/bubble_bottom.png')
+      background-size contain
+      max-width 90%
+      margin-left 5%
+      position relative
+      text-align center
+      margin-top -140px
+      .text
+        width 85%
+        margin 27px auto 0
   .page_4
     background radial-gradient(200px,#40404E,#2E2F44,#2f3046)
     background -webkit-radial-gradient(200px,#40404E,#2E2F44,#2f3046)
@@ -207,24 +230,45 @@ body
       position absolute
     .girl
       width 173px
-      bottom 103px
+      bottom 18%
+      max-height 70%
       left 50%
       margin-left -60px
       z-index 10
     .bubble_1 ,.bubble_2 ,.bubble_3
+      position absolute
       z-index 10
+      background-size contain
+      background-repeat no-repeat
+    .text
+      position absolute
+      top 30px
+      left 20px
     .bubble_1
       width 109px
-      top 129px
+      height 92px
+      top 20%
       left 15px
+      background-image url('/img/introduce/bubble_1.png')
+      .text
+        width 60px
     .bubble_2
       width 113px
-      top 245px
+      height 85px
+      top 40%
       left 10px
+      background-image url('/img/introduce/bubble_2.png')
+      .text
+        width 60px
     .bubble_3
       width 115px
-      top 175px
+      height 76px
+      top 34%
       right 0
+      background-image url('/img/introduce/bubble_3.png')
+      .text
+        width 83px
+        left 13px
     .fog
       width 100%
       bottom 0
@@ -236,17 +280,19 @@ body
     background-size cover
     .play_text
       width 232px
-      margin-top 10px
+      margin-top 3%
       margin-left 24%
+      position relative
+      z-index 15
     .cloud ,.girl_boy
       position absolute
       z-index 5
     .girl_boy
-      width 253px
-      left 50%
+      max-width 253px
+      width 70%
+      left 20%
       position absolute
       bottom 0
-      margin-left -126px
       z-index 10
     .cloud_l
       width 120px
@@ -256,3 +302,14 @@ body
       width 107px
       right 0
       bottom 153px
+    .buttons
+      position absolute
+      bottom 0
+      height 140px
+      text-align center
+      z-index 20
+      a
+        text-decoration none
+      .button
+        width 239px
+        margin-bottom 20px        

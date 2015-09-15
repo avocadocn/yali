@@ -44,7 +44,7 @@ html
           input.password(type="password" ng-model="user.password" placeholder="请设置密码(至少6位)" ng-minlength=6)
           p.tip(ng-if="errorMSg" ng-cloak) {{errorMSg}}
         button.submit.animated.fadeIn(ng-click="register()" ng-disabled="userForm.$invalid || !validated" ng-cloak)
-      .modal.animated.bounceInUp(ng-if="!success" ng-cloak)
+      .modal.animated.bounceInUp(ng-if="success" ng-cloak)
         .wrap
         .girl_laugh
           .board
