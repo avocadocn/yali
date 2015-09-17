@@ -7,45 +7,79 @@ html
     link(rel="stylesheet" href="/css/signup.min.css")
     link(href="/img/icons/favicon.ico" rel="shortcut icon" type="image/x-icon")
   body.pc_signup(ng-app="donler")
-    section.signup(ng-controller="userSignupController")
-      //- 5个球
-      //- .balls
-      .ball.ball_1.animated.zoomIn
-      .ball.ball_2.animated.fadeInRight
-      .ball.ball_3.animated.fadeInDown
-      //- 蓝
-      .ball.ball_4.animated.rotateIn
-      //- 黄
-      .ball.ball_5.animated.slideInLeft
-      //-资料框
-      form(name="userForm")
-        .fill_in.animated.slideInUp(ng-cloak)
-          img.fill_in_title(ng-src="/img/signup/fill_in_title.png")
-          .select_container(ng-click="showCompanies()") {{company.name || '请选择你的大学'}}
-          .options.animated.fadeInDown(ng-if="showingCompanies" ng-cloak)
-            .option(ng-repeat="company in companies" ng-click="select(company)" ng-cloak) {{company.name}}
-          .select_container(ng-click="showEnrollment()") {{user.enrollment || '请选择入学时间'}}
-          .options.animated.fadeInDown(ng-if="showingEnrollment" ng-cloak)
-            .option(ng-repeat="year in years" ng-click="selectEnrollment(year)" ng-cloak) {{year}}
-          input.phone(name="phone" ng-model="user.phone" placeholder="请输入你的手机号" required ng-minlength=11)
-          p.tip(ng-if="tip" ng-cloak) {{tip}}
-          .validate
-            input.verification(placeholder="输入验证码" ng-model="user.code" required)
-            button.get_validate(type="button" ng-disabled="userForm.phone.$invalid || countDown>0" ng-click="validatePhone()" ng-cloak) 获取验证码{{countDown}}
-          input.user_input(ng-model="user.name" placeholder="请输入姓名" required)
-          input.password(type="password" ng-model="user.password" placeholder="请设置密码(至少6位)" ng-minlength=6)
-          p.tip(ng-if="errorMSg" ng-cloak) {{errorMSg}}
-        button.submit(ng-click="register()" ng-disabled="userForm.$invalid || !validated")
-      .modal.animated.bounceInUp(ng-if="success" ng-cloak)
-        .wrap
-        .girl_laugh
-          .board
-            img.submit_sucess.animated.flip(ng-src="/img/signup/circle.png")
-            img.submit_success_text.animated.tada(ng-src="/img/signup/submit_success.png")
-            p.download_text.animated.rubberBand 还愣着干嘛！快去下载啊！
-            a.animated.rubberBand(ng-href="http://www.warm.ren") www.warm.ren
-            a(ng-href="http://www.warm.ren")
-              img.know_button(ng-src="/img/signup/know_button.png")
+    header
+      ul.nav
+        h1 warm
+        li
+          a(href="/") 首页
+        li
+          a(href="/index/ambassador") 校园大使
+        li.active
+          a(href="/index/about") 关于warm
+        li
+          a(href="#") 联系warm
+        li
+          a(href="#") 加入warm
+    section.bg(ng-controller="userSignupController")
+      .panda_container
+        img.panda(src="/img/signup/panda.png")
+        .shadow
+      .bear_container
+        img.bear(src="/img/signup/bear.png")
+        img.balloon(src="/img/signup/balloon.png")
+        .shadow
+      //- 右1
+      //- img.cloud.cloud_1(src="/img/signup/cloud_1.png")
+      //- //- 右2
+      //- img.cloud.cloud_2(src="/img/signup/cloud_2.png")
+      //- //- 中间
+      //- img.cloud.cloud_3(src="/img/signup/cloud_3.png")
+      //- //- 左1
+      //- img.cloud.cloud_4(src="/img/signup/cloud_4.png")
+      //- //- 左2
+      //- img.cloud.cloud_5(src="/img/signup/cloud_2.png")
+      .iphone_container
+        .iphone
+          .signup
+            //- 5个球
+            //- .balls
+            .ball.ball_1.animated.zoomIn
+            .ball.ball_2.animated.fadeInRight
+            .ball.ball_3.animated.fadeInDown
+            //- 蓝
+            .ball.ball_4.animated.rotateIn
+            //- 黄
+            .ball.ball_5.animated.slideInLeft
+            //-资料框
+            form(name="userForm")
+              .fill_in.animated.slideInUp(ng-cloak)
+                img.fill_in_title(ng-src="/img/signup/fill_in_title.png")
+                .select_container(ng-click="showCompanies()") {{company.name || '请选择你的大学'}}
+                .options.animated.fadeInDown(ng-if="showingCompanies" ng-cloak)
+                  .option(ng-repeat="company in companies" ng-click="select(company)" ng-cloak) {{company.name}}
+                .select_container(ng-click="showEnrollment()") {{user.enrollment || '请选择入学时间'}}
+                .options.animated.fadeInDown(ng-if="showingEnrollment" ng-cloak)
+                  .option(ng-repeat="year in years" ng-click="selectEnrollment(year)" ng-cloak) {{year}}
+                input.phone(name="phone" ng-model="user.phone" placeholder="请输入你的手机号" required ng-minlength=11)
+                p.tip(ng-if="tip" ng-cloak) {{tip}}
+                .validate
+                  input.verification(placeholder="输入验证码" ng-model="user.code" required)
+                  button.get_validate(type="button" ng-disabled="userForm.phone.$invalid || countDown>0" ng-click="validatePhone()" ng-cloak) 获取验证码{{countDown}}
+                input.user_input(ng-model="user.name" placeholder="请输入姓名" required)
+                input.password(type="password" ng-model="user.password" placeholder="请设置密码(至少6位)" ng-minlength=6)
+                p.tip(ng-if="errorMSg" ng-cloak) {{errorMSg}}
+              button.submit(ng-click="register()" ng-disabled="userForm.$invalid || !validated")
+            .modal.animated.bounceInUp(ng-if="success" ng-cloak)
+              .wrap
+              .girl_laugh
+                .board
+                  img.submit_sucess.animated.flip(ng-src="/img/signup/circle.png")
+                  img.submit_success_text.animated.tada(ng-src="/img/signup/submit_success.png")
+                  p.download_text.animated.rubberBand 还愣着干嘛！快去下载啊！
+                  a.animated.rubberBand(ng-href="http://www.warm.ren") www.warm.ren
+                  a(ng-href="http://www.warm.ren")
+                    img.know_button(ng-src="/img/signup/know_button.png")
+        .shadow
     footer
     script(src="/lib/angular/angular.min.js")
     script(src='/js/controllers/signupController.js')

@@ -15,6 +15,7 @@ html
   color #fff
 :-ms-input-placeholder /* Internet Explorer 10+ */
   color #fff
+
 body
   margin 0
   input ,select
@@ -131,21 +132,141 @@ body
     left 3%
     top 245px
 .pc_signup
-  background radial-gradient(600px,#928484,#322c52,#2a2545)
-  .fill_in
-    margin-top 110px
-  .ball_1
-    left 20%
-  .ball_3
-    right 15%
-    bottom 100px
-    top inherit
-  .ball_4
-    left 5%
-    top 200px
-  .ball_5
-    left 11%
-    top 400px
+  background-color #fff
+  background none
+  font-size 14px
+  header
+    height 45px
+    padding 10px
+    text-align center
+    border-bottom 1px solid #979797
+    .nav
+      width 700px
+      margin 0 auto
+      padding-top 8px
+      >h1
+        float left
+        margin 0
+        width 200px
+        font-size 34px
+        line-height 34px
+      li
+        list-style none
+        float left
+        width 99px
+        border-right 1px solid black
+        margin-top 8px
+        a
+          text-decoration none
+          color black
+        &:last-child
+          width 100px
+          border-right none
+        &.active
+          a
+            color rgba(251, 214, 0, 1)
+  .bg
+    width 100%
+    min-height 95%
+    background-image url('/img/signup/bg.jpg')
+    background-size cover
+    position relative
+    .shadow
+      background-color #f1bb38
+      width 256px
+      height 13px
+      -moz-border-radius 256px / 13px
+      -webkit-border-radius 256px / 13px
+      border-radius 256px / 13px
+      position absolute
+    .panda_container
+      position absolute
+      left 15%
+      margin-left -200px
+      top 48%
+      width 400px
+      height 320px
+      .panda
+        position absolute
+        right 0
+        bottom -15px
+      .shadow
+        left 0
+        bottom 0
+    .bear_container
+      position absolute
+      right 15%
+      margin-right -250px
+      height 320px
+      top 48%
+      width 500px
+      .bear
+        position absolute
+        bottom -33px
+        left 0
+        width 364px
+      .balloon
+        position absolute
+        width 170px
+        right 0
+        bottom 254px
+      .shadow
+        left 134px
+        bottom 0
+    //- .cloud
+    //-   position absolute
+    //- .cloud_1
+    //-   right 0
+    //-   top 124px
+    //-   width 98px
+    //- .cloud_2
+    //-   right 15%
+    //-   left 5%
+    //-   width 46px
+    //-   top 57px
+    //- .cloud_3
+    //-   left 30%
+    //-   top 72px
+    //-   width 180px
+    //- .cloud_4
+    //-   width 119px
+    //-   left 4%
+    //-   top 137px
+    //- .cloud_5
+    //-   left 13%
+    //-   width 46px
+    //-   top 73px
+    .iphone_container
+      width 412px
+      height 710px
+      position relative
+      margin 0 auto
+      padding 20px 0
+      .shadow
+        width 432px
+        bottom 0px
+        height 20px
+        z-index 1
+    .iphone
+      background-image url('/img/signup/phone.png')
+      background-size contain
+      background-position center
+      background-repeat no-repeat
+      position absolute
+      bottom 10px
+      width 412px
+      height 700px
+      z-index 5
+      .signup
+        background radial-gradient(500px,#928484,#322c52,#2a2545)
+        background -webkit-radial-gradient(500px,#928484,#322c52,#2a2545)
+        width 356px
+        height 549px
+        margin 65px auto
+        position relative
+        overflow-y hidden
+        .fill_in
+          margin-top 35px
 .modal
   position absolute
   width 100%
