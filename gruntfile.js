@@ -226,7 +226,7 @@ module.exports = function(grunt) {
       },
       signupCss: {
         src: [
-          'public/css/animate.min.css',
+          'public/css/animate_signup.min.css',
           'public/css/signup.css'
         ],
         dest: 'public/css/signup.min.css'

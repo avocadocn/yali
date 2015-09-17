@@ -14,19 +14,20 @@ html
           a(href="/") 首页
         li
           a(href="/index/ambassador") 校园大使
-        li.active
+        li
           a(href="/index/about") 关于warm
         li
           a(href="#") 联系warm
-        li
+        li.active
           a(href="#") 加入warm
     section.bg(ng-controller="userSignupController")
       .panda_container
-        img.panda(src="/img/signup/panda.png")
+        img.panda.swing.animated.infinite.wave(src="/img/signup/panda.png")
         .shadow
       .bear_container
-        img.bear(src="/img/signup/bear.png")
-        img.balloon(src="/img/signup/balloon.png")
+        .animate_container.animated.infinite.wave
+          img.bear(src="/img/signup/bear.png")
+          img.balloon(src="/img/signup/balloon.png")
         .shadow
       //- 右1
       //- img.cloud.cloud_1(src="/img/signup/cloud_1.png")
